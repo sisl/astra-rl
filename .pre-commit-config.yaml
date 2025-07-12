@@ -13,12 +13,13 @@ repos:
     rev: v1.16.1
     hooks:
       -  id: mypy
+         additional_dependencies: [types-torch, torch]
          args: [
            "--python-version=3.12",
            "--strict",
            "--ignore-missing-imports"
          ]
-         exclude: tests/
+         exclude: ^(examples|tests|src/astra_rl/ext)/
 
   # Additional useful hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks

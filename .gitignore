@@ -6,6 +6,9 @@ Thumbs.db
 .idea/
 .vscode/
 digest.txt
+*~
+\#*\#
+.\#*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -182,3 +185,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 /.dir-locals.el
+/scratchpad.py

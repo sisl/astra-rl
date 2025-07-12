@@ -13,7 +13,11 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "typer>=0.16.0",
+    "detoxify>=0.5.2",
+    "tokenizers>=0.21.2",
+    "torch>=2.7.1",
+    "transformers>=4.53.1",
+    "typer>=0.16.0"
 ]
 
 [project.scripts]
@@ -48,6 +52,7 @@ dev = [
     "ruff>=0.12.1",
     "pre-commit>=4.2.0",
     "mypy>=1.16.1",
+    "types-torch>=0.1.1",
 ]
 
 [tool.ruff]
@@ -64,7 +69,7 @@ docstring-code-line-length = 20
 python_version = "3.12"
 strict = true
 ignore_missing_imports = true
-exclude = ["tests"]
+exclude = ["tests", "examples", "src/astra_rl/ext"]
 
 # Coverage configuration
 [tool.coverage.run]
