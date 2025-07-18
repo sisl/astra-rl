@@ -1,7 +1,11 @@
 from typing import Generic, Sequence, Optional, Dict, Any, Iterator
+from abc import abstractmethod
+import os
 
 import torch
 from torch.utils.data import Dataset, DataLoader
+
+import wandb
 
 from astra_rl.core.environment import Environment
 from astra_rl.core.algorithm import Algorithm
@@ -87,6 +91,8 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         environment: Environment[StateT, ActionT],
         algorithm: Algorithm[StateT, ActionT, Step, Batch],
         num_episodes_per_experience: int = 32,
+        use_wandb: bool = True,
+        wandb_kwargs: Optional[Dict[str, Any]] = None,
         **kwargs: Any,
     ) -> None:
         """
@@ -100,9 +106,14 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         self.environment = environment
         self.algorithm = algorithm
         self.num_episodes_per_experience = num_episodes_per_experience
+        self.use_wandb = use_wandb
+        self.wandb_kwargs = wandb_kwargs or {}
         self.dataloader_kwargs: Dict[str, Any] = kwargs
 
-    def step(self, batch: Batch) -> torch.Tensor:
+        # Wandb initialization and error handling; checking that WANDB_API_KEY is set
+        self.wandb = self.init_wandb()
+
+    def step(self, batch: Batch) -> tuple[torch.Tensor, dict[Any, Any]]:
         """Run a step of the algorithm on the dataset.
 
         Args:
@@ -112,8 +123,17 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
             torch.Tensor: The loss computed by the algorithm.
         """
 
-        result: torch.Tensor = self.algorithm.step(batch)
-        return result
+        result: torch.Tensor
+        logging_dict: dict[Any, Any]
+        result, logging_dict = self.algorithm.step(batch)
+        step_logs: dict[Any, Any] = {}
+
+        # TODO: Add other values here to logs besides algorithm specifics?
+        step_logs = {
+            **logging_dict,
+        }
+
+        return result, step_logs
 
     def experience(self, seed: Optional[int] = None) -> Iterator[Batch]:
         """Collect some experiences!
@@ -148,3 +168,34 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
                 **self.dataloader_kwargs,
             )
         )
+
+    def init_wandb(self) -> Optional[Any]:
+        """Initialize Weights & Biases if enabled; checking that WANDB_API_KEY is set
+
+        Returns:
+            Optional[wandb.Run]: The wandb run object if initialized, otherwise None.
+        """
+
+        if self.use_wandb:
+            if "WANDB_API_KEY" not in os.environ:
+                raise EnvironmentError(
+                    "WANDB_API_KEY environment variable is not set. Please set it to use Weights & Biases."
+                )
+            # TODO: This was a hotfix, but all other ways failed me (Max)
+            run = wandb.init(project="astra_rl", config=self.wandb_kwargs)  # type: ignore[attr-defined]
+            return run
+        return None
+
+    @abstractmethod
+    def log_current_step(self, current_logs: dict[Any, Any]) -> None:
+        """Log the current step metrics to Weights & Biases (if enabled) and logger.
+
+        Args:
+            current_logs (dict[Any, Any]): The logs to be recorded.
+        """
+        if self.use_wandb and self.wandb:
+            self.wandb.log(current_logs)
+
+        # Always log to the logger
+        # TODO: Do we want to log to the logger? Should be fine as used for debugging?
+        logger.info(f"Current logs: {current_logs}")

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Generic, Sequence, List
+from typing import Generic, Sequence, List, Any
 
 from astra_rl.core.algorithm import Algorithm
 from astra_rl.core.problem import Problem
@@ -80,7 +80,9 @@ class DPO(
 
         return DPOBatch(prefixes=prefixes, suffix_pos=suffix_pos, suffix_neg=suffix_neg)
 
-    def step(self, batch: DPOBatch[StateT, ActionT]) -> torch.Tensor:
+    def step(
+        self, batch: DPOBatch[StateT, ActionT]
+    ) -> tuple[torch.Tensor, dict[Any, Any]]:
         attacker_logprobs_win = self.problem._get_attacker_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
         )
@@ -102,16 +104,43 @@ class DPO(
 
         loss = -F.logsigmoid(self.beta * logits)
 
-        # TODO! how do we do logging?
-        # ideally there's a logging package / logger for metrics that I can just log to
-        # chosen_rewards = self.beta * (attacker_logprob_win - reference_logprobs_win).detach()
-        # rejected_rewards = self.beta * (attacker_logprob_loose - referenge_logprobs_loose).detach()
+        # Calculate addition quantities
+        # TODO: CHECK ME for correctness and completion!
+        chosen_rewards = self.beta * (attacker_logprobs_win - baseline_logprobs_win)
+        rejected_rewards = self.beta * (attacker_logprobs_loss - baseline_logprobs_loss)
+        reward_accuracies = (chosen_rewards > rejected_rewards).float()
+        reward_margin = chosen_rewards - rejected_rewards
 
-        return loss.mean()
+        logging_dict: dict[Any, Any] = {
+            "training/loss": loss.mean().cpu().item(),
+            "reward/chosen_rewards": chosen_rewards.mean().cpu().item(),
+            "reward/rejected_rewards": rejected_rewards.mean().cpu().item(),
+            "reward/reward_accuracies": reward_accuracies.mean().cpu().item(),
+            "reward/reward_margin": reward_margin.mean().cpu().item(),
+            "policy/logprobs_chosen": attacker_logprobs_win.mean()
+            .detach()
+            .cpu()
+            .item(),
+            "policy/logprobs_rejected": attacker_logprobs_loss.mean()
+            .detach()
+            .cpu()
+            .item(),
+            "ref/logprobs_chosen": baseline_logprobs_win.mean().detach().cpu().item(),
+            "ref/logprobs_rejected": baseline_logprobs_loss.mean()
+            .detach()
+            .cpu()
+            .item(),
+        }
+        # TODO: Add this from old code?
+        # "policy/rollout": wandb.Html(str(r"<span>"+batch["prompt_win"][0][0]+"</span><span style='color:Tomato;'>"+batch["prompt_win"][0][1]+r"</span><span style='color:DodgerBlue'>"+batch["prompt_win"][0][2]+r"</span>")),
+
+        return loss.mean(), logging_dict
 
 
 class IPO(DPO[StateT, ActionT]):
-    def step(self, batch: DPOBatch[StateT, ActionT]) -> torch.Tensor:
+    def step(
+        self, batch: DPOBatch[StateT, ActionT]
+    ) -> tuple[torch.Tensor, dict[Any, Any]]:
         attacker_logprobs_win = self.problem._get_attacker_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
         )
@@ -133,4 +162,34 @@ class IPO(DPO[StateT, ActionT]):
 
         loss = (logits - 1 / (2 * self.beta)) ** 2
 
-        return loss.mean()
+        # Calculate addition quantities
+        # TODO: CHECK ME for correctness and completion!
+        chosen_rewards = self.beta * (attacker_logprobs_win - baseline_logprobs_win)
+        rejected_rewards = self.beta * (attacker_logprobs_loss - baseline_logprobs_loss)
+        reward_accuracies = (chosen_rewards > rejected_rewards).float()
+        reward_margin = chosen_rewards - rejected_rewards
+
+        logging_dict: dict[Any, Any] = {
+            "training/loss": loss.mean().cpu().item(),
+            "reward/chosen_rewards": chosen_rewards.mean().cpu().item(),
+            "reward/rejected_rewards": rejected_rewards.mean().cpu().item(),
+            "reward/reward_accuracies": reward_accuracies.mean().cpu().item(),
+            "reward/reward_margin": reward_margin.mean().cpu().item(),
+            "policy/logprobs_chosen": attacker_logprobs_win.mean()
+            .detach()
+            .cpu()
+            .item(),
+            "policy/logprobs_rejected": attacker_logprobs_loss.mean()
+            .detach()
+            .cpu()
+            .item(),
+            "ref/logprobs_chosen": baseline_logprobs_win.mean().detach().cpu().item(),
+            "ref/logprobs_rejected": baseline_logprobs_loss.mean()
+            .detach()
+            .cpu()
+            .item(),
+        }
+        # TODO: Add this from old code?
+        # "policy/rollout": wandb.Html(str(r"<span>"+batch["prompt_win"][0][0]+"</span><span style='color:Tomato;'>"+batch["prompt_win"][0][1]+r"</span><span style='color:DodgerBlue'>"+batch["prompt_win"][0][2]+r"</span>")),
+
+        return loss.mean(), logging_dict

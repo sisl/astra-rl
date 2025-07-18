@@ -186,3 +186,7 @@ cython_debug/
 .pypirc
 /.dir-locals.el
 /scratchpad.py
+
+# Weights & Biases
+wandb/
+wandb-debug.log

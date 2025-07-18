@@ -22,7 +22,7 @@ from transformers import (
 )
 
 from astra_rl.core.moderator import Moderator
-from astra_rl.methods.ast import ASTProblem
+from astra_rl.methods.ast_problem import ASTProblem
 
 
 class HFASTProblem(ASTProblem):

@@ -3,7 +3,7 @@ algorithm.py
 """
 
 from abc import abstractmethod, ABC
-from typing import Sequence, Generic
+from typing import Sequence, Generic, Any
 
 import torch
 
@@ -64,7 +64,7 @@ class Algorithm(ABC, Generic[StateT, ActionT, Step, Batch]):
         pass
 
     @abstractmethod
-    def step(self, batch: Batch) -> torch.Tensor:
+    def step(self, batch: Batch) -> tuple[torch.Tensor, dict[Any, Any]]:
         """Take a batch and compute loss of this batch.
 
         Args:
