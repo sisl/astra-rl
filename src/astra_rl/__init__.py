@@ -1,7 +1,7 @@
 from .methods import ASTEnvironment, ASTNode, ASTProblem
 from .algorithms import DPO, IPO, DPOBatch, DPOStep
 from .moderators import DetoxifyModerator
-from .training import Harness
+from .training import Harness, Trainer, TrainingConfiguration
 
 __all__ = (
     "ASTEnvironment",
@@ -13,4 +13,6 @@ __all__ = (
     "DPOStep",
     "DetoxifyModerator",
     "Harness",
+    "Trainer",
+    "TrainingConfiguration",
 )

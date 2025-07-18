@@ -91,8 +91,8 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
     ) -> None:
         """
         Args:
-            environment (Environment[StateT, ActionT]): The environment to run the algorithm in.
-            algorithm (Algorithm[StateT, ActionT, Step, Batch]): The algorithm to run.
+            environment (Environment): The environment to run the algorithm in.
+            algorithm (Algorithm): The algorithm to run.
             rollouts_per_eps (int, optional): Number of episodes per call to `.experience()`. Defaults to 32.
             **kwargs: keyword arguments for the PyTorch data loader constructed on the fly
         """

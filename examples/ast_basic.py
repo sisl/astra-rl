@@ -149,3 +149,6 @@ for _ in range(1000):
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
+
+# if you'd like, save the pretrainend model
+problem.attacker.save_pretrained("./models/gpt2_gpt2_detoxify_attacker")
