@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/sisl/astra-rl/index.html</loc>
-         <lastmod>2025-07-24</lastmod>
+         <lastmod>2025-08-01</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/api/index.html</loc>
-         <lastmod>2025-07-24</lastmod>
+         <lastmod>2025-08-01</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/index.html</loc>
-         <lastmod>2025-07-24</lastmod>
+         <lastmod>2025-08-01</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/running_an_evaluation.html</loc>
-         <lastmod>2025-07-24</lastmod>
+         <lastmod>2025-08-01</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/training_an_evaluator.html</loc>
-         <lastmod>2025-07-24</lastmod>
+         <lastmod>2025-08-01</lastmod>
     </url>
 </urlset>
