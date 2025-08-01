@@ -11,8 +11,6 @@ except ImportError:
     logging.warning("Wandb not installed/found in path.")
     is_wandb_installed = False
 
-logger = logging.getLogger("astra")
-
 
 def config_logging() -> None:
     logging.basicConfig(
@@ -21,6 +19,10 @@ def config_logging() -> None:
         datefmt="%Y-%m-%d %H:%M:%S",
     )
     logging.getLogger("astra").setLevel(logging.DEBUG)
+
+
+logger = logging.getLogger("astra")
+config_logging()
 
 
 class ASTRAWandbLogger:
