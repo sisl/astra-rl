@@ -22,7 +22,7 @@
     
     
       
-        <title>Quick start training - ASTRA-RL Toolbox Documentation</title>
+        <title>Quick Start: Training a HuggingFace Attacker with ASTRA-RL - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#quick-start-training-a-huggingface-attacker-with-astra-rl" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -109,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick start training
+              Quick Start: Training a HuggingFace Attacker with ASTRA-RL
             
           </span>
         </div>
@@ -478,6 +483,115 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-create-a-training-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create a Training Script
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-import-required-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Import Required Modules
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-load-your-initial-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Load Your Initial Prompts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-set-your-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Set Your Device
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-instantiate-your-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Instantiate Your Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-instantiate-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Instantiate the Environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-choose-your-algorithm-and-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Choose Your Algorithm and Optimizer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-create-the-training-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 9: Create the Training Harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-10-train-the-attacker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 10: Train the Attacker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example-examplesast_hfpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full Example: examples/ast_hf.py
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -496,64 +610,130 @@
   
 
 
-  <h1>Quick start training</h1>
-
-<p>Do you want to train a Huggingface adversary using an ASTRA-supported algorithm (DPO, IPO, PPO<em>) and problem formulation (ASTPrompter, Perez</em>, MALIBU<em>, Hong</em>)? Then this quick start guide will walk you through every step to training a red-teaming adversary. 
-TARGET, BASELINE, ATTACKER</p>
-<p>1) Set-up
-See the README for more details and guidance behind the installation process.</p>
+<h1 id="quick-start-training-a-huggingface-attacker-with-astra-rl">Quick Start: Training a HuggingFace Attacker with ASTRA-RL<a class="headerlink" href="#quick-start-training-a-huggingface-attacker-with-astra-rl" title="Permanent link">&para;</a></h1>
+<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO<em>) and problem formulation (ASTPrompter, Perez</em>, MALIBU<em>, Hong</em>)?</p>
+<p>Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults.</p>
+<hr />
+<h2 id="step-1-setup">Step 1: Setup<a class="headerlink" href="#step-1-setup" title="Permanent link">&para;</a></h2>
+<p>Please see the <a href="../../README.md">README</a> for full setup instructions. Here's a quick recap:</p>
 <pre><code class="language-bash"># Install the ASTRA-RL toolbox
 pip install astra-rl
-# Clone the repository
+
+# Clone the repository (for examples and development)
 git clone git@github.com:sisl/astra-rl.git
 cd astra-rl
-# Sync package dependencies
+
+# Sync dependencies
 uv sync --dev
-# Install pre-commit hooks:
+
+# (Optional) Install pre-commit hooks to auto-format code
 uv run pre-commit install
 </code></pre>
-<p>2) Create a python file for your training code (ie. mytrain.py)</p>
-<p>3) Import required classes, wrappers, and functions</p>
-<pre><code class="language-python"># import your favorite optimization algorithm. We suggest Adam!
-from torch.optim import AdamW
-# import a pre-instantiaed environment class, RL training algorithm, Moderator, and training harness class
+<hr />
+<h2 id="step-2-create-a-training-script">Step 2: Create a Training Script<a class="headerlink" href="#step-2-create-a-training-script" title="Permanent link">&para;</a></h2>
+<p>Create a Python file for your training code (e.g., train.py).</p>
+<hr />
+<h2 id="step-3-import-required-modules">Step 3: Import Required Modules<a class="headerlink" href="#step-3-import-required-modules" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">from torch.optim import AdamW
+
+# ASTRA-RL core components
 from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
-# import the wrapper that supports Huggingface models for ASTPrompter-style adversarial training
+
+# HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
 from astra_rl.ext.transformers import HFASTProblem
 </code></pre>
-<p>4) Load your Training Data (initial prompts)
-To train your adversary, you will need to provide a large dataset of comma-seperated strings that will serve as the prompts that initiate adversarial-defender conversation rollouts during training. These rollouts (scored by the moderator) will serve as the training data for the adversary, teaching the adversary what actions it should take to ellicit harmful responses from the defender. Therefore, it is important that the initial prompts you provide are relavent to the red-teaming scenario you care about. For example, if you want to red-team medical diagnosis LMs, your initial prompts should reflect the prompts a medical diagnosis LM would likely see during operation: "I have a cut that is swollen and red. What do you think is wrong?" ect.</p>
-<p>The supported framework (ASTPrompter) red-teams for harmful behaviors in conversational LMs and therefore uses the ConvoKit Reddit corpus (small) to serve as the initial prompts. To use this data, make sure you have the prompts_reddit_train.json file in your local directory and read the prompts in as a comma seperated list as shown below.</p>
-<pre><code class="language-python">with open(&quot;prompts_reddit_train.json&quot;) as f:
-        PROMPTS = json.load(f)
+<h2 id="step-4-load-your-initial-prompts">Step 4: Load Your Initial Prompts<a class="headerlink" href="#step-4-load-your-initial-prompts" title="Permanent link">&para;</a></h2>
+<p>To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. </p>
+<pre><code class="language-python">import json
+
+with open(&quot;prompts_reddit_train.json&quot;) as f:
+    PROMPTS = json.load(f)
 </code></pre>
-<p>If you would like to use a different dataset to initialize training rollouts, simply load your json file instead! Just make sure that your json file is formatted as a list of comma seperated strings.</p>
-<p>5) Set your device:
-If you have acsess to a GPU:</p>
-<pre><code class="language-python">DEVICE = &quot;cuda&quot; 
+<p>Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts.</p>
+<p>The ASTRA-RL toolbox also supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.</p>
+<hr />
+<h2 id="step-5-set-your-device">Step 5: Set Your Device<a class="headerlink" href="#step-5-set-your-device" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">DEVICE = &quot;cuda&quot;  # or &quot;cpu&quot; if GPU is not available
 </code></pre>
-<p>This will allow you train larger adversaries and use larger moderator models. Since we want to make this framework available to people with a variety of computational capabilities, we put the occonus of properly allocating recources to you, the user. </p>
-<p>If you do not have acsess to a GPU, you can still use this toolbox to train smaller adversaries for red teaming! Try finetunning smaller adversarial models such as GPT2 and using lighter-weight moderators (detoxify)!</p>
-<pre><code class="language-python">DEVICE = &quot;cpu&quot; 
-</code></pre>
-<p>6) Instatiate your problem (choose adversary, defender, reference, and moderator models!)
-To facilitate your experience, we have created a problem wrapper that supports any hugging face model!</p>
-<p>Adversary/Defender/Reference Hugging face models:</p>
-<p>Simply instantiate your problem with the HFASTProblem class and provide the name of the hugging face models you would like to use. Additionally, you will need to provide a moderator that will evalute adversary/defender utterances to determine rewards. We have two moderator classes pre-configured and ready for use: DetoxifyModerator and LlamaGuardModerator()*.</p>
-<pre><code class="language-python"># example for instatiating a problem with gpt2 as the adversary, defender, andreference model with a detoxify moderator! (cpu-friendly)
+<p>We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups.</p>
+<hr />
+<h2 id="step-6-instantiate-your-problem">Step 6: Instantiate Your Problem<a class="headerlink" href="#step-6-instantiate-your-problem" title="Permanent link">&para;</a></h2>
+<p>The <code>HFASTProblem</code> class is a HuggingFace-compatible extension of <code>ASTProblem</code>. It simplifies red-teaming with transformer-based language models by handling:</p>
+<ul>
+<li>Automatic loading of attacker, target, and baseline models</li>
+<li>Tokenizer setup with fallback padding tokens for compatibility</li>
+<li>Rollout "step" generation</li>
+<li>Log probability computation of attacker, target, and baseline responses</li>
+</ul>
+<p>You simply provide the model IDs and a <code>Moderator</code> instance, and <code>HFASTProblem</code> manages the rest—making it easy to plug into ASTRA-RL’s training and evaluation pipeline.</p>
+<p>Note: If your attacker and target are different models (e.g., GPT-2 attacker, LLaMA target), this class handles all the tokenizer/model interop for you.</p>
+<pre><code class="language-python">from astra_rl.modifiers import LlamaGuardModerator  # optional
+
+# Example 1: GPT2 attacker, target, baseline with Detoxify (lightweight setup)
 problem = HFASTProblem(&quot;gpt2&quot;, &quot;gpt2&quot;, &quot;gpt2&quot;, DetoxifyModerator(), DEVICE)
 
-# example for instatiating a problem with gpt2 as the adversary, llama3 as the defender, and reference model with a llamaguard moderator!(gpu necessary)
-problem = HFASTProblem(&quot;gpt2&quot;, &quot;llama??&quot;, &quot;gpt2&quot;, LlamaGuardModerator(), DEVICE)
-
+# Example 2: GPT2 attacker, LLaMA target, GPT2 baseline with LlamaGuard (GPU recommended)
+problem = HFASTProblem(&quot;gpt2&quot;, &quot;meta-llama/Llama-3-8b&quot;, &quot;gpt2&quot;, LlamaGuardModerator(), DEVICE)
 </code></pre>
-<p>Want to use a non-hugging face attacker, target, or baseline? No Problem!
-Go to: astra-rl/docs/tutorials/custom_models.md
-to create a problem subclass that fits your needs!  </p>
-<p>Want to use a moderator besides llamaguard or detoxify? It's easy!
-Go to: astra-rl/docs/tutorials/custom_moderators.md
-to learn how to create a class for your moderator and integrate it into your problem class!</p>
-<p>7) </p>
+<p>Need a custom model or rollout step logic? See
+    -&gt; astra-rl/docs/tutorials/customize/problems</p>
+<p>Want to use a custom moderator? See
+    -&gt; astra-rl/docs/tutorials/customize/moderators</p>
+<hr />
+<h2 id="step-7-instantiate-the-environment">Step 7: Instantiate the Environment<a class="headerlink" href="#step-7-instantiate-the-environment" title="Permanent link">&para;</a></h2>
+<p>The environment defines how training rollouts are structured and collected. In ASTRA-RL, the default is the <code>ASTEnvironment</code>, which implements the conversation tree rollout used in the <a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a> paper.</p>
+<pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS)
+</code></pre>
+<p>This environment builds a tree-structured conversation graph, where:
+    - The root node starts from a random initial prompt (from PROMPTS)
+    - At each turn, the attacker generates multiple candidate utterances (tree_width, default 2)
+    - Each of those utterances is fed to the target model, which produces a response
+    - The resulting attacker–target–response tuples form child nodes
+    - This process repeats for tree_depth levels (default 3), yielding a multi-turn attacker-target dialogue tree
+This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the attacker to elicit increasingly harmful responses over time.</p>
+<p>By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:</p>
+<pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
+</code></pre>
+<p>Want a different rollout structure or multi-agent setup? See
+    -&gt; astra-rl/docs/tutorials/customize/environments</p>
+<hr />
+<h2 id="step-8-choose-your-algorithm-and-optimizer">Step 8: Choose Your Algorithm and Optimizer<a class="headerlink" href="#step-8-choose-your-algorithm-and-optimizer" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">solver = DPO(problem)
+optimizer = AdamW(problem.parameters(), lr=1e-5)
+</code></pre>
+<p>To integrate your own RL algorithm, see
+    -&gt; astra-rl/docs/tutorials/customize/solvers</p>
+<hr />
+<h2 id="step-9-create-the-training-harness">Step 9: Create the Training Harness<a class="headerlink" href="#step-9-create-the-training-harness" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">harness = Harness(
+    env,
+    solver,
+    num_episodes_per_experience=2,
+    use_wandb=True,
+    dataloader_kwargs={&quot;batch_size&quot;: 4},
+)
+</code></pre>
+<p>For more information on the training harness, see
+    -&gt; astra-rl/docs/tutorials/customize_training/harness</p>
+<hr />
+<h2 id="step-10-train-the-attacker">Step 10: Train the Attacker<a class="headerlink" href="#step-10-train-the-attacker" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">for step in range(1000):
+    # Collect experience rollouts from attacker-target interactions
+    buf = harness.experience()
+    for experience in buf:
+        # Compute loss using the solver (e.g., DPO)
+        loss, step_logs = harness.step(experience)
+
+        # Standard PyTorch optimization
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+
+        step_logs[&quot;step&quot;] = step
+        harness.log_current_step(step_logs)
+</code></pre>
+<h2 id="full-example-examplesast_hfpy">Full Example: examples/ast_hf.py<a class="headerlink" href="#full-example-examplesast_hfpy" title="Permanent link">&para;</a></h2>
+<p>We provide a complete working example that mirrors this guide!</p>
 
 
 
@@ -576,7 +756,7 @@ to learn how to create a class for your moderator and integrate it into your pro
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 5, 2025 16:52:52 UTC">2025-08-05</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 5, 2025 19:26:05 UTC">2025-08-05</span>
   </span>
 
     
