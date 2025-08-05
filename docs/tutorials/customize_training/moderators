@@ -5,12 +5,12 @@ Moderators play a central role in LM red teaming, acting similarly to reward mod
 In many RL-based red-teaming setups, the moderator provides the signal that trains the attacker to generate utterances that elicit harmful responses from a target model. This achieves the red-teaming objective by exposing weaknesses in the target model’s safety alignment and highlighting where additional fine-tuning is needed.
 
 To serve this purpose, a moderator must:
-    - Accept a sequence of target model generations (e.g., text),
-    - Return a scalar score (e.g., a toxicity value from 0 to 1) indicating the level of harm.
+- Accept a sequence of target model generations (e.g., text),
+- Return a scalar score (e.g., a toxicity value from 0 to 1) indicating the level of harm.
 
 The astra-rl toolbox currently supports text-based moderation using:
-    - Detoxify, for toxicity classification,
-    - Llama Guard 3, for a variety of harm categories (e.g., hate speech, threats, etc.).
+- Detoxify, for toxicity classification,
+- Llama Guard 3, for a variety of harm categories (e.g., hate speech, threats, etc.).
 
 But the framework is modular—you can define your own moderator class, wrapping any model that takes in your defined StateT and ActionT types (see astra_rl/core/common) and returns a Sequence[float].
 
@@ -21,12 +21,13 @@ This guide walks you through creating a new Moderator subclass.
 ## Step 1: Subclass the Moderator Base Class
 
 To define your own moderator, create a class that inherits from:
+
 ```python
 Moderator[StateT, ActionT]
 ```
 Where:
-    - StateT is the type of state your environment uses (e.g., a string prompt)
-    - ActionT is the type of action your model produces (e.g., a generated response)
+- StateT is the type of state your environment uses (e.g., a string prompt)
+- ActionT is the type of action your model produces (e.g., a generated response)
 For most NLP use cases, both StateT and ActionT are str.
 
 example:
@@ -51,8 +52,8 @@ def moderate(self, x: Sequence[Union[StateT, ActionT]]) -> Sequence[float]:
 ```
 
 This method:
-    - Takes a sequence of states and/or actions.
-    - Returns a sequence of floats, where each float is the moderation score (e.g., toxicity score) for the corresponding input.
+- Takes a sequence of states and/or actions.
+- Returns a sequence of floats, where each float is the moderation score (e.g., toxicity score) for the corresponding input.
 
 example:
 ```python
@@ -90,16 +91,18 @@ class ExampleDetoxifyProblem(ASTProblem):
 
 ---
 
-Helpful Notes:
-    - Your moderator can wrap any scoring model—e.g., classifiers, LLMs, rule-based filters—as long as it implements moderate(...) → Sequence[float].
+## Helpful Notes:
+- Your moderator can wrap any scoring model—e.g., classifiers, LLMs, rule-based filters—as long as it implements moderate(...) → Sequence[float].
 
-    - You can include internal logic to handle tokenization, batching, preprocessing, etc.
+- You can include internal logic to handle tokenization, batching, preprocessing, etc.
 
-    - Return one score per input in the same order as received.
+- Return one score per input in the same order as received.
 
-    - If you're using a library or model that scores multiple types of harm (like Detoxify or llamaguard), your class can expose a harm_category attribute to customize which score to extract.
+- If you're using a library or model that scores multiple types of harm (like Detoxify or llamaguard), your class can expose a harm_category attribute to customize which score to extract.
 
-Full examples:
+---
+
+## Full examples:
 See the following files for complete, working implementations:
-    -> astra_rl/moderators/detoxify.py — wraps the Detoxify library
-    -> astra_rl/moderators/llamaGuard.py — wraps Meta’s Llama Guard 3 model
+- [astra_rl/moderators/detoxify.py](astra_rl/moderators/detoxify.py) — wraps the Detoxify library
+- [astra_rl/moderators/llamaGuard.py](astra_rl/moderators/llamaGuard.py) — wraps Meta’s Llama Guard 3 model

@@ -1,6 +1,6 @@
 # Quick Start: Training a HuggingFace Attacker with ASTRA-RL
 
-Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO*) and problem formulation (ASTPrompter, Perez*, MALIBU*, Hong*)?
+Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO*) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez*](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))?
 
 Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults.
 
@@ -43,6 +43,8 @@ from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
 # HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
 from astra_rl.ext.transformers import HFASTProblem
 ```
+
+---
 
 ## Step 4: Load Your Initial Prompts
 To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. 
@@ -92,11 +94,9 @@ problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
 problem = HFASTProblem("gpt2", "meta-llama/Llama-3-8b", "gpt2", LlamaGuardModerator(), DEVICE)
 ```
 
-Need a custom model or rollout step logic? See
-    -> astra-rl/docs/tutorials/customize/problems
+Need a custom model or rollout step logic? See [customize/problems](astra-rl/docs/tutorials/customize_training/problems-)
 
-Want to use a custom moderator? See
-    -> astra-rl/docs/tutorials/customize/moderators
+Want to use a custom moderator? See [customize/moderators](astra-rl/docs/tutorials/customize_training/moderators)
 
 ---
 
@@ -121,8 +121,7 @@ By default, rollouts are configured with tree_width=2 and tree_depth=3, but you 
 env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 ```
 
-Want a different rollout structure or multi-agent setup? See
-    -> astra-rl/docs/tutorials/customize/environments
+Want a different rollout graph structure or a multi-agent setup? See [customize/environments](astra-rl/docs/tutorials/customize_training/environments)
 
 ---
 
@@ -132,8 +131,7 @@ solver = DPO(problem)
 optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
- To integrate your own RL algorithm, see
-    -> astra-rl/docs/tutorials/customize/solvers
+ To integrate your own RL algorithm, see [customize_training/solvers](astra-rl/docs/tutorials/customize_training/solvers)
 
 ---
 
@@ -171,6 +169,8 @@ for step in range(1000):
         step_logs["step"] = step
         harness.log_current_step(step_logs)
 ```
+
+---
 
 ## Full Example: examples/ast_hf.py
 We provide a complete working example that mirrors this guide!

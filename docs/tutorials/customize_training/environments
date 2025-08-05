@@ -26,23 +26,23 @@ This base class defines the interface between the environment and the training h
 ---
 ## Step 2: Implement the rollout method
 
- Your custom class must implement:
+Your custom class must implement:
 
 ```python
 def rollout(self, seed: Optional[int] = None) -> Graph[StateT, ActionT]
 ```
 
 The rollout() method should return a Graph object, which holds a tree or list of conversation trajectories, each node containing at a minimum:
-        - state (e.g. prompt so far)
-        - action (e.g. attacker utterance)
-        - target_response (optional)
-        - reward (float)
+- state (e.g. prompt so far)
+- action (e.g. attacker utterance)
+- target_response (optional)
+- reward (float)
 
 Within your rollout() method, you can utilize the instance of ASTProblem your encironment will interact with, providing...
-        - rollout_prompt_with_attacker(prompts: Sequence[str]) → Sequence[str]
-        - rollout_prompt_with_target(prompts: Sequence[str]) → Sequence[str]
-        - reward(prompts, attacks, defenses) → Sequence[float]
-        - advance(prompt, attack, defense) → str: updates the conversation state
+- rollout_prompt_with_attacker(prompts: Sequence[str]) → Sequence[str]
+- rollout_prompt_with_target(prompts: Sequence[str]) → Sequence[str]
+- reward(prompts, attacks, defenses) → Sequence[float]
+- advance(prompt, attack, defense) → str: updates the conversation state
 
 You can call these methods directly inside your environment to implement the rollout logic of your choice.
 
