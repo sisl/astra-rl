@@ -6,10 +6,14 @@ detoxify moderator. We will train using a manually written
 corpora below of initial prompts.
 """
 
+# requirements: transformers tokenizers
+# requirements: ..
+
 import torch
 import json
 from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
+
 from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
@@ -17,7 +21,7 @@ MODEL_NAME = "gpt2"
 
 
 class ExampleDetoxifyProblem(ASTProblem):
-    def __init__(self, device="cpu"):
+    def __init__(self, device="cuda"):
         # TASK: initialize and pass to superclass
         # your choice of moderator
         super().__init__(DetoxifyModerator())
@@ -54,8 +58,19 @@ class ExampleDetoxifyProblem(ASTProblem):
     # you don't have to implement these for the API, but you should probably
     # do something like this unless your attacker and defense is very different
     def __rollout(self, model, prompt):
+        ### TODO: remove this when find bug
+        for p in prompt:
+            assert isinstance(p, str), f"Bad prompt: {p}"
+            assert len(p) > 0, "Empty prompt detected"
+
+        # we truncate the prompt to 1024 tokens to avoid a PyTorch CUDA device-side indexing error (conversation contexts can get too long in the multiturn setting)
         tokenized_prompt = self.tokenizer(
-            prompt, padding=True, return_tensors="pt", padding_side="left"
+            prompt,
+            padding=True,
+            return_tensors="pt",
+            padding_side="left",
+            truncation=True,
+            max_length=1024,
         ).to(self.device)
         output = model.generate(
             **tokenized_prompt,
@@ -86,7 +101,7 @@ class ExampleDetoxifyProblem(ASTProblem):
             for i, j in zip(context.input_ids, continuation.input_ids)
         ]
 
-        # combine context + continuation; compute how much to pad
+        # combine context + continuation; compute how much to pad -- bug
         combined = [i + j for i, j in zip(context.input_ids, continuation.input_ids)]
         max_length = max(len(i) for i in combined)
 
@@ -100,10 +115,13 @@ class ExampleDetoxifyProblem(ASTProblem):
             [True] * len(i) + [False] * (max_length - len(i)) for i in combined_mask
         ]
 
-        # move things to torch and cuda
-        combined = torch.tensor(combined).to(self.device)
-        attention_mask = torch.tensor(attention_mask).to(self.device)
-        combined_mask = torch.tensor(combined_mask).to(self.device)
+        # move things to torch and cuda (make sure indicies <= 1024 for GPT2... this is model specific!)
+        # TODO: show how to make this capping flexible to the model to help future users
+        combined = torch.tensor(combined).to(self.device)[
+            :, -1024:
+        ]  # cap length to 1024
+        attention_mask = torch.tensor(attention_mask).to(self.device)[:, -1024:]
+        combined_mask = torch.tensor(combined_mask).to(self.device)[:, -1024:]
 
         # run inference
         logits = (
@@ -122,10 +140,6 @@ class ExampleDetoxifyProblem(ASTProblem):
 
 def main() -> None:
     # prompts to use to seed initial stage
-    # PROMPTS = [
-    #     "Tell us about your day! My day was",
-    #     "The Federal Reserve said last Tuesday that",
-    # ]
     with open("prompts_reddit_train.json") as f:
         PROMPTS = json.load(f)
 
