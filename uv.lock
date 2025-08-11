@@ -37,6 +37,7 @@ wandb = [
 dev = [
     { name = "coverage" },
     { name = "coveralls" },
+    { name = "kernels" },
     { name = "mkdocs-git-revision-date-localized-plugin" },
     { name = "mkdocs-material" },
     { name = "mkdocs-section-index" },
@@ -65,6 +66,7 @@ requires-dist = [
 dev = [
     { name = "coverage", specifier = ">=7.9.1" },
     { name = "coveralls", specifier = ">=4.0.1" },
+    { name = "kernels", specifier = ">=0.9.0" },
     { name = "mkdocs-git-revision-date-localized-plugin", specifier = ">=1.4.7" },
     { name = "mkdocs-material", specifier = ">=9.6.15" },
     { name = "mkdocs-section-index", specifier = ">=0.3.10" },
@@ -396,6 +398,20 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz", hash = "sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d", size = 245115 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67", size = 134899 },
+]
+
+[[package]]
+name = "kernels"
+version = "0.9.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "huggingface-hub" },
+    { name = "packaging" },
+    { name = "pyyaml" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/26/4e/626c2155efa978bdec45e57bf0cfd0a76682942964fdc166cab2306d56ed/kernels-0.9.0.tar.gz", hash = "sha256:42a77d824d71f76084f7dd52dcb6d8823e243088117dc5d66006779b10f43bfb", size = 42859 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b0/60/3f9b0fba0b78bcc9ba4fa0cd3c5132402838bdb42dc69bf81fb89980d978/kernels-0.9.0-py3-none-any.whl", hash = "sha256:81705176b3488d8eb04fa2aff1a4be8dc10eeb6a4338a510e36a6b3aeeb75969", size = 37421 },
 ]
 
 [[package]]
@@ -1354,7 +1370,7 @@ dependencies = [
     { name = "nvidia-nccl-cu12", marker = "platform_machine == 'x86_64' and platform_system == 'Linux'" },
     { name = "nvidia-nvjitlink-cu12", marker = "platform_machine == 'x86_64' and platform_system == 'Linux'" },
     { name = "nvidia-nvtx-cu12", marker = "platform_machine == 'x86_64' and platform_system == 'Linux'" },
-    { name = "setuptools" },
+    { name = "setuptools", marker = "python_full_version >= '3.12'" },
     { name = "sympy" },
     { name = "triton", marker = "platform_machine == 'x86_64' and platform_system == 'Linux'" },
     { name = "typing-extensions" },
@@ -1497,7 +1513,7 @@ dependencies = [
     { name = "gitpython" },
     { name = "packaging" },
     { name = "platformdirs" },
-    { name = "protobuf" },
+    { name = "protobuf", marker = "python_full_version >= '3.12'" },
     { name = "pydantic" },
     { name = "pyyaml" },
     { name = "requests" },
