@@ -12,9 +12,13 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/problems.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/training/index.html">
       
       
+        <link rel="prev" href="../moderators/detoxify.html">
+      
+      
+        <link rel="next" href="harness.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +26,7 @@
     
     
       
-        <title>How to Create a Custom Problem Class for Red-Teaming with ASTRA-RL - ASTRA-RL Toolbox Documentation</title>
+        <title>Training - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -77,11 +81,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#how-to-create-a-custom-problem-class-for-red-teaming-with-astra-rl" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -114,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Create a Custom Problem Class for Red-Teaming with ASTRA-RL
+              Training
             
           </span>
         </div>
@@ -238,7 +237,26 @@
   
   
     <li class="md-tabs__item">
-      <a href="../index.html" class="md-tabs__link">
+      <a href="../../getting_started.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Getting Started
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tutorials/index.html" class="md-tabs__link">
         
   
   
@@ -255,15 +273,36 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../../api/index.html" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
     
   
-  Library API Reference
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
 
       </a>
     </li>
@@ -349,6 +388,28 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -361,11 +422,13 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
+            <a href="../../tutorials/index.html" class="md-nav__link ">
               
   
   
@@ -378,14 +441,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
           </label>
@@ -398,7 +461,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../training_an_evaluator.html" class="md-nav__link">
+      <a href="../../tutorials/training_an_evaluator.html" class="md-nav__link">
         
   
   
@@ -421,7 +484,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../running_an_evaluation.html" class="md-nav__link">
+      <a href="../../tutorials/running_an_evaluation.html" class="md-nav__link">
         
   
   
@@ -448,15 +511,595 @@
       
   
   
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../core/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Core Module
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Core Module
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
   
   
     <li class="md-nav__item">
-      <a href="../../api/index.html" class="md-nav__link">
+      <a href="../core/common.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Library API Reference
+    Common
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/environment.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/moderator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Moderator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../algorithms/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Algorithms
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Algorithms
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/dpo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../moderators/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Moderators
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            Moderators
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../moderators/detoxify.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Detoxify
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link md-nav__link--active">
+              
+  
+  
+  <span class="md-ellipsis">
+    Training
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link md-nav__link--active" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Training
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="harness.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Harness
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="trainer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trainer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../methods/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../methods/ast_problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AST Problem
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
     
   </span>
   
@@ -483,79 +1126,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#understanding-the-base-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Understanding the Base Class
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-to-create-a-subclass-with-custom-modelstokenizers" class="md-nav__link">
-    <span class="md-ellipsis">
-      How to create a subclass with custom models/tokenizers
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-integrating-your-own-models-attacker-target-or-baseline" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3: Integrating Your Own Models (Attacker, Target, or Baseline)
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-customizing-rollout-logic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4: Customizing Rollout Logic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-customizing-reward-logic" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 5: Customizing Reward Logic
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#tips-and-best-practices" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tips and Best Practices:
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#further-reading-and-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Further Reading and Examples
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -574,138 +1144,9 @@
   
 
 
-<h1 id="how-to-create-a-custom-problem-class-for-red-teaming-with-astra-rl">How to Create a Custom Problem Class for Red-Teaming with ASTRA-RL<a class="headerlink" href="#how-to-create-a-custom-problem-class-for-red-teaming-with-astra-rl" title="Permanent link">&para;</a></h1>
-<p>The <code>Problem</code> class defines the core logic of how attacker-target interactions occur in reinforcement-learning-based red-teaming. It specifies:</p>
-<ul>
-<li>How the attacker and target interact and advance the conversation state.</li>
-<li>How reward signals are computed from attacker-target interactions.</li>
-<li>How a model rollout step is performed.</li>
-<li>What models and tokenizers are used for attacker, target, and baseline (if applicable).</li>
-</ul>
-<p>By subclassing the <code>Problem</code> or <code>ASTProblem</code> class, you can customize any of these aspects to fit your particular red-teaming scenario, algorithm, or dataset. In general, we reccomend subclassing from the ASTProblem or HFASTProblem whenever you can and then over-writing methods or definitions to suite your needs. </p>
-<p>This guide will show you how to:</p>
-<ul>
-<li>Create your own custom subclass.</li>
-<li>Integrate your own models and tokenizers.</li>
-<li>Customize reward computation and rollout logic.</li>
-</ul>
-<hr />
-<h2 id="understanding-the-base-class">Understanding the Base Class<a class="headerlink" href="#understanding-the-base-class" title="Permanent link">&para;</a></h2>
-<p>The base <code>ASTProblem</code> class provides default implementations suitable for the ASTPrompter approach:</p>
-<ul>
-<li><strong><code>advance</code></strong>: Defines how a prompt advances given an attacker action and a target response.</li>
-<li><strong><code>reward</code></strong>: Defines how rewards are calculated from attacker-target interactions, typically using toxicity scoring and perplexity measures.</li>
-<li><strong><code>rollout_prompt_with_attacker</code> / <code>rollout_prompt_with_target</code></strong>: Methods to generate attacker and target model outputs from a given context.</li>
-<li><strong><code>parameters</code></strong>: Specifies model parameters for optimization.</li>
-</ul>
-<p>You should subclass this base class to preserve and extend this default behavior. If you want to change a method, simply define it in your subclass and it will over-right the original implementation while preserving the rest of the base class functionality.</p>
-<hr />
-<h2 id="how-to-create-a-subclass-with-custom-modelstokenizers">How to create a subclass with custom models/tokenizers<a class="headerlink" href="#how-to-create-a-subclass-with-custom-modelstokenizers" title="Permanent link">&para;</a></h2>
-<p>To subclass your own <code>Problem</code>, follow this template:</p>
-<pre><code class="language-python">from astra_rl.methods.ast_problem import ASTProblem
-from astra_rl.core.moderator import Moderator
+  <h1>Training</h1>
 
-class MyCustomProblem(ASTProblem):
-    def __init__(self, moderator: Moderator[str, str], my_custom_param: float = 1.0):
-        super().__init__(moderator)
-        self.my_custom_param = my_custom_param
 
-    def advance(self, state: str, action: str, response: str) -&gt; str:
-        # Example: Simply concatenate with separators
-        return f&quot;{state}\n[Attacker]: {action}\n[Target]: {response}&quot;
-
-    def reward(self, contexts, attacks, responses):
-        # Implement your own reward logic here
-        scores = self.moderator.moderate(responses)
-        return [score * self.my_custom_param for score in scores]
-
-    def rollout_prompt_with_attacker(self, prompts):
-        # Implement custom attacker rollout logic
-        raise NotImplementedError
-
-    def rollout_prompt_with_target(self, prompts):
-        # Implement custom target rollout logic
-        raise NotImplementedError
-
-    def parameters(self):
-        # Implement if your problem has trainable model parameters
-        return []
-</code></pre>
-<hr />
-<h2 id="step-3-integrating-your-own-models-attacker-target-or-baseline">Step 3: Integrating Your Own Models (Attacker, Target, or Baseline)<a class="headerlink" href="#step-3-integrating-your-own-models-attacker-target-or-baseline" title="Permanent link">&para;</a></h2>
-<p>If you are using huggingface models, save time by subclassing from our HFASTProblem base class which takes in any huggingface model names for the attacker, target, and baseline. Additionally, you can integrate any pretrained language model by loading the model and tokenizer in your constructor. Here's how to do it clearly and correctly:</p>
-<pre><code class="language-python">from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
-
-# Create your subclass from the base Problem (most bare-boned) or the base ASTPrompter class (takes care of rollout and log probability methods)
-class MyHuggingFaceProblem(ASTProblem):
-    def __init__(self, attacker_model_id: str, target_model_id: str, moderator, device=&quot;cuda&quot;):
-        super().__init__(moderator)
-        self.device = device
-
-        # Load your models and tokenizers
-        self.attacker = AutoModelForCausalLM.from_pretrained(attacker_model_id).to(self.device)
-        self.attacker_tokenizer = AutoTokenizer.from_pretrained(attacker_model_id)
-
-        self.target = AutoModelForCausalLM.from_pretrained(target_model_id).to(self.device)
-        self.target_tokenizer = AutoTokenizer.from_pretrained(target_model_id)
-
-    # required method to perform one step of a rollout in a batched manner: must take in a state (eg. conversation so far) and return a list of continuations (attacker utterances) in the corresponding order
-    def rollout_prompt_with_attacker(self, prompts):
-        inputs = self.attacker_tokenizer(prompts, return_tensors=&quot;pt&quot;, padding=True).to(self.device)
-        outputs = self.attacker.generate(**inputs, max_new_tokens=32)
-        generated_texts = self.attacker_tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        continuations = [gen[len(prompt):] for prompt, gen in zip(prompts, generated_texts)]
-        return continuations
-
-    def rollout_prompt_with_target(self, prompts):
-        inputs = self.target_tokenizer(prompts, return_tensors=&quot;pt&quot;, padding=True).to(self.device)
-        outputs = self.target.generate(**inputs, max_new_tokens=32)
-        generated_texts = self.target_tokenizer.batch_decode(outputs, skip_special_tokens=True)
-        continuations = [gen[len(prompt):] for prompt, gen in zip(prompts, generated_texts)]
-        return continuations
-
-    def parameters(self):
-        return self.attacker.parameters()
-</code></pre>
-<hr />
-<h2 id="step-4-customizing-rollout-logic">Step 4: Customizing Rollout Logic<a class="headerlink" href="#step-4-customizing-rollout-logic" title="Permanent link">&para;</a></h2>
-<p>To customize how attacker-target rollouts are performed, override these methods clearly:</p>
-<p>rollout_prompt_with_attacker(prompts: Sequence[str]) → Sequence[str]</p>
-<p>rollout_prompt_with_target(prompts: Sequence[str]) → Sequence[str]</p>
-<p>For example, you might use sampling strategies, temperature adjustments, or custom stopping criteria:</p>
-<pre><code class="language-python">def rollout_prompt_with_attacker(self, prompts):
-    inputs = self.attacker_tokenizer(prompts, padding=True, return_tensors=&quot;pt&quot;).to(self.device)
-    outputs = self.attacker.generate(
-        **inputs,
-        do_sample=True,
-        max_new_tokens=50,
-        temperature=0.8,
-        top_k=50,
-        top_p=0.9
-    )
-    texts = self.attacker_tokenizer.batch_decode(outputs, skip_special_tokens=True)
-    return [text[len(prompt):] for prompt, text in zip(prompts, texts)]
-</code></pre>
-<hr />
-<h2 id="step-5-customizing-reward-logic">Step 5: Customizing Reward Logic<a class="headerlink" href="#step-5-customizing-reward-logic" title="Permanent link">&para;</a></h2>
-<p>Override the reward method to compute your custom reward signal. Typically, you'll combine toxicity, relevance, perplexity, or other metrics:</p>
-<pre><code class="language-python">def reward(self, contexts, attacks, responses):
-    attack_scores = self.moderator.moderate(attacks)
-    response_scores = self.moderator.moderate(responses)
-    combined = [(a_score + r_score) / 2.0 for a_score, r_score in zip(attack_scores, response_scores)]
-    return combined
-
-</code></pre>
-<h2 id="tips-and-best-practices">Tips and Best Practices:<a class="headerlink" href="#tips-and-best-practices" title="Permanent link">&para;</a></h2>
-<p>Always clearly document parameters and logic for your custom problem class.</p>
-<p>Ensure models and tokenizers are device-aware (e.g., GPU-compatible).</p>
-<p>Thoroughly test your rollouts independently before integrating them into the full RL loop.</p>
-<p>For debugging, add verbose logging to track input-output sequences.</p>
-<h2 id="further-reading-and-examples">Further Reading and Examples<a class="headerlink" href="#further-reading-and-examples" title="Permanent link">&para;</a></h2>
-<p>Default ASTPrompter implementation: ASTProblem</p>
-<p>HuggingFace-compatible subclass example: HFASTProblem</p>
-<p>Environment customization guide: Custom Environments</p>
 
 
 
@@ -728,7 +1169,7 @@ class MyHuggingFaceProblem(ASTProblem):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 6, 2025 19:25:41 UTC">2025-08-06</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
   </span>
 
     
@@ -786,7 +1227,7 @@ class MyHuggingFaceProblem(ASTProblem):
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
