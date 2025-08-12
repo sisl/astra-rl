@@ -1600,7 +1600,7 @@ ActionT (type): The type of the action in the environment.</p>
 <span class="sd">        ActionT (type): The type of the action in the environment.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moderator</span><span class="p">:</span> <span class="n">Moderator</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moderator</span><span class="p">:</span> <span class="n">Moderator</span><span class="p">[</span><span class="n">StateT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># we check all asserts once, and then disable them</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_disable_asserts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">moderator</span> <span class="o">=</span> <span class="n">moderator</span>
@@ -1689,7 +1689,7 @@ ActionT (type): The type of the action in the environment.</p>
         <span class="k">pass</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">rollout_prompt_with_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rollout_prompt_with_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rolls out the prompt with the model under test. Do *not* return the prompt.</span>
 
 <span class="sd">        s&#39; ~ \\sum_a T(s, a)</span>
@@ -1703,7 +1703,7 @@ ActionT (type): The type of the action in the environment.</p>
         <span class="k">pass</span>
 
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">StateT</span><span class="p">,</span> <span class="n">attack</span><span class="p">:</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">StateT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StateT</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">StateT</span><span class="p">,</span> <span class="n">attack</span><span class="p">:</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">ActionT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StateT</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a context and continuation, returns the next state.</span>
 
 <span class="sd">        Args:</span>
@@ -1731,7 +1731,7 @@ ActionT (type): The type of the action in the environment.</p>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">context</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">],</span>
         <span class="n">attack</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">],</span>
-        <span class="n">response</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">],</span>
+        <span class="n">response</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
         <span class="k">pass</span>
 
@@ -1812,7 +1812,7 @@ ActionT (type): The type of the action in the environment.</p>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_rollout_prompt_with_target_and_validate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]:</span>
         <span class="n">rolled_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rollout_prompt_with_target</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_continuation</span><span class="p">(</span><span class="s2">&quot;target_rollout&quot;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">rolled_out</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rolled_out</span>
@@ -1950,7 +1950,7 @@ ActionT (type): The type of the action in the environment.</p>
 <span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">StateT</span><span class="p">,</span> <span class="n">attack</span><span class="p">:</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">StateT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StateT</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">StateT</span><span class="p">,</span> <span class="n">attack</span><span class="p">:</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">ActionT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">StateT</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a context and continuation, returns the next state.</span>
 
 <span class="sd">    Args:</span>
@@ -2655,7 +2655,7 @@ represents a batch element.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="typing.Sequence">Sequence</span>[<span title="astra_rl.core.common.StateT">StateT</span>]</code>
+                  <code><span title="typing.Sequence">Sequence</span>[<span title="astra_rl.core.common.ActionT">ActionT</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -2682,7 +2682,7 @@ represents a batch element.</p>
 <span class="normal">139</span>
 <span class="normal">140</span>
 <span class="normal">141</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">rollout_prompt_with_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">rollout_prompt_with_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rolls out the prompt with the model under test. Do *not* return the prompt.</span>
 
 <span class="sd">    s&#39; ~ \\sum_a T(s, a)</span>
