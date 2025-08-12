@@ -10,7 +10,7 @@ from detoxify import Detoxify
 from astra_rl.core.moderator import Moderator
 
 
-class DetoxifyModerator(Moderator[str, str]):
+class DetoxifyModerator(Moderator[str]):
     """Moderator that wraps the Detoxify library for toxicity detection.
 
     https://github.com/unitaryai/detoxify

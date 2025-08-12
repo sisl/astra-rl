@@ -38,7 +38,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
         ActionT (type): The type of the action in the environment.
     """
 
-    def __init__(self, moderator: Moderator[StateT, ActionT]) -> None:
+    def __init__(self, moderator: Moderator[StateT]) -> None:
         # we check all asserts once, and then disable them
         self._disable_asserts: Dict[str, bool] = defaultdict(bool)
         self.moderator = moderator
@@ -127,7 +127,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def rollout_prompt_with_target(self, x: Sequence[StateT]) -> Sequence[StateT]:
+    def rollout_prompt_with_target(self, x: Sequence[StateT]) -> Sequence[ActionT]:
         """Rolls out the prompt with the model under test. Do *not* return the prompt.
 
         s' ~ \\sum_a T(s, a)
@@ -141,7 +141,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def advance(self, context: StateT, attack: ActionT, response: StateT) -> StateT:
+    def advance(self, context: StateT, attack: ActionT, response: ActionT) -> StateT:
         """Given a context and continuation, returns the next state.
 
         Args:
@@ -169,7 +169,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
         self,
         context: Sequence[StateT],
         attack: Sequence[ActionT],
-        response: Sequence[StateT],
+        response: Sequence[ActionT],
     ) -> Sequence[float]:
         pass
 
@@ -250,7 +250,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
 
     def _rollout_prompt_with_target_and_validate(
         self, x: Sequence[StateT]
-    ) -> Sequence[StateT]:
+    ) -> Sequence[ActionT]:
         rolled_out = self.rollout_prompt_with_target(x)
         self._check_continuation("target_rollout", x, rolled_out)
         return rolled_out

@@ -31,7 +31,7 @@ class ASTProblem(Problem[str, str]):
 
     def __init__(
         self,
-        moderator: Moderator[str, str],
+        moderator: Moderator[str],
         ppl_weight: float = 0.025,
         combined_weight: float = 0.1,
         defense_toxicity_weight: float = 0.1,
