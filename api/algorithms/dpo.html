@@ -1478,16 +1478,16 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="n">attacker_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
-        <span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
         <span class="n">attacker_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
-        <span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
         <span class="n">baseline_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
-        <span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
         <span class="n">baseline_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
             <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
-        <span class="p">)</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
 
         <span class="c1"># https://github.com/eric-mitchell/direct-preference-optimization/blob/ \</span>
         <span class="c1"># f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87</span>
