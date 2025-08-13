@@ -12,13 +12,9 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/algorithms/dpo.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/algorithms/ppo.html">
       
       
-        <link rel="prev" href="index.html">
-      
-      
-        <link rel="next" href="../moderators/index.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -278,10 +274,8 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
+    <li class="md-tabs__item">
       <a href="../index.html" class="md-tabs__link">
         
   
@@ -516,26 +510,23 @@
       
   
   
-    
   
   
-  
     
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -552,13 +543,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             API Reference
@@ -742,8 +733,6 @@
                 
   
   
-    
-  
   
   
     
@@ -754,11 +743,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -781,7 +772,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
             Algorithms
@@ -792,32 +783,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    DPO
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="dpo.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="dpo.html" class="md-nav__link">
         
   
   
@@ -828,50 +797,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#astra_rl.algorithms.dpo" class="md-nav__link">
-    <span class="md-ellipsis">
-      dpo
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="dpo">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#astra_rl.algorithms.dpo.DPO" class="md-nav__link">
-    <span class="md-ellipsis">
-      DPO
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1207,19 +1132,19 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#astra_rl.algorithms.dpo" class="md-nav__link">
+  <a href="#astra_rl.algorithms.ppo" class="md-nav__link">
     <span class="md-ellipsis">
-      dpo
+      ppo
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="dpo">
+    <nav class="md-nav" aria-label="ppo">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#astra_rl.algorithms.dpo.DPO" class="md-nav__link">
+  <a href="#astra_rl.algorithms.ppo.PPO" class="md-nav__link">
     <span class="md-ellipsis">
-      DPO
+      PPO
     </span>
   </a>
   
@@ -1256,11 +1181,11 @@
 
 
 
-<h2 id="astra_rl.algorithms.dpo" class="doc doc-heading">
-            <code>astra_rl.algorithms.dpo</code>
+<h2 id="astra_rl.algorithms.ppo" class="doc doc-heading">
+            <code>astra_rl.algorithms.ppo</code>
 
 
-<a href="#astra_rl.algorithms.dpo" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#astra_rl.algorithms.ppo" class="headerlink" title="Permanent link">&para;</a></h2>
 
     <div class="doc doc-contents first">
 
@@ -1285,19 +1210,19 @@
 
 
 
-<h3 id="astra_rl.algorithms.dpo.DPO" class="doc doc-heading">
-            <code>DPO</code>
+<h3 id="astra_rl.algorithms.ppo.PPO" class="doc doc-heading">
+            <code>PPO</code>
 
 
-<a href="#astra_rl.algorithms.dpo.DPO" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#astra_rl.algorithms.ppo.PPO" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="Algorithm (astra_rl.core.algorithm.Algorithm)" href="../core/algorithm.html#astra_rl.core.algorithm.Algorithm">Algorithm</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>, <span title="astra_rl.algorithms.dpo.DPOStep">DPOStep</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>], <span title="astra_rl.algorithms.dpo.DPOBatch">DPOBatch</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]]</code>, <code><span title="typing.Generic">Generic</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="Algorithm (astra_rl.core.algorithm.Algorithm)" href="../core/algorithm.html#astra_rl.core.algorithm.Algorithm">Algorithm</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>, <span title="astra_rl.algorithms.ppo.PPOStep">PPOStep</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>], <span title="astra_rl.algorithms.ppo.PPOBatch">PPOBatch</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]]</code>, <code><span title="abc.ABC">ABC</span></code></p>
 
 
-        <p>Direct Preference Optimization (DPO) algorithm.</p>
+        <p>Proximal Policy Optimization (PPO) algorithm with value function.</p>
 
 
 
@@ -1306,8 +1231,9 @@
 
 
               <details class="quote">
-                <summary>Source code in <code>src/astra_rl/algorithms/dpo.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 29</span>
+                <summary>Source code in <code>src/astra_rl/algorithms/ppo.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 28</span>
+<span class="normal"> 29</span>
 <span class="normal"> 30</span>
 <span class="normal"> 31</span>
 <span class="normal"> 32</span>
@@ -1403,131 +1329,104 @@
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DPO</span><span class="p">(</span>
-    <span class="n">Algorithm</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]],</span>
-    <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PPO</span><span class="p">(</span>
+    <span class="n">Algorithm</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">PPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">PPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]],</span>
+    <span class="n">ABC</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Direct Preference Optimization (DPO) algorithm.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Proximal Policy Optimization (PPO) algorithm with value function.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">problem</span><span class="p">:</span> <span class="n">ValueFunctionProblem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span>
+        <span class="n">clip_range</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">vf_loss_coef</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="p">:</span> <span class="n">ValueFunctionProblem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span> <span class="o">=</span> <span class="n">problem</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clip_range</span> <span class="o">=</span> <span class="n">clip_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vf_loss_coef</span> <span class="o">=</span> <span class="n">vf_loss_coef</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]:</span>
         <span class="c1"># in DPO, we sample from each branch the most rewarded</span>
         <span class="c1"># and least rewarded actions in order to use them as our contrastive</span>
         <span class="c1"># pairs.</span>
 
-        <span class="n">pairs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">res</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">PPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">bfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfs</span><span class="p">):</span>
             <span class="n">front</span> <span class="o">=</span> <span class="n">bfs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">sorted_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">front</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">reward</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">front</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="c1"># if there is no pair, we skip this node</span>
                 <span class="k">continue</span>
 
-            <span class="n">pos_entry</span> <span class="o">=</span> <span class="n">sorted_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">neg_entry</span> <span class="o">=</span> <span class="n">sorted_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-            <span class="k">assert</span> <span class="n">pos_entry</span><span class="o">.</span><span class="n">context</span> <span class="o">==</span> <span class="n">neg_entry</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="p">(</span>
-                <span class="s2">&quot;paired rollouts for DPO must share the same prefix!&quot;</span>
-            <span class="p">)</span>
-
-            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">DPOStep</span><span class="p">(</span>
-                    <span class="n">prefix</span><span class="o">=</span><span class="n">pos_entry</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
-                    <span class="n">suffix_pos</span><span class="o">=</span><span class="n">pos_entry</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span>
-                    <span class="n">suffix_neg</span><span class="o">=</span><span class="n">neg_entry</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">front</span><span class="p">:</span>
+                <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PPOStep</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">i</span><span class="o">.</span><span class="n">reward</span><span class="p">))</span>
                 <span class="n">bfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">pairs</span>
+        <span class="k">return</span> <span class="n">res</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">PPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">PPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
         <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">prefix</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-        <span class="n">suffix_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix_pos</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-        <span class="n">suffix_neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix_neg</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">rewards</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">reward</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
 
-        <span class="k">return</span> <span class="n">DPOBatch</span><span class="p">(</span><span class="n">prefixes</span><span class="o">=</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">suffix_pos</span><span class="o">=</span><span class="n">suffix_pos</span><span class="p">,</span> <span class="n">suffix_neg</span><span class="o">=</span><span class="n">suffix_neg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">PPOBatch</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span> <span class="n">reward</span><span class="o">=</span><span class="n">rewards</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">PPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-        <span class="n">attacker_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-        <span class="n">attacker_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-        <span class="n">baseline_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-        <span class="n">baseline_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
+        <span class="n">logprobs_attacker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix</span>
+        <span class="p">)</span>
+        <span class="n">logprobs_baseline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix</span>
+        <span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">prefix</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span>
 
-        <span class="c1"># https://github.com/eric-mitchell/direct-preference-optimization/blob/ \</span>
-        <span class="c1"># f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87</span>
-        <span class="n">pi_logratios</span> <span class="o">=</span> <span class="n">attacker_logprobs_win</span> <span class="o">-</span> <span class="n">attacker_logprobs_loss</span>
-        <span class="n">ref_logratios</span> <span class="o">=</span> <span class="n">baseline_logprobs_win</span> <span class="o">-</span> <span class="n">baseline_logprobs_loss</span>
-        <span class="n">logits</span> <span class="o">=</span> <span class="n">pi_logratios</span> <span class="o">-</span> <span class="n">ref_logratios</span>
+        <span class="c1"># Q(s,a) = R(s,a), which is jank but seems to be the standard</span>
+        <span class="c1"># also its bootstrapped without discount throughout the stream</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">reward</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">logprobs_attacker</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">-</span> <span class="n">values</span>
 
-        <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="n">logits</span><span class="p">)</span>
+        <span class="c1"># normalize advantages</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">A</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+        <span class="c1"># compute ratio, should be 1 at the first iteration</span>
+        <span class="n">ratio</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">logprobs_attacker</span> <span class="o">-</span> <span class="n">logprobs_baseline</span><span class="o">.</span><span class="n">detach</span><span class="p">()))</span>
 
-        <span class="c1"># Calculate addition quantities</span>
-        <span class="c1"># TODO: CHECK ME for correctness and completion!</span>
-        <span class="n">chosen_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">attacker_logprobs_win</span> <span class="o">-</span> <span class="n">baseline_logprobs_win</span><span class="p">)</span>
-        <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">attacker_logprobs_loss</span> <span class="o">-</span> <span class="n">baseline_logprobs_loss</span><span class="p">)</span>
-        <span class="n">reward_accuracies</span> <span class="o">=</span> <span class="p">(</span><span class="n">chosen_rewards</span> <span class="o">&gt;</span> <span class="n">rejected_rewards</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
-        <span class="n">reward_margin</span> <span class="o">=</span> <span class="n">chosen_rewards</span> <span class="o">-</span> <span class="n">rejected_rewards</span>
+        <span class="c1"># compute clipped surrogate lolss</span>
+        <span class="n">policy_loss_1</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">ratio</span>
+        <span class="n">policy_loss_2</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_range</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">clip_range</span><span class="p">)</span>
+        <span class="n">policy_loss_2</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">clamp</span><span class="p">(</span><span class="n">ratio</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">)</span>
+        <span class="n">policy_loss</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">policy_loss_1</span><span class="p">,</span> <span class="n">policy_loss_2</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
+        <span class="c1"># compute value loss</span>
+        <span class="n">value_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+        <span class="c1"># compute final lossvalue_loss</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">policy_loss</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">vf_loss_coef</span> <span class="o">*</span> <span class="n">value_loss</span>
+
+        <span class="c1"># create logging dict</span>
         <span class="n">logging_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;training/loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/chosen_rewards&quot;</span><span class="p">:</span> <span class="n">chosen_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/rejected_rewards&quot;</span><span class="p">:</span> <span class="n">rejected_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/reward_accuracies&quot;</span><span class="p">:</span> <span class="n">reward_accuracies</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/reward_margin&quot;</span><span class="p">:</span> <span class="n">reward_margin</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;policy/logprobs_chosen&quot;</span><span class="p">:</span> <span class="n">attacker_logprobs_win</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;policy/logprobs_rejected&quot;</span><span class="p">:</span> <span class="n">attacker_logprobs_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;ref/logprobs_chosen&quot;</span><span class="p">:</span> <span class="n">baseline_logprobs_win</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;ref/logprobs_rejected&quot;</span><span class="p">:</span> <span class="n">baseline_logprobs_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;training/policy_loss&quot;</span><span class="p">:</span> <span class="n">policy_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;training/value_loss&quot;</span><span class="p">:</span> <span class="n">value_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;reward/mean_reward&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">reward</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;reward/std_reward&quot;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">reward</span><span class="p">)</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;policy/logprobs&quot;</span><span class="p">:</span> <span class="n">logprobs_attacker</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+            <span class="s2">&quot;ref/logprobs&quot;</span><span class="p">:</span> <span class="n">logprobs_baseline</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
         <span class="p">}</span>
-        <span class="c1"># TODO: Add this from old code?</span>
-        <span class="c1"># &quot;policy/rollout&quot;: wandb.Html(str(r&quot;&lt;span&gt;&quot;+batch[&quot;prompt_win&quot;][0][0]+&quot;&lt;/span&gt;&lt;span style=&#39;color:Tomato;&#39;&gt;&quot;+batch[&quot;prompt_win&quot;][0][1]+r&quot;&lt;/span&gt;&lt;span style=&#39;color:DodgerBlue&#39;&gt;&quot;+batch[&quot;prompt_win&quot;][0][2]+r&quot;&lt;/span&gt;&quot;)),</span>
 
-        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">logging_dict</span>
+        <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">logging_dict</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1581,7 +1480,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 13, 2025 19:11:53 UTC">2025-08-13</span>
   </span>
 
     
@@ -1591,7 +1490,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 13, 2025 19:11:53 UTC">2025-08-13</span>
   </span>
 
     
