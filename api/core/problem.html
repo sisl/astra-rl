@@ -709,6 +709,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#astra_rl.core.problem.ValueFunctionProblem" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValueFunctionProblem
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1214,6 +1223,15 @@
   <a href="#astra_rl.core.problem.Problem" class="md-nav__link">
     <span class="md-ellipsis">
       Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#astra_rl.core.problem.ValueFunctionProblem" class="md-nav__link">
+    <span class="md-ellipsis">
+      ValueFunctionProblem
     </span>
   </a>
   
@@ -2700,6 +2718,306 @@ represents a batch element.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        Sequence[str]: The rolled out prompt with the adversary model.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="astra_rl.core.problem.ValueFunctionProblem" class="doc doc-heading">
+            <code>ValueFunctionProblem</code>
+
+
+<a href="#astra_rl.core.problem.ValueFunctionProblem" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Problem (astra_rl.core.problem.Problem)" href="#astra_rl.core.problem.Problem">Problem</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
+
+
+        <p>Extends <code>Problem</code> to be able to return sequence values with a value head.</p>
+
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>This is useful for value-laiden solution methods such as Actor
+Critic derivatives (i.e., PPO).</p>
+</details>
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="astra_rl.core.problem.ValueFunctionProblem.moderator">moderator</span></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Moderator (astra_rl.core.moderator.Moderator)" href="moderator.html#astra_rl.core.moderator.Moderator">Moderator</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The moderator used to evaluate sequences.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="generics" open>
+  <summary>Generics</summary>
+  <p>StateT (type): The type of the state in the environment.
+ActionT (type): The type of the action in the environment.</p>
+</details>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>src/astra_rl/core/problem.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">258</span>
+<span class="normal">259</span>
+<span class="normal">260</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span>
+<span class="normal">270</span>
+<span class="normal">271</span>
+<span class="normal">272</span>
+<span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ValueFunctionProblem</span><span class="p">(</span><span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extends `Problem` to be able to return sequence values with a value head.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This is useful for value-laiden solution methods such as Actor</span>
+<span class="sd">        Critic derivatives (i.e., PPO).</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        moderator (Moderator[StateT, ActionT]): The moderator used to evaluate sequences.</span>
+
+<span class="sd">    Generics:</span>
+<span class="sd">        StateT (type): The type of the state in the environment.</span>
+<span class="sd">        ActionT (type): The type of the action in the environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">],</span> <span class="n">continuation</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a squence, evaluate its token-wise value using a value function.</span>
+
+<span class="sd">        Notes:</span>
+<span class="sd">           This is typically done by the same neural network you use for rollouts</span>
+<span class="sd">           just passing the intermediate activations through another layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            elem (Sequence[StateT]): The sequence to evaluate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            torch.Tensor[batch_size, max_continuation_length]: The per-token values of</span>
+<span class="sd">            the given squence by the sequence predictor. Do not include the value of the input</span>
+<span class="sd">            prefixes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">pass</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="astra_rl.core.problem.ValueFunctionProblem.value" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">value</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">continuation</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#astra_rl.core.problem.ValueFunctionProblem.value" class="headerlink" title="Permanent link">&para;</a></h4>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Given a squence, evaluate its token-wise value using a value function.</p>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>This is typically done by the same neural network you use for rollouts
+just passing the intermediate activations through another layer.</p>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>elem</code>
+            </td>
+            <td>
+                  <code><span title="typing.Sequence">Sequence</span>[<span title="astra_rl.core.common.StateT">StateT</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The sequence to evaluate.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="torch.Tensor">Tensor</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>torch.Tensor[batch_size, max_continuation_length]: The per-token values of</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="torch.Tensor">Tensor</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>the given squence by the sequence predictor. Do not include the value of the input</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="torch.Tensor">Tensor</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>prefixes.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+            <details class="quote">
+              <summary>Source code in <code>src/astra_rl/core/problem.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">273</span>
+<span class="normal">274</span>
+<span class="normal">275</span>
+<span class="normal">276</span>
+<span class="normal">277</span>
+<span class="normal">278</span>
+<span class="normal">279</span>
+<span class="normal">280</span>
+<span class="normal">281</span>
+<span class="normal">282</span>
+<span class="normal">283</span>
+<span class="normal">284</span>
+<span class="normal">285</span>
+<span class="normal">286</span>
+<span class="normal">287</span>
+<span class="normal">288</span>
+<span class="normal">289</span>
+<span class="normal">290</span>
+<span class="normal">291</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">],</span> <span class="n">continuation</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Given a squence, evaluate its token-wise value using a value function.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">       This is typically done by the same neural network you use for rollouts</span>
+<span class="sd">       just passing the intermediate activations through another layer.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        elem (Sequence[StateT]): The sequence to evaluate.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        torch.Tensor[batch_size, max_continuation_length]: The per-token values of</span>
+<span class="sd">        the given squence by the sequence predictor. Do not include the value of the input</span>
+<span class="sd">        prefixes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
             </details>
