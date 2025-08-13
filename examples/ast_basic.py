@@ -11,10 +11,11 @@ corpora below of initial prompts.
 
 import torch
 import json
+import os
 from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
-
 from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
+from astra_rl.logging import logger
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"
@@ -32,6 +33,21 @@ class ExampleDetoxifyProblem(ASTProblem):
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+        self.tokenizer.padding_side = "left"
+        self.tokenizer.truncation_side = "left"
+
+        self.attacker.config.pad_token_id = self.tokenizer.eos_token_id
+        self.target.config.pad_token_id = self.tokenizer.eos_token_id
+
+        # model’s usable max sequence length (GPT-2: 1024)
+        self.max_ctx = int(
+            getattr(
+                self.attacker.config,
+                "n_positions",
+                getattr(self.attacker.config, "max_position_embeddings", 1024),
+            )
+        )
+        print(f"Using model {MODEL_NAME} with max context length {self.max_ctx}")
 
     # TASK: you have to implement these for our API
     def get_target_logprobs(self, context, continuation):
@@ -54,28 +70,32 @@ class ExampleDetoxifyProblem(ASTProblem):
     def parameters(self):
         return self.attacker.parameters()
 
-    # two helper methods to make the implementatinos above easy
+    # two helper methods to make the implementations above easy
     # you don't have to implement these for the API, but you should probably
     # do something like this unless your attacker and defense is very different
     def __rollout(self, model, prompt):
-        ### TODO: remove this when find bug
-        for p in prompt:
-            assert isinstance(p, str), f"Bad prompt: {p}"
-            assert len(p) > 0, "Empty prompt detected"
-
-        # we truncate the prompt to 1024 tokens to avoid a PyTorch CUDA device-side indexing error (conversation contexts can get too long in the multiturn setting)
+        gen_length = 32
+        max_context_len = self.max_ctx - gen_length
+        # we truncate the prompt to 1024 - 32 tokens to avoid a PyTorch CUDA device-side indexing error (conversation contexts can get too long in the multiturn setting)
         tokenized_prompt = self.tokenizer(
             prompt,
             padding=True,
             return_tensors="pt",
-            padding_side="left",
             truncation=True,
-            max_length=1024,
+            max_length=max_context_len,
+            add_special_tokens=False,  # I added this, is it okay?
         ).to(self.device)
+
+        # print statments to find bug
+        ids = tokenized_prompt["input_ids"]
+        seq_len = ids.shape[1]
+        # print("ROLL seq_len:", seq_len, "max_new:", 32, "total_if_generated:", seq_len + 32)
+        assert seq_len + 32 <= getattr(model.config, "n_positions", 1024)
+
         output = model.generate(
             **tokenized_prompt,
             pad_token_id=self.tokenizer.eos_token_id,
-            max_new_tokens=32,
+            max_new_tokens=gen_length,
             do_sample=True,
             top_p=0.9,
             top_k=50,
@@ -87,11 +107,14 @@ class ExampleDetoxifyProblem(ASTProblem):
                 self.tokenizer.batch_decode(output, skip_special_tokens=True), prompt
             )
         ]
+
         return continuation
 
     def __get_logprobs(self, model, context, continuation):
         # tokenize both context and continuation
+        # make sure context is not too long (context + continuation should be <= 1024 / max seq len for GPT2)
         context = self.tokenizer(context)
+        # continuation should be only 32 tokens long
         continuation = self.tokenizer(continuation)
 
         # create a mask such that the context is masked out
@@ -101,7 +124,7 @@ class ExampleDetoxifyProblem(ASTProblem):
             for i, j in zip(context.input_ids, continuation.input_ids)
         ]
 
-        # combine context + continuation; compute how much to pad -- bug
+        # combine context + continuation; compute how much to pad
         combined = [i + j for i, j in zip(context.input_ids, continuation.input_ids)]
         max_length = max(len(i) for i in combined)
 
@@ -118,10 +141,16 @@ class ExampleDetoxifyProblem(ASTProblem):
         # move things to torch and cuda (make sure indicies <= 1024 for GPT2... this is model specific!)
         # TODO: show how to make this capping flexible to the model to help future users
         combined = torch.tensor(combined).to(self.device)[
-            :, -1024:
+            :, -self.max_ctx :
         ]  # cap length to 1024
-        attention_mask = torch.tensor(attention_mask).to(self.device)[:, -1024:]
-        combined_mask = torch.tensor(combined_mask).to(self.device)[:, -1024:]
+        attention_mask = torch.tensor(attention_mask).to(self.device)[
+            :, -self.max_ctx :
+        ]
+        combined_mask = torch.tensor(combined_mask).to(self.device)[:, -self.max_ctx :]
+
+        # print statements to find bug
+        # print("LOGPROBS seq_len:", combined.shape[1])
+        assert combined.shape[1] <= getattr(model.config, "n_positions", 1024)
 
         # run inference
         logits = (
@@ -138,10 +167,52 @@ class ExampleDetoxifyProblem(ASTProblem):
         return logprobs
 
 
+# the following two functions will be implemented in the trainer class. This example
+# does not use a trainer so we implement it here
+def save(eval_env, step, tag="step"):
+    if tag == "best":
+        out = os.path.join("checkpoints", "best")  # single fixed path
+    else:
+        out = os.path.join("checkpoints", f"{tag}-{step}")
+
+    # Save attacker/target in HF format
+    os.makedirs(out, exist_ok=True)
+    eval_env.problem.attacker.save_pretrained(out)
+    eval_env.problem.tokenizer.save_pretrained(out)
+
+
+def eval_epoch(env, dev_prompts, best_score, step, tag="step"):
+    print(f"EVALUATING after training step {step}...")
+    rewards = []
+
+    for indx, i in enumerate(dev_prompts):
+        if indx % 30 == 0:
+            print(f"EVAULATED {indx}/{len(dev_prompts)} steps...")
+        # perform a sigle eval rollout per dev prompt and collect a list of rewards
+        # FIND WAY to extract rewards from the rollout
+        rollout = env.eval_rollout(i)
+        final_rollout_reward = env.final_reward(rollout)
+
+        rewards += [final_rollout_reward]
+
+    print(f"EVAULATED {indx}/{len(dev_prompts)} steps...")
+    dev_score = sum(rewards) / len(rewards)
+
+    if dev_score > best_score:
+        logger.info(f"NEW BEST! {round(dev_score, 3)}")
+        logger.info({"training/dev_score": dev_score}, step=step)
+        save(env, step, "best")
+
+
 def main() -> None:
+    best_score = -float("inf")  # best score so far, used to save the best model
     # prompts to use to seed initial stage
+    # read in training prompts
     with open("prompts_reddit_train.json") as f:
         PROMPTS = json.load(f)
+    # read in dev set of prompts
+    with open("prompts_reddit_dev.json") as f:
+        dev_prompts = json.load(f)
 
     DEVICE = "cuda"  # cuda/cpu/mps
 
@@ -180,6 +251,7 @@ def main() -> None:
             # TODO: Do we want to add other things here to logging?
             step_logs["step"] = step
             harness.log_current_step(step_logs)
+            eval_epoch(env, dev_prompts, best_score, step, "best")
 
 
 if __name__ == "__main__":
