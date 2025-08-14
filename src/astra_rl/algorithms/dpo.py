@@ -87,16 +87,16 @@ class DPO(
     ) -> tuple[torch.Tensor, Dict[Any, Any]]:
         attacker_logprobs_win = self.problem._get_attacker_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
         attacker_logprobs_loss = self.problem._get_attacker_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
         baseline_logprobs_win = self.problem._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
         baseline_logprobs_loss = self.problem._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
 
         # https://github.com/eric-mitchell/direct-preference-optimization/blob/ \
         # f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87
@@ -145,16 +145,16 @@ class IPO(DPO[StateT, ActionT]):
     ) -> tuple[torch.Tensor, Dict[Any, Any]]:
         attacker_logprobs_win = self.problem._get_attacker_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
         attacker_logprobs_loss = self.problem._get_attacker_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
         baseline_logprobs_win = self.problem._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
         baseline_logprobs_loss = self.problem._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
-        )
+        ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
 
         # https://github.com/eric-mitchell/direct-preference-optimization/blob/ \
         # f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87

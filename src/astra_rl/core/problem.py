@@ -60,7 +60,8 @@ class Problem(ABC, Generic[StateT, ActionT]):
             represents a batch element.
 
         Returns:
-            torch.Tensor: The log probabilities of the continuations given their contexts.
+            torch.Tensor: The per-token log probabilities of the continuations given their contexts.
+                         Shape: (batch_size, max_continuation_length)
         """
 
         pass
@@ -85,7 +86,8 @@ class Problem(ABC, Generic[StateT, ActionT]):
             the trained attacker stays an LM.
 
         Returns:
-            torch.Tensor: The log probabilities of the continuations given their contexts.
+            torch.Tensor: The per-token log probabilities of the continuations given their contexts.
+                         Shape: (batch_size, max_continuation_length)
         """
 
         pass
@@ -107,7 +109,8 @@ class Problem(ABC, Generic[StateT, ActionT]):
             represents a batch element.
 
         Returns:
-            torch.Tensor: The log probabilities of the continuations given their contexts.
+            torch.Tensor: The per-token log probabilities of the continuations given their contexts.
+                         Shape: (batch_size, max_continuation_length)
         """
 
         pass
@@ -195,27 +198,23 @@ class Problem(ABC, Generic[StateT, ActionT]):
         if self._disable_asserts[check_key]:
             return
         # check that logprobs is a tensor and has gradients
-        assert isinstance(logprobs, torch.Tensor), (
-            "Attacker logprobs must be a torch.Tensor."
-        )
+        assert isinstance(logprobs, torch.Tensor), "Logprobs must be a torch.Tensor."
         if requires_grad:
             assert logprobs.requires_grad, (
                 "Attacker logprobs must carry gradient information."
             )
-        # check that the size of the tensor is B x 1, where B is the batch size
-        if logprobs.dim() == 1:
-            logprobs = logprobs.unsqueeze(1)
+        # check that the size of the tensor is B x T, where B is the batch size and T is max_continuation_length
         assert logprobs.dim() == 2, (
-            "Attacker logprobs must be a 2D tensor (B, 1) or a 1D list of numbers (B,)."
+            "Logprobs must be a 2D tensor (batch_size, max_continuation_length)."
         )
         # check that the first dimension is the batch size
         assert logprobs.size(0) == ctx_length, (
-            "Attacker logprobs must have the same batch size as the context."
+            "Logprobs must have the same batch size as the context."
         )
         # warn if everything is between 0 and 1
         if ((logprobs >= 0.0) & (logprobs <= 1.0)).all():
             logger.warning(
-                "Attacker *log*probs looks suspiciously like probabilities, "
+                "Logprobs looks suspiciously like probabilities, "
                 "try taking the .log() of your tensor?"
             )
         self._disable_asserts[check_key] = True
@@ -254,3 +253,42 @@ class Problem(ABC, Generic[StateT, ActionT]):
         rolled_out = self.rollout_prompt_with_target(x)
         self._check_continuation("target_rollout", x, rolled_out)
         return rolled_out
+
+
+class ValueFunctionProblem(Problem[StateT, ActionT], ABC):
+    """Extends `Problem` to be able to return sequence values with a value head.
+
+    Note:
+        This is useful for value-laiden solution methods such as Actor
+        Critic derivatives (i.e., PPO).
+
+    Attributes:
+        moderator (Moderator[StateT, ActionT]): The moderator used to evaluate sequences.
+
+    Generics:
+        StateT (type): The type of the state in the environment.
+        ActionT (type): The type of the action in the environment.
+    """
+
+    @abstractmethod
+    def value(
+        self, context: Sequence[StateT], continuation: Sequence[ActionT]
+    ) -> torch.Tensor:
+        """Given a squence, evaluate its token-wise value using a value function.
+
+        Notes:
+           This is typically done by the same neural network you use for rollouts
+           just passing the intermediate activations through another layer.
+
+        Args:
+            elem (Sequence[StateT]): The sequence to evaluate.
+
+        Returns:
+            torch.Tensor[batch_size, max_continuation_length]: The per-token values of
+            the given squence by the sequence predictor. Do not include the value of the input
+            prefixes. If you are predicting on the whole input, you should be slicing on
+            `[:, :-1]`, meaning you should *not* return the value of the last token, whose
+            input is eos/context length limit.
+        """
+
+        pass

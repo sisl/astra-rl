@@ -195,12 +195,12 @@ class HFASTProblem(ASTProblem):
             .log_softmax(dim=-1)
         )
 
-        # compute likelihoods
+        # compute likelihoods per token
         gathered = logits.gather(-1, combined[:, 1:].unsqueeze(-1)).squeeze(-1)
         gathered = gathered.masked_fill(~combined_mask[:, 1:], 0.0)
-        logprobs = gathered.sum(dim=-1)
 
-        return logprobs
+        # Return per-token logprobs instead of aggregating
+        return gathered
 
 
 __all__ = ("HFASTProblem",)
