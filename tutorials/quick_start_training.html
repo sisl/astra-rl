@@ -12,13 +12,9 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/index.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/quick_start_training.html">
       
       
-        <link rel="prev" href="../index.html">
-      
-      
-        <link rel="next" href="training_an_evaluator.html">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -26,7 +22,7 @@
     
     
       
-        <title>Tutorials - ASTRA-RL Toolbox Documentation</title>
+        <title>Quick Start: Training a HuggingFace Attacker with ASTRA-RL - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -82,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tutorials" class="md-skip">
+        <a href="#quick-start-training-a-huggingface-attacker-with-astra-rl" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Tutorials
+              Quick Start: Training a HuggingFace Attacker with ASTRA-RL
             
           </span>
         </div>
@@ -240,10 +236,8 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
+    <li class="md-tabs__item">
       <a href="index.html" class="md-tabs__link">
         
   
@@ -353,30 +347,25 @@
       
   
   
-    
   
   
-  
     
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link md-nav__link--active">
+            <a href="index.html" class="md-nav__link ">
               
   
   
@@ -389,13 +378,13 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -497,6 +486,131 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Setup
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-create-a-training-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Create a Training Script
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-import-required-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Import Required Modules
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-load-your-initial-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 4: Load Your Initial Prompts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-set-your-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 5: Set Your Device
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-instantiate-your-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 6: Instantiate Your Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-instantiate-the-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 7: Instantiate the Environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-choose-your-algorithm-and-optimizer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 8: Choose Your Algorithm and Optimizer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-create-the-training-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 9: Create the Training Harness
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-training-harness-wires-your-environment-and-solver-together-it-collects-online-experience-and-for-each-batch-invokes-the-solver-to-compute-the-loss-used-to-update-the-attackers-policy-you-typically-wont-need-to-modify-the-harness-code-itselfadjust-behavior-via-the-environment-solver-or-your-outer-training-loop-eg-schedules-logging-hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      The training harness wires your environment and solver together. It collects online experience and, for each batch, invokes the solver to compute the loss used to update the attacker’s policy. You typically won’t need to modify the harness code itself—adjust behavior via the environment, solver, or your outer training loop (e.g., schedules, logging, hyperparameters).
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-10-train-the-attacker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 10: Train the Attacker
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#choose-how-many-training-stepsepochs-to-run-you-have-full-control-over-the-loopcurriculum-evaluation-cadence-checkpointing-learning-rate-schedules-gradient-clipping-and-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      Choose how many training steps/epochs to run. You have full control over the loop—curriculum, evaluation cadence, checkpointing, learning-rate schedules, gradient clipping, and more.
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-example-examplesast_hfpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full Example: examples/ast_hf.py
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -514,8 +628,126 @@
   
 
 
-<h1 id="tutorials">Tutorials<a class="headerlink" href="#tutorials" title="Permanent link">&para;</a></h1>
-<p>This section provides step-by-step guides and examples to help you get started with the ASTRA-RL toolbox. Each tutorial covers a specific aspect of the toolbox, from basic usage to advanced features.</p>
+<h1 id="quick-start-training-a-huggingface-attacker-with-astra-rl">Quick Start: Training a HuggingFace Attacker with ASTRA-RL<a class="headerlink" href="#quick-start-training-a-huggingface-attacker-with-astra-rl" title="Permanent link">&para;</a></h1>
+<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">RL - Perez*</a>, MALIBU*, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)?</p>
+<p>Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in less than 20 lines of code!</p>
+<hr />
+<h2 id="step-1-setup">Step 1: Setup<a class="headerlink" href="#step-1-setup" title="Permanent link">&para;</a></h2>
+<p>Please see the <a href="../../README.md">README</a> for full setup instructions. Here's a quick recap:</p>
+<pre><code class="language-bash"># Install the ASTRA-RL toolbox
+pip install astra-rl
+
+# Clone the repository (for examples and development)
+git clone git@github.com:sisl/astra-rl.git
+cd astra-rl
+
+# Sync dependencies
+uv sync --dev
+
+# (Optional) Install pre-commit hooks to auto-format code
+uv run pre-commit install
+</code></pre>
+<hr />
+<h2 id="step-2-create-a-training-script">Step 2: Create a Training Script<a class="headerlink" href="#step-2-create-a-training-script" title="Permanent link">&para;</a></h2>
+<p>Create a Python file for your training code (e.g., train.py).</p>
+<hr />
+<h2 id="step-3-import-required-modules">Step 3: Import Required Modules<a class="headerlink" href="#step-3-import-required-modules" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">from torch.optim import AdamW
+
+# ASTRA-RL core components
+from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
+
+# HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
+from astra_rl.ext.transformers import HFASTProblem
+</code></pre>
+<hr />
+<h2 id="step-4-load-your-initial-prompts">Step 4: Load Your Initial Prompts<a class="headerlink" href="#step-4-load-your-initial-prompts" title="Permanent link">&para;</a></h2>
+<p>To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. </p>
+<pre><code class="language-python">import json
+
+with open(&quot;prompts_reddit_train.json&quot;) as f:
+    PROMPTS = json.load(f)
+</code></pre>
+<p>Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts.</p>
+<p>The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.</p>
+<hr />
+<h2 id="step-5-set-your-device">Step 5: Set Your Device<a class="headerlink" href="#step-5-set-your-device" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">DEVICE = &quot;cuda&quot;  # or &quot;cpu&quot; if GPU is not available
+</code></pre>
+<p>We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and moderator sizes that fit your compute!</p>
+<hr />
+<h2 id="step-6-instantiate-your-problem">Step 6: Instantiate Your Problem<a class="headerlink" href="#step-6-instantiate-your-problem" title="Permanent link">&para;</a></h2>
+<p>The <code>HFASTProblem</code> class is a HuggingFace-compatible extension of <code>ASTProblem</code>. It simplifies red-teaming with transformer-based language models by handling:</p>
+<ul>
+<li>Automatic loading of attacker, target, and baseline models</li>
+<li>Tokenizer setup with fallback padding tokens for compatibility</li>
+<li>Rollout "step" generation</li>
+<li>Log probability computation of attacker, target, and baseline responses</li>
+</ul>
+<p>You simply provide the model IDs (any huggingface model) and a <code>Moderator</code> instance (DetexifyModerator() or LlamaGuardModerator()), and <code>HFASTProblem</code> manages the rest—making it easy to plug into ASTRA-RL’s training and evaluation pipeline.</p>
+<p>Note: If your attacker and target are different models (e.g., GPT-2 attacker, LLaMA target), this class handles all the tokenizer/model interop for you.</p>
+<pre><code class="language-python">from astra_rl.modifiers import LlamaGuardModerator  # optional
+
+# Example 1: GPT2 attacker, target, baseline with Detoxify (lightweight setup)
+problem = HFASTProblem(&quot;gpt2&quot;, &quot;gpt2&quot;, &quot;gpt2&quot;, DetoxifyModerator(), DEVICE)
+
+# Example 2: GPT2 attacker, LLaMA target, GPT2 baseline with LlamaGuard (GPU recommended)
+problem = HFASTProblem(&quot;gpt2&quot;, &quot;meta-llama/Llama-3-8b&quot;, &quot;gpt2&quot;, LlamaGuardModerator(), DEVICE)
+</code></pre>
+<p>Need a custom model or rollout step logic? See <a href="astra-rl/docs/tutorials/customize_training/problems-">customize/problems</a></p>
+<p>Want to use a custom moderator? See <a href="astra-rl/docs/tutorials/customize_training/moderators">customize/moderators</a></p>
+<hr />
+<h2 id="step-7-instantiate-the-environment">Step 7: Instantiate the Environment<a class="headerlink" href="#step-7-instantiate-the-environment" title="Permanent link">&para;</a></h2>
+<p>The environment defines how training rollouts are structured and collected. In ASTRA-RL, the default is the <code>ASTEnvironment</code>, which implements the conversation tree rollout used in the <a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a> paper.</p>
+<pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS)
+</code></pre>
+<p>This environment builds a tree-structured conversation graph, where:
+    - The root node starts from a random initial prompt (from PROMPTS)
+    - At each turn, the attacker generates multiple (tree_width, default 2) candidate utterances
+    - Each of those utterances is fed to the target model, which produces a response
+    - The resulting attacker–target–response tuples form child nodes
+    - This process repeats for tree_depth levels (default 3), yielding a multi-turn attacker-target dialogue tree
+This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the attacker to elicit harmful responses in a multi-turn/dialouge setting.</p>
+<p>By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:</p>
+<pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
+</code></pre>
+<p>Want a different rollout graph structure or a multi-agent setup? See <a href="astra-rl/docs/tutorials/customize_training/environments">customize/environments</a></p>
+<hr />
+<h2 id="step-8-choose-your-algorithm-and-optimizer">Step 8: Choose Your Algorithm and Optimizer<a class="headerlink" href="#step-8-choose-your-algorithm-and-optimizer" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">solver = DPO(problem)
+optimizer = AdamW(problem.parameters(), lr=1e-5)
+</code></pre>
+<p>To integrate your own RL algorithm, see <a href="astra-rl/docs/tutorials/customize_training/solvers">customize_training/solvers</a></p>
+<hr />
+<h2 id="step-9-create-the-training-harness">Step 9: Create the Training Harness<a class="headerlink" href="#step-9-create-the-training-harness" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">harness = Harness(
+    env,
+    solver,
+    num_episodes_per_experience=2,
+    use_wandb=True,
+    dataloader_kwargs={&quot;batch_size&quot;: 4},
+)
+</code></pre>
+<h2 id="the-training-harness-wires-your-environment-and-solver-together-it-collects-online-experience-and-for-each-batch-invokes-the-solver-to-compute-the-loss-used-to-update-the-attackers-policy-you-typically-wont-need-to-modify-the-harness-code-itselfadjust-behavior-via-the-environment-solver-or-your-outer-training-loop-eg-schedules-logging-hyperparameters">The training harness wires your environment and solver together. It collects online experience and, for each batch, invokes the solver to compute the loss used to update the attacker’s policy. You typically won’t need to modify the harness code itself—adjust behavior via the environment, solver, or your outer training loop (e.g., schedules, logging, hyperparameters).<a class="headerlink" href="#the-training-harness-wires-your-environment-and-solver-together-it-collects-online-experience-and-for-each-batch-invokes-the-solver-to-compute-the-loss-used-to-update-the-attackers-policy-you-typically-wont-need-to-modify-the-harness-code-itselfadjust-behavior-via-the-environment-solver-or-your-outer-training-loop-eg-schedules-logging-hyperparameters" title="Permanent link">&para;</a></h2>
+<h2 id="step-10-train-the-attacker">Step 10: Train the Attacker<a class="headerlink" href="#step-10-train-the-attacker" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">for step in range(1000):
+    # Collect experience rollouts from attacker-target interactions
+    buf = harness.experience()
+    for experience in buf:
+        # Compute loss using the solver (e.g., DPO)
+        loss, step_logs = harness.step(experience)
+
+        # Standard PyTorch optimization
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+
+        step_logs[&quot;step&quot;] = step
+        harness.log_current_step(step_logs)
+</code></pre>
+<h2 id="choose-how-many-training-stepsepochs-to-run-you-have-full-control-over-the-loopcurriculum-evaluation-cadence-checkpointing-learning-rate-schedules-gradient-clipping-and-more">Choose how many training steps/epochs to run. You have full control over the loop—curriculum, evaluation cadence, checkpointing, learning-rate schedules, gradient clipping, and more.<a class="headerlink" href="#choose-how-many-training-stepsepochs-to-run-you-have-full-control-over-the-loopcurriculum-evaluation-cadence-checkpointing-learning-rate-schedules-gradient-clipping-and-more" title="Permanent link">&para;</a></h2>
+<h2 id="full-example-examplesast_hfpy">Full Example: examples/ast_hf.py<a class="headerlink" href="#full-example-examplesast_hfpy" title="Permanent link">&para;</a></h2>
+<p>We provide a complete working example that mirrors this guide!</p>
 
 
 
@@ -538,7 +770,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 20:30:23 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 19, 2025 07:51:45 UTC">2025-08-19</span>
   </span>
 
     
@@ -548,7 +780,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 06:52:58 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 4, 2025 17:52:25 UTC">2025-08-04</span>
   </span>
 
     

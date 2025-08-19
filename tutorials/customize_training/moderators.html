@@ -12,13 +12,9 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/training/index.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/moderators.html">
       
       
-        <link rel="prev" href="../moderators/detoxify.html">
-      
-      
-        <link rel="next" href="harness.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +22,7 @@
     
     
       
-        <title>Training - ASTRA-RL Toolbox Documentation</title>
+        <title>How to Create a Custom Moderator Class - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -81,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#how-to-create-a-custom-moderator-class" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -113,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Training
+              How to Create a Custom Moderator Class
             
           </span>
         </div>
@@ -237,26 +238,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../getting_started.html" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Getting Started
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../tutorials/index.html" class="md-tabs__link">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
@@ -273,36 +255,15 @@
   
   
   
-    
-  
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="../index.html" class="md-tabs__link">
-        
-  
-  
-    
-  
-  API Reference
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
   
     <li class="md-tabs__item">
-      <a href="../../contributing.html" class="md-tabs__link">
+      <a href="../../api/index.html" class="md-tabs__link">
         
   
   
     
   
-  Contributing
+  Library API Reference
 
       </a>
     </li>
@@ -388,28 +349,6 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../getting_started.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Getting Started
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
     
     
     
@@ -422,13 +361,11 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tutorials/index.html" class="md-nav__link ">
+            <a href="../index.html" class="md-nav__link ">
               
   
   
@@ -441,14 +378,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
           </label>
@@ -461,7 +398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/training_an_evaluator.html" class="md-nav__link">
+      <a href="../training_an_evaluator.html" class="md-nav__link">
         
   
   
@@ -484,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/running_an_evaluation.html" class="md-nav__link">
+      <a href="../running_an_evaluation.html" class="md-nav__link">
         
   
   
@@ -511,595 +448,15 @@
       
   
   
-    
-  
-  
-  
-    
-    
-    
-    
-      
-        
-        
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    API Reference
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4">
-            <span class="md-nav__icon md-icon"></span>
-            API Reference
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../core/index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Core Module
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1">
-            <span class="md-nav__icon md-icon"></span>
-            Core Module
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
   
   
     <li class="md-nav__item">
-      <a href="../core/common.html" class="md-nav__link">
+      <a href="../../api/index.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Common
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../core/problem.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Problem
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../core/environment.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Environment
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../core/moderator.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Moderator
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../core/algorithm.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Algorithm
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../algorithms/index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Algorithms
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
-            <span class="md-nav__icon md-icon"></span>
-            Algorithms
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../algorithms/dpo.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    DPO
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../moderators/index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Moderators
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            Moderators
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../moderators/detoxify.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Detoxify
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link md-nav__link--active">
-              
-  
-  
-  <span class="md-ellipsis">
-    Training
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link md-nav__link--active" for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_4">
-            <span class="md-nav__icon md-icon"></span>
-            Training
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="harness.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Harness
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="trainer.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Trainer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../methods/index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Methods
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
-            <span class="md-nav__icon md-icon"></span>
-            Methods
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../methods/ast_problem.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    AST Problem
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../contributing.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Contributing
+    Library API Reference
     
   </span>
   
@@ -1126,6 +483,61 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-subclass-the-moderator-base-class" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Subclass the Moderator Base Class
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-implement-the-moderate-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Implement the moderate Method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-integrate-your-moderator" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 3: Integrate your moderator
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helpful-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Helpful Notes:
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#full-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Full examples:
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1144,9 +556,89 @@
   
 
 
-  <h1>Training</h1>
+<h1 id="how-to-create-a-custom-moderator-class">How to Create a Custom Moderator Class<a class="headerlink" href="#how-to-create-a-custom-moderator-class" title="Permanent link">&para;</a></h1>
+<p>Moderators play a central role in LM red teaming, acting similarly to reward models in traditional reinforcement learning. Their job is to quantify the reward an adversarial agent receives for reaching a particular state—typically by measuring how harmful or unsafe a target model's output is.</p>
+<p>In many RL-based red-teaming setups, the moderator provides the signal that trains the attacker to generate utterances that elicit harmful responses from a target model. This achieves the red-teaming objective by exposing weaknesses in the target model’s safety alignment and highlighting where additional fine-tuning is needed.</p>
+<p>To serve this purpose, a moderator must:
+- Accept a sequence of target model generations (e.g., text),
+- Return a scalar score (e.g., a toxicity value from 0 to 1) indicating the level of harm.</p>
+<p>The astra-rl toolbox currently supports text-based moderation using:
+- Detoxify, for toxicity classification,
+- Llama Guard 3, for a variety of harm categories (e.g., hate speech, threats, etc.).</p>
+<p>But the framework is modular—you can define your own moderator class, wrapping any model that takes in your defined StateT and ActionT types (see astra_rl/core/common) and returns a Sequence[float].</p>
+<p>This guide walks you through creating a new Moderator subclass.</p>
+<hr />
+<h2 id="step-1-subclass-the-moderator-base-class">Step 1: Subclass the Moderator Base Class<a class="headerlink" href="#step-1-subclass-the-moderator-base-class" title="Permanent link">&para;</a></h2>
+<p>To define your own moderator, create a class that inherits from:</p>
+<pre><code class="language-python">Moderator[StateT, ActionT]
+</code></pre>
+<p>Where:
+- StateT is the type of state your environment uses (e.g., a string prompt)
+- ActionT is the type of action your model produces (e.g., a generated response)
+For most NLP use cases, both StateT and ActionT are str.</p>
+<p>example:</p>
+<pre><code class="language-python">from typing import Sequence
+from detoxify import Detoxify
+from astra_rl.core.moderator import Moderator
 
+class DetoxifyModerator(Moderator[str, str]):
+    def __init__(self, harm_category: str = &quot;toxicity&quot;, variant: str = &quot;original&quot;):
+        self.model = Detoxify(variant)
+        self.harm_category = harm_category
+</code></pre>
+<hr />
+<h2 id="step-2-implement-the-moderate-method">Step 2: Implement the moderate Method<a class="headerlink" href="#step-2-implement-the-moderate-method" title="Permanent link">&para;</a></h2>
+<p>You must implement the abstract method:</p>
+<pre><code class="language-python">def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
+</code></pre>
+<p>This method:
+- Takes a sequence of states and/or actions.
+- Returns a sequence of floats, where each float is the moderation score (e.g., toxicity score) for the corresponding input.</p>
+<p>example:</p>
+<pre><code class="language-python">def moderate(self, x: Sequence[str]) -&gt; Sequence[float]:
+        return self.model.predict(x)[self.harm_category]
+</code></pre>
+<hr />
+<h2 id="step-3-integrate-your-moderator">Step 3: Integrate your moderator<a class="headerlink" href="#step-3-integrate-your-moderator" title="Permanent link">&para;</a></h2>
+<p>Once your class is defined, you can plug it into the RL pipeline like any other component:</p>
+<pre><code class="language-python">moderator = DetoxifyModerator(harm_category=&quot;insult&quot;, variant=&quot;unbiased&quot;)
+scores = moderator.moderate([&quot;you are stupid&quot;, &quot;have a nice day!&quot;])
+</code></pre>
+<p>To train with your custom moderator, modify your problem subclass to instantiate it during initialization:</p>
+<p>example:</p>
+<pre><code class="language-python">class ExampleDetoxifyProblem(ASTProblem):
+    def __init__(self, device=&quot;cpu&quot;):
+        # your choice of moderator
+        super().__init__(DetoxifyModerator()) ## Plug in your custom moderator here ##
 
+        self.device = device
+        self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+        self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+        self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+</code></pre>
+<hr />
+<h2 id="helpful-notes">Helpful Notes:<a class="headerlink" href="#helpful-notes" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Your moderator can wrap any scoring model—e.g., classifiers, LLMs, rule-based filters—as long as it implements moderate(...) → Sequence[float].</p>
+</li>
+<li>
+<p>You can include internal logic to handle tokenization, batching, preprocessing, etc.</p>
+</li>
+<li>
+<p>Return one score per input in the same order as received.</p>
+</li>
+<li>
+<p>If you're using a library or model that scores multiple types of harm (like Detoxify or llamaguard), your class can expose a harm_category attribute to customize which score to extract.</p>
+</li>
+</ul>
+<hr />
+<h2 id="full-examples">Full examples:<a class="headerlink" href="#full-examples" title="Permanent link">&para;</a></h2>
+<p>See the following files for complete, working implementations:
+- <a href="astra_rl/moderators/detoxify.py">astra_rl/moderators/detoxify.py</a> — wraps the Detoxify library
+- <a href="astra_rl/moderators/llamaGuard.py">astra_rl/moderators/llamaGuard.py</a> — wraps Meta’s Llama Guard 3 model</p>
 
 
 
@@ -1169,7 +661,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 6, 2025 19:25:41 UTC">2025-08-06</span>
   </span>
 
     
@@ -1179,7 +671,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 05:35:39 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 5, 2025 16:52:52 UTC">2025-08-05</span>
   </span>
 
     
@@ -1227,7 +719,7 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
