@@ -19,14 +19,15 @@ This guide will show you how to:
 
 ## Understanding the Base Class
 
-The base `ASTProblem` class provides default implementations suitable for the ASTPrompter approach:
+The base `ASTProblem` (source code astra-rl/src/astra_rl/methods/ast_problem.py) class provides default implementations 
+suitable for the ASTPrompter approach:
 
 - **`advance`**: Defines how a prompt advances given an attacker action and a target response.
-- **`reward`**: Defines how rewards are calculated from attacker-target interactions, typically using toxicity scoring and perplexity measures.
+- **`reward`**: Defines how rewards are calculated from attacker-target interactions, using toxicity scoring and perplexity measures.
 - **`rollout_prompt_with_attacker` / `rollout_prompt_with_target`**: Methods to generate attacker and target model outputs from a given context.
 - **`parameters`**: Specifies model parameters for optimization.
 
-You should subclass this base class to preserve and extend this default behavior. If you want to change a method, simply define it in your subclass and it will over-right the original implementation while preserving the rest of the base class functionality.
+If possible, you should subclass this base class to preserve and extend this default behavior. If you want to change a method, simply define it in your subclass and it will over-right the original implementation while preserving the rest of the base class functionality.
 
 ---
 
@@ -68,7 +69,8 @@ class MyCustomProblem(ASTProblem):
 ---
 ## Step 3: Integrating Your Own Models (Attacker, Target, or Baseline)
 
-If you are using huggingface models, save time by subclassing from our HFASTProblem base class which takes in any huggingface model names for the attacker, target, and baseline. Additionally, you can integrate any pretrained language model by loading the model and tokenizer in your constructor. Here's how to do it clearly and correctly:
+If you are using huggingface models, save time by subclassing from our HFASTProblem base class which takes in any huggingface model names for the attacker, target, and baseline. However, you can also integrate any pretrained language model by loading the model and tokenizer in your constructor. If you integrate your own custom model, you must ensure that the corresponding rollout method(s) (rollout_prompt_with_(MODEL) more info below) and the corresponding (.get_(MODEL)_logprobs) method(s) are updated to correctly integrate your custom model.
+Here's how to do it clearly and correctly:
 
 ```python
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -80,7 +82,7 @@ class MyHuggingFaceProblem(ASTProblem):
         super().__init__(moderator)
         self.device = device
 
-        # Load your models and tokenizers
+        # Load your custom models and tokenizers
         self.attacker = AutoModelForCausalLM.from_pretrained(attacker_model_id).to(self.device)
         self.attacker_tokenizer = AutoTokenizer.from_pretrained(attacker_model_id)
 
