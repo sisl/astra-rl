@@ -22,7 +22,7 @@
     
     
       
-        <title>PPO - ASTRA-RL Toolbox Documentation</title>
+        <title>DPO - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ppo" class="md-skip">
+        <a href="#dpo" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              PPO
+              DPO
             
           </span>
         </div>
@@ -1174,7 +1174,7 @@
   
 
 
-<h1 id="ppo">PPO<a class="headerlink" href="#ppo" title="Permanent link">&para;</a></h1>
+<h1 id="dpo">DPO<a class="headerlink" href="#dpo" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-module">
@@ -1219,7 +1219,7 @@
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="Algorithm (astra_rl.core.algorithm.Algorithm)" href="../core/algorithm.html#astra_rl.core.algorithm.Algorithm">Algorithm</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>, <span title="astra_rl.algorithms.ppo.PPOStep">PPOStep</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>], <span title="astra_rl.algorithms.ppo.PPOBatch">PPOBatch</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]]</code>, <code><span title="abc.ABC">ABC</span></code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="Algorithm (astra_rl.core.algorithm.Algorithm)" href="../core/algorithm.html#astra_rl.core.algorithm.Algorithm">Algorithm</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>, <span title="astra_rl.algorithms.ppo.PPOStep">PPOStep</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>], <span title="astra_rl.algorithms.ppo.PPOBatch">PPOBatch</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]]</code>, <code><span title="typing.Generic">Generic</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code>, <code><span title="abc.ABC">ABC</span></code></p>
 
 
         <p>Proximal Policy Optimization (PPO) algorithm with value function.</p>
@@ -1329,11 +1329,9 @@
 <span class="normal">122</span>
 <span class="normal">123</span>
 <span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PPO</span><span class="p">(</span>
+<span class="normal">125</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PPO</span><span class="p">(</span>
     <span class="n">Algorithm</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">PPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">PPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]],</span>
+    <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span>
     <span class="n">ABC</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Proximal Policy Optimization (PPO) algorithm with value function.&quot;&quot;&quot;</span>
@@ -1396,16 +1394,12 @@
             <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">reward</span><span class="p">)</span>
             <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">logprobs_attacker</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
             <span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
             <span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="p">)</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">-</span> <span class="n">values</span>
 
         <span class="c1"># normalize advantages</span>
-        <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">A</span> <span class="o">=</span> <span class="p">((</span><span class="n">A</span> <span class="o">-</span> <span class="n">A</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">A</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span> <span class="o">-</span> <span class="n">A</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
         <span class="c1"># compute ratio, should be 1 at the first iteration</span>
         <span class="n">ratio</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">logprobs_attacker</span> <span class="o">-</span> <span class="n">logprobs_baseline</span><span class="o">.</span><span class="n">detach</span><span class="p">()))</span>
 
@@ -1486,7 +1480,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 19, 2025 23:36:46 UTC">2025-08-19</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 13, 2025 19:11:53 UTC">2025-08-13</span>
   </span>
 
     

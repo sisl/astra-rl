@@ -2830,9 +2830,7 @@ ActionT (type): The type of the action in the environment.</p>
 <span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ValueFunctionProblem</span><span class="p">(</span><span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ValueFunctionProblem</span><span class="p">(</span><span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Extends `Problem` to be able to return sequence values with a value head.</span>
 
 <span class="sd">    Note:</span>
@@ -2863,9 +2861,7 @@ ActionT (type): The type of the action in the environment.</p>
 <span class="sd">        Returns:</span>
 <span class="sd">            torch.Tensor[batch_size, max_continuation_length]: The per-token values of</span>
 <span class="sd">            the given squence by the sequence predictor. Do not include the value of the input</span>
-<span class="sd">            prefixes. If you are predicting on the whole input, you should be slicing on</span>
-<span class="sd">            `[:, :-1]`, meaning you should *not* return the value of the last token, whose</span>
-<span class="sd">            input is eos/context length limit.</span>
+<span class="sd">            prefixes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">pass</span>
@@ -2974,27 +2970,7 @@ just passing the intermediate activations through another layer.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>prefixes. If you are predicting on the whole input, you should be slicing on</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="torch.Tensor">Tensor</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p><code>[:, :-1]</code>, meaning you should <em>not</em> return the value of the last token, whose</p>
-              </div>
-            </td>
-          </tr>
-          <tr class="doc-section-item">
-            <td>
-                  <code><span title="torch.Tensor">Tensor</span></code>
-            </td>
-            <td>
-              <div class="doc-md-description">
-                <p>input is eos/context length limit.</p>
+                <p>prefixes.</p>
               </div>
             </td>
           </tr>
@@ -3023,9 +2999,7 @@ just passing the intermediate activations through another layer.</p>
 <span class="normal">289</span>
 <span class="normal">290</span>
 <span class="normal">291</span>
-<span class="normal">292</span>
-<span class="normal">293</span>
-<span class="normal">294</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="normal">292</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">value</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">],</span> <span class="n">continuation</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
@@ -3041,9 +3015,7 @@ just passing the intermediate activations through another layer.</p>
 <span class="sd">    Returns:</span>
 <span class="sd">        torch.Tensor[batch_size, max_continuation_length]: The per-token values of</span>
 <span class="sd">        the given squence by the sequence predictor. Do not include the value of the input</span>
-<span class="sd">        prefixes. If you are predicting on the whole input, you should be slicing on</span>
-<span class="sd">        `[:, :-1]`, meaning you should *not* return the value of the last token, whose</span>
-<span class="sd">        input is eos/context length limit.</span>
+<span class="sd">        prefixes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">pass</span>
