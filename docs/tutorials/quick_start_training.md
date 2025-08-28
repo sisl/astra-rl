@@ -25,11 +25,7 @@ uv sync --dev
 uv run pre-commit install
 ```
 
----
-
-## Step 2: Create a Training Script
-Create a Python file for your training code (e.g., train.py).
-
+Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
 ---
 
 ## Step 3: Import Required Modules
