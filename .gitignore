@@ -192,4 +192,8 @@ wandb/
 wandb-debug.log
 
 # Ignore training prompts (for now!)
-examples/GPT2_v_GPT2/prompts_reddit_train.json
+data/
+
+# Ignore evals and checkpoints
+evals/
+checkpoints/

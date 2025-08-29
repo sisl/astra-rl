@@ -1,7 +1,7 @@
 """
 malibu.py
 This uses the ast environment and Huggingface extensions. However, with modifications to the environment,
-we can enable the backup of discounted future rewards during multi-turn conversation rollouts used in DPO.
+we can enable the backup of discounted future rewards during multi-turn conversation rollouts used in PPO.
 
 This example shows how to use the Astra RL library to train a GPT-2 model
 using the DPO algorithm with a Detoxify moderator for content moderation.
