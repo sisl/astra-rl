@@ -12,24 +12,24 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/envirnoments.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/solvers.html">
       
       
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
-        <title>How to Customize the Environment - ASTRA-RL Toolbox Documentation</title>
+        <title>How to Create a Custom Solver (RL Algorithm) - ASTRA-RL Toolbox Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +48,11 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-customize-the-environment" class="md-skip">
+        <a href="#how-to-create-a-custom-solver-rl-algorithm" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Customize the Environment
+              How to Create a Custom Solver (RL Algorithm)
             
           </span>
         </div>
@@ -219,7 +219,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../index.html" class="md-tabs__link">
+      <a href="../../index.html" class="md-tabs__link">
         
   
   
@@ -238,7 +238,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="index.html" class="md-tabs__link">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
@@ -257,7 +257,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../api/index.html" class="md-tabs__link">
+      <a href="../../api/index.html" class="md-tabs__link">
         
   
   
@@ -298,7 +298,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -328,7 +328,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../index.html" class="md-nav__link">
+      <a href="../../index.html" class="md-nav__link">
         
   
   
@@ -365,7 +365,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link ">
+            <a href="../index.html" class="md-nav__link ">
               
   
   
@@ -398,12 +398,12 @@
   
   
     <li class="md-nav__item">
-      <a href="training_an_evaluator.html" class="md-nav__link">
+      <a href="../training_an_evaluator.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Training an Evaluator
+    None
     
   </span>
   
@@ -421,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="running_an_evaluation.html" class="md-nav__link">
+      <a href="../running_an_evaluation.html" class="md-nav__link">
         
   
   
@@ -451,7 +451,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/index.html" class="md-nav__link">
+      <a href="../../api/index.html" class="md-nav__link">
         
   
   
@@ -493,87 +493,45 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#option-a-subclass-the-base-environment" class="md-nav__link">
+  <a href="#choose-your-data-contract" class="md-nav__link">
     <span class="md-ellipsis">
-      Option A: Subclass the base Environment
+      Choose your data contract
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#option-b-subclass-an-existing-environment" class="md-nav__link">
+  <a href="#example" class="md-nav__link">
     <span class="md-ellipsis">
-      Option B: Subclass an existing environment
+      example
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#required-implement-rollout" class="md-nav__link">
+  <a href="#plugging-your-solver-into-the-harness" class="md-nav__link">
     <span class="md-ellipsis">
-      Required: implement rollout(...)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Required: implement rollout(...)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#useful-astproblem-helpers-inside-your-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Useful ASTProblem helpers inside your environment
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#optional-evaluation-metrics" class="md-nav__link">
-    <span class="md-ellipsis">
-      (Optional) Evaluation metrics
+      Plugging your solver into the harness
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#best-practices-common-pitfalls" class="md-nav__link">
+  <a href="#debug-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      Best practices &amp; common pitfalls
+      Debug checklist
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-validation-checklist" class="md-nav__link">
+  <a href="#adapting-to-your-data" class="md-nav__link">
     <span class="md-ellipsis">
-      Quick validation checklist
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#example-printing-a-small-rollout" class="md-nav__link">
-    <span class="md-ellipsis">
-      Example: printing a small rollout
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#extending-the-data-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      Extending the data model
+      Adapting to your data
     </span>
   </a>
   
@@ -598,114 +556,79 @@
   
 
 
-<h1 id="how-to-customize-the-environment">How to Customize the Environment<a class="headerlink" href="#how-to-customize-the-environment" title="Permanent link">&para;</a></h1>
-<p>The <strong>environment</strong> defines how attacker–target interactions are produced and packaged for training. It controls:</p>
-<ul>
-<li>how rollouts are generated (single path vs. tree),</li>
-<li>how states advance across turns,</li>
-<li>what per-step data (actions, responses, rewards) is stored,</li>
-<li>and what the solver receives as input.</li>
-</ul>
-<p>ASTRA-RL ships with <code>ASTEnvironment</code>, which mirrors the rollout structure used in <strong>ASTPrompter</strong>. You can subclass it—or the base <code>Environment</code>—to support:</p>
-<ul>
-<li>multi-agent or multi-turn conversations,</li>
-<li>tree-structured or flat trajectories,</li>
-<li>custom state-advance logic,</li>
-<li>alternative reward shaping or logging.</li>
-</ul>
-<hr />
-<h2 id="option-a-subclass-the-base-environment">Option A: Subclass the base <code>Environment</code><a class="headerlink" href="#option-a-subclass-the-base-environment" title="Permanent link">&para;</a></h2>
-<pre><code class="language-python">from astra_rl.core.environment import Environment
-
-class MyCustomEnvironment(Environment[str, str]):
-    ...
-</code></pre>
-<p>The base <code>Environment</code> defines the interface the training harness expects. Make sure you implement the mandatory rollout() method.</p>
-<h2 id="option-b-subclass-an-existing-environment">Option B: Subclass an existing environment<a class="headerlink" href="#option-b-subclass-an-existing-environment" title="Permanent link">&para;</a></h2>
-<p>If your rollout logic is “like AST but with a twist,” subclass <code>ASTEnvironment</code> and override only the parts you need (e.g., the expansion logic, evaluation, or metrics extraction).</p>
-<pre><code class="language-python">from astra_rl import ASTProblem, ASTEnvironment 
-from astra_rl.core.environment import Node, Graph
-
-class MyASTVariant(ASTEnvironment):
-    &quot;&quot;&quot;
-    Subclass of ASTEnvironment that performs your custom rollout logic
-    &quot;&quot;&quot;
-
-    def __init__(...):
-        super().__init__(problem, prompts, tree_width, tree_depth)
-</code></pre>
-<hr />
-<h2 id="required-implement-rollout">Required: implement <code>rollout(...)</code><a class="headerlink" href="#required-implement-rollout" title="Permanent link">&para;</a></h2>
-<p>Your environment <strong>must</strong> implement:</p>
-<pre><code class="language-python">def rollout(self, seed: Optional[int] = None) -&gt; Graph[str, str]:
-    ...
-</code></pre>
-<p>This function performs one training rollout and returns a <code>Graph</code> made of <code>Node</code>s:</p>
-<ul>
-<li><code>Graph(context: str, children: List[Node])</code></li>
-<li><code>Node(context: str, attack: str, response: str, reward: float, children: List[Node])</code></li>
-</ul>
-<p>At a minimum, each node should capture:</p>
-<ul>
-<li><code>context</code> (state so far, e.g., conversation text),</li>
-<li><code>attack</code> (attacker’s utterance / action),</li>
-<li><code>response</code> (target/defender’s reply),</li>
-<li><code>reward</code> (float),</li>
-<li><code>children</code> (next steps; empty for leaf nodes).</li>
-</ul>
-<blockquote>
-<p><strong>Tip:</strong> Make sure your rollout matches your solver’s data contract.
-    Preference-based methods (e.g., DPO/IPO/ORPO) need preference pairs, so the easiest online setup is tree_width ≥ 2 to sample two candidates per prompt. Reward-based policy-gradient methods (e.g., PPO/A2C) do not require pairs; tree_width = 1 is typical.</p>
-</blockquote>
-<h3 id="useful-astproblem-helpers-inside-your-environment">Useful <code>ASTProblem</code> helpers inside your environment<a class="headerlink" href="#useful-astproblem-helpers-inside-your-environment" title="Permanent link">&para;</a></h3>
-<p>These are the public, batch-friendly methods you’ll typically call during rollout:</p>
-<ul>
-<li><code>rollout_prompt_with_attacker(prompts: Sequence[str]) -&gt; Sequence[str]</code></li>
-<li><code>rollout_prompt_with_target(prompts: Sequence[str]) -&gt; Sequence[str]</code></li>
-<li><code>reward(prompts, attacks, responses) -&gt; Sequence[float]</code></li>
-<li><code>advance(prompt, attack, response) -&gt; str</code>  <em>(returns the next state)</em></li>
-</ul>
-<blockquote>
-<p><strong>Tip:</strong> These APIs are vectorized—<strong>always pass lists</strong> (even if length 1) for best performance and simpler code.</p>
-</blockquote>
-<hr />
-<h2 id="optional-evaluation-metrics">(Optional) Evaluation metrics<a class="headerlink" href="#optional-evaluation-metrics" title="Permanent link">&para;</a></h2>
-<p>If you want per-turn metrics like toxicity or likelihood, add a helper that <strong>walks a single-path graph</strong> and computes metrics at each turn. These helper functions can be useful when evaluating models after training. See the quick_start_evaluation guide for more information. </p>
-<blockquote>
-<p><strong>Tip:</strong> Use the moderator in <strong>batch mode</strong>: <code>moderator.moderate(list_of_texts)</code>.</p>
-</blockquote>
-<hr />
-<h2 id="best-practices-common-pitfalls">Best practices &amp; common pitfalls<a class="headerlink" href="#best-practices-common-pitfalls" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Prefer batch calls.</strong> The <code>ASTProblem</code> helpers are vectorized—avoid per-item model calls inside tight loops.</li>
-<li><strong>Determinism:</strong> Thread a <code>seed</code> through <code>rollout()</code> for reproducible experiments.</li>
-<li><strong>Depth/width off-by-one:</strong> Depth <code>= 0</code> should produce <strong>no</strong> nodes; verify leaf counts match expectations.</li>
-<li><strong>State advancement:</strong> Always use <code>advance(state, attack, response)</code> to build the next state, even if it’s simple string concatenation—this keeps things consistent and testable.</li>
-<li><strong>Graph sanity checks:</strong> Before training, print or visualize one <code>rollout()</code> to confirm the structure matches your mental model (fan-out, depth, rewards present).</li>
-<li><strong>Context length:</strong> If your <code>Problem</code> uses LMs with max context, ensure your <code>Problem</code> handles truncation. Environments should not assume a specific token limit.</li>
-<li><strong>Evaluation vs. training:</strong> Keep evaluation single-path (<code>width=1</code>) to simplify metrics and avoid combinatorial explosion.</li>
-</ul>
-<hr />
-<h2 id="quick-validation-checklist">Quick validation checklist<a class="headerlink" href="#quick-validation-checklist" title="Permanent link">&para;</a></h2>
+<h1 id="how-to-create-a-custom-solver-rl-algorithm">How to Create a Custom Solver (RL Algorithm)<a class="headerlink" href="#how-to-create-a-custom-solver-rl-algorithm" title="Permanent link">&para;</a></h1>
+<p>In ASTRA-RL, a <strong>solver</strong> subclasses <code>Algorithm[...]</code> and implements three things:</p>
 <ol>
-<li><code>env.rollout()</code> returns a <code>Graph</code> with the expected shape (root + child nodes).</li>
-<li>Every <code>Node</code> has <code>context</code>, <code>attack</code>, <code>response</code>, <code>reward</code> populated.</li>
-<li><code>advance()</code> is called exactly once per (context, attack, response).</li>
-<li>Running two <code>rollout(seed=123)</code> calls yields the same graph.</li>
-<li><code>final_reward()</code> returns the last-step reward in a single-path rollout.</li>
-<li>(If added) <code>eval_rollout(prompt)</code> respects <code>width=1</code> and your metrics extractor runs without per-item model calls.</li>
+<li><strong><code>flatten(graph)</code></strong> – turn a rollout <code>Graph</code> into a list of per-sample <strong>Steps</strong> your solver trains on</li>
+<li><strong><code>collate_fn(steps)</code></strong> – batch those steps into a <strong>Batch</strong> the harness can load via a DataLoader</li>
+<li><strong><code>step(batch)</code></strong> – compute the training <strong>loss</strong> (and log metrics), returning <code>(loss, logs)</code></li>
 </ol>
+<p>This isolates “how we learn” (the solver) from “how data is collected” (the Environment) and “how models run/interact” (the Problem).</p>
 <hr />
-<h2 id="example-printing-a-small-rollout">Example: printing a small rollout<a class="headerlink" href="#example-printing-a-small-rollout" title="Permanent link">&para;</a></h2>
-<pre><code class="language-python">g = env.rollout(seed=7)
-print(&quot;ROOT:&quot;, g.context)
-for i, n in enumerate(g.children):
-    print(f&quot;[{i}] atk={n.attack!r} rsp={n.response!r} rew={n.reward:.3f} #children={len(n.children)}&quot;)
+<h2 id="choose-your-data-contract">Choose your data contract<a class="headerlink" href="#choose-your-data-contract" title="Permanent link">&para;</a></h2>
+<p>First, define your own <code>@dataclass Step</code>/<code>Batch</code> to match your algorithm. These dataclasses determine what information is stored at each step 
+of learning and hold the information across a total batch. (TODO: improve)</p>
+<hr />
+<h2 id="example">example<a class="headerlink" href="#example" title="Permanent link">&para;</a></h2>
+<pre><code class="language-python">from dataclasses import dataclass
+from typing import Any, Dict, Generic, List, Sequence, Tuple
+import torch
+
+from astra_rl.core.algorithm import Algorithm
+from astra_rl.core.common import StateT, ActionT
+from astra_rl.core.environment import Graph
+
+# 1) Define your per-sample record
+@dataclass
+class MyStep(Generic[StateT, ActionT]):
+    context: StateT
+    action: ActionT
+    reward: float  # or returns/advantages/etc.
+
+# 2) Define your batch
+@dataclass
+class MyBatch(Generic[StateT, ActionT]):
+    contexts: Sequence[StateT]
+    actions: Sequence[ActionT]
+    rewards: torch.Tensor  # torch for math
+</code></pre>
+<h2 id="plugging-your-solver-into-the-harness">Plugging your solver into the harness<a class="headerlink" href="#plugging-your-solver-into-the-harness" title="Permanent link">&para;</a></h2>
+<p>To integrate the solver, simply instantiate in your main code and give it to the harness as a parameter. Your solver
+should provide the harness with a list of steps. </p>
+<pre><code class="language-python">solver = MyAlgo(problem, kl_coeff=0.02)
+harness = Harness(
+    env,
+    solver,
+    num_episodes_per_experience=2,
+    dataloader_kwargs={&quot;batch_size&quot;: 8, &quot;shuffle&quot;: True},
+)
+for step in range(1000):
+    for batch in harness.experience():     # yields MyBatch via your collate_fn
+        loss, logs = harness.step(batch)   # calls solver.step(...)
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+        logs[&quot;step&quot;] = step
+        harness.log_current_step(logs)
 </code></pre>
 <hr />
-<h2 id="extending-the-data-model">Extending the data model<a class="headerlink" href="#extending-the-data-model" title="Permanent link">&para;</a></h2>
-<p>Need extra metadata (e.g., per-turn safety tags, KL terms, or timestamps)?
-Subclass <code>Node</code> and/or wrap <code>Graph</code> with your own dataclasses, then adapt your solver to read those fields.</p>
+<h2 id="debug-checklist">Debug checklist<a class="headerlink" href="#debug-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Shapes</strong>: <code>flatten</code> produces a list; <code>collate_fn</code> returns tensors/seqs with consistent lengths.</li>
+<li><strong>Gradient flow</strong>: only <code>get_attacker_logprobs</code> should require grad; keep target/baseline calls in <code>torch.no_grad()</code>.</li>
+<li><strong>Rewards</strong>: are finite and roughly bounded; consider normalization or clipping.</li>
+<li><strong>KL anchor</strong>: if training diverges, raise <code>kl_coeff</code> (or use adaptive control).</li>
+<li><strong>Tree width</strong>: preference algorithms need <code>tree_width ≥ 2</code>; reward methods are simplest with <code>tree_width = 1</code>.</li>
+<li><strong>Determinism</strong>: seed env rollouts to reproduce a bug.</li>
+</ul>
+<hr />
+<h2 id="adapting-to-your-data">Adapting to your data<a class="headerlink" href="#adapting-to-your-data" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Per-turn rewards? Put them into <code>MyStep</code> and compute <strong>returns</strong> (discounted sum) in <code>flatten</code> or <code>collate_fn</code>.</li>
+<li>Off-policy data? Add <code>old_logp</code> to <code>MyStep</code> and implement importance sampling/clip.</li>
+<li>Extra features (toxicity, length, success flags)? Add fields to <code>MyStep</code> and use them in the loss.</li>
+</ul>
+<hr />
 
 
 
@@ -728,7 +651,7 @@ Subclass <code>Node</code> and/or wrap <code>Graph</code> with your own dataclas
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 28, 2025 16:29:28 UTC">2025-08-28</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 29, 2025 19:05:35 UTC">2025-08-29</span>
   </span>
 
     
@@ -786,10 +709,10 @@ Subclass <code>Node</code> and/or wrap <code>Graph</code> with your own dataclas
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>
