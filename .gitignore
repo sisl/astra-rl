@@ -191,8 +191,10 @@ cython_debug/
 wandb/
 wandb-debug.log
 
-# Ignore training prompts (for now!)
-data/
+# Ingore initial prompt json files
+prompts_reddit_dev.json
+prompts_reddit_test.json
+prompts_reddit_train.json
 
 # Ignore evals and checkpoints
 evals/
