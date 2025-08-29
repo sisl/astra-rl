@@ -152,6 +152,12 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         for _ in range(self.num_episodes_per_experience):
             graph = self.environment.rollout(seed=seed)
             graphs.append(graph)
+        # for _ in range(self.num_episodes_per_experience):
+        #     try:
+        #         graph = self.environment.rollout(seed=seed)
+        #         graphs.append(graph)
+        #     except Exception as e:
+        #         print(f"Skipping rollout due to error: {e}")
 
         steps = sum([list(self.algorithm.flatten(i)) for i in graphs], [])
 

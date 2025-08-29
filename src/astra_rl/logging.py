@@ -46,7 +46,7 @@ class ASTRAWandbLogger:
 
         if "WANDB_API_KEY" not in os.environ:
             raise EnvironmentError(
-                "WANDB_API_KEY environment variable is not set. Please set it to use Weights & Biases."
+                "WANDB_API_KEY environment variable is not set. Please set it to use Weights & Biases. e.g. run 'export WANDB_API_KEY=your_api_key_here' in your terminal."
             )
         self.run = wandb.init(project="astra_rl", config=wandb_kwargs)
 
