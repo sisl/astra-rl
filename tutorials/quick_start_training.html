@@ -502,15 +502,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#note-wandb-is-not-automatically-installed-during-this-process-if-you-would-let-to-use-wandb-supported-install-it-uv-pip-install-wandb-and-run-export-wandb_api_keyyour_wandb_api_key-in-your-terminal" class="md-nav__link">
-    <span class="md-ellipsis">
-      Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#step-2-import-required-modules-and-set-device" class="md-nav__link">
     <span class="md-ellipsis">
       Step 2: Import Required Modules and set device
@@ -613,7 +604,10 @@ pip install astra-rl
 # Clone the repository (for examples and development)
 git clone git@github.com:sisl/astra-rl.git
 </code></pre>
-<h2 id="note-wandb-is-not-automatically-installed-during-this-process-if-you-would-let-to-use-wandb-supported-install-it-uv-pip-install-wandb-and-run-export-wandb_api_keyyour_wandb_api_key-in-your-terminal">Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.<a class="headerlink" href="#note-wandb-is-not-automatically-installed-during-this-process-if-you-would-let-to-use-wandb-supported-install-it-uv-pip-install-wandb-and-run-export-wandb_api_keyyour_wandb_api_key-in-your-terminal" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.</p>
+</blockquote>
+<hr />
 <h2 id="step-2-import-required-modules-and-set-device">Step 2: Import Required Modules and set device<a class="headerlink" href="#step-2-import-required-modules-and-set-device" title="Permanent link">&para;</a></h2>
 <pre><code class="language-python">from torch.optim import AdamW
 
@@ -738,7 +732,7 @@ optimizer = AdamW(problem.parameters(), lr=1e-5)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 29, 2025 20:33:13 UTC">2025-08-29</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 29, 2025 20:48:18 UTC">2025-08-29</span>
   </span>
 
     
