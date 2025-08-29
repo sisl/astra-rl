@@ -18,7 +18,7 @@ pip install astra-rl
 git clone git@github.com:sisl/astra-rl.git
 ```
 
->Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
+> Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
 
 ---
 
@@ -57,9 +57,9 @@ The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ens
 
 ## Step 4: Instantiate Your Problem
 
-The *problem* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTProblem` class that handles the technical backend so you just need to provide the huggingface model IDs of the attacker, target and baseline models and a `Moderator` instance (DetexifyModerator(), LlamaGuardModerator() or your own custom one).
+The *problem* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTProblem` class that handles the technical backend so you just need to provide the huggingface model IDs of the attacker, target and baseline models and a `Moderator` instance (DetexifyModerator(), LlamaGuardModerator() or your custom moderator).
 
-Note: Your attacker and target can be different models (e.g., GPT-2 attacker, LLaMA target) but your baseline and attacker should typically be the same.
+> Note: Your attacker and target can be different models (e.g., GPT-2 attacker, LLaMA target) but your baseline and attacker should typically be the same.
 
 ```python
 from astra_rl.modifiers import LlamaGuardModerator  # optional
@@ -108,13 +108,13 @@ By default, rollouts are configured with tree_width=2 and tree_depth=3, but you 
 env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 ```
 
-Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](/home/allie11/astra-rl/docs/tutorials/customize_training/envirnoments.md)
+Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](astra-rl/docs/tutorials/customize_training/envirnoments.md)
 
 ---
 
 ## Step 6: Choose Your Algorithm and Optimizer
 
-The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the training loss. The optimizer will update attacker model weights 
+The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update attacker model weights 
 to minimize this loss, teaching the attacker to more effectively ellicit target toxicity.
 
 We use DPO and Adam as the default for this quickstart.
@@ -124,13 +124,13 @@ solver = DPO(problem)
 optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
- To integrate your own RL algorithm, see [customize_training/solvers](/home/allie11/astra-rl/docs/tutorials/customize_training/solvers.md)
+ To integrate your own RL algorithm, see [customize_training/solvers](astra-rl/docs/tutorials/customize_training/solvers.md)
 
 ---
 
 ## Step 7: Create the Training Harness
 
-The training harness wires your environment and solver together. It collects online experience and, for each batch, invokes the solver to compute the loss used to update the attacker’s policy. You typically won’t need to modify the harness code itself—adjust behavior via the environment, solver, or your outer training loop (e.g., schedules, logging, hyperparameters).
+The training harness wires your environment and solver together. It collects online experience and, for each batch, invokes the solver to compute the loss used to update the attacker’s policy. You typically won’t need to modify the harness code itself—adjust behavior via the harness parameters, environment, solver, or your outer training loop (e.g., schedules, logging, hyperparameters).
 
 ```python 
 harness = Harness(
@@ -144,7 +144,7 @@ harness = Harness(
 
 ## Step 8: Train the Attacker
 
-Choose how many training steps/epochs to run. You have full control over the loop—curriculum, evaluation cadence, checkpointing, learning-rate schedules, gradient clipping, and more.
+Choose how many training steps/epochs to run. You have full control over the training loop—curriculum, evaluation cadence, checkpointing, learning-rate schedules, gradient clipping, and more.
 
 ```python
 for step in range(1000):
@@ -165,5 +165,5 @@ for step in range(1000):
 
 ---
 
-## Full Example: examples/ast_hf.py
+## Full Example: [examples/ast_hf.py](astra-rl/examples/ast_hf.py)
 We provide a complete working example that mirrors this guide!
