@@ -68,9 +68,9 @@ from astra_rl.modifiers import LlamaGuardModerator  # optional
 problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
 ```
 
-Need a custom model or rollout step logic? See [customize_training/problems](astra-rl/docs/tutorials/customize_training/problems.md)
+Need a custom model or rollout step logic? See [customize_training/problems](../customize_training/problems.md)
 
-Want to use a custom moderator? See [customize_training/moderators](astra-rl/docs/tutorials/customize_training/moderators.md)
+Want to use a custom moderator? See [customize_training/moderators](../customize_training/moderators.md)
 
 ---
 
@@ -82,13 +82,6 @@ The environment defines how training rollouts are structured and collected. In A
 env = ASTEnvironment(problem, PROMPTS)
 ```
 
-<!-- This environment builds a tree-structured conversation graph, where:
-    - The root node starts from a random initial prompt (from PROMPTS)
-    - At each turn, the attacker generates multiple (tree_width, default 2) candidate utterances
-    - Each of those utterances is fed to the target model, which produces a response
-    - The resulting attacker–target–response tuples form child nodes
-    - This process repeats for tree_depth levels (default 3), yielding a multi-turn attacker-target dialogue tree
-This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the attacker to elicit harmful responses in a multi-turn/dialouge setting. -->
 <details>
   <summary><strong>Curious about how this environment structures rollouts?</strong></summary>
 
@@ -108,7 +101,7 @@ By default, rollouts are configured with tree_width=2 and tree_depth=3, but you 
 env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 ```
 
-Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](astra-rl/docs/tutorials/customize_training/envirnoments.md)
+Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](../customize_training/envirnoments.md)
 
 ---
 
@@ -124,7 +117,7 @@ solver = DPO(problem)
 optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
- To integrate your own RL algorithm, see [customize_training/solvers](astra-rl/docs/tutorials/customize_training/solvers.md)
+ To integrate your own RL algorithm, see [customize_training/solvers](../customize_training/solvers.md)
 
 ---
 
@@ -165,5 +158,5 @@ for step in range(1000):
 
 ---
 
-## Full Example: [examples/ast_hf.py](astra-rl/examples/ast_hf.py)
+## Full Example: [examples/ast_hf.py](../../examples/ast_hf.py)
 We provide a complete working example that mirrors this guide!
