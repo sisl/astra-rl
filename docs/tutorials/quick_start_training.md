@@ -68,7 +68,7 @@ from astra_rl.modifiers import LlamaGuardModerator  # optional
 problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
 ```
 
-Need a custom model or rollout step logic? See [customize_training/problems](../customize_training/problems.md)
+Need a custom model or rollout step logic? See [customize_training/problems](customize_training/problems.md)
 
 Want to use a custom moderator? See [customize_training/moderators](../customize_training/moderators.md)
 
