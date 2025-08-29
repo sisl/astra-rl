@@ -18,7 +18,8 @@ pip install astra-rl
 git clone git@github.com:sisl/astra-rl.git
 ```
 
-Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
+>Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
+
 ---
 
 ## Step 2: Import Required Modules and set device
