@@ -195,6 +195,7 @@ wandb-debug.log
 prompts_reddit_dev.json
 prompts_reddit_test.json
 prompts_reddit_train.json
+data/
 
 # Ignore evals and checkpoints
 evals/
