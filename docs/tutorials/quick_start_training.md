@@ -32,6 +32,7 @@ from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
 
 # HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
 from astra_rl.ext.transformers import HFASTProblem
+from astra_rl.training import Trainer, TrainingConfiguration
 
 DEVICE = "cuda"  # or "cpu" if GPU is not available
 ```
@@ -70,7 +71,7 @@ problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
 
 Need a custom model or rollout step logic? See [customize_training/problems](customize_training/problems.md)
 
-Want to use a custom moderator? See [customize_training/moderators](../customize_training/moderators.md)
+Want to use a custom moderator? See [customize_training/moderators](customize_training/moderators.md)
 
 ---
 
@@ -101,7 +102,7 @@ By default, rollouts are configured with tree_width=2 and tree_depth=3, but you 
 env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 ```
 
-Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](../customize_training/envirnoments.md)
+Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](customize_training/envirnoments.md)
 
 ---
 
@@ -117,7 +118,7 @@ solver = DPO(problem)
 optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
- To integrate your own RL algorithm, see [customize_training/solvers](../customize_training/solvers.md)
+ To integrate your own RL algorithm, see [customize_training/solvers](customize_training/solvers.md)
 
 ---
 

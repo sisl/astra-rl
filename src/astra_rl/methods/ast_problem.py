@@ -110,11 +110,16 @@ class ASTEnvironment(Environment[str, str]):
         self.tree_width = tree_width
         self.tree_depth = tree_depth
 
-    def __handle_prompt(self, prompt: str, depth: int = 3) -> Sequence[Node[str, str]]:
+    def __handle_prompt(
+        self, prompt: str, depth: int = 3, width: Optional[int] = None
+    ) -> Sequence[Node[str, str]]:
         if depth == 0:
             return []
 
-        prompts = [prompt for _ in range(self.tree_width)]
+        if width is None:
+            width = self.tree_width
+
+        prompts = [prompt for _ in range(width)]
         attacks = self.problem._rollout_prompt_with_attacker_and_validate(prompts)
         defenses = self.problem._rollout_prompt_with_target_and_validate(
             [prompt + i for i in attacks]
@@ -128,7 +133,7 @@ class ASTEnvironment(Environment[str, str]):
                 defense,
                 reward,
                 self.__handle_prompt(
-                    self.problem.advance(prompt, attack, defense), depth - 1
+                    self.problem.advance(prompt, attack, defense), depth - 1, width
                 ),
             )
             for prompt, attack, defense, reward in zip(
@@ -146,3 +151,20 @@ class ASTEnvironment(Environment[str, str]):
         nodes = self.__handle_prompt(prompt, self.tree_depth)
 
         return Graph(prompt, nodes)
+
+    # new method generates rollout for evaluation, only a single path
+    def eval_rollout(self, prompt: str) -> Graph[str, str]:
+        nodes = self.__handle_prompt(prompt, self.tree_depth, width=1)
+        return Graph(prompt, nodes)
+
+    # new method to get final reward from eval rollout
+    def final_reward(self, graph: "Graph[str, str]") -> Optional[float]:
+        """Return reward at the leaf along the single path (width==1)."""
+        if not graph.children:
+            return None
+        n = graph.children[0]
+        last = n.reward
+        while n.children:
+            n = n.children[0]
+            last = n.reward
+        return last
