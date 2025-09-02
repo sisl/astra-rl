@@ -22,7 +22,7 @@
     
     
       
-        <title>Trainers - ASTRA-RL Toolbox Documentation</title>
+        <title>How to create a custom TrainingConfiguration and Trainer (ASTRA-RL) - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -77,6 +77,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#how-to-create-a-custom-trainingconfiguration-and-trainer-astra-rl" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -109,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Trainers
+              How to create a custom TrainingConfiguration and Trainer (ASTRA-RL)
             
           </span>
         </div>
@@ -478,6 +483,79 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-the-trainer-does" class="md-nav__link">
+    <span class="md-ellipsis">
+      What the Trainer does
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tldr-decision-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      TL;DR decision guide
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-define-your-trainingconfiguration-hyperparameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Define your TrainingConfiguration (hyperparameters)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-fast-path-a-use-the-base-trainer-as-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Fast path A — use the base Trainer as-is
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fast-path-b-use-the-hf-compatible-trainer-with-periodic-eval-saving" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Fast path B — use the HF-compatible trainer with periodic eval &amp; saving
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-fully-custom-write-your-own-trainer-subclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Fully custom — write your own Trainer subclass
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      Notes &amp; best practices
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -496,26 +574,131 @@
   
 
 
-  <h1>Trainers</h1>
+<h1 id="how-to-create-a-custom-trainingconfiguration-and-trainer-astra-rl">How to create a custom <strong>TrainingConfiguration</strong> and <strong>Trainer</strong> (ASTRA-RL)<a class="headerlink" href="#how-to-create-a-custom-trainingconfiguration-and-trainer-astra-rl" title="Permanent link">&para;</a></h1>
+<h2 id="what-the-trainer-does">What the <code>Trainer</code> does<a class="headerlink" href="#what-the-trainer-does" title="Permanent link">&para;</a></h2>
+<p><code>astra_rl/training/trainer.py</code> (the base Trainer class) is responsible for:</p>
+<ol>
+<li>Instantiating the <strong>optimizer</strong> that updates the attacker’s policy to reduce training loss.</li>
+<li>Instantiating the <strong>training harness</strong> (handles online data collection; you normally don’t edit this).</li>
+<li>Running the <strong>main training loop</strong> in <code>train()</code> using your config hyperparameters.
+   <strong>Note:</strong> the base loop <strong>does not</strong> perform evaluation, model saving, or logging.</li>
+</ol>
+<blockquote>
+<p>The harness calls your <strong>Algorithm</strong> on each batch and returns <code>(loss, step_logs)</code>. The base <code>Trainer</code> uses the loss for optimization and <strong>discards</strong> <code>step_logs</code>. Use 'HFASTTrainer' or override <code>train()</code> if you want logging/eval/checkpointing.</p>
+</blockquote>
+<h2 id="tldr-decision-guide">TL;DR decision guide<a class="headerlink" href="#tldr-decision-guide" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Just train, no eval/checkpointing?</strong> Use the base <code>Trainer</code> (Sections 1 &amp; 2).</li>
+<li><strong>Want periodic dev eval + HF checkpoints?</strong> Use <code>HFASTTrainer</code> / <code>HFASTConfiguration</code> (Sections 1 &amp; 3).</li>
+<li><strong>Need a custom loop/scheduler/saving policy?</strong> Subclass <code>Trainer</code> (Section 4).</li>
+</ul>
+<hr />
+<h2 id="1-define-your-trainingconfiguration-hyperparameters">1) Define your TrainingConfiguration (hyperparameters)<a class="headerlink" href="#1-define-your-trainingconfiguration-hyperparameters" title="Permanent link">&para;</a></h2>
+<p>Instantiate <code>TrainingConfiguration</code> with the knobs you care about. These values drive how the base trainer is initialized.</p>
+<pre><code class="language-python">from astra_rl import Trainer, TrainingConfiguration
 
-<p>The Trainer Class is defined at astra_rl/training/trainer.py . It has 3 core responsibilities: 1) it instantiates the optimizer which will update the attacker's policy to lower training loss. 2) it instantiates the training harness which handles collecting online training data (we advise leaving the harness code alone); 3) it conducts the main training loop in the train method. </p>
-<p>To use the Trainer CLass be sure to import the Trainer base class and the training configuration. like so </p>
-<pre><code class="language-python">from astra_rl import (
-    Trainer,
-    TrainingConfiguration,
+config = TrainingConfiguration(
+    lr=1e-5,
+    batch_size=4,
+    optimizer=&quot;adamw&quot;,                 # [&quot;adam&quot;, &quot;adamw&quot;, &quot;sgd&quot;, &quot;rmsprop&quot;, &quot;adagrad&quot;]
+    gradient_accumulation_steps=1,     # optimizer.step() every N backwards
+    training_steps=1000,               # number of calls to experience()
+    num_episodes_per_experience=2,     # rollouts per experience() call
 )
 </code></pre>
-<p>First, instantiate the training configuration with the training hyperparamaters you desire.</p>
-<pre><code class="language-python">
-</code></pre>
-<p>Then, instantiate an instance of the Trainer base class with your training config, environmnet and algorithm.</p>
-<p>Look over the simple train() method in the Trainer base class. If you are okay with how this training loop operates (optimizes attacker on training alg loss and DOES NOT 
-SAVE THE MODEL), you can simply use the base train method.</p>
-<p>If you want a more sophisticated approach that periodically runs the updated model on a development data set and continually saves (in Hugging face format) the best performing model, import the HFASTTrainer class and instantiate it with how frequently you wish to perform evaluations during training, your training config, environment and algorithm.</p>
 <blockquote>
-<p>Note: The Trainer class will instantiate the training harness. We encourage you to not change the code for the harness and instead adjust training through the trainer class, paramaters, environment or algorithm. </p>
+<p><strong>Note:</strong> <code>training_steps</code> = number of times we call <code>experience()</code>;
+<strong>Total rollouts ≈</strong> <code>training_steps × num_episodes_per_experience</code>.</p>
 </blockquote>
-<p>If you wish to further refine the training loop (including how/when the model is saved during training, adding features such as learning rate scheduling, or implementing a custom training loop design), this tutorial will help you create a custom training class!</p>
+<hr />
+<h2 id="2-fast-path-a-use-the-base-trainer-as-is">2) Fast path A — use the base <code>Trainer</code> as-is<a class="headerlink" href="#2-fast-path-a-use-the-base-trainer-as-is" title="Permanent link">&para;</a></h2>
+<p>If you’re happy with a simple loop that <strong>optimizes</strong> on the algorithm loss and <strong>does not</strong> eval, save, or log:</p>
+<pre><code class="language-python">trainer = Trainer(config=config, environment=env, algorithm=solver)
+trainer.train()  # base loop; no eval/checkpointing/logging
+</code></pre>
+<p>To save the final model afterward:</p>
+<pre><code class="language-python">problem.attacker.save_pretrained(&quot;final_ckpt&quot;)
+problem.tokenizer.save_pretrained(&quot;final_ckpt&quot;)
+</code></pre>
+<hr />
+<h2 id="3-fast-path-b-use-the-hf-compatible-trainer-with-periodic-eval-saving">3) Fast path B — use the HF-compatible trainer with periodic eval &amp; saving<a class="headerlink" href="#3-fast-path-b-use-the-hf-compatible-trainer-with-periodic-eval-saving" title="Permanent link">&para;</a></h2>
+<p>Preconfigured subclass that runs periodic dev evaluation and saves Hugging Face checkpoints.</p>
+<pre><code class="language-python">from astra_rl.ext.transformers.hf_ast_problem import (
+    HFASTTrainer,
+    HFASTConfiguration,
+)
+
+config  = HFASTConfiguration()  # or use your own TrainingConfiguration
+trainer = HFASTTrainer(
+    config=config,
+    environment=env,
+    algorithm=solver,
+    dev_prompts=DEV_PROMPTS,   # iterable of prompts
+    eval_every=100,            # run dev eval every N steps
+    ckpt_dir=&quot;checkpoints&quot;,    # where to save HF checkpoints
+)
+trainer.train()
+</code></pre>
+<hr />
+<h2 id="4-fully-custom-write-your-own-trainer-subclass">4) Fully custom — write your own <code>Trainer</code> subclass<a class="headerlink" href="#4-fully-custom-write-your-own-trainer-subclass" title="Permanent link">&para;</a></h2>
+<p>Use this when you need <strong>custom evaluation cadence</strong>, <strong>checkpointing</strong>, <strong>logging</strong>, <strong>LR scheduling</strong>, <strong>early stopping</strong>, etc. You <strong>may</strong> override <code>train()</code>; if you don’t, you inherit the base implementation.</p>
+<pre><code class="language-python">import os
+import torch
+from astra_rl import Trainer, TrainingConfiguration
+from astra_rl.logging import logger
+
+class MyConfig(TrainingConfiguration):
+    def __init__(self):
+        super().__init__(
+            lr=1e-5,
+            batch_size=4,
+            optimizer=&quot;adamw&quot;,
+            gradient_accumulation_steps=1,
+            training_steps=1000,
+            num_episodes_per_experience=2,
+        )
+        # Custom fields for your subclass:
+        self.eval_every = 100
+        self.ckpt_dir = &quot;checkpoints&quot;
+
+class MyTrainer(Trainer):
+    &quot;&quot;&quot;
+    Extends the base trainer with:
+      - periodic dev-set evaluation
+      - HF-format checkpointing
+      - optional grad accumulation
+    &quot;&quot;&quot;
+
+    def __init__(self, config: MyConfig, environment, algorithm, dev_prompts=None):
+        super().__init__(config, environment, algorithm)
+        self.dev_prompts = dev_prompts or []
+        os.makedirs(self.config.ckpt_dir, exist_ok=True)
+
+    # optional but encouraged
+    def _save_hf(self, step: int) -&gt; None:
+        &quot;&quot;&quot;Save your attacker and its tokenizer&quot;&quot;&quot;
+
+    # optional method
+    @torch.no_grad()
+    def _eval_dev(self, step: int, tag: str = &quot;dev&quot;):
+        &quot;&quot;&quot;Run a lightweight evaluation on dev prompts. Fill in your logic.&quot;&quot;&quot;
+        pass
+
+    # required method
+    def train(self):
+        &quot;&quot;&quot;Implement your custom training loop!&quot;&quot;&quot;
+        # see astra_rl.ext.transformers.hf_ast_problem for an implemented custom class example
+        pass        
+</code></pre>
+<hr />
+<h2 id="notes-best-practices">Notes &amp; best practices<a class="headerlink" href="#notes-best-practices" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Don’t modify the Harness</strong> unless you’re sure you can't change data-collection semantics though changes to the trainer/config/environment/algorithm.</li>
+<li><strong>Logging:</strong> only log scalars (detach tensors) to avoid retaining graphs: <code>logs["loss"] = float(loss.detach().item())</code>.</li>
+<li><strong>Checkpoints:</strong> saving the attacker/tokenizer is usually sufficient; if your algorithm maintains extra state, save that too.</li>
+<li><strong>Imports:</strong> to use the HF trainer directly,
+  <code>from astra_rl.ext.transformers.hf_ast_problem import HFASTTrainer, HFASTConfiguration</code>.</li>
+</ul>
 
 
 
@@ -538,7 +721,7 @@ SAVE THE MODEL), you can simply use the base train method.</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 2, 2025 13:01:52 UTC">2025-09-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 2, 2025 17:02:29 UTC">2025-09-02</span>
   </span>
 
     
