@@ -27,6 +27,7 @@ Your subclass must provide batched implementations (lists in, lists/tensors out)
 ---
 ## TODO: Allie add details on how to create a custom problem class that...
 * Works for **non-HF** models: user decides how to encode/decode/generate/forward.
+* For **non-HF** models: you must also change how you are saving models during training. For more information see [customize_training/trainers](trainers.md)
 * Keeps **log-prob masking** correct: compute `log P(continuation | context)` by masking out context tokens and summing over continuation tokens only.
 * Preserves **gradients** for the attacker but uses `no_grad` for target/baseline, matching PPO/DPO style solvers.
 

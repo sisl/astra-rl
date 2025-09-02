@@ -23,6 +23,9 @@ from transformers import (
 
 from astra_rl.core.moderator import Moderator
 from astra_rl.methods.ast_problem import ASTProblem
+from astra_rl.training.trainer import Trainer, TrainingConfiguration
+import os
+from astra_rl.logging import logger
 
 
 class HFASTProblem(ASTProblem):
@@ -201,6 +204,110 @@ class HFASTProblem(ASTProblem):
         logprobs = gathered.sum(dim=-1)
 
         return logprobs
+
+
+class HFASTConfiguration(TrainingConfiguration):
+    def __init__(self):
+        super().__init__(
+            lr=1e-5,
+            batch_size=4,
+            optimizer="adamw",
+            gradient_accumulation_steps=1,
+            training_steps=1000,
+            num_episodes_per_experience=2,
+        )
+
+
+class HFASTTrainer(Trainer):
+    """
+    Subclass that reuses base init (harness, optimizer, counters) and adds:
+      - periodic evaluation on a dev set
+      - checkpointing of the attacker/tokenizer
+    """
+
+    def __init__(
+        self,
+        config,
+        environment,
+        algorithm,
+        *,
+        dev_prompts=None,
+        eval_every=200,
+        ckpt_dir="checkpoints",
+    ):
+        super().__init__(config, environment, algorithm)
+        self.dev_prompts = dev_prompts or []
+        self.eval_every = max(1, int(eval_every))
+        self.best_score = float("-inf")
+        self.ckpt_dir = ckpt_dir
+        os.makedirs(self.ckpt_dir, exist_ok=True)
+        self.environment = self.harness.environment
+        self.problem = self.environment.problem
+
+    # helper function that saves the attacker model in HF format
+    def save(self, step: int | None, tag: str = "step"):
+        if tag == "best":
+            out = os.path.join(self.ckpt_dir, "best")  # single fixed path
+        else:
+            out = os.path.join(self.ckpt_dir, f"{tag}-{step}")
+
+        # Save attacker/target in HF format
+        os.makedirs(out, exist_ok=True)
+        self.problem.attacker.save_pretrained(out)
+        self.problem.tokenizer.save_pretrained(out)
+        logger.info(f"Saved checkpoint to {out}")
+
+    @torch.no_grad()
+    def eval_epoch(self, step: int, tag: str = "dev"):
+        if not self.dev_prompts:
+            return float("nan")
+
+        logger.info(f"EVALUATING after training step {step}...")
+        rewards = []
+        num_dev_prompts = len(self.dev_prompts)
+
+        # TODO batch later for speed
+        for indx, i in enumerate(self.dev_prompts):
+            if indx % 30 == 0:
+                logger.info(f"EVAULATED {indx}/{num_dev_prompts} steps...")
+            # perform a sigle eval rollout per dev prompt and collect a list of rewards
+            eval_rollout = self.environment.eval_rollout(i)
+            final_rollout_reward = self.environment.final_reward(eval_rollout)
+            rewards += [final_rollout_reward]
+
+        logger.info(f"EVAULATED {indx}/{num_dev_prompts} steps...")
+        dev_score = sum(rewards) / len(rewards)
+
+        if dev_score > self.best_score:
+            logger.info(f"NEW BEST! {round(dev_score, 3)}")
+            logger.info({"training/dev_score": dev_score}, step=step)
+            self.save(step, tag="best")
+        else:
+            logger.info(
+                f"Dev score did not improve: {round(dev_score, 3)} vs {round(self.best_score, 3)}"
+            )
+
+    # over-write the base Train class's train method to include eval and save
+    def train(self):
+        for step_num in range(self.config.training_steps):
+            # collect some experiences using current weights
+            buf = self.harness.experience()  # <- this is a torch dataloader
+            for i in buf:
+                # we compute the loss using the algorithm we chose
+                loss, step_logs = self.harness.step(i)
+
+                # this is normal optimization; feel free to do weight decay, etc.
+                loss.backward()
+                self.optimizer.step()
+                self.optimizer.zero_grad()
+
+                # Add custom and algorithm external logging here (e.g., step number)
+                step_logs["step"] = step_num
+                self.harness.log_current_step(step_logs)
+
+                # every x number of training steps, run a dev set eval and save the best model so far
+                if (step_num + 1) % self.eval_every == 0:
+                    self.eval_epoch(step=step_num + 1, tag="dev")
 
 
 __all__ = ("HFASTProblem",)
