@@ -1,9 +1,18 @@
-Trainer Class is defined at astra_rl/training/trainer.py
+The Trainer Class is defined at astra_rl/training/trainer.py . It has 3 core responsibilities: 1) it instantiates the optimizer which will update the attacker's policy to lower training loss. 2) it instantiates the training harness which handles collecting online training data (we advise leaving the harness code alone); 3) it conducts the main training loop in the train method. 
 
-To use it, must import the Trainer base class and the training configuration. 
+To use the Trainer CLass be sure to import the Trainer base class and the training configuration. like so 
+
+```python
+from astra_rl import (
+    Trainer,
+    TrainingConfiguration,
+)
+```
 
 First, instantiate the training configuration with the training hyperparamaters you desire.
+```python 
 
+```
 Then, instantiate an instance of the Trainer base class with your training config, environmnet and algorithm.
 
 Look over the simple train() method in the Trainer base class. If you are okay with how this training loop operates (optimizes attacker on training alg loss and DOES NOT 

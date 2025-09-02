@@ -254,7 +254,7 @@ class ExampleTrainer(Trainer):
                 f"Dev score did not improve: {round(dev_score, 3)} vs {round(self.best_score, 3)}"
             )
 
-    # overrite the base Train class's train method to include eval and save
+    # over-write the base Train class's train method to include eval and save
     def train(self):
         for step_num in range(self.config.training_steps):
             # collect some experiences using current weights
@@ -285,7 +285,7 @@ def main() -> None:
 
     # read in dev set of prompts
     with open("prompts_reddit_dev.json") as f:
-        dev_prompts = json.load(f)
+        DEV_PROMPTS = json.load(f)
 
     DEVICE = "cuda"  # cuda/cpu/mps
 
@@ -300,7 +300,7 @@ def main() -> None:
         config,
         env,
         solver,
-        dev_prompts=dev_prompts,
+        dev_prompts=DEV_PROMPTS,
         eval_every=100,
         ckpt_dir="checkpoints",
     )

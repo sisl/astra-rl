@@ -146,7 +146,7 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         Note:
             This method takes no arguments and returns nothing, and its
             only used for side effects. We don't really need it other than
-            it's helpful for allowing the user to contro when training
+            it's helpful for allowing the user to control when training
             actually starts (instead of immediately after Trainer construction).
         """
         for _ in range(self.config.training_steps):
