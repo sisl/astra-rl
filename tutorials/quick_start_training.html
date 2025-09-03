@@ -421,12 +421,12 @@
   
   
     <li class="md-nav__item">
-      <a href="running_an_evaluation.html" class="md-nav__link">
+      <a href="running_an_evaluation.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Running An Evaluation
+    None
     
   </span>
   
@@ -547,27 +547,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-7-create-the-training-harness" class="md-nav__link">
+  <a href="#step-7-train-the-attacker" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 7: Create the Training Harness
+      Step 7: Train the Attacker
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-8-train-the-attacker" class="md-nav__link">
+  <a href="#want-to-customize-the-training-configurationhyperparams-the-training-loop-or-model-savingeval-go-to-customize_trainingtrainers" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 8: Train the Attacker
+      Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to customize_training/trainers!
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#full-example-examplesast_hfpy" class="md-nav__link">
+  <a href="#full-examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Full Example: examples/ast_hf.py
+      Full Examples:
     </span>
   </a>
   
@@ -593,8 +593,8 @@
 
 
 <h1 id="quick-start-training-a-huggingface-attacker-with-astra-rl">Quick Start: Training a HuggingFace Attacker with ASTRA-RL<a class="headerlink" href="#quick-start-training-a-huggingface-attacker-with-astra-rl" title="Permanent link">&para;</a></h1>
-<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">RL - Perez*</a>, MALIBU*, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)?</p>
-<p>Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in less than 20 lines of code!</p>
+<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">RL - Perez</a>, MALIBU<em>, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)? </em>formulations coming soon</p>
+<p>Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!</p>
 <hr />
 <h2 id="step-1-setup">Step 1: Setup<a class="headerlink" href="#step-1-setup" title="Permanent link">&para;</a></h2>
 <p>Please see the <a href="../../README.md">README</a> for full setup instructions. Here's a quick recap:</p>
@@ -629,7 +629,7 @@ DEVICE = &quot;cuda&quot;  # or &quot;cpu&quot; if GPU is not available
 with open(&quot;prompts_reddit_train.json&quot;) as f:
     PROMPTS = json.load(f)
 </code></pre>
-<p>Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in astra-rl/examples/GPT2_v_GPT2/.</p>
+<p>Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in <a href="../examples/GPT2_v_GPT2/">basic examples</a>.</p>
 <p>The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.</p>
 <hr />
 <h2 id="step-4-instantiate-your-problem">Step 4: Instantiate Your Problem<a class="headerlink" href="#step-4-instantiate-your-problem" title="Permanent link">&para;</a></h2>
@@ -665,7 +665,7 @@ problem = HFASTProblem(&quot;gpt2&quot;, &quot;gpt2&quot;, &quot;gpt2&quot;, Det
 <p>By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:</p>
 <pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 </code></pre>
-<p>Want a different rollout graph structure or a multi-agent setup? See <a href="customize_training/envirnoments.html">customize_training/environments</a></p>
+<p>Want a different rollout graph structure or a multi-agent setup? See <a href="customize_training/envirnoments.md">customize_training/environments</a></p>
 <hr />
 <h2 id="step-6-choose-your-algorithm-and-optimizer">Step 6: Choose Your Algorithm and Optimizer<a class="headerlink" href="#step-6-choose-your-algorithm-and-optimizer" title="Permanent link">&para;</a></h2>
 <p>The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update attacker model weights 
@@ -676,36 +676,30 @@ optimizer = AdamW(problem.parameters(), lr=1e-5)
 </code></pre>
 <p>To integrate your own RL algorithm, see <a href="customize_training/solvers.html">customize_training/solvers</a></p>
 <hr />
-<h2 id="step-7-create-the-training-harness">Step 7: Create the Training Harness<a class="headerlink" href="#step-7-create-the-training-harness" title="Permanent link">&para;</a></h2>
-<p>The training harness wires your environment and solver together. It collects online experience and, for each batch, invokes the solver to compute the loss used to update the attacker’s policy. You typically won’t need to modify the harness code itself—adjust behavior via the harness parameters, environment, solver, or your outer training loop (e.g., schedules, logging, hyperparameters).</p>
-<pre><code class="language-python">harness = Harness(
+<h2 id="step-7-train-the-attacker">Step 7: Train the Attacker<a class="headerlink" href="#step-7-train-the-attacker" title="Permanent link">&para;</a></h2>
+<p>For the quick start approach, simply call our training configuration and trainer classes and start training!</p>
+<pre><code class="language-python"># instantiate the pre-configured HF-compatable configuration and traininer class
+config = HFASTConfiguration() # lr = 1e-5, batch size = 4, optimizer = &quot;adamw&quot;, no gradient accumulation, 1000 training steps, 2 episodes per experience
+# this trainer will train the attacker and evaluate it on a dev set every 100 steps, saving the best model to &quot;checkpoints&quot;
+trainer = HFASTTrainer(
+    config,
     env,
     solver,
-    num_episodes_per_experience=2,
-    use_wandb=True,
-    dataloader_kwargs={&quot;batch_size&quot;: 4},
+    dev_prompts=DEV_PROMPTS,
+    eval_every=100,
+    ckpt_dir=&quot;checkpoints&quot;,
 )
+trainer.train()
 </code></pre>
-<h2 id="step-8-train-the-attacker">Step 8: Train the Attacker<a class="headerlink" href="#step-8-train-the-attacker" title="Permanent link">&para;</a></h2>
-<p>Choose how many training steps/epochs to run. You have full control over the training loop—curriculum, evaluation cadence, checkpointing, learning-rate schedules, gradient clipping, and more.</p>
-<pre><code class="language-python">for step in range(1000):
-    # Collect experience rollouts from attacker-target interactions
-    buf = harness.experience()
-    for experience in buf:
-        # Compute loss using the solver (e.g., DPO)
-        loss, step_logs = harness.step(experience)
-
-        # Standard PyTorch optimization
-        loss.backward()
-        optimizer.step()
-        optimizer.zero_grad()
-
-        step_logs[&quot;step&quot;] = step
-        harness.log_current_step(step_logs)
-</code></pre>
-<hr />
-<h2 id="full-example-examplesast_hfpy">Full Example: <a href="../../examples/ast_hf.py">examples/ast_hf.py</a><a class="headerlink" href="#full-example-examplesast_hfpy" title="Permanent link">&para;</a></h2>
-<p>We provide a complete working example that mirrors this guide!</p>
+<blockquote>
+<p>The source code for the training configuration and trainer are at <a href="../src/ext/transformers/hf_ast_problem.py">hf_ast_problem</a></p>
+</blockquote>
+<h2 id="want-to-customize-the-training-configurationhyperparams-the-training-loop-or-model-savingeval-go-to-customize_trainingtrainers">Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to <a href="customize_training/trainers.html">customize_training/trainers</a>!<a class="headerlink" href="#want-to-customize-the-training-configurationhyperparams-the-training-loop-or-model-savingeval-go-to-customize_trainingtrainers" title="Permanent link">&para;</a></h2>
+<h2 id="full-examples">Full Examples:<a class="headerlink" href="#full-examples" title="Permanent link">&para;</a></h2>
+<p>We provide 3 complete working examples that mirror this guide!
+Hugging face example without trainer: <a href="../../examples/ast_hf.py">examples/ast_hf.py</a>
+Custom AST problem with trainer: <a href="../../examples/GPT2_v_GPT2/ast_trainer.py">examples/ast_trainer</a>
+Custom AST problem without trainer: <a href="../../examples/ast_basic.py">examples/ast_basic.py</a></p>
 
 
 
@@ -728,7 +722,7 @@ optimizer = AdamW(problem.parameters(), lr=1e-5)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 1, 2025 21:06:11 UTC">2025-09-01</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 3, 2025 21:56:11 UTC">2025-09-03</span>
   </span>
 
     

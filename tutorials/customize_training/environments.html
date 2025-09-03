@@ -12,7 +12,7 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/solvers.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/environments.html">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>How to Create a Custom Solver (RL Algorithm) - ASTRA-RL Toolbox Documentation</title>
+        <title>How to Customize the Environment - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-create-a-custom-solver-rl-algorithm" class="md-skip">
+        <a href="#how-to-customize-the-environment" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Create a Custom Solver (RL Algorithm)
+              How to Customize the Environment
             
           </span>
         </div>
@@ -493,47 +493,128 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#choose-your-data-contract" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
-      Choose your data contract
+      Table of Contents
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#creating-a-custom-solver" class="md-nav__link">
+  <a href="#1-ways-to-customize" class="md-nav__link">
     <span class="md-ellipsis">
-      Creating a custom Solver
+      1. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-fast-path-subclass-astenvironment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 Fast path: subclass ASTEnvironment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-full-control-subclass-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Full control: subclass Environment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-nodes-and-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Nodes and Graphs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-helpful-astproblem-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Helpful ASTProblem APIs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Best Practices &amp; Sanity Checks
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#plugging-your-solver-into-the-harness" class="md-nav__link">
+  <a href="#4-how-tos" class="md-nav__link">
     <span class="md-ellipsis">
-      Plugging your solver into the harness
+      4. How-Tos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. How-Tos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-create-a-custom-node-or-graph" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Create a custom Node or Graph
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#debug-checklist" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#42-change-rollout-widthdepth" class="md-nav__link">
     <span class="md-ellipsis">
-      Debug checklist
+      4.2 Change rollout width/depth
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#adapting-to-your-data" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#43-multi-agent-conversations-pseudocode" class="md-nav__link">
     <span class="md-ellipsis">
-      Adapting to your data
+      4.3 Multi-agent conversations (pseudocode)
     </span>
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -556,68 +637,180 @@
   
 
 
-<h1 id="how-to-create-a-custom-solver-rl-algorithm">How to Create a Custom Solver (RL Algorithm)<a class="headerlink" href="#how-to-create-a-custom-solver-rl-algorithm" title="Permanent link">&para;</a></h1>
-<p>In ASTRA-RL, a <strong>solver</strong> subclasses <code>Algorithm[...]</code> and implements three things:</p>
+<h1 id="how-to-customize-the-environment">How to Customize the Environment<a class="headerlink" href="#how-to-customize-the-environment" title="Permanent link">&para;</a></h1>
+<p>The <strong>environment</strong> defines how attacker–target interactions are generated and packaged for training and evaluation. It controls:</p>
+<ul>
+<li>how rollouts are generated (single path vs. tree),</li>
+<li>how states advance across turns,</li>
+<li>what per-step data (actions, responses, rewards) is stored,</li>
+<li>and what the solver receives as input.</li>
+</ul>
+<blockquote>
+<p><strong>Evaluation note.</strong> The environment also powers evaluation by running a single-path rollout (tree width = 1) and collecting metrics. See <a href="../quick_start_evaluation.html">quick_start_evaluation</a> for more details on evaluation.</p>
+</blockquote>
+<p>ASTRA-RL ships with <code>ASTEnvironment</code>, which mirrors the rollout structure used in <strong>ASTPrompter</strong>. You can subclass it—or the base <code>Environment</code>—to support:</p>
+<ul>
+<li>multi-agent conversations,</li>
+<li>tree-structured or flat trajectories,</li>
+<li>custom state-advance logic,</li>
+<li>alternative reward shaping or logging.</li>
+</ul>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
 <ol>
-<li><strong><code>flatten(graph)</code></strong> – turn a rollout <code>Graph</code> into a list of per-sample <strong>Steps</strong> your solver trains on</li>
-<li><strong><code>collate_fn(steps)</code></strong> – batch those steps into a <strong>Batch</strong> the harness can load via a DataLoader</li>
-<li><strong><code>step(batch)</code></strong> – compute the training <strong>loss</strong> (and log metrics), returning <code>(loss, logs)</code></li>
+<li>
+<p><a href="#1-ways-to-customize">Ways to Customize</a></p>
+</li>
+<li>
+<p><a href="#11-fast-path-subclass-astenvironment">1.1 Fast path: subclass <code>ASTEnvironment</code></a></p>
+</li>
+<li><a href="#12-full-control-subclass-environment">1.2 Full control: subclass <code>Environment</code></a></li>
+<li>
+<p><a href="#2-required-interface">Required Interface</a></p>
+</li>
+<li>
+<p><a href="#21-nodes-and-graphs">2.1 Nodes and Graphs</a></p>
+</li>
+<li><a href="#22-helpful-astproblem-apis">2.2 Helpful <code>ASTProblem</code> APIs</a></li>
+<li><a href="#3-best-practices--sanity-checks">Best Practices &amp; Sanity Checks</a></li>
+<li>
+<p><a href="#4-how-tos">How-Tos</a></p>
+</li>
+<li>
+<p><a href="#41-create-a-custom-node-or-graph">4.1 Create a custom Node or Graph</a></p>
+</li>
+<li><a href="#42-change-rollout-widthdepth">4.2 Change rollout width/depth</a></li>
+<li><a href="#43-multi-agent-conversations-pseudocode">4.3 Multi-agent conversations (pseudocode)</a></li>
 </ol>
-<p>This isolates “how we learn” (the solver) from “how data is collected” (the Environment) and “how models run/interact” (the Problem).</p>
 <hr />
-<h2 id="choose-your-data-contract">Choose your data contract<a class="headerlink" href="#choose-your-data-contract" title="Permanent link">&para;</a></h2>
-<p>First, define your own <code>@dataclass Step</code>/<code>Batch</code> to match your algorithm. These dataclasses determine what information is stored at each step 
-of learning and hold the information across a total batch. </p>
-<p>Example: </p>
-<pre><code class="language-python">from dataclasses import dataclass
-from typing import Any, Dict, Generic, List, Sequence, Tuple
-import torch
+<h2 id="1-ways-to-customize">1. Ways to Customize<a class="headerlink" href="#1-ways-to-customize" title="Permanent link">&para;</a></h2>
+<h3 id="11-fast-path-subclass-astenvironment">1.1 Fast path: subclass <code>ASTEnvironment</code><a class="headerlink" href="#11-fast-path-subclass-astenvironment" title="Permanent link">&para;</a></h3>
+<p>If your logic is “AST-like with a twist,” subclass <code>ASTEnvironment</code> and override only what you need (e.g., expansion logic, evaluation, or metrics extraction).</p>
+<pre><code class="language-python">from astra_rl import ASTProblem, ASTEnvironment
+from astra_rl.core.environment import Node, Graph
 
-from astra_rl.core.algorithm import Algorithm
-from astra_rl.core.common import StateT, ActionT
-from astra_rl.core.environment import Graph
+class MyASTVariant(ASTEnvironment):
+    &quot;&quot;&quot;ASTEnvironment with custom rollout behavior.&quot;&quot;&quot;
 
-# 1) Define your per-sample record
-@dataclass
-class MyStep(Generic[StateT, ActionT]):
-    context: StateT
-    action: ActionT
-    reward: float  # or returns/advantages/etc.
+    def __init__(self, problem: ASTProblem, prompts, tree_width=2, tree_depth=3):
+        super().__init__(problem, prompts, tree_width, tree_depth)
 
-# 2) Define your batch
-@dataclass
-class MyBatch(Generic[StateT, ActionT]):
-    contexts: Sequence[StateT]
-    actions: Sequence[ActionT]
-    rewards: torch.Tensor  # torch for math
+    # Example: override the recursive expansion
+    # def __handle_prompt(self, prompt, depth, width=None):
+    #     ...
 </code></pre>
-<hr />
-<h2 id="creating-a-custom-solver">Creating a custom Solver<a class="headerlink" href="#creating-a-custom-solver" title="Permanent link">&para;</a></h2>
-<p>TODO</p>
-<hr />
-<h2 id="plugging-your-solver-into-the-harness">Plugging your solver into the harness<a class="headerlink" href="#plugging-your-solver-into-the-harness" title="Permanent link">&para;</a></h2>
-<p>To integrate the solver, simply instantiate it in your main code and give it to the Trainer as a parameter. </p>
-<pre><code class="language-python">solver = MyAlgo(problem, kl_coeff=0.02)
-trainer = Trainer(config=config, environment=env, algorithm=solver)
+<h3 id="12-full-control-subclass-environment">1.2 Full control: subclass <code>Environment</code><a class="headerlink" href="#12-full-control-subclass-environment" title="Permanent link">&para;</a></h3>
+<p>If you want to design the rollout structure from scratch, subclass <code>Environment</code>. You implement <code>rollout()</code> (and any helpers you like) and return a <code>Graph</code> of <code>Node</code>s that your solver expects.</p>
+<pre><code class="language-python">from typing import Optional
+from astra_rl.core.environment import Environment, Node, Graph
+
+class MyCustomEnvironment(Environment[str, str]):
+    def rollout(self, seed: Optional[int] = None) -&gt; Graph[str, str]:
+        # Build and return a Graph made of Node[str, str]
+        ...
 </code></pre>
+<blockquote>
+<p>Use your <code>Problem</code>’s batch helpers for attacker/target calls and rewards. It keeps code concise and fast.</p>
+</blockquote>
 <hr />
-<h2 id="debug-checklist">Debug checklist<a class="headerlink" href="#debug-checklist" title="Permanent link">&para;</a></h2>
+<h2 id="2-required-interface">2. Required Interface<a class="headerlink" href="#2-required-interface" title="Permanent link">&para;</a></h2>
+<h3 id="21-nodes-and-graphs">2.1 Nodes and Graphs<a class="headerlink" href="#21-nodes-and-graphs" title="Permanent link">&para;</a></h3>
+<p>Your environment’s <code>rollout()</code> <strong>must</strong> return:</p>
 <ul>
-<li><strong>Shapes</strong>: <code>flatten</code> produces a list; <code>collate_fn</code> returns tensors/seqs with consistent lengths.</li>
-<li><strong>Gradient flow</strong>: only <code>get_attacker_logprobs</code> should require grad; keep target/baseline calls in <code>torch.no_grad()</code>.</li>
-<li><strong>Rewards</strong>: are finite and roughly bounded; consider normalization or clipping.</li>
-<li><strong>KL anchor</strong>: if training diverges, raise <code>kl_coeff</code> (or use adaptive control).</li>
-<li><strong>Tree width</strong>: preference algorithms need <code>tree_width ≥ 2</code>; reward methods are simplest with <code>tree_width = 1</code>.</li>
-<li><strong>Determinism</strong>: seed env rollouts to reproduce a bug.</li>
+<li><code>Graph(context: str, children: list[Node])</code></li>
+<li><code>Node(context: str, attack: str, response: str, reward: float, children: list[Node])</code></li>
 </ul>
-<hr />
-<h2 id="adapting-to-your-data">Adapting to your data<a class="headerlink" href="#adapting-to-your-data" title="Permanent link">&para;</a></h2>
+<p>At a minimum, each node should capture:</p>
 <ul>
-<li>Per-turn rewards? Put them into <code>MyStep</code> and compute <strong>returns</strong> (discounted sum) in <code>flatten</code> or <code>collate_fn</code>.</li>
-<li>Off-policy data? Add <code>old_logp</code> to <code>MyStep</code> and implement importance sampling/clip.</li>
-<li>Extra features (toxicity, length, success flags)? Add fields to <code>MyStep</code> and use them in the loss.</li>
+<li><code>context</code> — state so far (e.g., conversation text),</li>
+<li><code>attack</code> — attacker’s utterance / action,</li>
+<li><code>response</code> — target/defender’s utterance / reply,</li>
+<li><code>reward</code> — scalar float for this turn,</li>
+<li><code>children</code> — next steps; empty for leaves.</li>
 </ul>
+<blockquote>
+<p><strong>Solver contract.</strong> Make sure the structure and fields match what your solver consumes.
+• Preference-based methods (DPO/IPO/ORPO) usually want <strong>pairs</strong> → use <code>tree_width ≥ 2</code>.
+• Reward-based policy gradients (PPO/A2C) don’t need pairs → <code>tree_width = 1</code> is typical.</p>
+</blockquote>
+<h3 id="22-helpful-astproblem-apis">2.2 Helpful <code>ASTProblem</code> APIs<a class="headerlink" href="#22-helpful-astproblem-apis" title="Permanent link">&para;</a></h3>
+<p>If you are using the 'ASTProblem' note these batch-friendly methods you’ll typically call during rollout:</p>
+<ul>
+<li><code>rollout_prompt_with_attacker(prompts: Sequence[str]) -&gt; Sequence[str]</code></li>
+<li><code>rollout_prompt_with_target(prompts: Sequence[str]) -&gt; Sequence[str]</code></li>
+<li><code>reward(prompts, attacks, responses) -&gt; Sequence[float]</code></li>
+<li><code>advance(prompt, attack, response) -&gt; str</code> <em>(builds the next state)</em></li>
+</ul>
+<blockquote>
+<p>These APIs are <strong>vectorized</strong>—pass lists (even length-1) for simplicity and speed.</p>
+</blockquote>
 <hr />
+<h2 id="3-best-practices-sanity-checks">3. Best Practices &amp; Sanity Checks<a class="headerlink" href="#3-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Prefer batch calls.</strong> Avoid per-item model calls in tight loops.</li>
+<li><strong>Determinism.</strong> Thread a <code>seed</code> through <code>rollout()</code> for reproducibility.</li>
+<li><strong>Depth/width off-by-one.</strong> Depth <code>0</code> should produce <strong>no</strong> nodes; verify expected leaf counts.</li>
+<li><strong>Always use <code>advance()</code>.</strong> Even if it’s simple concatenation now, it future-proofs your code.</li>
+<li><strong>Context length.</strong> Let the <code>Problem</code> handle truncation; the environment shouldn’t assume token limits.</li>
+<li><strong>Check your environment by printing a few rollouts.</strong></li>
+</ul>
+<p><code>python
+  g = env.rollout(seed=7)
+  print("ROOT:", g.context)
+  for i, n in enumerate(g.children):
+      print(f"[{i}] atk={n.attack!r} rsp={n.response!r} "
+            f"rew={n.reward:.3f} children={len(n.children)}")</code></p>
+<hr />
+<h2 id="4-how-tos">4. How-Tos<a class="headerlink" href="#4-how-tos" title="Permanent link">&para;</a></h2>
+<h3 id="41-create-a-custom-node-or-graph">4.1 Create a custom Node or Graph<a class="headerlink" href="#41-create-a-custom-node-or-graph" title="Permanent link">&para;</a></h3>
+<p>Need extra metadata (e.g., per-turn safety tags, KL terms, timestamps)? Subclass <code>Node</code> to take in additional data as shown below.</p>
+<pre><code class="language-python">from typing import List, Iterable, Optional, Tuple
+
+# example custom node creation
+class CustomNode(Node[str, str]):
+    &quot;&quot;&quot;
+    A Node with extra per-turn metadata for evaluation/training diagnostics.
+    Compatible anywhere a plain Node is expected (isinstance(CustomNode, Node) == True).
+    &quot;&quot;&quot;
+
+    def __init__(
+        self,
+        context: str,
+        attack: str,
+        response: str,
+        reward: float,
+        children: Sequence[&quot;Node[str, str]&quot;],
+        *,
+        attack_tox: float = 0.0,
+        target_tox: float = 0.0,
+        attack_logprob: float = 0.0,
+    ):
+        # Initialize the base Node fields first
+        super().__init__(context, attack, response, reward, list(children))
+        # Then attach your custom metrics
+        self.attack_tox: float = float(attack_tox)
+        self.target_tox: float = float(target_tox)
+        self.attack_logprob: float = float(attack_logprob)
+</code></pre>
+<blockquote>
+<p>Keep the original fields intact so existing solvers remain compatible.</p>
+</blockquote>
+<h3 id="42-change-rollout-widthdepth">4.2 Change rollout width/depth<a class="headerlink" href="#42-change-rollout-widthdepth" title="Permanent link">&para;</a></h3>
+<p>Adjust at environment construction time:</p>
+<pre><code class="language-python">from astra_rl import ASTEnvironment
+
+# 4 attacker continuations per context, depth of 2 attacker–defender turns
+env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=2)
+</code></pre>
+<blockquote>
+<p><strong>Cost warning.</strong> Width × depth increases compute and memory quickly—scale carefully.</p>
+</blockquote>
+<h3 id="43-multi-agent-conversations-pseudocode">4.3 Multi-agent conversations (pseudocode)<a class="headerlink" href="#43-multi-agent-conversations-pseudocode" title="Permanent link">&para;</a></h3>
+<p>To support multi-agent conversations, you will need to query all participating models when building the rollout. This will occur in your environment (likely in modifications to __handle_rollout or rollout) but it is largely up to you on how you want to style it. For example, one approach would be to subclasses <code>ASTEnvironment</code> and override the internal expansion to call <strong>K</strong> defenders, combine their responses, and reduce rewards. However, you can structure how you call the agents and how you want to model rewards to fit your needs. </p>
+<blockquote>
+<p>If you maintain the same Node type (Node(context: str, attack: str, response: str, reward: float, children: List[Node])) and return a graph, you will be able to plug into available solvers. However, deviating from this structure may require you to create a custom solver to interpret the custom rollouts and calculate loss accordingly. </p>
+<p>Training with multiple agents multiplies compute: each node now triggers more model calls and stores more data.</p>
+</blockquote>
 
 
 
@@ -650,7 +843,7 @@ trainer = Trainer(config=config, environment=env, algorithm=solver)
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 28, 2025 16:29:28 UTC">2025-08-28</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 5, 2025 19:26:05 UTC">2025-08-05</span>
   </span>
 
     
