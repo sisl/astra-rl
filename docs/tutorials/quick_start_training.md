@@ -1,8 +1,9 @@
 # Quick Start: Training a HuggingFace Attacker with ASTRA-RL
 
-Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez*](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))?
+Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *formulations coming soon
 
-Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in less than 20 lines of code!
+
+Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!
 
 ---
 
@@ -50,7 +51,7 @@ with open("prompts_reddit_train.json") as f:
     PROMPTS = json.load(f)
 ```
 
-Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in astra-rl/examples/GPT2_v_GPT2/.
+Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in [basic examples](../examples/GPT2_v_GPT2/).
 
 The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
@@ -118,46 +119,36 @@ solver = DPO(problem)
 optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
- To integrate your own RL algorithm, see [customize_training/solvers](customize_training/solvers.md)
+To integrate your own RL algorithm, see [customize_training/solvers](customize_training/solvers.md)
 
 ---
 
-## Step 7: Create the Training Harness
+## Step 7: Train the Attacker
 
-The training harness wires your environment and solver together. It collects online experience and, for each batch, invokes the solver to compute the loss used to update the attacker’s policy. You typically won’t need to modify the harness code itself—adjust behavior via the harness parameters, environment, solver, or your outer training loop (e.g., schedules, logging, hyperparameters).
-
-```python 
-harness = Harness(
-    env,
-    solver,
-    num_episodes_per_experience=2,
-    use_wandb=True,
-    dataloader_kwargs={"batch_size": 4},
-)
-```
-
-## Step 8: Train the Attacker
-
-Choose how many training steps/epochs to run. You have full control over the training loop—curriculum, evaluation cadence, checkpointing, learning-rate schedules, gradient clipping, and more.
+For the quick start approach, simply call our training configuration and trainer classes and start training!
 
 ```python
-for step in range(1000):
-    # Collect experience rollouts from attacker-target interactions
-    buf = harness.experience()
-    for experience in buf:
-        # Compute loss using the solver (e.g., DPO)
-        loss, step_logs = harness.step(experience)
-
-        # Standard PyTorch optimization
-        loss.backward()
-        optimizer.step()
-        optimizer.zero_grad()
-
-        step_logs["step"] = step
-        harness.log_current_step(step_logs)
+# instantiate the pre-configured HF-compatable configuration and traininer class
+config = HFASTConfiguration() # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
+# this trainer will train the attacker and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+trainer = HFASTTrainer(
+    config,
+    env,
+    solver,
+    dev_prompts=DEV_PROMPTS,
+    eval_every=100,
+    ckpt_dir="checkpoints",
+)
+trainer.train()
 ```
+> The source code for the training configuration and trainer are at [hf_ast_problem](../src/ext/transformers/hf_ast_problem.py)
 
+Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to [customize_training/trainers](customize_training/trainers.md)!
 ---
 
-## Full Example: [examples/ast_hf.py](../../examples/ast_hf.py)
-We provide a complete working example that mirrors this guide!
+## Full Examples: 
+We provide 3 complete working examples that mirror this guide!
+Hugging face example without trainer: [examples/ast_hf.py](../../examples/ast_hf.py)
+Custom AST problem with trainer: [examples/ast_trainer](../../examples/GPT2_v_GPT2/ast_trainer.py)
+Custom AST problem without trainer: [examples/ast_basic.py](../../examples/ast_basic.py)
+

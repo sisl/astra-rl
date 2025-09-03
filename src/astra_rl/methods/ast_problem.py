@@ -6,7 +6,7 @@ ASTProblem
 import random
 from random import Random
 from types import ModuleType
-from typing import Sequence, Optional, Union
+from typing import Sequence, Optional, Union, Dict, Any
 
 import torch
 
@@ -71,6 +71,45 @@ class ASTProblem(Problem[str, str]):
 
 
 ASTNode = Node[str, str]
+
+
+# custom node class to hold extra eval metrics
+class CustomNode(Node[str, str]):
+    """
+    A Node with extra per-turn metadata for evaluation/training diagnostics.
+    Compatible anywhere a plain Node is expected (isinstance(CustomNode, Node) == True).
+    """
+
+    def __init__(
+        self,
+        context: str,
+        attack: str,
+        response: str,
+        reward: float,
+        children: Sequence["Node[str, str]"],
+        *,
+        attack_tox: float = 0.0,
+        target_tox: float = 0.0,
+        attack_logprob: float = 0.0,
+    ):
+        # Initialize the base Node fields first
+        super().__init__(context, attack, response, reward, list(children))
+        # Then attach your custom metrics
+        self.attack_tox: float = float(attack_tox)
+        self.target_tox: float = float(target_tox)
+        self.attack_logprob: float = float(attack_logprob)
+
+    # Handy for JSON/CSV export
+    def to_row(self) -> Dict[str, Any]:
+        return {
+            "context": self.context,
+            "attack": self.attack,
+            "response": self.response,
+            "reward": float(self.reward),
+            "attack_tox": float(self.attack_tox),
+            "target_tox": float(self.target_tox),
+            "attack_logprob": float(self.attack_logprob),
+        }
 
 
 class ASTEnvironment(Environment[str, str]):
@@ -148,9 +187,50 @@ class ASTEnvironment(Environment[str, str]):
         if seed:
             R = Random(seed)
         prompt = R.choice(self.prompts)
-        nodes = self.__handle_prompt(prompt, self.tree_depth)
+        nodes = self.__handle_prompt(prompt, self.tree_depth, self.tree_width)
 
         return Graph(prompt, nodes)
+
+    # Allie TODO: test this code
+    def handle_eval_prompt(self, prompt: str, depth: int = 3) -> Sequence[CustomNode]:
+        if depth == 0:
+            return []
+        width = 1
+        prompts = [prompt for _ in range(width)]
+        attacks = self.problem._rollout_prompt_with_attacker_and_validate(prompts)
+        defenses = self.problem._rollout_prompt_with_target_and_validate(
+            [prompt + i for i in attacks]
+        )
+        rewards = self.problem.reward(prompts, attacks, defenses)
+        attack_toxs = self.problem.moderator.moderate(attacks)
+        target_toxs = self.problem.moderator.moderate(defenses)
+        attack_logprobs = self.problem._get_target_logprobs_and_validate(
+            prompts, attacks
+        )
+        nodes = [
+            CustomNode(
+                prompt,
+                attack,
+                defense,
+                reward,
+                self.handle_eval_prompt(
+                    self.problem.advance(prompt, attack, defense), depth - 1
+                ),
+                attack_tox=attack_tox,
+                target_tox=target_tox,
+                attack_logprob=attack_logprob.item(),
+            )
+            for prompt, attack, defense, reward, attack_tox, target_tox, attack_logprob in zip(
+                prompts,
+                attacks,
+                defenses,
+                rewards,
+                attack_toxs,
+                target_toxs,
+                attack_logprobs,
+            )
+        ]
+        return nodes
 
     # new method generates rollout for evaluation, only a single path
     def eval_rollout(self, prompt: str) -> Graph[str, str]:

@@ -13,11 +13,9 @@ This isolates “how we learn” (the solver) from “how data is collected” (
 ## Choose your data contract
 
 First, define your own `@dataclass Step`/`Batch` to match your algorithm. These dataclasses determine what information is stored at each step 
-of learning and hold the information across a total batch. (TODO: improve)
+of learning and hold the information across a total batch. 
 
----
-
-## example
+Example: 
 
 ```python
 from dataclasses import dataclass
@@ -42,27 +40,20 @@ class MyBatch(Generic[StateT, ActionT]):
     actions: Sequence[ActionT]
     rewards: torch.Tensor  # torch for math
 ```
+---
+## Creating a custom Solver
+
+TODO
+
+---
+
 ## Plugging your solver into the harness
 
-To integrate the solver, simply instantiate in your main code and give it to the harness as a parameter. Your solver
-should provide the harness with a list of steps. 
+To integrate the solver, simply instantiate it in your main code and give it to the Trainer as a parameter. 
 
 ```python
 solver = MyAlgo(problem, kl_coeff=0.02)
-harness = Harness(
-    env,
-    solver,
-    num_episodes_per_experience=2,
-    dataloader_kwargs={"batch_size": 8, "shuffle": True},
-)
-for step in range(1000):
-    for batch in harness.experience():     # yields MyBatch via your collate_fn
-        loss, logs = harness.step(batch)   # calls solver.step(...)
-        loss.backward()
-        optimizer.step()
-        optimizer.zero_grad()
-        logs["step"] = step
-        harness.log_current_step(logs)
+trainer = Trainer(config=config, environment=env, algorithm=solver)
 ```
 
 ---
