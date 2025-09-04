@@ -22,7 +22,7 @@
     
     
       
-        <title>How to create a custom TrainingConfiguration and Trainer (ASTRA-RL) - ASTRA-RL Toolbox Documentation</title>
+        <title>How to Customize the Trainer - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-create-a-custom-trainingconfiguration-and-trainer-astra-rl" class="md-skip">
+        <a href="#how-to-customize-the-trainer" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to create a custom TrainingConfiguration and Trainer (ASTRA-RL)
+              How to Customize the Trainer
             
           </span>
         </div>
@@ -493,63 +493,171 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#what-the-trainer-does" class="md-nav__link">
+  <a href="#table-of-contents" class="md-nav__link">
     <span class="md-ellipsis">
-      What the Trainer does
+      Table of Contents
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#tldr-decision-guide" class="md-nav__link">
+  <a href="#1-what-trainers-do" class="md-nav__link">
     <span class="md-ellipsis">
-      TL;DR decision guide
+      1. What Trainers Do
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#1-define-your-trainingconfiguration-hyperparameters" class="md-nav__link">
+  <a href="#2-built-in-trainers" class="md-nav__link">
     <span class="md-ellipsis">
-      1) Define your TrainingConfiguration (hyperparameters)
+      2. Built-in Trainers
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-fast-path-a-use-the-base-trainer-as-is" class="md-nav__link">
+  <a href="#3-ways-to-customize" class="md-nav__link">
     <span class="md-ellipsis">
-      2) Fast path A — use the base Trainer as-is
+      3. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-fast-path-use-the-base-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Fast path: use the base Trainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-fast-path-hf-compatible-trainer-hfasttrainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Fast path: HF-compatible trainer (HFASTTrainer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-full-control-subclass-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Full control: subclass Trainer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-trainingconfiguration-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 TrainingConfiguration knobs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-what-the-trainer-expects-from-the-harnessalgorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 What the Trainer expects from the Harness/Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Best Practices &amp; Sanity Checks
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-fast-path-b-use-the-hf-compatible-trainer-with-periodic-eval-saving" class="md-nav__link">
+  <a href="#6-how-tos" class="md-nav__link">
     <span class="md-ellipsis">
-      3) Fast path B — use the HF-compatible trainer with periodic eval &amp; saving
+      6. How-Tos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. How-Tos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-minimal-usage-of-the-base-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Minimal usage of the base Trainer
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#4-fully-custom-write-your-own-trainer-subclass" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#62-periodic-eval-hf-checkpoints-via-hfasttrainer" class="md-nav__link">
     <span class="md-ellipsis">
-      4) Fully custom — write your own Trainer subclass
+      6.2 Periodic eval + HF checkpoints via HFASTTrainer
     </span>
   </a>
   
 </li>
+        
+          <li class="md-nav__item">
+  <a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Write a custom trainer with eval, saving, and grad accumulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-early-stopping-or-custom-lr-schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Early stopping or custom LR schedules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#notes-best-practices" class="md-nav__link">
+  <a href="#7-full-examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Notes &amp; best practices
+      7. Full Examples
     </span>
   </a>
   
@@ -574,74 +682,146 @@
   
 
 
-<h1 id="how-to-create-a-custom-trainingconfiguration-and-trainer-astra-rl">How to create a custom <strong>TrainingConfiguration</strong> and <strong>Trainer</strong> (ASTRA-RL)<a class="headerlink" href="#how-to-create-a-custom-trainingconfiguration-and-trainer-astra-rl" title="Permanent link">&para;</a></h1>
-<h2 id="what-the-trainer-does">What the <code>Trainer</code> does<a class="headerlink" href="#what-the-trainer-does" title="Permanent link">&para;</a></h2>
-<p><code>astra_rl/training/trainer.py</code> (the base Trainer class) is responsible for:</p>
+<h1 id="how-to-customize-the-trainer">How to Customize the Trainer<a class="headerlink" href="#how-to-customize-the-trainer" title="Permanent link">&para;</a></h1>
+<p><strong>Trainers</strong> run the optimization loop that updates your attacker. They wire together the <strong>environment</strong> (rollout collection), the <strong>algorithm/solver</strong> (computes a loss from rollouts), and the <strong>optimizer</strong> (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.</p>
+<p>This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Instantiating the <strong>optimizer</strong> that updates the attacker’s policy to reduce training loss.</li>
-<li>Instantiating the <strong>training harness</strong> (handles online data collection; you normally don’t edit this).</li>
-<li>Running the <strong>main training loop</strong> in <code>train()</code> using your config hyperparameters.
-   <strong>Note:</strong> the base loop <strong>does not</strong> perform evaluation, model saving, or logging.</li>
+<li><a href="#1-what-trainers-do">What Trainers Do</a></li>
+<li><a href="#2-built-in-trainers">Built-in Trainers</a></li>
+<li>
+<p><a href="#3-ways-to-customize">Ways to Customize</a></p>
+</li>
+<li>
+<p><a href="#31-fast-path-use-the-base-trainer">3.1 Fast path: use the base <code>Trainer</code></a></p>
+</li>
+<li><a href="#32-fast-path-hf-compatible-trainer-hfastrainer">3.2 Fast path: HF-compatible trainer (<code>HFASTTrainer</code>)</a></li>
+<li><a href="#33-full-control-subclass-trainer">3.3 Full control: subclass <code>Trainer</code></a></li>
+<li>
+<p><a href="#4-required-interface">Required Interface</a></p>
+</li>
+<li>
+<p><a href="#41-trainingconfiguration-knobs">4.1 <code>TrainingConfiguration</code> knobs</a></p>
+</li>
+<li><a href="#42-what-the-trainer-expects-from-the-harnessalgorithm">4.2 What the Trainer expects from the Harness/Algorithm</a></li>
+<li><a href="#5-best-practices--sanity-checks">Best Practices &amp; Sanity Checks</a></li>
+<li>
+<p><a href="#6-how-tos">How-Tos</a></p>
+</li>
+<li>
+<p><a href="#61-minimal-usage-of-the-base-trainer">6.1 Minimal usage of the base <code>Trainer</code></a></p>
+</li>
+<li><a href="#62-periodic-eval--hf-checkpoints-via-hfastrainer">6.2 Periodic eval + HF checkpoints via <code>HFASTTrainer</code></a></li>
+<li><a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation">6.3 Write a custom trainer with eval, saving, and grad accumulation</a></li>
+<li><a href="#64-early-stopping-or-custom-lr-schedules">6.4 Early stopping or custom LR schedules</a></li>
+<li><a href="#7-full-examples">Full Examples</a></li>
 </ol>
+<hr />
+<h2 id="1-what-trainers-do">1. What Trainers Do<a class="headerlink" href="#1-what-trainers-do" title="Permanent link">&para;</a></h2>
+<p>The base trainer in <code>astra_rl/training/trainer.py</code> is responsible for:</p>
+<ol>
+<li><strong>Optimizer setup</strong> — creates the optimizer that updates the attacker’s weights.</li>
+<li><strong>Harness orchestration</strong> — uses the <strong>Harness</strong> to collect rollouts and feed batches to your <strong>Algorithm</strong> (solver).</li>
+<li><strong>Main training loop</strong> — calls <code>train()</code> to iterate for <code>training_steps</code>.</li>
+</ol>
+<p><strong>Important:</strong> the base loop is intentionally minimal. It <strong>does not</strong> perform evaluation, checkpointing, or external logging.</p>
 <blockquote>
-<p>The harness calls your <strong>Algorithm</strong> on each batch and returns <code>(loss, step_logs)</code>. The base <code>Trainer</code> uses the loss for optimization and <strong>discards</strong> <code>step_logs</code>. Use 'HFASTTrainer' or override <code>train()</code> if you want logging/eval/checkpointing.</p>
+<p>The Harness invokes your <strong>Algorithm</strong> on each batch and returns <code>(loss, step_logs)</code>. The base <code>Trainer</code> uses the loss for backprop and <strong>discards</strong> <code>step_logs</code>. Use <code>HFASTTrainer</code> or subclass <code>Trainer</code> if you need logging/eval/checkpointing.</p>
 </blockquote>
-<h2 id="tldr-decision-guide">TL;DR decision guide<a class="headerlink" href="#tldr-decision-guide" title="Permanent link">&para;</a></h2>
+<hr />
+<h2 id="2-built-in-trainers">2. Built-in Trainers<a class="headerlink" href="#2-built-in-trainers" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Just train, no eval/checkpointing?</strong> Use the base <code>Trainer</code> (Sections 1 &amp; 2).</li>
-<li><strong>Want periodic dev eval + HF checkpoints?</strong> Use <code>HFASTTrainer</code> / <code>HFASTConfiguration</code> (Sections 1 &amp; 3).</li>
-<li><strong>Need a custom loop/scheduler/saving policy?</strong> Subclass <code>Trainer</code> (Section 4).</li>
+<li><strong><code>Trainer</code> (base)</strong> — minimal loop: collect → compute loss → optimize. No eval/saving/logging.</li>
+<li><strong><code>HFASTTrainer</code></strong> — Hugging Face–friendly trainer that performs <strong>periodic dev evaluation</strong> and <strong>saves HF checkpoints</strong>, driven by <code>HFASTConfiguration</code> (or your own config).</li>
 </ul>
 <hr />
-<h2 id="1-define-your-trainingconfiguration-hyperparameters">1) Define your TrainingConfiguration (hyperparameters)<a class="headerlink" href="#1-define-your-trainingconfiguration-hyperparameters" title="Permanent link">&para;</a></h2>
-<p>Instantiate <code>TrainingConfiguration</code> with the knobs you care about. These values drive how the base trainer is initialized.</p>
-<pre><code class="language-python">from astra_rl import Trainer, TrainingConfiguration
+<h2 id="3-ways-to-customize">3. Ways to Customize<a class="headerlink" href="#3-ways-to-customize" title="Permanent link">&para;</a></h2>
+<h3 id="31-fast-path-use-the-base-trainer">3.1 Fast path: use the base <code>Trainer</code><a class="headerlink" href="#31-fast-path-use-the-base-trainer" title="Permanent link">&para;</a></h3>
+<p>If you just want a lean optimization loop (no eval/checkpointing/logging), use <code>Trainer</code> with a <code>TrainingConfiguration</code>. See <a href="#61-minimal-usage-of-the-base-trainer">6.1</a>.</p>
+<h3 id="32-fast-path-hf-compatible-trainer-hfasttrainer">3.2 Fast path: HF-compatible trainer (<code>HFASTTrainer</code>)<a class="headerlink" href="#32-fast-path-hf-compatible-trainer-hfasttrainer" title="Permanent link">&para;</a></h3>
+<p>If you want periodic dev evaluation and automatic Hugging Face checkpointing, use <code>HFASTTrainer</code> with <code>HFASTConfiguration</code>. See <a href="#62-periodic-eval--hf-checkpoints-via-hfastrainer">6.2</a>.</p>
+<h3 id="33-full-control-subclass-trainer">3.3 Full control: subclass <code>Trainer</code><a class="headerlink" href="#33-full-control-subclass-trainer" title="Permanent link">&para;</a></h3>
+<p>Need custom evaluation cadence, model-saving policy, learning-rate schedules, gradient accumulation, early stopping, or logging destinations (e.g., Weights &amp; Biases)? Subclass <code>Trainer</code> and override <code>train()</code> (and optional helpers). See <a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation">6.3</a> and <a href="#64-early-stopping-or-custom-lr-schedules">6.4</a>.</p>
+<hr />
+<h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
+<h3 id="41-trainingconfiguration-knobs">4.1 <code>TrainingConfiguration</code> knobs<a class="headerlink" href="#41-trainingconfiguration-knobs" title="Permanent link">&para;</a></h3>
+<p>Instantiate <code>TrainingConfiguration</code> with the hyperparameters you care about. These values drive how the trainer and optimizer are initialized.</p>
+<pre><code class="language-python">from astra_rl import TrainingConfiguration
 
 config = TrainingConfiguration(
     lr=1e-5,
     batch_size=4,
-    optimizer=&quot;adamw&quot;,                 # [&quot;adam&quot;, &quot;adamw&quot;, &quot;sgd&quot;, &quot;rmsprop&quot;, &quot;adagrad&quot;]
-    gradient_accumulation_steps=1,     # optimizer.step() every N backwards
-    training_steps=1000,               # number of calls to experience()
-    num_episodes_per_experience=2,     # rollouts per experience() call
+    optimizer=&quot;adamw&quot;,                 # one of [&quot;adam&quot;, &quot;adamw&quot;, &quot;sgd&quot;, &quot;rmsprop&quot;, &quot;adagrad&quot;]
+    gradient_accumulation_steps=1,     # call optimizer.step() every N backward passes
+    training_steps=1000,               # number of experience() calls
+    num_episodes_per_experience=2,     # rollouts sampled per experience() call
 )
 </code></pre>
-<blockquote>
-<p><strong>Note:</strong> <code>training_steps</code> = number of times we call <code>experience()</code>;
-<strong>Total rollouts ≈</strong> <code>training_steps × num_episodes_per_experience</code>.</p>
-</blockquote>
+<ul>
+<li><strong><code>training_steps</code></strong> = number of Harness <code>experience()</code> iterations.</li>
+<li><strong>Approx. total rollouts</strong> ≈ <code>training_steps × num_episodes_per_experience</code>.</li>
+</ul>
+<h3 id="42-what-the-trainer-expects-from-the-harnessalgorithm">4.2 What the Trainer expects from the Harness/Algorithm<a class="headerlink" href="#42-what-the-trainer-expects-from-the-harnessalgorithm" title="Permanent link">&para;</a></h3>
+<ul>
+<li>The <strong>Harness</strong> returns an iterable/batches of experiences.</li>
+<li>For each batch, the trainer calls the <strong>Algorithm</strong> (solver) via the Harness to process the experience and obtain:</li>
+</ul>
+<p><code>python
+  loss, step_logs = harness.step(batch)</code></p>
+<ul>
+<li><code>loss</code>: a scalar tensor used for backprop.</li>
+<li><code>step_logs</code>: optional dict of scalars (e.g., reward stats). The <strong>base</strong> trainer ignores these; custom trainers can log them.</li>
+</ul>
 <hr />
-<h2 id="2-fast-path-a-use-the-base-trainer-as-is">2) Fast path A — use the base <code>Trainer</code> as-is<a class="headerlink" href="#2-fast-path-a-use-the-base-trainer-as-is" title="Permanent link">&para;</a></h2>
-<p>If you’re happy with a simple loop that <strong>optimizes</strong> on the algorithm loss and <strong>does not</strong> eval, save, or log:</p>
-<pre><code class="language-python">trainer = Trainer(config=config, environment=env, algorithm=solver)
-trainer.train()  # base loop; no eval/checkpointing/logging
-</code></pre>
-<p>To save the final model afterward:</p>
-<pre><code class="language-python">problem.attacker.save_pretrained(&quot;final_ckpt&quot;)
+<h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Don’t hack the Harness</strong> unless you truly need different data-collection semantics; most customization belongs in the trainer/config/environment/algorithm.</li>
+<li><strong>Detach when logging:</strong> <code>logs["loss"] = float(loss.detach().item())</code> to avoid holding computation graphs.</li>
+<li><strong>Checkpoint sensibly:</strong> attacker + tokenizer is usually enough; if your algorithm has extra state, save it too.</li>
+<li><strong>Batching vs. accumulation:</strong> prefer reasonable batch sizes; use <code>gradient_accumulation_steps</code> when memory is tight.</li>
+<li><strong>Reproducibility:</strong> seed PyTorch/NumPy and pass a <code>seed</code> through your environment when possible.</li>
+<li><strong>Validation cadence:</strong> dev eval can be slow—choose <code>eval_every</code> that matches your budget.</li>
+</ul>
+<hr />
+<h2 id="6-how-tos">6. How-Tos<a class="headerlink" href="#6-how-tos" title="Permanent link">&para;</a></h2>
+<h3 id="61-minimal-usage-of-the-base-trainer">6.1 Minimal usage of the base <code>Trainer</code><a class="headerlink" href="#61-minimal-usage-of-the-base-trainer" title="Permanent link">&para;</a></h3>
+<p>A simple loop that optimizes the algorithm loss with <strong>no</strong> eval, checkpoints, or logging:</p>
+<pre><code class="language-python">from astra_rl import Trainer
+
+trainer = Trainer(
+    config=config,
+    environment=env,
+    algorithm=solver,
+)
+trainer.train()
+
+# Optionally save the final HF model/tokenizer:
+problem.attacker.save_pretrained(&quot;final_ckpt&quot;)
 problem.tokenizer.save_pretrained(&quot;final_ckpt&quot;)
 </code></pre>
 <hr />
-<h2 id="3-fast-path-b-use-the-hf-compatible-trainer-with-periodic-eval-saving">3) Fast path B — use the HF-compatible trainer with periodic eval &amp; saving<a class="headerlink" href="#3-fast-path-b-use-the-hf-compatible-trainer-with-periodic-eval-saving" title="Permanent link">&para;</a></h2>
-<p>Preconfigured subclass that runs periodic dev evaluation and saves Hugging Face checkpoints.</p>
+<h3 id="62-periodic-eval-hf-checkpoints-via-hfasttrainer">6.2 Periodic eval + HF checkpoints via <code>HFASTTrainer</code><a class="headerlink" href="#62-periodic-eval-hf-checkpoints-via-hfasttrainer" title="Permanent link">&para;</a></h3>
+<p>Use the preconfigured, Hugging Face–compatible trainer for periodic dev evaluation and automatic checkpointing.</p>
 <pre><code class="language-python">from astra_rl.ext.transformers.hf_ast_problem import (
     HFASTTrainer,
     HFASTConfiguration,
 )
 
-config  = HFASTConfiguration()  # or use your own TrainingConfiguration
+config  = HFASTConfiguration()  # or your own TrainingConfiguration
 trainer = HFASTTrainer(
     config=config,
     environment=env,
     algorithm=solver,
-    dev_prompts=DEV_PROMPTS,   # iterable of prompts
+    dev_prompts=DEV_PROMPTS,   # iterable of prompts for evaluation
     eval_every=100,            # run dev eval every N steps
-    ckpt_dir=&quot;checkpoints&quot;,    # where to save HF checkpoints
+    ckpt_dir=&quot;checkpoints&quot;,    # HF-format checkpoints saved here
 )
 trainer.train()
 </code></pre>
 <hr />
-<h2 id="4-fully-custom-write-your-own-trainer-subclass">4) Fully custom — write your own <code>Trainer</code> subclass<a class="headerlink" href="#4-fully-custom-write-your-own-trainer-subclass" title="Permanent link">&para;</a></h2>
-<p>Use this when you need <strong>custom evaluation cadence</strong>, <strong>checkpointing</strong>, <strong>logging</strong>, <strong>LR scheduling</strong>, <strong>early stopping</strong>, etc. You <strong>may</strong> override <code>train()</code>; if you don’t, you inherit the base implementation.</p>
+<h3 id="63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation">6.3 Write a custom trainer with eval, saving, and grad accumulation<a class="headerlink" href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation" title="Permanent link">&para;</a></h3>
+<p>Subclass <code>Trainer</code> to add evaluation cadence, HF-style saving, gradient accumulation, and logging.</p>
 <pre><code class="language-python">import os
 import torch
 from astra_rl import Trainer, TrainingConfiguration
@@ -691,14 +871,19 @@ class MyTrainer(Trainer):
         pass        
 </code></pre>
 <hr />
-<h2 id="notes-best-practices">Notes &amp; best practices<a class="headerlink" href="#notes-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="64-early-stopping-or-custom-lr-schedules">6.4 Early stopping or custom LR schedules<a class="headerlink" href="#64-early-stopping-or-custom-lr-schedules" title="Permanent link">&para;</a></h3>
+<p>Inside your custom <code>train()</code>:</p>
 <ul>
-<li><strong>Don’t modify the Harness</strong> unless you’re sure you can't change data-collection semantics though changes to the trainer/config/environment/algorithm.</li>
-<li><strong>Logging:</strong> only log scalars (detach tensors) to avoid retaining graphs: <code>logs["loss"] = float(loss.detach().item())</code>.</li>
-<li><strong>Checkpoints:</strong> saving the attacker/tokenizer is usually sufficient; if your algorithm maintains extra state, save that too.</li>
-<li><strong>Imports:</strong> to use the HF trainer directly,
-  <code>from astra_rl.ext.transformers.hf_ast_problem import HFASTTrainer, HFASTConfiguration</code>.</li>
+<li><strong>Early stopping:</strong> track a validation metric (e.g., dev score from <code>_eval_dev</code>) and stop after <code>x</code> steps with no improvement.</li>
+<li><strong>LR scheduling:</strong> instantiate a PyTorch scheduler after the optimizer and call <code>scheduler.step()</code> each iteration or epoch; store scheduler state alongside checkpoints if you need exact resumption.</li>
 </ul>
+<hr />
+<h2 id="7-full-examples">7. Full Examples<a class="headerlink" href="#7-full-examples" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Custom AST problem </strong>with<strong> trainer:</strong> <code>examples/GPT2_v_GPT2/ast_trainer.py</code></li>
+<li><strong>Source for HF-compatible trainer/config:</strong> <code>astra_rl/ext/transformers/hf_ast_problem.py</code></li>
+</ul>
+<p>Use these as references when wiring up your own training loop or extending the provided trainers.</p>
 
 
 
@@ -721,7 +906,7 @@ class MyTrainer(Trainer):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 2, 2025 17:02:29 UTC">2025-09-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 4, 2025 17:15:50 UTC">2025-09-04</span>
   </span>
 
     

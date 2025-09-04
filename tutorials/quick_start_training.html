@@ -556,15 +556,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#want-to-customize-the-training-configurationhyperparams-the-training-loop-or-model-savingeval-go-to-customize_trainingtrainers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to customize_training/trainers!
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#full-examples" class="md-nav__link">
     <span class="md-ellipsis">
       Full Examples:
@@ -593,7 +584,7 @@
 
 
 <h1 id="quick-start-training-a-huggingface-attacker-with-astra-rl">Quick Start: Training a HuggingFace Attacker with ASTRA-RL<a class="headerlink" href="#quick-start-training-a-huggingface-attacker-with-astra-rl" title="Permanent link">&para;</a></h1>
-<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">RL - Perez</a>, MALIBU<em>, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)? </em>formulations coming soon</p>
+<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">RL - Perez</a>, MALIBU<em>, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)? </em>coming soon</p>
 <p>Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!</p>
 <hr />
 <h2 id="step-1-setup">Step 1: Setup<a class="headerlink" href="#step-1-setup" title="Permanent link">&para;</a></h2>
@@ -694,12 +685,13 @@ trainer.train()
 <blockquote>
 <p>The source code for the training configuration and trainer are at <a href="../src/ext/transformers/hf_ast_problem.py">hf_ast_problem</a></p>
 </blockquote>
-<h2 id="want-to-customize-the-training-configurationhyperparams-the-training-loop-or-model-savingeval-go-to-customize_trainingtrainers">Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to <a href="customize_training/trainers.html">customize_training/trainers</a>!<a class="headerlink" href="#want-to-customize-the-training-configurationhyperparams-the-training-loop-or-model-savingeval-go-to-customize_trainingtrainers" title="Permanent link">&para;</a></h2>
+<p>Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to <a href="customize_training/trainers.html">customize_training/trainers</a>!</p>
+<hr />
 <h2 id="full-examples">Full Examples:<a class="headerlink" href="#full-examples" title="Permanent link">&para;</a></h2>
-<p>We provide 3 complete working examples that mirror this guide!
-Hugging face example without trainer: <a href="../../examples/ast_hf.py">examples/ast_hf.py</a>
-Custom AST problem with trainer: <a href="../../examples/GPT2_v_GPT2/ast_trainer.py">examples/ast_trainer</a>
-Custom AST problem without trainer: <a href="../../examples/ast_basic.py">examples/ast_basic.py</a></p>
+<p>We provide 3 complete working examples that mirror this guide!</p>
+<p>Hugging face example without trainer: <a href="../../examples/ast_hf.py">examples/ast_hf.py</a></p>
+<p>Custom AST problem with trainer: <a href="../../examples/GPT2_v_GPT2/ast_trainer.py">examples/ast_trainer</a></p>
+<p>Custom AST problem without trainer: <a href="../../examples/ast_basic.py">examples/ast_basic.py</a></p>
 
 
 
@@ -722,7 +714,7 @@ Custom AST problem without trainer: <a href="../../examples/ast_basic.py">exampl
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 3, 2025 21:56:11 UTC">2025-09-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 4, 2025 17:15:50 UTC">2025-09-04</span>
   </span>
 
     
