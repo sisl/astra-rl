@@ -119,7 +119,7 @@ Your solver calls into the `Problem` for model computations:
 
 ---
 
-## 6. Plug into the Trainer/Harness
+## 6. Plug into the Trainer
 
 Instantiate and pass your solver to the trainer:
 
@@ -129,10 +129,10 @@ trainer = Trainer(config=config, environment=env, algorithm=solver)
 trainer.train()
 ```
 
-Under the hood, the **Harness** will:
+Under the hood, the **Trainer** will:
 
 1. collect rollout graphs,
-2. call your solver’s `flatten` to produce `Step`s,
+2. call your solver’s `flatten` to produce `Steps`,
 3. use your solver’s `collate_fn` to form batches, and
 4. call your solver’s `step` to get `(loss, logs)`.
 

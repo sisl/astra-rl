@@ -60,7 +60,7 @@ ASTRA-RL makes **training** an RL attacker and **evaluating** a target with a pr
 
 ## 3. Package Overview
 
-ASTRA-RL decomposes RL-based red-teaming into five pieces. Each item below links **directly to source and examples**.
+ASTRA-RL decomposes RL-based red-teaming into five pieces. 
 
 ### 1) Problem — *How models run/interact*
 
@@ -134,7 +134,11 @@ Jump straight to evaluation (single-path dev/test rollouts, metric aggregation):
 ## 5. References
 
 Casper, S., Lin, J., Kwon, J., Culp, G., & Hadfield-Menell, D. (2023). *Explore, establish, exploit: Red teaming language models from scratch*. arXiv:2306.09442.
+
 Deng, M., Wang, J., Hsieh, C.-P., et al. (2022). *RLPrompt: Optimizing discrete text prompts with reinforcement learning*. EMNLP.
+
 Wichers, N., Denison, C., & Beirami, A. (2024). *Gradient-based language model red teaming*. EACL.
+
 Yu, J., Lin, X., Yu, Z., & Xing, X. (2023). *GPTFuzzer: Red teaming large language models with auto-generated jailbreak prompts*. arXiv:2309.10253.
+
 Zou, A., Wang, Z., Carlini, N., et al. (2023). *Universal and transferable adversarial attacks on aligned language models*. arXiv:2307.15043.

@@ -32,7 +32,7 @@ ASTRA-RL ships with `ASTEnvironment`, which mirrors the rollout structure used i
 
    * [4.1 Create a custom Node or Graph](#41-create-a-custom-node-or-graph)
    * [4.2 Change rollout width/depth](#42-change-rollout-widthdepth)
-   * [4.3 Multi-agent conversations (pseudocode)](#43-multi-agent-conversations-pseudocode)
+   * [4.3 Multi-agent conversations](#43-multi-agent-conversations)
 
 ---
 
@@ -179,7 +179,7 @@ env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=2)
 
 > **Cost warning.** Width × depth increases compute and memory quickly—scale carefully.
 
-### 4.3 Multi-agent conversations (pseudocode)
+### 4.3 Multi-agent conversations
 
 To support multi-agent conversations, you will need to query all participating models when building the rollout. This will occur in your environment (likely in modifications to __handle_rollout or rollout) but it is largely up to you on how you want to style it. For example, one approach would be to subclasses `ASTEnvironment` and override the internal expansion to call **K** defenders, combine their responses, and reduce rewards. However, you can structure how you call the agents and how you want to model rewards to fit your needs. 
 
