@@ -605,9 +605,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-multi-agent-conversations-pseudocode" class="md-nav__link">
+  <a href="#43-multi-agent-conversations" class="md-nav__link">
     <span class="md-ellipsis">
-      4.3 Multi-agent conversations (pseudocode)
+      4.3 Multi-agent conversations
     </span>
   </a>
   
@@ -679,7 +679,7 @@
 <p><a href="#41-create-a-custom-node-or-graph">4.1 Create a custom Node or Graph</a></p>
 </li>
 <li><a href="#42-change-rollout-widthdepth">4.2 Change rollout width/depth</a></li>
-<li><a href="#43-multi-agent-conversations-pseudocode">4.3 Multi-agent conversations (pseudocode)</a></li>
+<li><a href="#43-multi-agent-conversations">4.3 Multi-agent conversations</a></li>
 </ol>
 <hr />
 <h2 id="1-ways-to-customize">1. Ways to Customize<a class="headerlink" href="#1-ways-to-customize" title="Permanent link">&para;</a></h2>
@@ -804,7 +804,7 @@ env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=2)
 <blockquote>
 <p><strong>Cost warning.</strong> Width × depth increases compute and memory quickly—scale carefully.</p>
 </blockquote>
-<h3 id="43-multi-agent-conversations-pseudocode">4.3 Multi-agent conversations (pseudocode)<a class="headerlink" href="#43-multi-agent-conversations-pseudocode" title="Permanent link">&para;</a></h3>
+<h3 id="43-multi-agent-conversations">4.3 Multi-agent conversations<a class="headerlink" href="#43-multi-agent-conversations" title="Permanent link">&para;</a></h3>
 <p>To support multi-agent conversations, you will need to query all participating models when building the rollout. This will occur in your environment (likely in modifications to __handle_rollout or rollout) but it is largely up to you on how you want to style it. For example, one approach would be to subclasses <code>ASTEnvironment</code> and override the internal expansion to call <strong>K</strong> defenders, combine their responses, and reduce rewards. However, you can structure how you call the agents and how you want to model rewards to fit your needs. </p>
 <blockquote>
 <p>If you maintain the same Node type (Node(context: str, attack: str, response: str, reward: float, children: List[Node])) and return a graph, you will be able to plug into available solvers. However, deviating from this structure may require you to create a custom solver to interpret the custom rollouts and calculate loss accordingly. </p>
@@ -832,7 +832,7 @@ env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=2)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 4, 2025 17:15:50 UTC">2025-09-04</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 4, 2025 17:36:22 UTC">2025-09-04</span>
   </span>
 
     
