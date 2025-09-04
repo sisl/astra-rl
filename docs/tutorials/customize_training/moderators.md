@@ -1,36 +1,119 @@
-# How to Create a Custom Moderator Class
+# How to Customize the Moderator
 
-Moderators play a central role in LM red teaming, acting similarly to reward models in traditional reinforcement learning. Their job is to quantify the reward an adversarial agent receives for reaching a particular state—typically by measuring how harmful or unsafe a target model's output is.
+**Moderators** provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender’s reply), they return a scalar score that reflects harm/unsafety. Attackers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise “undesirable”) target responses, revealing weaknesses in the target’s safety alignment.
 
-In many RL-based red-teaming setups, the moderator provides the signal that trains the attacker to generate utterances that elicit harmful responses from a target model. This achieves the red-teaming objective by exposing weaknesses in the target model’s safety alignment and highlighting where additional fine-tuning is needed.
-
-To serve this purpose, a moderator must:
-- Accept a sequence of target model generations (e.g., text),
-- Return a scalar score (e.g., a toxicity value from 0 to 1) indicating the level of harm.
-
-The astra-rl toolbox currently supports text-based moderation using:
-- Detoxify, for toxicity classification,
-- Llama Guard 3, for a variety of harm categories (e.g., hate speech, threats, etc.).
-
-But the framework is modular—you can define your own moderator class, wrapping any model that takes in your defined StateT and ActionT types (see astra_rl/core/common) and returns a Sequence[float].
-
-This guide walks you through creating a new Moderator subclass.
+ASTRA-RL ships with ready-to-use text moderators and a simple interface for writing your own. This guide explains what a moderator does, what’s included, and how to implement/customize your own class.
 
 ---
 
-## Step 1: Subclass the Moderator Base Class
+## Table of Contents
 
-To define your own moderator, create a class that inherits from:
+1. [What Moderators Do](#1-what-moderators-do)
+2. [Built-in Moderators](#2-built-in-moderators)
+3. [Ways to Customize](#3-ways-to-customize)
+
+   * [3.1 Fast path: adapt a built-in](#31-fast-path-adapt-a-built-in)
+   * [3.2 Full control: subclass `Moderator`](#32-full-control-subclass-moderator)
+4. [Required Interface](#4-required-interface)
+
+   * [4.1 Type parameters](#41-type-parameters)
+   * [4.2 `moderate(...)` contract](#42-moderate-contract)
+5. [Best Practices & Sanity Checks](#5-best-practices--sanity-checks)
+6. [How-Tos](#6-how-tos)
+
+   * [6.1 Minimal custom moderator (Detoxify wrapper)](#61-minimal-custom-moderator-detoxify-wrapper)
+   * [6.2 Selecting harm categories](#62-selecting-harm-categories)
+   * [6.3 Batching & preprocessing](#63-batching--preprocessing)
+   * [6.4 Integrate your moderator into a Problem](#64-integrate-your-moderator-into-a-problem)
+7. [Full Examples](#7-full-examples)
+
+---
+
+## 1. What Moderators Do
+
+A moderator converts text into a **scalar score** (one score per input). In most setups:
+
+* **Input:** target/defender generations (strings).
+* **Output:** `Sequence[float]` scores, e.g., toxicity in `[0, 1]`.
+
+Downstream solvers interpret these scores to train the **attacker**. For preference-based methods (DPO/IPO/ORPO), scores can help form preferences; for policy-gradient methods (PPO/A2C), scores serve directly as rewards/reward components.
+
+---
+
+## 2. Built-in Moderators
+
+ASTRA-RL currently ships with text-based moderators that you can use out of the box:
+
+* **Detoxify** — toxicity classification (and related categories). More info [here](https://github.com/unitaryai/detoxify)
+* **Llama Guard 3** — multi-category safety classifier (e.g., hate/threats/harassment). More info [here](https://huggingface.co/meta-llama/Llama-Guard-3-8B)
+
+> These are modular components—swap them freely or use them as templates for your own moderators.
+
+---
+
+## 3. Ways to Customize
+
+### 3.1 Fast path: adapt a built-in
+
+If you only need to change the **category** (e.g., “toxicity” → “insult”), adjust thresholds, or tweak preprocessing/batching, you can wrap or lightly subclass a built-in moderator.
+
+### 3.2 Full control: subclass `Moderator`
+
+For custom scoring models (LLMs, classifiers, rule-based filters), subclass the generic base class and implement one method:
 
 ```python
-Moderator[StateT, ActionT]
-```
-Where:
-- StateT is the type of state your environment uses (e.g., a string prompt)
-- ActionT is the type of action your model produces (e.g., a generated response)
-For most NLP use cases, both StateT and ActionT are str.
+from astra_rl.core.moderator import Moderator
+from typing import Sequence, Union, Generic, TypeVar
 
-example:
+StateT = TypeVar("StateT")
+ActionT = TypeVar("ActionT")
+
+class MyModerator(Moderator[StateT, ActionT]):
+    def moderate(self, x: Sequence[Union[StateT, ActionT]]) -> Sequence[float]:
+        ...
+```
+
+---
+
+## 4. Required Interface
+
+### 4.1 Type parameters
+
+* `StateT` — your environment’s state type (commonly `str` conversation context).
+* `ActionT` — your action type (commonly `str` utterance).
+
+For NLP use cases, both are typically `str`.
+
+### 4.2 `moderate(...)` contract
+
+```python
+def moderate(self, x: Sequence[Union[StateT, ActionT]]) -> Sequence[float]:
+    """Return one scalar score per input, same order as received."""
+```
+
+**Expectations:**
+
+* **Pure function** over the given inputs (no hidden batch size assumptions).
+* **Shape:** output length equals input length.
+* **Scale/direction:** document whether *higher = more harmful*. (Recommended.)
+
+---
+
+## 5. Best Practices & Sanity Checks
+
+* **Batching:** Vectorize model calls for speed; avoid per-item loops.
+* **Preprocessing:** Handle tokenization/normalization inside the class.
+* **Calibration:** Keep scores on a consistent scale (e.g., `[0, 1]`) and direction (higher = worse).
+* **Throughput vs. latency:** Accumulate inputs into sensible batch sizes.
+* **Robustness:** Validate on a small corpus; check extremes and benign inputs.
+* **Logging:** Consider returning/recording auxiliary diagnostics (category probabilities, thresholds) for debugging—while still meeting the `Sequence[float]` return type.
+
+---
+
+## 6. How-Tos
+
+### 6.1 Minimal custom moderator (Detoxify wrapper)
+
 ```python
 from typing import Sequence
 from detoxify import Detoxify
@@ -40,69 +123,62 @@ class DetoxifyModerator(Moderator[str, str]):
     def __init__(self, harm_category: str = "toxicity", variant: str = "original"):
         self.model = Detoxify(variant)
         self.harm_category = harm_category
+
+    def moderate(self, x: Sequence[str]) -> Sequence[float]:
+        # Detoxify returns a dict of category -> scores
+        preds = self.model.predict(x)
+        return [float(preds[self.harm_category][i]) for i in range(len(x))]
 ```
 
----
+### 6.2 Selecting harm categories
 
-## Step 2: Implement the moderate Method
+If the underlying library/model exposes multiple categories (e.g., Detoxify or Llama Guard 3), surface a `harm_category` (or list of categories) in your constructor. You can:
 
-You must implement the abstract method:
-```python
-def moderate(self, x: Sequence[Union[StateT, ActionT]]) -> Sequence[float]:
-```
+* return a **single** category’s score, 
+* ignore the harm category and return the score for **any violation**, or
+* compute a **combined** score (e.g., max/mean across selected categories).
 
-This method:
-- Takes a sequence of states and/or actions.
-- Returns a sequence of floats, where each float is the moderation score (e.g., toxicity score) for the corresponding input.
+### 6.3 Batching & preprocessing
 
-example:
-```python
-def moderate(self, x: Sequence[str]) -> Sequence[float]:
-        return self.model.predict(x)[self.harm_category]
-```
+Inside `moderate(...)`, you’re free to:
 
----
+* tokenize inputs, truncate/normalize text, strip HTML, etc.;
+* split inputs into fixed-size batches to fit device memory;
+* run the model on GPU/CPU as configured.
 
-## Step 3: Integrate your moderator
+Just be sure to **preserve ordering** and return one scalar per input.
 
-Once your class is defined, you can plug it into the RL pipeline like any other component:
+### 6.4 Integrate your moderator into a Problem
+
+Instantiate your moderator in your `Problem` subclass and pass it to the base class:
 
 ```python
-moderator = DetoxifyModerator(harm_category="insult", variant="unbiased")
-scores = moderator.moderate(["you are stupid", "have a nice day!"])
-```
+from transformers import GPT2LMHeadModel, AutoTokenizer
+from astra_rl import ASTProblem  # base Problem
+from astra_rl.logging import logger
 
-To train with your custom moderator, modify your problem subclass to instantiate it during initialization:
+MODEL_NAME = "gpt2"
 
-example:
-```python
 class ExampleDetoxifyProblem(ASTProblem):
-    def __init__(self, device="cpu"):
-        # your choice of moderator
-        super().__init__(DetoxifyModerator()) ## Plug in your custom moderator here ##
+    def __init__(self, device: str = "cpu"):
+        # Plug in any custom moderator here
+        super().__init__(DetoxifyModerator(harm_category="toxicity"))
 
         self.device = device
         self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
-        self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+        self.target   = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
 ```
 
----
-
-## Helpful Notes:
-- Your moderator can wrap any scoring model—e.g., classifiers, LLMs, rule-based filters—as long as it implements moderate(...) → Sequence[float].
-
-- You can include internal logic to handle tokenization, batching, preprocessing, etc.
-
-- Return one score per input in the same order as received.
-
-- If you're using a library or model that scores multiple types of harm (like Detoxify or llamaguard), your class can expose a harm_category attribute to customize which score to extract.
+> After this, your environment/solver will use the moderator implicitly when computing rewards.
 
 ---
 
-## Full examples:
-See the following files for complete, working implementations:
-- [astra_rl/moderators/detoxify.py](astra_rl/moderators/detoxify.py) — wraps the Detoxify library
-- [astra_rl/moderators/llamaGuard.py](astra_rl/moderators/llamaGuard.py) — wraps Meta’s Llama Guard 3 model
+## 7. Full Examples
+
+* [astra_rl/moderators/detoxify.py](astra_rl/moderators/detoxify.py) — wraps the Detoxify library.
+* [astra_rl/moderators/llamaGuard.py](astra_rl/moderators/llamaGuard.py) — wraps Meta’s Llama Guard 3.
+
+Use these as references when building your own moderator classes.

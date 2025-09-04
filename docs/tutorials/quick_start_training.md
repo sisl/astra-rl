@@ -1,6 +1,6 @@
 # Quick Start: Training a HuggingFace Attacker with ASTRA-RL
 
-Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *formulations coming soon
+Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
 
 
 Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!
@@ -144,11 +144,15 @@ trainer.train()
 > The source code for the training configuration and trainer are at [hf_ast_problem](../src/ext/transformers/hf_ast_problem.py)
 
 Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to [customize_training/trainers](customize_training/trainers.md)!
+
 ---
 
 ## Full Examples: 
 We provide 3 complete working examples that mirror this guide!
+
 Hugging face example without trainer: [examples/ast_hf.py](../../examples/ast_hf.py)
+
 Custom AST problem with trainer: [examples/ast_trainer](../../examples/GPT2_v_GPT2/ast_trainer.py)
+
 Custom AST problem without trainer: [examples/ast_basic.py](../../examples/ast_basic.py)
 

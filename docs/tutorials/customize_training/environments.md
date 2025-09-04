@@ -3,7 +3,6 @@
 The **environment** defines how attacker–target interactions are generated and packaged for training and evaluation. It controls:
 
 * how rollouts are generated (single path vs. tree),
-* how states advance across turns,
 * what per-step data (actions, responses, rewards) is stored,
 * and what the solver receives as input.
 

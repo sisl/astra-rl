@@ -1,78 +1,152 @@
-# How to Create a Custom Solver (RL Algorithm)
+# How to Customize the Solver (RL Algorithm) 
 
-In ASTRA-RL, a **solver** subclasses `Algorithm[...]` and implements three things:
+**TODO** double check for corectness
 
-1. **`flatten(graph)`** – turn a rollout `Graph` into a list of per-sample **Steps** your solver trains on
-2. **`collate_fn(steps)`** – batch those steps into a **Batch** the harness can load via a DataLoader
-3. **`step(batch)`** – compute the training **loss** (and log metrics), returning `(loss, logs)`
+**Solvers** (a.k.a. algorithms) define *how learning happens*. They consume rollout graphs from the **Environment**, ask the **Problem** for model log-probs/rewards, and return a scalar **loss** (plus optional logs) to the **Trainer**. In ASTRA-RL a solver subclasses `Algorithm[...]` and typically implements three things:
 
-This isolates “how we learn” (the solver) from “how data is collected” (the Environment) and “how models run/interact” (the Problem).
+1. `flatten(graph)` → turn a rollout `Graph` into per-sample **Steps**
+2. `collate_fn(steps)` → batch those steps into a **Batch**
+3. `step(batch)` → compute the training **loss** and a `logs` dict
 
 ---
 
-## Choose your data contract
+## Table of Contents
 
-First, define your own `@dataclass Step`/`Batch` to match your algorithm. These dataclasses determine what information is stored at each step 
-of learning and hold the information across a total batch. 
+1. [What Solvers Do](#1-what-solvers-do)
+2. [Built-in Solvers/Examples](#2-built-in-solvers)
+3. [Ways to Customize](#3-ways-to-customize)
 
-Example: 
+   * [3.1 Fast path: adapt a built-in (e.g., DPO → IPO)](#31-fast-path-adapt-a-built-in-eg-dpo--ipo)
+   * [3.2 Full control: subclass `Algorithm`](#32-full-control-subclass-algorithm)
+4. [Required Interface](#4-required-interface)
+
+   * [4.1 Step/Batch data contracts](#41-stepbatch-data-contracts)
+   * [4.2 `flatten`, `collate_fn`, `step` contracts](#42-flatten-collate_fn-step-contracts)
+   * [4.3 Interacting with `Problem`](#43-interacting-with-problem)
+5. [Best Practices & Sanity Checks](#5-best-practices--sanity-checks)
+6. [Plug into the Trainer/Harness](#6-plug-into-the-trainerharness)
+7. [Debug Checklist](#7-debug-checklist)
+---
+
+## 1. What Solvers Do
+
+Given rollouts (graphs of attacker–target turns), a solver decides **what examples to learn from** (via `flatten`), **how to batch them** (`collate_fn`), and **what objective to optimize** (`step`). This keeps “*how we learn*” separate from:
+
+* **Environment**: *how data is collected/structured* (single path vs tree, etc.)
+* **Problem**: *how models are run* (log-probs, rewards, advance logic)
+
+---
+
+## 2. Built-in Solvers/Examples
+
+ASTRA-RL includes preference-learning solvers commonly used for LM alignment/red-teaming:
+
+* **DPO** — Direct Preference Optimization (pairwise preferred vs rejected)
+* **IPO** — Implicit Preference Optimization (margin-style objective over log-ratio differences)
+* **PPO** - Proximal Policy Optimization 
+
+These serve as concrete references for writing your own solver. Find the code for these solvers [here](../../../src/astra_rl/core/algorithm.py)!
+
+---
+
+## 3. Ways to Customize
+
+### 3.1 Fast path: adapt a built-in (e.g., DPO → IPO)
+
+If your rollout selection and batching are the same, you can **reuse `flatten` and `collate_fn`** and only change the **loss** in `step`. IPO in our codebase demonstrates this pattern by inheriting from DPO and overriding `step`. Therefore, if you are only making a small change to how the loss is calculated, a great option would be to inheret from the DPO, IPO or PPO and ovverid 'step' to include your custom loss calculation.
+
+### 3.2 Full control: subclass `Algorithm`
+
+When your algorithm needs a different sampling strategy, subclass `Algorithm[...]` and implement `flatten`, `collate_fn`, and `step` to match your data/learning objective.
+
+---
+
+## 4. Required Interface
+
+### 4.1 Step/Batch data contracts
+
+Define explicit dataclasses that encode exactly what your algorithm needs.
 
 ```python
 from dataclasses import dataclass
-from typing import Any, Dict, Generic, List, Sequence, Tuple
-import torch
-
-from astra_rl.core.algorithm import Algorithm
+from typing import Generic, Sequence
 from astra_rl.core.common import StateT, ActionT
-from astra_rl.core.environment import Graph
 
-# 1) Define your per-sample record
 @dataclass
 class MyStep(Generic[StateT, ActionT]):
     context: StateT
     action: ActionT
-    reward: float  # or returns/advantages/etc.
+    reward: float  # or advantage/return/log-ratio/etc.
 
-# 2) Define your batch
 @dataclass
 class MyBatch(Generic[StateT, ActionT]):
     contexts: Sequence[StateT]
-    actions: Sequence[ActionT]
-    rewards: torch.Tensor  # torch for math
+    actions:  Sequence[ActionT]
+    rewards:  torch.Tensor  # tensors for math
 ```
+
+> Keep these minimal and algorithm-specific. They are the *contract* between your data selection (`flatten`) and your loss (`step`).
+
+### 4.2 `flatten`, `collate_fn`, `step` contracts
+
+* **`flatten(graph: Graph) -> Sequence[Step]`**
+  Select and transform nodes/edges from the rollout graph into per-sample `Step`s (BFS/DFS as you like).
+* **`collate_fn(steps: Sequence[Step]) -> Batch`**
+  Convert a list of steps into batched tensors/sequences for efficient training.
+* **`step(batch: Batch) -> tuple[torch.Tensor, dict]`**
+  Compute a scalar **loss** (used for backprop) and a **logs** dict of floats (the base trainer may ignore them; custom trainers can log them).
+
+### 4.3 Interacting with `Problem`
+
+Your solver calls into the `Problem` for model computations:
+
+* `problem._get_attacker_logprobs_and_validate(contexts, actions)`
+* `problem._get_baseline_logprobs_and_validate(contexts, actions)`
+* optionally: `problem.get_target_logprobs(...)`, `problem.reward(...)`, etc.
+
+**Tip:** Target/baseline log-prob calls usually should be in `torch.no_grad()`; the attacker’s log-probs must require grad.
+
 ---
-## Creating a custom Solver
 
-TODO
+## 5. Best Practices & Sanity Checks
+
+* **Pairwise methods need width ≥ 2.** For DPO/IPO, set `tree_width >= 2` so each context has at least two candidate actions.
+* **Stable scales.** Keep losses well-scaled (e.g., use a `beta` like in DPO/IPO). Normalize or clip rewards if needed.
+* **Efficient batching.** Vectorize log-prob calls; avoid per-item model runs.
+* **Validate shapes.** Collated tensors must be aligned and same length.
+* **Freeze the ref/baseline.** Only attacker params should receive gradients.
+* **KL anchor (when applicable).** If training drifts, increase KL pressure (or use adaptive control) where appropriate.
 
 ---
 
-## Plugging your solver into the harness
+## 6. Plug into the Trainer/Harness
 
-To integrate the solver, simply instantiate it in your main code and give it to the Trainer as a parameter. 
+Instantiate and pass your solver to the trainer:
 
 ```python
-solver = MyAlgo(problem, kl_coeff=0.02)
+solver  = DPO(problem, beta=0.1)  # or IPO(...)
 trainer = Trainer(config=config, environment=env, algorithm=solver)
+trainer.train()
 ```
 
----
+Under the hood, the **Harness** will:
 
-## Debug checklist
+1. collect rollout graphs,
+2. call your solver’s `flatten` to produce `Step`s,
+3. use your solver’s `collate_fn` to form batches, and
+4. call your solver’s `step` to get `(loss, logs)`.
 
-* **Shapes**: `flatten` produces a list; `collate_fn` returns tensors/seqs with consistent lengths.
-* **Gradient flow**: only `get_attacker_logprobs` should require grad; keep target/baseline calls in `torch.no_grad()`.
-* **Rewards**: are finite and roughly bounded; consider normalization or clipping.
-* **KL anchor**: if training diverges, raise `kl_coeff` (or use adaptive control).
-* **Tree width**: preference algorithms need `tree_width ≥ 2`; reward methods are simplest with `tree_width = 1`.
-* **Determinism**: seed env rollouts to reproduce a bug.
+> The base `Trainer` uses `loss` for optimization and may ignore `logs`. Use `HFASTTrainer` or a custom trainer to evaluate and checkpoint.
 
 ---
 
-## Adapting to your data
+## 7. Debug Checklist
 
-* Per-turn rewards? Put them into `MyStep` and compute **returns** (discounted sum) in `flatten` or `collate_fn`.
-* Off-policy data? Add `old_logp` to `MyStep` and implement importance sampling/clip.
-* Extra features (toxicity, length, success flags)? Add fields to `MyStep` and use them in the loss.
+* **Shapes match:** `len(prefixes) == len(pos) == len(neg)` (or analogous fields).
+* **Gradients only through attacker:** wrap baseline/target log-prob calls in `torch.no_grad()` if you surface them directly.
+* **Finite values:** check for `nan/inf` in losses and rewards (clip/normalize if necessary).
+* **Tree width OK:** preference solvers require `tree_width ≥ 2`.
+* **KL anchor:** if the attacker drifts, increase β or add an explicit KL penalty to the loss.
+* **Determinism:** set seeds and/or make selection in `flatten` deterministic to repro bugs.
 
 ---
