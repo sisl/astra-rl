@@ -167,7 +167,7 @@ class ExampleDetoxifyProblem(ASTProblem):
         return logprobs
 
 
-# the following two functions will be implemented in the trainer class. This example
+# the following two functions will be implemented in the trainer class (see ast_trainer.py). This example
 # does not use a trainer so we implement it here
 def save(eval_env, step, tag="step"):
     if tag == "best":
