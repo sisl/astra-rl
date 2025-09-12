@@ -495,7 +495,7 @@
   
   
   <span class="md-ellipsis">
-    Quick Start Training
+    Training Quick Start
     
   </span>
   
@@ -518,7 +518,7 @@
   
   
   <span class="md-ellipsis">
-    Quick Start Evaluation
+    Evaluation Quick Start
     
   </span>
   
@@ -876,15 +876,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#references" class="md-nav__link">
-    <span class="md-ellipsis">
-      References
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -909,10 +900,10 @@
 <p>ASTRA-RL is a user-friendly, modular, and customizable toolbox for <strong>Langauge Model Red-Teaming</strong>. It's designed for quickly getting started evaluating models or building your own red-teaming pipelines for training and evaluation.</p>
 <hr />
 <h2 id="what-is-lanaguage-model-red-teaming">What is Lanaguage Model Red-Teaming?<a class="headerlink" href="#what-is-lanaguage-model-red-teaming" title="Permanent link">&para;</a></h2>
-<p><strong>Language model red-teaming</strong> aims to identify and benchmark prompts that elicit harmful or otherwise undesirable behavior from a target language model (Hardy et al., 2025). This surfaces vulnerabilities and guides fine-tuning to reduce harmful outputs.</p>
+<p><strong>Language model red-teaming</strong> aims to identify and benchmark prompts that elicit harmful or otherwise undesirable behavior from a target language model (<a href="https://arxiv.org/abs/2407.09447">Hardy et al., 2025</a>)<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. This surfaces vulnerabilities and guides fine-tuning to reduce harmful outputs.</p>
 <ul>
-<li><strong>Manual red-teaming:</strong> human annotators craft adversarial prompts—effective but costly and not scalable (Ganguli et al., 2022).</li>
-<li><strong>Automated red-teaming:</strong> generates adversarial prompts at scale. Examples include fuzzing exisiting prompts (Yu et al., 2023) or using a combination of targeted search techniques to optimize an effective adversarial suffix (Zou et al., 2023)</li>
+<li><strong>Manual red-teaming:</strong> human annotators craft adversarial prompts—effective but costly and not scalable (<a href="https://arxiv.org/abs/2209.07858">Ganguli et al., 2022</a>)<sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>.</li>
+<li><strong>Automated red-teaming:</strong> generates adversarial prompts at scale. Examples include fuzzing exisiting prompts (<a href="https://arxiv.org/abs/2309.10253">Yu et al., 2023</a>)<sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> or using a combination of targeted search techniques to optimize an effective adversarial suffix (<a href="https://arxiv.org/abs/2307.15043">Zou et al., 2023</a>)<sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup></li>
 </ul>
 <h3 id="rl-based-red-teaming">RL-based Red-Teaming<a class="headerlink" href="#rl-based-red-teaming" title="Permanent link">&para;</a></h3>
 <p>A promising direction in automated red-teaming is <strong>reinforcement learning (RL)</strong>. We train a separate <strong>attacker</strong> policy (often an LLM) to maximize a <strong>non-differentiable reward</strong> (e.g., toxicity) computed on the target's response. In short, we <strong>automate</strong> red-teaming by training an attacker to generate test cases that increase the chance of unsafe target outputs.</p>
@@ -923,8 +914,8 @@
 </ol>
 <p><strong>Cons</strong></p>
 <ol>
-<li><strong>Mode collapse / low coverage:</strong> may find only a small set of effective patterns (Casper et al., 2023).</li>
-<li><strong>Unrealistic prompts:</strong> can be disfluent or implausible (Deng et al., 2022; Casper et al., 2023), even with realism terms (Wichers et al., 2024).</li>
+<li><strong>Mode collapse / low coverage:</strong> may find only a small set of effective patterns (<a href="https://arxiv.org/abs/2306.09442">Casper et al., 2023</a>)<sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>.</li>
+<li><strong>Unrealistic prompts:</strong> can be disfluent or implausible (<a href="https://arxiv.org/abs/2306.09442">Casper et al., 2023</a>;<a href="https://arxiv.org/abs/2205.12548">Deng et al., 2022</a>)<sup id="fnref2:5"><a class="footnote-ref" href="#fn:5">5</a></sup><sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>, even with realism terms (<a href="https://arxiv.org/abs/2401.16656">Wichers et al., 2024</a>)<sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup>.</li>
 </ol>
 <p>ASTRA-RL makes <strong>training</strong> an RL attacker and <strong>evaluating</strong> a target with a pre-trained attacker both <strong>quick</strong> and <strong>customizable</strong>.</p>
 <hr />
@@ -1003,13 +994,32 @@
 <h3 id="evaluate-a-target-with-a-pre-trained-attacker">Evaluate a Target with a Pre-Trained Attacker<a class="headerlink" href="#evaluate-a-target-with-a-pre-trained-attacker" title="Permanent link">&para;</a></h3>
 <p>Jump straight to evaluation (single-path dev/test rollouts, metric aggregation):
 <strong><a href="quick_start_evaluation.html">Quick Start Evaluation</a></strong></p>
+<div class="footnote">
 <hr />
-<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
-<p>Casper, S., Lin, J., Kwon, J., Culp, G., &amp; Hadfield-Menell, D. (2023). <em>Explore, establish, exploit: Red teaming language models from scratch</em>. arXiv:2306.09442.</p>
-<p>Deng, M., Wang, J., Hsieh, C.-P., et al. (2022). <em>RLPrompt: Optimizing discrete text prompts with reinforcement learning</em>. EMNLP.</p>
-<p>Wichers, N., Denison, C., &amp; Beirami, A. (2024). <em>Gradient-based language model red teaming</em>. EACL.</p>
-<p>Yu, J., Lin, X., Yu, Z., &amp; Xing, X. (2023). <em>GPTFuzzer: Red teaming large language models with auto-generated jailbreak prompts</em>. arXiv:2309.10253.</p>
-<p>Zou, A., Wang, Z., Carlini, N., et al. (2023). <em>Universal and transferable adversarial attacks on aligned language models</em>. arXiv:2307.15043.</p>
+<ol>
+<li id="fn:1">
+<p>Hardy, A., Liu, H., Lange, B., Eddy, D., and Kochenderfer, M.J. <em>ASTPrompter: Weakly Supervised Automated Language Model Red-Teaming to Identify Low-Perplexity Toxic Prompts.</em>. <a href="https://arxiv.org/abs/2407.09447">arXiv:2407.09447</a> (2024)&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p>Ganguli, D., Li, K., Shumailov, I., et al. <em>Red teaming language models to reduce harms: Methods, scaling behaviors, and lessons learned</em>. <a href="https://arxiv.org/abs/2209.07858">arXiv:2212.08073</a> (2022)&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p>Yu, J., Lin, X., Yu, Z., &amp; Xing, X. <em>GPTFuzzer: Red teaming large language models with auto-generated jailbreak prompts</em>. <a href="https://arxiv.org/abs/2309.10253">arXiv:2309.10253</a> (2023)&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p>Zou, A., Wang, Z., Carlini, N., et al. (2023). <em>Universal and transferable adversarial attacks on aligned language models</em>. <a href="https://arxiv.org/abs/2307.15043">arXiv:2307.15043</a> (2023)&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p>Casper, S., Lin, J., Kwon, J., Culp, G., &amp; Hadfield-Menell, D. <em>Explore, establish, exploit: Red teaming language models from scratch</em>. <a href="https://arxiv.org/abs/2306.09442">arXiv:2306.09442</a> (2023).&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p>Deng, M., Wang, J., Hsieh, C.-P., et al. (2022). <em>RLPrompt: Optimizing discrete text prompts with reinforcement learning</em>. <a href="https://arxiv.org/abs/2205.12548">arXiv:2205.12548</a> (2022)&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p>Wichers, N., Denison, C., &amp; Beirami, A. <em>Gradient-based language model red teaming</em> <a href="https://arxiv.org/abs/2401.16656">arXiv:2401.16656</a> (2024)&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
 
 
 
@@ -1032,7 +1042,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 12, 2025 06:11:11 UTC">2025-09-12</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 12, 2025 06:29:33 UTC">2025-09-12</span>
   </span>
 
     
