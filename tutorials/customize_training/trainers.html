@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/trainers.html">
       
       
+        <link rel="prev" href="solvers.html">
+      
+      
+        <link rel="next" href="../../api/index.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +26,7 @@
     
     
       
-        <title>How to Customize the Trainer - ASTRA-RL Toolbox Documentation</title>
+        <title>Trainers - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Customize the Trainer
+              Trainers
             
           </span>
         </div>
@@ -236,8 +240,10 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
+  
+    <li class="md-tabs__item md-tabs__item--active">
       <a href="../index.html" class="md-tabs__link">
         
   
@@ -298,7 +304,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -327,28 +333,6 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ASTRA
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
     
     
     
@@ -361,7 +345,115 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    ASTRA
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            ASTRA
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Setup
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -378,13 +470,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -398,12 +490,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../training_an_evaluator.md" class="md-nav__link">
+      <a href="../quick_start_training.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Quick Start Training
     
   </span>
   
@@ -421,17 +513,387 @@
   
   
     <li class="md-nav__item">
-      <a href="../running_an_evaluation.md" class="md-nav__link">
+      <a href="../quick_start_evaluation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Quick Start Evaluation
     
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Customization
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Customization
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="problems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problems
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="environments.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environments
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="moderators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Moderators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="solvers.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Solvers
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Trainers
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="trainers.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trainers
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-trainers-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Trainers Do
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-built-in-trainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Built-in Trainers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ways-to-customize" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-fast-path-use-the-base-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Fast path: use the base Trainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-fast-path-hf-compatible-trainer-hfasttrainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Fast path: HF-compatible trainer (HFASTTrainer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-full-control-subclass-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Full control: subclass Trainer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-trainingconfiguration-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 TrainingConfiguration knobs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-what-the-trainer-expects-from-the-harnessalgorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 What the Trainer expects from the Harness/Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Best Practices &amp; Sanity Checks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-tos" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. How-Tos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. How-Tos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-minimal-usage-of-the-base-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Minimal usage of the base Trainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-periodic-eval-hf-checkpoints-via-hfasttrainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Periodic eval + HF checkpoints via HFASTTrainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Write a custom trainer with eval, saving, and grad accumulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-early-stopping-or-custom-lr-schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Early stopping or custom LR schedules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-full-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Full Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -491,15 +953,6 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#table-of-contents" class="md-nav__link">
-    <span class="md-ellipsis">
-      Table of Contents
-    </span>
-  </a>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#1-what-trainers-do" class="md-nav__link">
@@ -686,38 +1139,6 @@
 <p><strong>Trainers</strong> run the optimization loop that updates your attacker. They wire together the <strong>environment</strong> (rollout collection), the <strong>algorithm/solver</strong> (computes a loss from rollouts), and the <strong>optimizer</strong> (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.</p>
 <p>This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.</p>
 <hr />
-<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
-<ol>
-<li><a href="#1-what-trainers-do">What Trainers Do</a></li>
-<li><a href="#2-built-in-trainers">Built-in Trainers</a></li>
-<li>
-<p><a href="#3-ways-to-customize">Ways to Customize</a></p>
-</li>
-<li>
-<p><a href="#31-fast-path-use-the-base-trainer">3.1 Fast path: use the base <code>Trainer</code></a></p>
-</li>
-<li><a href="#32-fast-path-hf-compatible-trainer-hfastrainer">3.2 Fast path: HF-compatible trainer (<code>HFASTTrainer</code>)</a></li>
-<li><a href="#33-full-control-subclass-trainer">3.3 Full control: subclass <code>Trainer</code></a></li>
-<li>
-<p><a href="#4-required-interface">Required Interface</a></p>
-</li>
-<li>
-<p><a href="#41-trainingconfiguration-knobs">4.1 <code>TrainingConfiguration</code> knobs</a></p>
-</li>
-<li><a href="#42-what-the-trainer-expects-from-the-harnessalgorithm">4.2 What the Trainer expects from the Harness/Algorithm</a></li>
-<li><a href="#5-best-practices--sanity-checks">Best Practices &amp; Sanity Checks</a></li>
-<li>
-<p><a href="#6-how-tos">How-Tos</a></p>
-</li>
-<li>
-<p><a href="#61-minimal-usage-of-the-base-trainer">6.1 Minimal usage of the base <code>Trainer</code></a></p>
-</li>
-<li><a href="#62-periodic-eval--hf-checkpoints-via-hfastrainer">6.2 Periodic eval + HF checkpoints via <code>HFASTTrainer</code></a></li>
-<li><a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation">6.3 Write a custom trainer with eval, saving, and grad accumulation</a></li>
-<li><a href="#64-early-stopping-or-custom-lr-schedules">6.4 Early stopping or custom LR schedules</a></li>
-<li><a href="#7-full-examples">Full Examples</a></li>
-</ol>
-<hr />
 <h2 id="1-what-trainers-do">1. What Trainers Do<a class="headerlink" href="#1-what-trainers-do" title="Permanent link">&para;</a></h2>
 <p>The base trainer in <code>astra_rl/training/trainer.py</code> is responsible for:</p>
 <ol>
@@ -726,9 +1147,10 @@
 <li><strong>Main training loop</strong> — calls <code>train()</code> to iterate for <code>training_steps</code>.</li>
 </ol>
 <p><strong>Important:</strong> the base loop is intentionally minimal. It <strong>does not</strong> perform evaluation, checkpointing, or external logging.</p>
-<blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>The Harness invokes your <strong>Algorithm</strong> on each batch and returns <code>(loss, step_logs)</code>. The base <code>Trainer</code> uses the loss for backprop and <strong>discards</strong> <code>step_logs</code>. Use <code>HFASTTrainer</code> or subclass <code>Trainer</code> if you need logging/eval/checkpointing.</p>
-</blockquote>
+</div>
 <hr />
 <h2 id="2-built-in-trainers">2. Built-in Trainers<a class="headerlink" href="#2-built-in-trainers" title="Permanent link">&para;</a></h2>
 <ul>
@@ -740,7 +1162,7 @@
 <h3 id="31-fast-path-use-the-base-trainer">3.1 Fast path: use the base <code>Trainer</code><a class="headerlink" href="#31-fast-path-use-the-base-trainer" title="Permanent link">&para;</a></h3>
 <p>If you just want a lean optimization loop (no eval/checkpointing/logging), use <code>Trainer</code> with a <code>TrainingConfiguration</code>. See <a href="#61-minimal-usage-of-the-base-trainer">6.1</a>.</p>
 <h3 id="32-fast-path-hf-compatible-trainer-hfasttrainer">3.2 Fast path: HF-compatible trainer (<code>HFASTTrainer</code>)<a class="headerlink" href="#32-fast-path-hf-compatible-trainer-hfasttrainer" title="Permanent link">&para;</a></h3>
-<p>If you want periodic dev evaluation and automatic Hugging Face checkpointing, use <code>HFASTTrainer</code> with <code>HFASTConfiguration</code>. See <a href="#62-periodic-eval--hf-checkpoints-via-hfastrainer">6.2</a>.</p>
+<p>If you want periodic dev evaluation and automatic Hugging Face checkpointing, use <code>HFASTTrainer</code> with <code>HFASTConfiguration</code>. See <a href="#62-periodic-eval-hf-checkpoints-via-hfasttrainer">6.2</a>.</p>
 <h3 id="33-full-control-subclass-trainer">3.3 Full control: subclass <code>Trainer</code><a class="headerlink" href="#33-full-control-subclass-trainer" title="Permanent link">&para;</a></h3>
 <p>Need custom evaluation cadence, model-saving policy, learning-rate schedules, gradient accumulation, early stopping, or logging destinations (e.g., Weights &amp; Biases)? Subclass <code>Trainer</code> and override <code>train()</code> (and optional helpers). See <a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation">6.3</a> and <a href="#64-early-stopping-or-custom-lr-schedules">6.4</a>.</p>
 <hr />
@@ -906,7 +1328,7 @@ class MyTrainer(Trainer):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 4, 2025 17:15:50 UTC">2025-09-04</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 12, 2025 06:11:11 UTC">2025-09-12</span>
   </span>
 
     
@@ -964,7 +1386,7 @@ class MyTrainer(Trainer):
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>

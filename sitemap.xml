@@ -2,46 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://github.com/sisl/astra-rl/index.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/sisl/astra-rl/dev_setup.html</loc>
+         <lastmod>2025-09-12</lastmod>
+    </url>
+    <url>
+         <loc>https://github.com/sisl/astra-rl/installation.html</loc>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/api/index.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/index.html</loc>
-         <lastmod>2025-09-10</lastmod>
-    </url>
-    <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/START_HERE.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/quick_start_evaluation.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/quick_start_training.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/environments.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/moderators.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/problems.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/solvers.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
     <url>
          <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/trainers.html</loc>
-         <lastmod>2025-09-10</lastmod>
+         <lastmod>2025-09-12</lastmod>
     </url>
 </urlset>
