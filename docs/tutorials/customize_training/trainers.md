@@ -6,30 +6,6 @@ This guide explains what a trainer does, what ASTRA-RL ships with, and how to im
 
 ---
 
-## Table of Contents
-
-1. [What Trainers Do](#1-what-trainers-do)
-2. [Built-in Trainers](#2-built-in-trainers)
-3. [Ways to Customize](#3-ways-to-customize)
-
-   * [3.1 Fast path: use the base `Trainer`](#31-fast-path-use-the-base-trainer)
-   * [3.2 Fast path: HF-compatible trainer (`HFASTTrainer`)](#32-fast-path-hf-compatible-trainer-hfastrainer)
-   * [3.3 Full control: subclass `Trainer`](#33-full-control-subclass-trainer)
-4. [Required Interface](#4-required-interface)
-
-   * [4.1 `TrainingConfiguration` knobs](#41-trainingconfiguration-knobs)
-   * [4.2 What the Trainer expects from the Harness/Algorithm](#42-what-the-trainer-expects-from-the-harnessalgorithm)
-5. [Best Practices & Sanity Checks](#5-best-practices--sanity-checks)
-6. [How-Tos](#6-how-tos)
-
-   * [6.1 Minimal usage of the base `Trainer`](#61-minimal-usage-of-the-base-trainer)
-   * [6.2 Periodic eval + HF checkpoints via `HFASTTrainer`](#62-periodic-eval--hf-checkpoints-via-hfastrainer)
-   * [6.3 Write a custom trainer with eval, saving, and grad accumulation](#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation)
-   * [6.4 Early stopping or custom LR schedules](#64-early-stopping-or-custom-lr-schedules)
-7. [Full Examples](#7-full-examples)
-
----
-
 ## 1. What Trainers Do
 
 The base trainer in `astra_rl/training/trainer.py` is responsible for:
@@ -40,7 +16,9 @@ The base trainer in `astra_rl/training/trainer.py` is responsible for:
 
 **Important:** the base loop is intentionally minimal. It **does not** perform evaluation, checkpointing, or external logging.
 
-> The Harness invokes your **Algorithm** on each batch and returns `(loss, step_logs)`. The base `Trainer` uses the loss for backprop and **discards** `step_logs`. Use `HFASTTrainer` or subclass `Trainer` if you need logging/eval/checkpointing.
+!!! note 
+
+    The Harness invokes your **Algorithm** on each batch and returns `(loss, step_logs)`. The base `Trainer` uses the loss for backprop and **discards** `step_logs`. Use `HFASTTrainer` or subclass `Trainer` if you need logging/eval/checkpointing.
 
 ---
 
@@ -59,7 +37,7 @@ If you just want a lean optimization loop (no eval/checkpointing/logging), use `
 
 ### 3.2 Fast path: HF-compatible trainer (`HFASTTrainer`)
 
-If you want periodic dev evaluation and automatic Hugging Face checkpointing, use `HFASTTrainer` with `HFASTConfiguration`. See [6.2](#62-periodic-eval--hf-checkpoints-via-hfastrainer).
+If you want periodic dev evaluation and automatic Hugging Face checkpointing, use `HFASTTrainer` with `HFASTConfiguration`. See [6.2](#62-periodic-eval-hf-checkpoints-via-hfasttrainer).
 
 ### 3.3 Full control: subclass `Trainer`
 

@@ -17,25 +17,6 @@ ASTRA-RL ships with `ASTEnvironment`, which mirrors the rollout structure used i
 
 ---
 
-## Table of Contents
-
-1. [Ways to Customize](#1-ways-to-customize)
-
-   * [1.1 Fast path: subclass `ASTEnvironment`](#11-fast-path-subclass-astenvironment)
-   * [1.2 Full control: subclass `Environment`](#12-full-control-subclass-environment)
-2. [Required Interface](#2-required-interface)
-
-   * [2.1 Nodes and Graphs](#21-nodes-and-graphs)
-   * [2.2 Helpful `ASTProblem` APIs](#22-helpful-astproblem-apis)
-3. [Best Practices & Sanity Checks](#3-best-practices--sanity-checks)
-4. [How-Tos](#4-how-tos)
-
-   * [4.1 Create a custom Node or Graph](#41-create-a-custom-node-or-graph)
-   * [4.2 Change rollout width/depth](#42-change-rollout-widthdepth)
-   * [4.3 Multi-agent conversations](#43-multi-agent-conversations)
-
----
-
 ## 1. Ways to Customize
 
 ### 1.1 Fast path: subclass `ASTEnvironment`

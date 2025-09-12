@@ -9,7 +9,7 @@ Then this guide is for you. We’ll walk through every step required to train a 
 
 ## Step 1: Setup
 
-Please see the [README](../../README.md) for full setup instructions. Here's a quick recap:
+Please see the [main documentation](../index.md) for full setup instructions. Here's a quick recap:
 
 ```bash
 # Install the ASTRA-RL toolbox
@@ -19,7 +19,9 @@ pip install astra-rl
 git clone git@github.com:sisl/astra-rl.git
 ```
 
-> Note: wandb is not automatically installed during this process. If you would let to use wandb (supported), install it (uv pip install wandb) and run export WANDB_API_KEY=###your_wandb_api_key##### in your terminal.
+!!! note
+
+    wandb is not automatically installed during this process. If you would let to use wandb either install it as an optional dependency (`pip install "astra-rl[wandb]"`) or install it directly (`uv pip install wandb`) and run export `WANDB_API_KEY=YOUR_API_KEY_HERE` in your terminal.
 
 ---
 
@@ -51,7 +53,7 @@ with open("prompts_reddit_train.json") as f:
     PROMPTS = json.load(f)
 ```
 
-Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in [basic examples](../examples/GPT2_v_GPT2/).
+Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in [basic examples](https://github.com/sisl/astra-rl/tree/main/examples/GPT2_v_GPT2/).
 
 The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
@@ -103,7 +105,7 @@ By default, rollouts are configured with tree_width=2 and tree_depth=3, but you 
 env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 ```
 
-Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](customize_training/envirnoments.md)
+Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](customize_training/environments.md)
 
 ---
 
@@ -141,7 +143,7 @@ trainer = HFASTTrainer(
 )
 trainer.train()
 ```
-> The source code for the training configuration and trainer are at [hf_ast_problem](../src/ext/transformers/hf_ast_problem.py)
+> The source code for the training configuration and trainer are at [hf_ast_problem](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/ext/transformers/hf_ast_problem.py)
 
 Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to [customize_training/trainers](customize_training/trainers.md)!
 
@@ -150,9 +152,9 @@ Want to customize the training configuration/hyperparams, the training loop, or 
 ## Full Examples: 
 We provide 3 complete working examples that mirror this guide!
 
-Hugging face example without trainer: [examples/ast_hf.py](../../examples/ast_hf.py)
+Hugging face example without trainer: [examples/ast_hf.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_hf.py)
 
-Custom AST problem with trainer: [examples/ast_trainer](../../examples/GPT2_v_GPT2/ast_trainer.py)
+Custom AST problem with trainer: [examples/ast_trainer](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py)
 
-Custom AST problem without trainer: [examples/ast_basic.py](../../examples/ast_basic.py)
+Custom AST problem without trainer: [examples/ast_basic.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_basic.py)
 
