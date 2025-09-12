@@ -6,29 +6,6 @@ ASTRA-RL ships with ready-to-use text moderators and a simple interface for writ
 
 ---
 
-## Table of Contents
-
-1. [What Moderators Do](#1-what-moderators-do)
-2. [Built-in Moderators](#2-built-in-moderators)
-3. [Ways to Customize](#3-ways-to-customize)
-
-   * [3.1 Fast path: adapt a built-in](#31-fast-path-adapt-a-built-in)
-   * [3.2 Full control: subclass `Moderator`](#32-full-control-subclass-moderator)
-4. [Required Interface](#4-required-interface)
-
-   * [4.1 Type parameters](#41-type-parameters)
-   * [4.2 `moderate(...)` contract](#42-moderate-contract)
-5. [Best Practices & Sanity Checks](#5-best-practices--sanity-checks)
-6. [How-Tos](#6-how-tos)
-
-   * [6.1 Minimal custom moderator (Detoxify wrapper)](#61-minimal-custom-moderator-detoxify-wrapper)
-   * [6.2 Selecting harm categories](#62-selecting-harm-categories)
-   * [6.3 Batching & preprocessing](#63-batching--preprocessing)
-   * [6.4 Integrate your moderator into a Problem](#64-integrate-your-moderator-into-a-problem)
-7. [Full Examples](#7-full-examples)
-
----
-
 ## 1. What Moderators Do
 
 A moderator converts text into a **scalar score** (one score per input). In most setups:
@@ -178,7 +155,7 @@ class ExampleDetoxifyProblem(ASTProblem):
 
 ## 7. Full Examples
 
-* [astra_rl/moderators/detoxify.py](astra_rl/moderators/detoxify.py) — wraps the Detoxify library.
-* [astra_rl/moderators/llamaGuard.py](astra_rl/moderators/llamaGuard.py) — wraps Meta’s Llama Guard 3.
+* [astra_rl/moderators/detoxify.py](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/moderators/detoxify.py) — wraps the Detoxify library.
+* [astra_rl/moderators/llamaGuard.py](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/moderators/llamaGuard.py) — wraps Meta's Llama Guard 3.
 
 Use these as references when building your own moderator classes.

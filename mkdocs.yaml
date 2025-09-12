@@ -54,12 +54,22 @@ theme:
       - navigation.instant
       - navigation.tabs
       - navigation.tabs.sticky
+      - navigation.expand
       - toc.follow
 
 nav:
-  - ASTRA: index.md
+  - ASTRA: 
+    - index.md
+    - Installation: installation.md
+    - Development Setup: dev_setup.md
   - Tutorials: 
       - tutorials/index.md
-      - tutorials/training_an_evaluator.md
-      - tutorials/running_an_evaluation.md
+      - Training Quick Start: tutorials/quick_start_training.md
+      - Evaluation Quick Start: tutorials/quick_start_evaluation.md
+      - Customization:
+          - Problems: tutorials/customize_training/problems.md
+          - Environments: tutorials/customize_training/environments.md
+          - Moderators: tutorials/customize_training/moderators.md
+          - Solvers: tutorials/customize_training/solvers.md
+          - Trainers: tutorials/customize_training/trainers.md
   - Library API Reference: api/index.md

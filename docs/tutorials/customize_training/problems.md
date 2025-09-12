@@ -12,31 +12,6 @@ Most users can subclass `ASTProblem` (text) or use the HF convenience `HFASTProb
 
 ---
 
-## Table of Contents
-
-1. [What Problems Do](#1-what-problems-do)
-2. [Built-in / Convenience Problems](#2-built-in--convenience-problems)
-3. [Ways to Customize](#3-ways-to-customize)
-
-   * [3.1 Fast path: subclass `HFASTProblem` (HF)](#31-fast-path-subclass-hfastproblem-hf)
-   * [3.2 Full control: subclass `ASTProblem` or `Problem`](#32-full-control-subclass-astproblem-or-problem)
-4. [Required Interface](#4-required-interface)
-
-   * [4.1 Methods & gradient expectations](#41-methods--gradient-expectations)
-   * [4.2 Problem helpers](#42-problem-helpers)
-5. [Best Practices & Sanity Checks](#5-best-practices--sanity-checks)
-6. [How-Tos](#6-how-tos)
-
-   * [6.1 Minimal HF subclass (`HFASTProblem`)](#61-minimal-hf-subclass-hfastproblem)
-   * [6.2 Non-HF custom `Problem` skeleton](#62-non-hf-custom-problem-skeleton)
-   * [6.3 Designing rewards](#64-designing-rewards)
-   * [6.4 Implementing `advance(...)`](#65-implementing-advance)
-   * [6.5 Saving models (HF & non-HF)](#66-saving-models-hf--non-hf)
-7. [Plug into Environment / Solver](#7-plug-into-environment--solver)
-8. [Debug Checklist](#8-debug-checklist)
-
----
-
 ## 1. What Problems Do
 
 A `Problem` is the bridge between abstract rollouts and concrete model calls. It must:

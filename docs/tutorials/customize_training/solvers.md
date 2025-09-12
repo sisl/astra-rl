@@ -10,24 +10,6 @@
 
 ---
 
-## Table of Contents
-
-1. [What Solvers Do](#1-what-solvers-do)
-2. [Built-in Solvers/Examples](#2-built-in-solvers)
-3. [Ways to Customize](#3-ways-to-customize)
-
-   * [3.1 Fast path: adapt a built-in (e.g., DPO → IPO)](#31-fast-path-adapt-a-built-in-eg-dpo--ipo)
-   * [3.2 Full control: subclass `Algorithm`](#32-full-control-subclass-algorithm)
-4. [Required Interface](#4-required-interface)
-
-   * [4.1 Step/Batch data contracts](#41-stepbatch-data-contracts)
-   * [4.2 `flatten`, `collate_fn`, `step` contracts](#42-flatten-collate_fn-step-contracts)
-   * [4.3 Interacting with `Problem`](#43-interacting-with-problem)
-5. [Best Practices & Sanity Checks](#5-best-practices--sanity-checks)
-6. [Plug into the Trainer/Harness](#6-plug-into-the-trainerharness)
-7. [Debug Checklist](#7-debug-checklist)
----
-
 ## 1. What Solvers Do
 
 Given rollouts (graphs of attacker–target turns), a solver decides **what examples to learn from** (via `flatten`), **how to batch them** (`collate_fn`), and **what objective to optimize** (`step`). This keeps “*how we learn*” separate from:
@@ -45,7 +27,7 @@ ASTRA-RL includes preference-learning solvers commonly used for LM alignment/red
 * **IPO** — Implicit Preference Optimization (margin-style objective over log-ratio differences)
 * **PPO** - Proximal Policy Optimization 
 
-These serve as concrete references for writing your own solver. Find the code for these solvers [here](../../../src/astra_rl/core/algorithm.py)!
+These serve as concrete references for writing your own solver. Find the code for these solvers [here](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/core/algorithm.py)!
 
 ---
 
