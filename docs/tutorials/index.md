@@ -8,10 +8,10 @@ ASTRA-RL is a user-friendly, modular, and customizable toolbox for **Langauge Mo
 
 ## What is Lanaguage Model Red-Teaming?
 
-**Language model red-teaming** aims to identify and benchmark prompts that elicit harmful or otherwise undesirable behavior from a target language model (Hardy et al., 2025). This surfaces vulnerabilities and guides fine-tuning to reduce harmful outputs.
+**Language model red-teaming** aims to identify and benchmark prompts that elicit harmful or otherwise undesirable behavior from a target language model ([Hardy et al., 2025](https://arxiv.org/abs/2407.09447))[^1]. This surfaces vulnerabilities and guides fine-tuning to reduce harmful outputs.
 
-* **Manual red-teaming:** human annotators craft adversarial prompts—effective but costly and not scalable (Ganguli et al., 2022).
-* **Automated red-teaming:** generates adversarial prompts at scale. Examples include fuzzing exisiting prompts (Yu et al., 2023) or using a combination of targeted search techniques to optimize an effective adversarial suffix (Zou et al., 2023)
+* **Manual red-teaming:** human annotators craft adversarial prompts—effective but costly and not scalable ([Ganguli et al., 2022](https://arxiv.org/abs/2209.07858))[^2].
+* **Automated red-teaming:** generates adversarial prompts at scale. Examples include fuzzing exisiting prompts ([Yu et al., 2023](https://arxiv.org/abs/2309.10253))[^3] or using a combination of targeted search techniques to optimize an effective adversarial suffix ([Zou et al., 2023](https://arxiv.org/abs/2307.15043))[^4]
 
 ### RL-based Red-Teaming
 
@@ -24,8 +24,8 @@ A promising direction in automated red-teaming is **reinforcement learning (RL)*
 
 **Cons**
 
-1. **Mode collapse / low coverage:** may find only a small set of effective patterns (Casper et al., 2023).
-2. **Unrealistic prompts:** can be disfluent or implausible (Deng et al., 2022; Casper et al., 2023), even with realism terms (Wichers et al., 2024).
+1. **Mode collapse / low coverage:** may find only a small set of effective patterns ([Casper et al., 2023](https://arxiv.org/abs/2306.09442))[^5].
+2. **Unrealistic prompts:** can be disfluent or implausible ([Casper et al., 2023](https://arxiv.org/abs/2306.09442);[Deng et al., 2022](https://arxiv.org/abs/2205.12548))[^5][^6], even with realism terms ([Wichers et al., 2024](https://arxiv.org/abs/2401.16656))[^7].
 
 ASTRA-RL makes **training** an RL attacker and **evaluating** a target with a pre-trained attacker both **quick** and **customizable**.
 
@@ -102,16 +102,16 @@ Want to go beyond the defaults? ASTRA-RL is **modular**—swap what you need and
 Jump straight to evaluation (single-path dev/test rollouts, metric aggregation):
 **[Quick Start Evaluation](quick_start_evaluation.md)**
 
----
+[^1]: Hardy, A., Liu, H., Lange, B., Eddy, D., and Kochenderfer, M.J. *ASTPrompter: Weakly Supervised Automated Language Model Red-Teaming to Identify Low-Perplexity Toxic Prompts.*. [arXiv:2407.09447](https://arxiv.org/abs/2407.09447) (2024)
 
-## References
+[^2]: Ganguli, D., Li, K., Shumailov, I., et al. *Red teaming language models to reduce harms: Methods, scaling behaviors, and lessons learned*. [arXiv:2212.08073](https://arxiv.org/abs/2209.07858) (2022)
 
-Casper, S., Lin, J., Kwon, J., Culp, G., & Hadfield-Menell, D. (2023). *Explore, establish, exploit: Red teaming language models from scratch*. arXiv:2306.09442.
+[^3]: Yu, J., Lin, X., Yu, Z., & Xing, X. *GPTFuzzer: Red teaming large language models with auto-generated jailbreak prompts*. [arXiv:2309.10253](https://arxiv.org/abs/2309.10253) (2023)
 
-Deng, M., Wang, J., Hsieh, C.-P., et al. (2022). *RLPrompt: Optimizing discrete text prompts with reinforcement learning*. EMNLP.
+[^4]: Zou, A., Wang, Z., Carlini, N., et al. (2023). *Universal and transferable adversarial attacks on aligned language models*. [arXiv:2307.15043](https://arxiv.org/abs/2307.15043) (2023)
 
-Wichers, N., Denison, C., & Beirami, A. (2024). *Gradient-based language model red teaming*. EACL.
+[^5]: Casper, S., Lin, J., Kwon, J., Culp, G., & Hadfield-Menell, D. *Explore, establish, exploit: Red teaming language models from scratch*. [arXiv:2306.09442](https://arxiv.org/abs/2306.09442) (2023).
 
-Yu, J., Lin, X., Yu, Z., & Xing, X. (2023). *GPTFuzzer: Red teaming large language models with auto-generated jailbreak prompts*. arXiv:2309.10253.
+[^6]: Deng, M., Wang, J., Hsieh, C.-P., et al. (2022). *RLPrompt: Optimizing discrete text prompts with reinforcement learning*. [arXiv:2205.12548](https://arxiv.org/abs/2205.12548) (2022)
 
-Zou, A., Wang, Z., Carlini, N., et al. (2023). *Universal and transferable adversarial attacks on aligned language models*. arXiv:2307.15043.
+[^7]: Wichers, N., Denison, C., & Beirami, A. *Gradient-based language model red teaming* [arXiv:2401.16656](https://arxiv.org/abs/2401.16656) (2024)

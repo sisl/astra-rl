@@ -6,7 +6,9 @@ The **environment** defines how attacker–target interactions are generated and
 * what per-step data (actions, responses, rewards) is stored,
 * and what the solver receives as input.
 
-> **Evaluation note.** The environment also powers evaluation by running a single-path rollout (tree width = 1) and collecting metrics. See [quick\_start\_evaluation](../quick_start_evaluation.md) for more details on evaluation.
+!!! note 
+
+    The environment also powers evaluation by running a single-path rollout (tree width = 1) and collecting metrics. See [Evaluation Quick Start](../quick_start_evaluation.md) for more details on evaluation.
 
 ASTRA-RL ships with `ASTEnvironment`, which mirrors the rollout structure used in **ASTPrompter**. You can subclass it—or the base `Environment`—to support:
 

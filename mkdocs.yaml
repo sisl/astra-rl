@@ -64,8 +64,8 @@ nav:
     - Development Setup: dev_setup.md
   - Tutorials: 
       - tutorials/index.md
-      - Quick Start Training: tutorials/quick_start_training.md
-      - Quick Start Evaluation: tutorials/quick_start_evaluation.md
+      - Training Quick Start: tutorials/quick_start_training.md
+      - Evaluation Quick Start: tutorials/quick_start_evaluation.md
       - Customization:
           - Problems: tutorials/customize_training/problems.md
           - Environments: tutorials/customize_training/environments.md
