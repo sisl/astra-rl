@@ -12,28 +12,28 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/quick_start_evaluation.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/installation.html">
       
       
-        <link rel="prev" href="quick_start_training.html">
+        <link rel="prev" href="index.html">
       
       
-        <link rel="next" href="customize_training/problems.html">
+        <link rel="next" href="dev_setup.html">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
-        <title>Evaluation Quick Start - ASTRA-RL Toolbox Documentation</title>
+        <title>Installation - ASTRA-RL Toolbox Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,11 +52,11 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#running-an-evaluation" class="md-skip">
+        <a href="#installation-guide" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Evaluation Quick Start
+              Installation
             
           </span>
         </div>
@@ -221,9 +221,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../index.html" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="index.html" class="md-tabs__link">
         
   
   
@@ -240,11 +242,9 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="index.html" class="md-tabs__link">
+    <li class="md-tabs__item">
+      <a href="tutorials/index.html" class="md-tabs__link">
         
   
   
@@ -263,7 +263,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../api/index.html" class="md-tabs__link">
+      <a href="api/index.html" class="md-tabs__link">
         
   
   
@@ -304,7 +304,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -331,27 +331,30 @@
       
   
   
+    
   
   
+  
     
     
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
+            <a href="index.html" class="md-nav__link ">
               
   
   
@@ -364,13 +367,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
             ASTRA
@@ -381,10 +384,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../installation.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="installation.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -395,6 +420,50 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-installation-for-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Installation (For Users)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Installation (For Users)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -407,7 +476,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev_setup.html" class="md-nav__link">
+      <a href="dev_setup.html" class="md-nav__link">
         
   
   
@@ -434,30 +503,27 @@
       
   
   
-    
   
   
-  
     
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link ">
+            <a href="tutorials/index.html" class="md-nav__link ">
               
   
   
@@ -470,13 +536,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -490,7 +556,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick_start_training.html" class="md-nav__link">
+      <a href="tutorials/quick_start_training.html" class="md-nav__link">
         
   
   
@@ -510,19 +576,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-      <a href="quick_start_evaluation.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="tutorials/quick_start_evaluation.html" class="md-nav__link">
         
   
   
@@ -533,7 +590,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -589,7 +645,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customize_training/problems.html" class="md-nav__link">
+      <a href="tutorials/customize_training/problems.html" class="md-nav__link">
         
   
   
@@ -612,7 +668,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customize_training/environments.html" class="md-nav__link">
+      <a href="tutorials/customize_training/environments.html" class="md-nav__link">
         
   
   
@@ -635,7 +691,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customize_training/moderators.html" class="md-nav__link">
+      <a href="tutorials/customize_training/moderators.html" class="md-nav__link">
         
   
   
@@ -658,7 +714,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customize_training/solvers.html" class="md-nav__link">
+      <a href="tutorials/customize_training/solvers.html" class="md-nav__link">
         
   
   
@@ -681,7 +737,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customize_training/trainers.html" class="md-nav__link">
+      <a href="tutorials/customize_training/trainers.html" class="md-nav__link">
         
   
   
@@ -719,7 +775,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/index.html" class="md-nav__link">
+      <a href="api/index.html" class="md-nav__link">
         
   
   
@@ -754,6 +810,38 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#basic-installation-for-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Installation (For Users)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Basic Installation (For Users)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optional-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -771,9 +859,24 @@
   
 
 
-<h1 id="running-an-evaluation">Running An Evaluation<a class="headerlink" href="#running-an-evaluation" title="Permanent link">&para;</a></h1>
-<p>This tutorial will guide you through the process of running an evaluation using an existing evaluator model. The evaluator is a model that can be used to assess the quality of other models' outputs. </p>
-<p>For the purposes of this tutorial, we will assume that you have already trained an evaluator model from the <a href="quick_start_training.html">Training Quick Start</a> tutorial.</p>
+<h1 id="installation-guide">Installation Guide<a class="headerlink" href="#installation-guide" title="Permanent link">&para;</a></h1>
+<p>This guide covers both basic installation for users and development setup for contributors.</p>
+<h2 id="basic-installation-for-users">Basic Installation (For Users)<a class="headerlink" href="#basic-installation-for-users" title="Permanent link">&para;</a></h2>
+<p>To use the ASTRA-RL toolbox in your projects, you can install it directly from PyPI:</p>
+<pre><code class="language-bash">pip install astra-rl
+</code></pre>
+<p>After installation, you can import the library in your Python code:</p>
+<pre><code class="language-python">import astra_rl
+# or
+import astra_rl as astral
+</code></pre>
+<h3 id="optional-dependencies">Optional Dependencies<a class="headerlink" href="#optional-dependencies" title="Permanent link">&para;</a></h3>
+<p>If you plan to use Weights &amp; Biases for experiment tracking, then install with
+optional dependencies:</p>
+<pre><code class="language-bash">pip install &quot;astra-rl[wandb]&quot;
+export WANDB_API_KEY=your_wandb_api_key_here
+</code></pre>
+<p>That's it! You should now be able to use ASTRA-RL in your projects.</p>
 
 
 
@@ -806,7 +909,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 06:52:58 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 16, 2025 20:22:23 UTC">2025-09-16</span>
   </span>
 
     
@@ -854,10 +957,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>
