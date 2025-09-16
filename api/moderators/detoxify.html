@@ -12,13 +12,13 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/moderators.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/moderators/detoxify.html">
       
       
-        <link rel="prev" href="environments.html">
+        <link rel="prev" href="index.html">
       
       
-        <link rel="next" href="solvers.html">
+        <link rel="next" href="../training/index.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Moderators - ASTRA-RL Toolbox Documentation</title>
+        <title>Detoxify - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-customize-the-moderator" class="md-skip">
+        <a href="#astra_rl.moderators.detoxify" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Moderators
+              Detoxify
             
           </span>
         </div>
@@ -240,11 +240,28 @@
   
   
   
+  
+    <li class="md-tabs__item">
+      <a href="../../getting_started.html" class="md-tabs__link">
+        
+  
+  
     
   
+  Getting Started
+
+      </a>
+    </li>
   
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="../index.html" class="md-tabs__link">
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../tutorials/index.html" class="md-tabs__link">
         
   
   
@@ -261,15 +278,36 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="../../api/index.html" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
     
   
-  Library API Reference
+  API Reference
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../contributing.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Contributing
 
       </a>
     </li>
@@ -304,7 +342,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -333,6 +371,50 @@
   
   
   
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ASTRA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting_started.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
     
     
     
@@ -347,16 +429,16 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../index.html" class="md-nav__link ">
+            <a href="../../tutorials/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    ASTRA
+    Tutorials
     
   </span>
   
@@ -364,16 +446,16 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_1">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
-            ASTRA
+            Tutorials
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -384,12 +466,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../installation.html" class="md-nav__link">
+      <a href="../../tutorials/training_an_evaluator.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Installation
+    Training an Evaluator
     
   </span>
   
@@ -407,12 +489,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../dev_setup.html" class="md-nav__link">
+      <a href="../../tutorials/running_an_evaluation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Development Setup
+    Running An Evaluation
     
   </span>
   
@@ -453,7 +535,7 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
@@ -462,7 +544,7 @@
   
   
   <span class="md-ellipsis">
-    Tutorials
+    API Reference
     
   </span>
   
@@ -470,16 +552,66 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
-            Tutorials
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../core/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Core Module
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            Core Module
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -490,12 +622,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../quick_start_training.html" class="md-nav__link">
+      <a href="../core/common.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Training Quick Start
+    Common
     
   </span>
   
@@ -513,17 +645,175 @@
   
   
     <li class="md-nav__item">
-      <a href="../quick_start_evaluation.html" class="md-nav__link">
+      <a href="../core/problem.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Evaluation Quick Start
+    Problem
     
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/environment.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/moderator.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Moderator
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/algorithm.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Algorithm
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../algorithms/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Algorithms
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Algorithms
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../algorithms/dpo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    DPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -549,74 +839,35 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
-            
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
-    Customization
+    Moderators
     
   </span>
   
 
-            <span class="md-nav__icon md-icon"></span>
-          </label>
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_2_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
             <span class="md-nav__icon md-icon"></span>
-            Customization
+            Moderators
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="problems.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Problems
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="environments.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Environments
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
             
               
                 
@@ -631,15 +882,13 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           
   
   
   <span class="md-ellipsis">
-    Moderators
+    Detoxify
     
   </span>
   
@@ -647,12 +896,12 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="moderators.html" class="md-nav__link md-nav__link--active">
+      <a href="detoxify.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Moderators
+    Detoxify
     
   </span>
   
@@ -665,8 +914,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -675,46 +922,19 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-what-moderators-do" class="md-nav__link">
+  <a href="#astra_rl.moderators.detoxify" class="md-nav__link">
     <span class="md-ellipsis">
-      1. What Moderators Do
+      detoxify
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-built-in-moderators" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Built-in Moderators
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-ways-to-customize" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Ways to Customize
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Ways to Customize">
+    <nav class="md-nav" aria-label="detoxify">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-fast-path-adapt-a-built-in" class="md-nav__link">
+  <a href="#astra_rl.moderators.detoxify.DetoxifyModerator" class="md-nav__link">
     <span class="md-ellipsis">
-      3.1 Fast path: adapt a built-in
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-full-control-subclass-moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Full control: subclass Moderator
+      DetoxifyModerator
     </span>
   </a>
   
@@ -722,108 +942,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-required-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Required Interface
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Required Interface">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-type-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Type parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-moderate-contract" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.2 moderate(...) contract
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Best Practices &amp; Sanity Checks
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-how-tos" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. How-Tos
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="6. How-Tos">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-minimal-custom-moderator-detoxify-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.1 Minimal custom moderator (Detoxify wrapper)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-selecting-harm-categories" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.2 Selecting harm categories
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-batching-preprocessing" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.3 Batching &amp; preprocessing
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-integrate-your-moderator-into-a-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.4 Integrate your moderator into a Problem
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-full-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Full Examples
-    </span>
-  </a>
   
 </li>
       
@@ -836,6 +954,64 @@
 
               
             
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../training/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Training
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            Training
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
               
                 
   
@@ -843,12 +1019,12 @@
   
   
     <li class="md-nav__item">
-      <a href="solvers.html" class="md-nav__link">
+      <a href="../training/harness.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Solvers
+    Harness
     
   </span>
   
@@ -866,12 +1042,93 @@
   
   
     <li class="md-nav__item">
-      <a href="trainers.html" class="md-nav__link">
+      <a href="../training/trainer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Trainers
+    Trainer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../methods/index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Methods
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            Methods
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../methods/ast_problem.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    AST Problem
     
   </span>
   
@@ -904,12 +1161,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/index.html" class="md-nav__link">
+      <a href="../../contributing.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Library API Reference
+    Contributing
     
   </span>
   
@@ -936,8 +1193,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -946,46 +1201,19 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-what-moderators-do" class="md-nav__link">
+  <a href="#astra_rl.moderators.detoxify" class="md-nav__link">
     <span class="md-ellipsis">
-      1. What Moderators Do
+      detoxify
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-built-in-moderators" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Built-in Moderators
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-ways-to-customize" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Ways to Customize
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Ways to Customize">
+    <nav class="md-nav" aria-label="detoxify">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#31-fast-path-adapt-a-built-in" class="md-nav__link">
+  <a href="#astra_rl.moderators.detoxify.DetoxifyModerator" class="md-nav__link">
     <span class="md-ellipsis">
-      3.1 Fast path: adapt a built-in
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-full-control-subclass-moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Full control: subclass Moderator
+      DetoxifyModerator
     </span>
   </a>
   
@@ -993,108 +1221,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-required-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Required Interface
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Required Interface">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-type-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Type parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-moderate-contract" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.2 moderate(...) contract
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Best Practices &amp; Sanity Checks
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-how-tos" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. How-Tos
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="6. How-Tos">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-minimal-custom-moderator-detoxify-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.1 Minimal custom moderator (Detoxify wrapper)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-selecting-harm-categories" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.2 Selecting harm categories
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-batching-preprocessing" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.3 Batching &amp; preprocessing
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-integrate-your-moderator-into-a-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.4 Integrate your moderator into a Problem
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-full-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Full Examples
-    </span>
-  </a>
   
 </li>
       
@@ -1117,133 +1243,194 @@
   
 
 
-<h1 id="how-to-customize-the-moderator">How to Customize the Moderator<a class="headerlink" href="#how-to-customize-the-moderator" title="Permanent link">&para;</a></h1>
-<p><strong>Moderators</strong> provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender’s reply), they return a scalar score that reflects harm/unsafety. Attackers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise “undesirable”) target responses, revealing weaknesses in the target’s safety alignment.</p>
-<p>ASTRA-RL ships with ready-to-use text moderators and a simple interface for writing your own. This guide explains what a moderator does, what’s included, and how to implement/customize your own class.</p>
-<hr />
-<h2 id="1-what-moderators-do">1. What Moderators Do<a class="headerlink" href="#1-what-moderators-do" title="Permanent link">&para;</a></h2>
-<p>A moderator converts text into a <strong>scalar score</strong> (one score per input). In most setups:</p>
-<ul>
-<li><strong>Input:</strong> target/defender generations (strings).</li>
-<li><strong>Output:</strong> <code>Sequence[float]</code> scores, e.g., toxicity in <code>[0, 1]</code>.</li>
-</ul>
-<p>Downstream solvers interpret these scores to train the <strong>attacker</strong>. For preference-based methods (DPO/IPO/ORPO), scores can help form preferences; for policy-gradient methods (PPO/A2C), scores serve directly as rewards/reward components.</p>
-<hr />
-<h2 id="2-built-in-moderators">2. Built-in Moderators<a class="headerlink" href="#2-built-in-moderators" title="Permanent link">&para;</a></h2>
-<p>ASTRA-RL currently ships with text-based moderators that you can use out of the box:</p>
-<ul>
-<li><strong>Detoxify</strong> — toxicity classification (and related categories). More info <a href="https://github.com/unitaryai/detoxify">here</a></li>
-<li><strong>Llama Guard 3</strong> — multi-category safety classifier (e.g., hate/threats/harassment). More info <a href="https://huggingface.co/meta-llama/Llama-Guard-3-8B">here</a></li>
-</ul>
-<blockquote>
-<p>These are modular components—swap them freely or use them as templates for your own moderators.</p>
-</blockquote>
-<hr />
-<h2 id="3-ways-to-customize">3. Ways to Customize<a class="headerlink" href="#3-ways-to-customize" title="Permanent link">&para;</a></h2>
-<h3 id="31-fast-path-adapt-a-built-in">3.1 Fast path: adapt a built-in<a class="headerlink" href="#31-fast-path-adapt-a-built-in" title="Permanent link">&para;</a></h3>
-<p>If you only need to change the <strong>category</strong> (e.g., “toxicity” → “insult”), adjust thresholds, or tweak preprocessing/batching, you can wrap or lightly subclass a built-in moderator.</p>
-<h3 id="32-full-control-subclass-moderator">3.2 Full control: subclass <code>Moderator</code><a class="headerlink" href="#32-full-control-subclass-moderator" title="Permanent link">&para;</a></h3>
-<p>For custom scoring models (LLMs, classifiers, rule-based filters), subclass the generic base class and implement one method:</p>
-<pre><code class="language-python">from astra_rl.core.moderator import Moderator
-from typing import Sequence, Union, Generic, TypeVar
+  <h1>Detoxify</h1>
 
-StateT = TypeVar(&quot;StateT&quot;)
-ActionT = TypeVar(&quot;ActionT&quot;)
+<div class="doc doc-object doc-module">
 
-class MyModerator(Moderator[StateT, ActionT]):
-    def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
-        ...
-</code></pre>
-<hr />
-<h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
-<h3 id="41-type-parameters">4.1 Type parameters<a class="headerlink" href="#41-type-parameters" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>StateT</code> — your environment’s state type (commonly <code>str</code> conversation context).</li>
-<li><code>ActionT</code> — your action type (commonly <code>str</code> utterance).</li>
-</ul>
-<p>For NLP use cases, both are typically <code>str</code>.</p>
-<h3 id="42-moderate-contract">4.2 <code>moderate(...)</code> contract<a class="headerlink" href="#42-moderate-contract" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
-    &quot;&quot;&quot;Return one scalar score per input, same order as received.&quot;&quot;&quot;
-</code></pre>
-<p><strong>Expectations:</strong></p>
-<ul>
-<li><strong>Pure function</strong> over the given inputs (no hidden batch size assumptions).</li>
-<li><strong>Shape:</strong> output length equals input length.</li>
-<li><strong>Scale/direction:</strong> document whether <em>higher = more harmful</em>. (Recommended.)</li>
-</ul>
-<hr />
-<h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Batching:</strong> Vectorize model calls for speed; avoid per-item loops.</li>
-<li><strong>Preprocessing:</strong> Handle tokenization/normalization inside the class.</li>
-<li><strong>Calibration:</strong> Keep scores on a consistent scale (e.g., <code>[0, 1]</code>) and direction (higher = worse).</li>
-<li><strong>Throughput vs. latency:</strong> Accumulate inputs into sensible batch sizes.</li>
-<li><strong>Robustness:</strong> Validate on a small corpus; check extremes and benign inputs.</li>
-<li><strong>Logging:</strong> Consider returning/recording auxiliary diagnostics (category probabilities, thresholds) for debugging—while still meeting the <code>Sequence[float]</code> return type.</li>
-</ul>
-<hr />
-<h2 id="6-how-tos">6. How-Tos<a class="headerlink" href="#6-how-tos" title="Permanent link">&para;</a></h2>
-<h3 id="61-minimal-custom-moderator-detoxify-wrapper">6.1 Minimal custom moderator (Detoxify wrapper)<a class="headerlink" href="#61-minimal-custom-moderator-detoxify-wrapper" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">from typing import Sequence
-from detoxify import Detoxify
-from astra_rl.core.moderator import Moderator
 
-class DetoxifyModerator(Moderator[str, str]):
-    def __init__(self, harm_category: str = &quot;toxicity&quot;, variant: str = &quot;original&quot;):
-        self.model = Detoxify(variant)
-        self.harm_category = harm_category
 
-    def moderate(self, x: Sequence[str]) -&gt; Sequence[float]:
-        # Detoxify returns a dict of category -&gt; scores
-        preds = self.model.predict(x)
-        return [float(preds[self.harm_category][i]) for i in range(len(x))]
-</code></pre>
-<h3 id="62-selecting-harm-categories">6.2 Selecting harm categories<a class="headerlink" href="#62-selecting-harm-categories" title="Permanent link">&para;</a></h3>
-<p>If the underlying library/model exposes multiple categories (e.g., Detoxify or Llama Guard 3), surface a <code>harm_category</code> (or list of categories) in your constructor. You can:</p>
-<ul>
-<li>return a <strong>single</strong> category’s score, </li>
-<li>ignore the harm category and return the score for <strong>any violation</strong>, or</li>
-<li>compute a <strong>combined</strong> score (e.g., max/mean across selected categories).</li>
-</ul>
-<h3 id="63-batching-preprocessing">6.3 Batching &amp; preprocessing<a class="headerlink" href="#63-batching-preprocessing" title="Permanent link">&para;</a></h3>
-<p>Inside <code>moderate(...)</code>, you’re free to:</p>
-<ul>
-<li>tokenize inputs, truncate/normalize text, strip HTML, etc.;</li>
-<li>split inputs into fixed-size batches to fit device memory;</li>
-<li>run the model on GPU/CPU as configured.</li>
-</ul>
-<p>Just be sure to <strong>preserve ordering</strong> and return one scalar per input.</p>
-<h3 id="64-integrate-your-moderator-into-a-problem">6.4 Integrate your moderator into a Problem<a class="headerlink" href="#64-integrate-your-moderator-into-a-problem" title="Permanent link">&para;</a></h3>
-<p>Instantiate your moderator in your <code>Problem</code> subclass and pass it to the base class:</p>
-<pre><code class="language-python">from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTProblem  # base Problem
-from astra_rl.logging import logger
+<h2 id="astra_rl.moderators.detoxify" class="doc doc-heading">
+            <code>astra_rl.moderators.detoxify</code>
 
-MODEL_NAME = &quot;gpt2&quot;
 
-class ExampleDetoxifyProblem(ASTProblem):
-    def __init__(self, device: str = &quot;cpu&quot;):
-        # Plug in any custom moderator here
-        super().__init__(DetoxifyModerator(harm_category=&quot;toxicity&quot;))
+<a href="#astra_rl.moderators.detoxify" class="headerlink" title="Permanent link">&para;</a></h2>
 
-        self.device = device
-        self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
-        self.target   = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+    <div class="doc doc-contents first">
 
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
-</code></pre>
-<blockquote>
-<p>After this, your environment/solver will use the moderator implicitly when computing rewards.</p>
-</blockquote>
-<hr />
-<h2 id="7-full-examples">7. Full Examples<a class="headerlink" href="#7-full-examples" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/moderators/detoxify.py">astra_rl/moderators/detoxify.py</a> — wraps the Detoxify library.</li>
-<li><a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/moderators/llamaGuard.py">astra_rl/moderators/llamaGuard.py</a> — wraps Meta's Llama Guard 3.</li>
-</ul>
-<p>Use these as references when building your own moderator classes.</p>
+        <p>detoxify.py
+Moderator to call into the Detoxify engine.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="astra_rl.moderators.detoxify.DetoxifyModerator" class="doc doc-heading">
+            <code>DetoxifyModerator</code>
+
+
+<a href="#astra_rl.moderators.detoxify.DetoxifyModerator" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Moderator (astra_rl.core.moderator.Moderator)" href="../core/moderator.html#astra_rl.core.moderator.Moderator">Moderator</a>[<span title="str">str</span>, <span title="str">str</span>]</code></p>
+
+
+        <p>Moderator that wraps the Detoxify library for toxicity detection.</p>
+<p>https://github.com/unitaryai/detoxify</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="astra_rl.moderators.detoxify.DetoxifyModerator.harm_category">harm_category</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The category of harm to detect (default is "toxicity"); see below.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="astra_rl.moderators.detoxify.DetoxifyModerator.variant">variant</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The variant of the Detoxify model to use (default is "original").</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>Possible harm categories
+include "toxicity", "severe_toxicity", "obscene", "identity_attack",
+"insult", "threat", "sexual_explicit".</p>
+<p>Possible variants
+Include "original", "multilingual", "unbiased".</p>
+</details>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>src/astra_rl/moderators/detoxify.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DetoxifyModerator</span><span class="p">(</span><span class="n">Moderator</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Moderator that wraps the Detoxify library for toxicity detection.</span>
+
+<span class="sd">    https://github.com/unitaryai/detoxify</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        harm_category (str): The category of harm to detect (default is &quot;toxicity&quot;); see below.</span>
+<span class="sd">        variant (str): The variant of the Detoxify model to use (default is &quot;original&quot;).</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        Possible harm categories</span>
+<span class="sd">        include &quot;toxicity&quot;, &quot;severe_toxicity&quot;, &quot;obscene&quot;, &quot;identity_attack&quot;,</span>
+<span class="sd">        &quot;insult&quot;, &quot;threat&quot;, &quot;sexual_explicit&quot;.</span>
+
+<span class="sd">        Possible variants</span>
+<span class="sd">        Include &quot;original&quot;, &quot;multilingual&quot;, &quot;unbiased&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">harm_category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;toxicity&quot;</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Detoxify</span><span class="p">(</span><span class="n">variant</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">harm_category</span> <span class="o">=</span> <span class="n">harm_category</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">moderate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="c1"># we ignore typing here because we don&#39;t actually have the ability</span>
+        <span class="c1"># to get typing information from detoxify</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">harm_category</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+</code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 
@@ -1266,7 +1453,7 @@ class ExampleDetoxifyProblem(ASTProblem):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 16, 2025 20:22:23 UTC">2025-09-16</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
   </span>
 
     
@@ -1276,7 +1463,7 @@ class ExampleDetoxifyProblem(ASTProblem):
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 28, 2025 16:29:28 UTC">2025-08-28</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
   </span>
 
     

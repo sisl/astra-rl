@@ -12,11 +12,13 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/index.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/getting_started.html">
       
       
+        <link rel="prev" href="index.html">
       
-        <link rel="next" href="getting_started.html">
+      
+        <link rel="next" href="tutorials/index.html">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -24,7 +26,7 @@
     
     
       
-        <title>ASTRA-RL Toolbox Documentation</title>
+        <title>Getting Started - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -80,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adaptive-stress-testing-for-robust-ai-reinforcement-learning-astra-rl" class="md-skip">
+        <a href="#getting-started" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ASTRA
+              Getting Started
             
           </span>
         </div>
@@ -219,10 +221,8 @@
   
   
   
-    
   
-  
-    <li class="md-tabs__item md-tabs__item--active">
+    <li class="md-tabs__item">
       <a href="index.html" class="md-tabs__link">
         
   
@@ -240,8 +240,10 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
+  
+    <li class="md-tabs__item md-tabs__item--active">
       <a href="getting_started.html" class="md-tabs__link">
         
   
@@ -367,6 +369,28 @@
       
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ASTRA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
     
   
   
@@ -379,80 +403,7 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    ASTRA
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="index.html" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    ASTRA
-    
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using the Documentation
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="getting_started.html" class="md-nav__link">
+      <a href="getting_started.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -463,6 +414,7 @@
   
 
       </a>
+      
     </li>
   
 
@@ -1189,32 +1141,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#using-the-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Using the Documentation
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1232,28 +1158,11 @@
   
 
 
-<h1 id="adaptive-stress-testing-for-robust-ai-reinforcement-learning-astra-rl">Adaptive Stress Testing for Robust AI &amp; Reinforcement Learning (ASTRA-RL)<a class="headerlink" href="#adaptive-stress-testing-for-robust-ai-reinforcement-learning-astra-rl" title="Permanent link">&para;</a></h1>
+<h1 id="getting-started">Getting Started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This documentation (and project) is a work in progress. If you have any questions or suggestions, please feel free to open an issue on the <a href="https://github.com/sisl/astra-rl">GitHub repository</a></p>
 </div>
-<p>ASTRA-RL is a python toolbox for training and evaluating language models and generative AI systems that use textual inputs. It provides a set of tools for training, evaluating, and analyzing language models, with a focus on applying reinforcement learning based refinement techniques to improve evaluator model performance.</p>
-<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<p>To install the ASTRA-RL toolbox, you can use pip. The package is available on PyPI, so you can install it directly from there.</p>
-<pre><code class="language-bash">pip install astra-rl
-</code></pre>
-<p>You can then import the library in your Python code:</p>
-<pre><code class="language-python">import astra_rl
-# or
-import astra_rl as astral
-</code></pre>
-<h2 id="using-the-documentation">Using the Documentation<a class="headerlink" href="#using-the-documentation" title="Permanent link">&para;</a></h2>
-<p>This documentation is structured to help you quickly find the information you need. The main sections include:</p>
-<ul>
-<li><strong>Getting Started</strong>: An introduction to the toolbox, including installation and basic usage.</li>
-<li><strong>Tutorials</strong>: Step-by-step guides to help you understand how to use the toolbox effectively.</li>
-<li><strong>API Reference</strong>: Detailed information about the classes, functions, and modules available in the</li>
-</ul>
 
 
 
@@ -1286,7 +1195,7 @@ import astra_rl as astral
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 06:26:13 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
   </span>
 
     
