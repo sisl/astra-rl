@@ -12,28 +12,28 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/core/index.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/quick_start_evaluation.html">
       
       
-        <link rel="prev" href="../index.html">
+        <link rel="prev" href="quick_start_training.html">
       
       
-        <link rel="next" href="common.html">
+        <link rel="next" href="customize_training/problems.html">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
-        <title>Core Module - ASTRA-RL Toolbox Documentation</title>
+        <title>Evaluation Quick Start - ASTRA-RL Toolbox Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,11 +52,11 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -81,6 +81,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#how-to-run-an-evaluation-red-team" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -93,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -113,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Core Module
+              Evaluation Quick Start
             
           </span>
         </div>
@@ -218,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../index.html" class="md-tabs__link">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
@@ -235,28 +240,11 @@
   
   
   
-  
-    <li class="md-tabs__item">
-      <a href="../../getting_started.html" class="md-tabs__link">
-        
-  
-  
     
   
-  Getting Started
-
-      </a>
-    </li>
   
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../tutorials/index.html" class="md-tabs__link">
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="index.html" class="md-tabs__link">
         
   
   
@@ -273,36 +261,15 @@
   
   
   
-    
-  
-  
-    <li class="md-tabs__item md-tabs__item--active">
-      <a href="../index.html" class="md-tabs__link">
-        
-  
-  
-    
-  
-  API Reference
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
   
     <li class="md-tabs__item">
-      <a href="../../contributing.html" class="md-tabs__link">
+      <a href="../api/index.html" class="md-tabs__link">
         
   
   
     
   
-  Contributing
+  Library API Reference
 
       </a>
     </li>
@@ -337,7 +304,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -366,50 +333,6 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../index.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    ASTRA
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../getting_started.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Getting Started
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
     
     
     
@@ -424,16 +347,16 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../tutorials/index.html" class="md-nav__link ">
+            <a href="../index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Tutorials
+    ASTRA
     
   </span>
   
@@ -441,16 +364,16 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
             <span class="md-nav__icon md-icon"></span>
-            Tutorials
+            ASTRA
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -461,12 +384,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/training_an_evaluator.html" class="md-nav__link">
+      <a href="../installation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Training an Evaluator
+    Installation
     
   </span>
   
@@ -484,12 +407,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/running_an_evaluation.html" class="md-nav__link">
+      <a href="../dev_setup.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Running An Evaluation
+    Development Setup
     
   </span>
   
@@ -530,16 +453,16 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
+            <a href="index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    API Reference
+    Tutorials
     
   </span>
   
@@ -547,66 +470,16 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
-            API Reference
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" checked>
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link md-nav__link--active">
-              
-  
-  
-  <span class="md-ellipsis">
-    Core Module
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link md-nav__link--active" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_4_1">
-            <span class="md-nav__icon md-icon"></span>
-            Core Module
+            Tutorials
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -617,12 +490,12 @@
   
   
     <li class="md-nav__item">
-      <a href="common.html" class="md-nav__link">
+      <a href="quick_start_training.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Common
+    Training Quick Start
     
   </span>
   
@@ -637,96 +510,112 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="problem.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Evaluation Quick Start
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="quick_start_evaluation.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    Evaluation Quick Start
     
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="environment.html" class="md-nav__link">
+      
         
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  <span class="md-ellipsis">
-    Environment
+  
     
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
   
-  
-    <li class="md-nav__item">
-      <a href="moderator.html" class="md-nav__link">
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
         
+          <li class="md-nav__item">
+  <a href="#1-setup-imports-model-paths-and-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Setup: imports, model paths, and device
+    </span>
+  </a>
   
-  
-  <span class="md-ellipsis">
-    Moderator
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="algorithm.html" class="md-nav__link">
+</li>
         
+          <li class="md-nav__item">
+  <a href="#2-load-evaluation-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Load evaluation prompts
+    </span>
+  </a>
   
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-instantiate-the-problem-and-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Instantiate the Problem and Environment
+    </span>
+  </a>
   
-  <span class="md-ellipsis">
-    Algorithm
-    
-  </span>
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-run-evaluation-rollouts-and-collect-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Run evaluation rollouts and collect metrics
+    </span>
+  </a>
   
-
-      </a>
-    </li>
+</li>
+        
+      </ul>
+    </nav>
   
-
-              
-            
-          </ul>
-        </nav>
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -753,33 +642,26 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
         
           
-          <div class="md-nav__link md-nav__container">
-            <a href="../algorithms/index.html" class="md-nav__link ">
-              
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
-    Algorithms
+    Customization
     
   </span>
   
 
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
             <span class="md-nav__icon md-icon"></span>
-            Algorithms
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Customization
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -790,25 +672,17 @@
   
   
     <li class="md-nav__item">
-      <a href="../algorithms/dpo.html" class="md-nav__link">
+      <a href="customize_training/problems.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    DPO
+    Problems
     
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -820,26 +694,32 @@
   
   
   
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
+    <li class="md-nav__item">
+      <a href="customize_training/environments.html" class="md-nav__link">
         
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../moderators/index.html" class="md-nav__link ">
+  
+  
+  <span class="md-ellipsis">
+    Environments
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
               
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="customize_training/moderators.html" class="md-nav__link">
+        
   
   
   <span class="md-ellipsis">
@@ -848,103 +728,12 @@
   </span>
   
 
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
-            <span class="md-nav__icon md-icon"></span>
-            Moderators
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../moderators/detoxify.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Detoxify
-    
-  </span>
-  
-
       </a>
     </li>
   
 
               
             
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../training/index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Training
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
-            <span class="md-nav__icon md-icon"></span>
-            Training
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
               
                 
   
@@ -952,12 +741,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../training/harness.html" class="md-nav__link">
+      <a href="customize_training/solvers.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Harness
+    Solvers
     
   </span>
   
@@ -975,93 +764,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../training/trainer.html" class="md-nav__link">
+      <a href="customize_training/trainers.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Trainer
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
-        
-          
-          <div class="md-nav__link md-nav__container">
-            <a href="../methods/index.html" class="md-nav__link ">
-              
-  
-  
-  <span class="md-ellipsis">
-    Methods
-    
-  </span>
-  
-
-            </a>
-            
-              
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
-                <span class="md-nav__icon md-icon"></span>
-              </label>
-            
-          </div>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
-            <span class="md-nav__icon md-icon"></span>
-            Methods
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../methods/ast_problem.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    AST Problem
+    Trainers
     
   </span>
   
@@ -1094,12 +802,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing.html" class="md-nav__link">
+      <a href="../api/index.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Contributing
+    Library API Reference
     
   </span>
   
@@ -1126,6 +834,67 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-start" class="md-nav__link">
+    <span class="md-ellipsis">
+      Quick Start
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Quick Start">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-setup-imports-model-paths-and-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Setup: imports, model paths, and device
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-load-evaluation-prompts" class="md-nav__link">
+    <span class="md-ellipsis">
+      2) Load evaluation prompts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-instantiate-the-problem-and-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      3) Instantiate the Problem and Environment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-run-evaluation-rollouts-and-collect-metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Run evaluation rollouts and collect metrics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1144,9 +913,106 @@
   
 
 
-  <h1>Core Module</h1>
+<h1 id="how-to-run-an-evaluation-red-team">How to Run an Evaluation / Red Team<a class="headerlink" href="#how-to-run-an-evaluation-red-team" title="Permanent link">&para;</a></h1>
+<p>RL-based red-teaming uses reinforcement learning to train an <strong>attacker</strong> that generates test cases likely to elicit unsafe outputs from a <strong>target</strong> model. This tutorial shows how to run evaluations (red-team rollouts) using a <strong>pre-trained attacker</strong> against a target model.</p>
+<div class="admonition note">
+<p class="admonition-title">Prerequisite</p>
+</div>
+<p>This guide assumes you already trained an attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
+<hr />
+<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<p>Evaluation at a glance: run a set of attacker↔target rollouts (seeded by a test set of prompts), collect per-turn data, and compute summary metrics.</p>
+<h3 id="1-setup-imports-model-paths-and-device">1) Setup: imports, model paths, and device<a class="headerlink" href="#1-setup-imports-model-paths-and-device" title="Permanent link">&para;</a></h3>
+<p>Load dependencies and define the Hugging Face–style models you’ll use for <strong>attacker</strong> and <strong>target</strong>.</p>
+<pre><code class="language-python">from typing import List
+from statistics import mean
+import json
+import torch
+from transformers import AutoTokenizer  # optional if you post-process text
 
+from astra_rl.ext.transformers import HFASTProblem
+from astra_rl import ASTEnvironment, DetoxifyModerator
+# Optional (richer eval nodes). If available in your build:
+from astra_rl.methods.ast_problem import CustomNode  # optional
 
+DEVICE = &quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;
+
+# Paths or HF model IDs
+ATTACKER_MODEL_PATH = &quot;path/or/hub-id/of/attacker&quot;  # e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;
+TARGET_MODEL_PATH   = &quot;path/or/hub-id/of/target&quot;    # e.g., &quot;meta-llama/Llama-3-8B&quot; (example)
+</code></pre>
+<h3 id="2-load-evaluation-prompts">2) Load evaluation prompts<a class="headerlink" href="#2-load-evaluation-prompts" title="Permanent link">&para;</a></h3>
+<p>Evaluation prompts <strong>start</strong> the attacker–target conversation. Make sure they:</p>
+<ol>
+<li>Match the context you care about (e.g., diagnostic agent prompts for a diagnostic system).</li>
+<li>Were <strong>never</strong> seen during training or dev.</li>
+<li>Are provided as a <strong>list of strings</strong>.</li>
+</ol>
+<pre><code class="language-python">with open(&quot;prompts_reddit_test.json&quot;) as f:
+    PROMPTS = json.load(f)  # e.g., [&quot;prompt 1&quot;, &quot;prompt 2&quot;, ...]
+</code></pre>
+<h3 id="3-instantiate-the-problem-and-environment">3) Instantiate the Problem and Environment<a class="headerlink" href="#3-instantiate-the-problem-and-environment" title="Permanent link">&para;</a></h3>
+<p>Use the preconfigured <strong>HFASTProblem</strong> (HF-friendly) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
+<pre><code class="language-python">problem = HFASTProblem(
+    attacker_model_id=ATTACKER_MODEL_PATH,
+    target_model_id=TARGET_MODEL_PATH,
+    baseline_model_id=TARGET_MODEL_PATH,  # a simple default; can also use a frozen attacker ref
+    moderator=DetoxifyModerator(),
+    device=DEVICE,
+)
+
+env = ASTEnvironment(
+    problem=problem,
+    prompts=PROMPTS,
+    tree_width=1,  # single-path evaluation
+    tree_depth=3,
+)
+</code></pre>
+<h3 id="4-run-evaluation-rollouts-and-collect-metrics">4) Run evaluation rollouts and collect metrics<a class="headerlink" href="#4-run-evaluation-rollouts-and-collect-metrics" title="Permanent link">&para;</a></h3>
+<p>The snippet below performs a <strong>single-path</strong> rollout per prompt (depth = 3, width = 1) and demonstrates how to aggregate a few simple metrics. Use <code>env.final_reward(graph)</code> to read the reward at the leaf of the path.</p>
+<pre><code class="language-python">rows: List[dict] = []
+summaries = []
+
+for prompt in PROMPTS:
+    # Single-path evaluation
+    g = env.eval_rollout(prompt)
+
+    # Final reward at the leaf (width=1)
+    leaf_reward = env.final_reward(g) or 0.0
+
+    # Minimal transcript rows (per-turn)
+    # Each node is a (context, attack, response, reward, children) tuple.
+    path_nodes = g.children[0].children if g.children else []  # depth &gt;= 2
+    rows.extend({
+        &quot;prompt&quot;: prompt,
+        &quot;attack&quot;: n.attack,
+        &quot;response&quot;: n.response,
+        &quot;reward&quot;: float(n.reward),
+    } for n in path_nodes)
+
+    # Optional: richer metrics if CustomNode is enabled in your build
+    # (e.g., attack_tox, target_tox, attack_logprob)
+    try:
+        avg_attack_tox = mean([getattr(n, &quot;attack_tox&quot;, 0.0) for n in path_nodes]) if path_nodes else 0.0
+        avg_target_tox = mean([getattr(n, &quot;target_tox&quot;, 0.0) for n in path_nodes]) if path_nodes else 0.0
+        avg_attack_lp  = mean([getattr(n, &quot;attack_logprob&quot;, 0.0) for n in path_nodes]) if path_nodes else 0.0
+    except Exception:
+        avg_attack_tox = avg_target_tox = avg_attack_lp = 0.0
+
+    summaries.append({
+        &quot;prompt&quot;: prompt,
+        &quot;final_reward&quot;: float(leaf_reward),
+        &quot;avg_attack_tox&quot;: float(avg_attack_tox),
+        &quot;avg_target_tox&quot;: float(avg_target_tox),
+        &quot;avg_attack_logprob&quot;: float(avg_attack_lp),
+    })
+
+# At this point, `rows` holds per-turn data and `summaries` holds per-prompt aggregates.
+# You can dump to JSON/CSV for analysis or visualization.
+</code></pre>
+<p>??? info "Prefer richer node metrics out-of-the-box?"
+If your build includes <code>env.handle_eval_prompt(...)</code> that returns <code>CustomNode</code> entries (with toxicity and logprob fields), you can call it for each prompt and skip the <code>getattr(...)</code> checks above.</p>
+<hr />
 
 
 
@@ -1169,7 +1035,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 16, 2025 22:56:55 UTC">2025-09-16</span>
   </span>
 
     
@@ -1179,7 +1045,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 05:35:39 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 06:52:58 UTC">2025-07-02</span>
   </span>
 
     
@@ -1227,10 +1093,10 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>
