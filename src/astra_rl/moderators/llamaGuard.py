@@ -31,21 +31,22 @@ class LlamaGuardModerator(Moderator[str, str]):
         S13 (Elections), S14 (Code Interpreter Abuse)
     """
 
-    def __init__(self, harm_category: str = "toxicity", variant: str = "original"):
+    def __init__(self, DEVICE: str = "cuda"):
+        # set model and tokenizer for llamaguard moderator
+        # note: this is a large model! Check your space capabilities.
         model_id = "meta-llama/Llama-Guard-3-8B"
+        self.device = torch.device(DEVICE)
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
         self.model = AutoModelForCausalLM.from_pretrained(
-            model_id, torch_dtype=torch.bfloat16, device_map="auto"
-        )
+            model_id, torch_dtype=torch.bfloat16
+        ).to(self.device)
+
         self.safe_id = self.tokenizer.convert_tokens_to_ids("safe")
         self.unsafe_id = self.tokenizer.convert_tokens_to_ids("unsafe")
         self.safe_seq = self.tokenizer.encode("\n\nsafe", add_special_tokens=False)
         self.unsafe_seq = self.tokenizer.encode("\n\nunsafe", add_special_tokens=False)
 
         self.model.eval()
-
-        # What is this doing??
-        self.harm_category = harm_category
 
     def moderate(self, x: Sequence[str]) -> Sequence[float]:
         results = []
@@ -59,14 +60,16 @@ class LlamaGuardModerator(Moderator[str, str]):
                 # tokenize input
                 input_ids = self.tokenizer.apply_chat_template(
                     chat, return_tensors="pt"
-                )
+                ).to(self.device)
 
                 # create final safe and unsafe output sequences
                 # safe_seq = (torch.cat([input_ids, torch.tensor(self.safe_seq).repeat(input_ids.size(0), 1)], dim=-1))
                 unsafe_seq = torch.cat(
                     [
                         input_ids,
-                        torch.tensor(self.unsafe_seq).repeat(input_ids.size(0), 1),
+                        torch.tensor(self.unsafe_seq, device=self.device).repeat(
+                            input_ids.size(0), 1
+                        ),
                     ],
                     dim=-1,
                 )

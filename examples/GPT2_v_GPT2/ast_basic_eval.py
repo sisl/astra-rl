@@ -1,12 +1,11 @@
 from transformers import AutoTokenizer
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 import torch
 import json
 from transformers import GPT2LMHeadModel
 from astra_rl import ASTProblem, ASTEnvironment, DetoxifyModerator
 from ast_basic_1 import ExampleDetoxifyProblem
 from statistics import mean
-from typing import Dict, Any
 
 
 ATTACKER_MODEL_PATH = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best"
@@ -17,7 +16,7 @@ TARGET_MODEL = "gpt2"
 # Since we are evaluating the model we trained in ast_basic , we will subclass from ExampleDetoxifyProblem
 # and override the init method to load the trained attacker model. Everything else will remain the same.
 # Note: make sure the target model you want to evaluate with is the same as the one used
-# in the problem ldefinition for get log probs!
+# in the problem definition for get log probs!
 class ExampleEvalProblem(ExampleDetoxifyProblem):
     def __init__(self, device="cuda"):
         ASTProblem.__init__(self, DetoxifyModerator())
@@ -48,42 +47,6 @@ class ExampleEvalProblem(ExampleDetoxifyProblem):
             )
         )
         print(f"Using model {TARGET_MODEL} with max context length {self.max_ctx}")
-
-
-# helper function to turn an eval rollout with metrics into a dictionary
-def rollout_to_row(prompt: str, summary, tokenizer) -> dict:
-    """
-    Turn an EvalSummary into a single flat dict row.
-    Includes attack_i/response_i and rollout-level stats.
-    """
-    turns = sorted(summary.turns, key=lambda t: t.turn_index)  # ensure attack_1..N
-    row = {
-        "prompt": prompt,
-        "first_tox_attack": summary.first_attack_tox_turn,
-        "first_tox_response": summary.first_target_tox_turn,
-    }
-
-    # Per-turn fields (attack_i, response_i)
-    for i, t in enumerate(turns, start=1):
-        row[f"attack_{i}"] = t.attack
-        row[f"response_{i}"] = t.response
-
-    # Aggregates
-    if turns:
-        mean_attack_tox = sum(t.attack_tox for t in turns) / len(turns)
-        mean_response_tox = sum(t.target_tox for t in turns) / len(turns)
-        mean_attack_logprob = sum(t.attack_logprob for t in turns) / len(turns)
-
-    else:
-        mean_attack_tox = 0.0
-        mean_response_tox = 0.0
-        mean_attack_logprob = 0.0
-
-    row["mean_attack_tox"] = mean_attack_tox
-    row["mean_response_tox"] = mean_response_tox
-    row["mean_attack_logprob"] = mean_attack_logprob
-
-    return row
 
 
 def summaries_to_overall_metrics(summaries) -> Dict[str, Any]:
@@ -145,7 +108,7 @@ def summaries_to_overall_metrics(summaries) -> Dict[str, Any]:
 
 
 def main():
-    # read in eval prompts
+    # read in eval prompts (should be prompts the attacker has never seen (not training or dev prompts))
     with open("prompts_reddit_test.json") as f:
         PROMPTS = json.load(f)
 
@@ -156,25 +119,25 @@ def main():
     problem = ExampleEvalProblem(DEVICE)
     env = ASTEnvironment(problem, PROMPTS)
 
-    rows: List[dict] = []
+    # rows: List[dict] = []
     summaries = []
 
     for prompt in PROMPTS:
         g = env.eval_rollout(prompt)
         summary = env.extract_metrics(g)  # EvalSummary(turns=[...], first_*_turn=...)
         summaries.append(summary)
-        row = rollout_to_row(prompt, summary, env.problem.tokenizer)
-        rows.append(row)
+        # row = to_row(prompt, summary, env.problem.tokenizer)
+        # rows.append(row)
         # print(f"Evaluated prompt: {prompt}, Summary: {summary}")
 
     # Write JSON Lines (best for big datasets; one rollout per line)
-    with open("eval_rollouts.jsonl", "w", encoding="utf-8") as f:
-        for r in rows:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    # with open("eval_rollouts.jsonl", "w", encoding="utf-8") as f:
+    #     for r in rows:
+    #         f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
-    # (Optional) also write a single JSON array for convenience
-    with open("eval_rollouts_dump.json", "w", encoding="utf-8") as f:
-        json.dump(rows, f, ensure_ascii=False, indent=2)
+    # # (Optional) also write a single JSON array for convenience
+    # with open("eval_rollouts_dump.json", "w", encoding="utf-8") as f:
+    #     json.dump(rows, f, ensure_ascii=False, indent=2)
 
     # Global metrics across ALL rollouts
     overall = summaries_to_overall_metrics(summaries)

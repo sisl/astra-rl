@@ -17,17 +17,18 @@ from astra_rl.ext.transformers.hf_ast_problem import (
     HFASTConfiguration,
 )
 
-from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator
+from astra_rl import ASTProblem, ASTEnvironment, DPO
+from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"
 
 
-class ExampleDetoxifyProblem(ASTProblem):
+class ExampleLlamaGuardProblem(ASTProblem):
     def __init__(self, device="cuda"):
         # TASK: initialize and pass to superclass
-        # your choice of moderator
-        super().__init__(DetoxifyModerator())
+        # one line of code difference to call a different moderator!!
+        super().__init__(LlamaGuardModerator(device))
 
         self.device = device
         self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
@@ -182,7 +183,7 @@ def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our problem and environment
-    problem = ExampleDetoxifyProblem(DEVICE)  # or "cuda" if you have a GPU
+    problem = ExampleLlamaGuardProblem(DEVICE)  # or "cuda" if you have a GPU
     env = ASTEnvironment(problem, PROMPTS)
 
     # instantiate our solution

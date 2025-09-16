@@ -96,6 +96,33 @@ class HFASTProblem(ASTProblem):
         if self.baseline_tokenizer.pad_token_id is None:
             self.baseline_tokenizer.pad_token_id = self.baseline_tokenizer.eos_token_id
 
+        # set the tokenizer padding and truncation side
+        self.attacker_tokenizer.padding_side = self.target_tokenizer.padding_side = (
+            self.baseline_tokenizer.padding_side
+        ) = "left"
+        self.attacker_tokenizer.truncation_side = (
+            self.target_tokenizer.truncation_side
+        ) = self.baseline_tokenizer.truncation_side = "left"
+
+        # model’s usable max sequence length (GPT-2: 1024) - fix for GPT2, dont need for llama
+        # self.attacker_max_ctx = int(getattr(self.attacker.config,"n_positions",getattr(self.attacker.config, "max_position_embeddings", 1024),))
+        # self.target_max_ctx = int(getattr(self.target.config,"n_positions",getattr(self.target.config, "max_position_embeddings", 1024),))
+        # self.baseline_max_ctx = int(getattr(self.baseline.config,"n_positions",getattr(self.baseline.config, "max_position_embeddings", 1024),))
+
+        # better set up?
+
+    #     for tok, model in [
+    #     (self.attacker_tokenizer, self.attacker_model),
+    #     (self.target_tokenizer,   self.target_model),
+    #     (self.baseline_tokenizer, self.baseline_model),]:
+    #     # 1) Padding/truncation policy (left padding is safest for generation with KV cache)
+    #     tok.padding_side   = "left"
+    #     tok.truncation_side = "left"   # keep the tail if sequences are too long (optional)
+
+    #     # 2) Ensure a valid pad token for GPT-2
+    #     if tok.pad_token is None:
+    #         tok.pad_token = tok.eos_token
+    #     model.config.pad_token_id = tok.pad_token_id
     def get_target_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:

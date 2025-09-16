@@ -13,10 +13,14 @@ import json
 from astra_rl.ext.transformers.hf_ast_problem import (
     HFASTTrainer,
     HFASTConfiguration,
-    HFASTProblem,
 )
 
-from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, ASTNode
+from astra_rl import ASTEnvironment, DPO, ASTNode
+
+# GPT2 v GPT2 with Detoxify Moderator
+from ast_basic_1 import ExampleDetoxifyProblem
+
+# GPT2 v GPT2 with LlamaGuard Moderator
 from astra_rl.core.environment import Graph
 
 
@@ -74,7 +78,11 @@ def main() -> None:
 
     # instatiate our problem and environment
     # instatiate our problem with GPT-2 attacker, target, and baseline
-    problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
+    # TODO HFASTProblem needs to be updated to ensure device-side out of indexing error (same issue as earlier Detoxify Problem)
+    # bend can't handle this much memory
+    # problem = HFASTProblem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyModerator(), DEVICE)
+
+    problem = ExampleDetoxifyProblem(DEVICE)
     env = MalibuEnv(problem, PROMPTS, gamma=0.9)
 
     # # print out rollouts - checked that backing up rewards works!
