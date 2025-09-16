@@ -6,7 +6,9 @@ The **environment** defines how attacker–target interactions are generated and
 * what per-step data (actions, responses, rewards) is stored,
 * and what the solver receives as input.
 
-> **Evaluation note.** The environment also powers evaluation by running a single-path rollout (tree width = 1) and collecting metrics. See [quick\_start\_evaluation](../quick_start_evaluation.md) for more details on evaluation.
+!!! note 
+
+    The environment also powers evaluation by running a single-path rollout (tree width = 1) and collecting metrics. See [Evaluation Quick Start](../quick_start_evaluation.md) for more details on evaluation.
 
 ASTRA-RL ships with `ASTEnvironment`, which mirrors the rollout structure used in **ASTPrompter**. You can subclass it—or the base `Environment`—to support:
 
@@ -14,25 +16,6 @@ ASTRA-RL ships with `ASTEnvironment`, which mirrors the rollout structure used i
 * tree-structured or flat trajectories,
 * custom state-advance logic,
 * alternative reward shaping or logging.
-
----
-
-## Table of Contents
-
-1. [Ways to Customize](#1-ways-to-customize)
-
-   * [1.1 Fast path: subclass `ASTEnvironment`](#11-fast-path-subclass-astenvironment)
-   * [1.2 Full control: subclass `Environment`](#12-full-control-subclass-environment)
-2. [Required Interface](#2-required-interface)
-
-   * [2.1 Nodes and Graphs](#21-nodes-and-graphs)
-   * [2.2 Helpful `ASTProblem` APIs](#22-helpful-astproblem-apis)
-3. [Best Practices & Sanity Checks](#3-best-practices--sanity-checks)
-4. [How-Tos](#4-how-tos)
-
-   * [4.1 Create a custom Node or Graph](#41-create-a-custom-node-or-graph)
-   * [4.2 Change rollout width/depth](#42-change-rollout-widthdepth)
-   * [4.3 Multi-agent conversations](#43-multi-agent-conversations)
 
 ---
 
