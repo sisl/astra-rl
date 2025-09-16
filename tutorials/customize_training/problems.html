@@ -1,0 +1,1064 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Adaptive Stress Testing for Robust AI & Reinforcement Learning — a toolbox for testing and improving the robustness of AI systems.">
+      
+      
+        <meta name="author" content="Duncan Eddy">
+      
+      
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/problems.html">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
+    
+    
+      
+        <title>How to Customize the Problem (HF or non-HF) - ASTRA-RL Toolbox Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="black">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-customize-the-problem-hf-or-non-hf" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ASTRA-RL Toolbox Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How to Customize the Problem (HF or non-HF)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="custom" data-md-color-accent="black"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="custom" data-md-color-accent="black"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/sisl/astra-rl" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  ASTRA
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Tutorials
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../api/index.html" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Library API Reference
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    ASTRA-RL Toolbox Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/sisl/astra-rl" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    ASTRA
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../training_an_evaluator.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    None
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../running_an_evaluation.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    None
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/index.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Library API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-problems-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Problems Do
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-built-in-convenience-problems" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Built-in / Convenience Problems
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ways-to-customize" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-fast-path-subclass-hfastproblem-hf" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Fast path: subclass HFASTProblem (HF)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-full-control-subclass-astproblem-or-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Full control: subclass ASTProblem or Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-methods-gradient-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Methods &amp; gradient expectations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-problem-helpers" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 Problem helpers
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Best Practices &amp; Sanity Checks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-tos" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. How-Tos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. How-Tos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-minimal-hf-subclass-hfastproblem" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Minimal HF subclass (HFASTProblem)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-non-hf-custom-problem-skeleton" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Non-HF custom Problem skeleton
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-designing-rewards" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Designing rewards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-implementing-advance" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 implementing advance(...)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-saving-models-hf-non-hf" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.5 Saving models (HF &amp; non-HF)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-plug-into-environment-solver" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Plug into Environment / Solver
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-debug-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Debug Checklist
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="how-to-customize-the-problem-hf-or-non-hf">How to Customize the Problem (HF or non-HF)<a class="headerlink" href="#how-to-customize-the-problem-hf-or-non-hf" title="Permanent link">&para;</a></h1>
+<p><strong>Problems</strong> encapsulate <em>models + tokenization + rollout + log-probabilities + rewards</em>. Environments call your Problem to:</p>
+<ul>
+<li>sample attacker/target continuations,</li>
+<li>compute log-probs for learning objectives (e.g., DPO/IPO/PPO),</li>
+<li>advance the state,</li>
+<li>acsess attacker parameters,</li>
+<li>compute rewards (scalar or per-step).</li>
+</ul>
+<p>Most users can subclass <code>ASTProblem</code> (text) or use the HF convenience <code>HFASTProblem</code>. If you’re integrating a custom or non-HF model, implement the same small API.</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#1-what-problems-do">What Problems Do</a></li>
+<li><a href="#2-built-in--convenience-problems">Built-in / Convenience Problems</a></li>
+<li>
+<p><a href="#3-ways-to-customize">Ways to Customize</a></p>
+</li>
+<li>
+<p><a href="#31-fast-path-subclass-hfastproblem-hf">3.1 Fast path: subclass <code>HFASTProblem</code> (HF)</a></p>
+</li>
+<li><a href="#32-full-control-subclass-astproblem-or-problem">3.2 Full control: subclass <code>ASTProblem</code> or <code>Problem</code></a></li>
+<li>
+<p><a href="#4-required-interface">Required Interface</a></p>
+</li>
+<li>
+<p><a href="#41-methods--gradient-expectations">4.1 Methods &amp; gradient expectations</a></p>
+</li>
+<li><a href="#42-problem-helpers">4.2 Problem helpers</a></li>
+<li><a href="#5-best-practices--sanity-checks">Best Practices &amp; Sanity Checks</a></li>
+<li>
+<p><a href="#6-how-tos">How-Tos</a></p>
+</li>
+<li>
+<p><a href="#61-minimal-hf-subclass-hfastproblem">6.1 Minimal HF subclass (<code>HFASTProblem</code>)</a></p>
+</li>
+<li><a href="#62-non-hf-custom-problem-skeleton">6.2 Non-HF custom <code>Problem</code> skeleton</a></li>
+<li><a href="#64-designing-rewards">6.3 Designing rewards</a></li>
+<li><a href="#65-implementing-advance">6.4 Implementing <code>advance(...)</code></a></li>
+<li><a href="#66-saving-models-hf--non-hf">6.5 Saving models (HF &amp; non-HF)</a></li>
+<li><a href="#7-plug-into-environment--solver">Plug into Environment / Solver</a></li>
+<li><a href="#8-debug-checklist">Debug Checklist</a></li>
+</ol>
+<hr />
+<h2 id="1-what-problems-do">1. What Problems Do<a class="headerlink" href="#1-what-problems-do" title="Permanent link">&para;</a></h2>
+<p>A <code>Problem</code> is the bridge between abstract rollouts and concrete model calls. It must:</p>
+<ul>
+<li><strong>Generate</strong> next utterances for attacker/target,</li>
+<li><strong>Score</strong> continuations via log-probs,</li>
+<li><strong>Compute</strong> rewards used by solvers,</li>
+<li><strong>Advance</strong> the conversation state,</li>
+<li><strong>Expose</strong> trainable parameters (usually the attacker).</li>
+</ul>
+<hr />
+<h2 id="2-built-in-convenience-problems">2. Built-in / Convenience Problems<a class="headerlink" href="#2-built-in-convenience-problems" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong><code>ASTProblem</code></strong> — text-first base with a default <code>advance()</code> and a reference reward that combines likelihood and moderator scores (ASTPrompter reward).</li>
+<li><strong><code>HFASTProblem</code></strong> — Hugging Face adaptor that subclasses ASTProblem and adds tokenization, generation, and log-prob computation for any HF model.</li>
+</ul>
+<p>Use these as templates; override or subclass to fit your needs.</p>
+<hr />
+<h2 id="3-ways-to-customize">3. Ways to Customize<a class="headerlink" href="#3-ways-to-customize" title="Permanent link">&para;</a></h2>
+<h3 id="31-fast-path-subclass-hfastproblem-hf">3.1 Fast path: subclass <code>HFASTProblem</code> (HF)<a class="headerlink" href="#31-fast-path-subclass-hfastproblem-hf" title="Permanent link">&para;</a></h3>
+<p>Keep HF models/tokenizers but override specifics (generation kwargs, reward mix, truncation rules, etc.). Minimal code, strong defaults.</p>
+<h3 id="32-full-control-subclass-astproblem-or-problem">3.2 Full control: subclass <code>ASTProblem</code> or <code>Problem</code><a class="headerlink" href="#32-full-control-subclass-astproblem-or-problem" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>ASTProblem</code> if you’re still doing text but want to own rollout/log-prob/reward details.</li>
+<li><code>Problem</code> for non-text or non-HF stacks—define tokenization/encoding and model calls yourself.</li>
+</ul>
+<hr />
+<h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
+<h3 id="41-methods-gradient-expectations">4.1 Methods &amp; gradient expectations<a class="headerlink" href="#41-methods-gradient-expectations" title="Permanent link">&para;</a></h3>
+<p>Implement <strong>batched</strong> methods (lists in, tensors/lists out, index-aligned):</p>
+<pre><code class="language-python">rollout_prompt_with_attacker(prompts: Sequence[str]) -&gt; Sequence[str]
+rollout_prompt_with_target  (prompts: Sequence[str]) -&gt; Sequence[str]
+
+get_attacker_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -&gt; torch.Tensor  # requires grad
+get_target_logprobs  (contexts: Sequence[str], continuations: Sequence[str]) -&gt; torch.Tensor  # no grad
+get_baseline_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -&gt; torch.Tensor  # no grad
+
+parameters() -&gt; Iterator[torch.nn.Parameter]   # usually attacker params
+advance(context: str, attack: str, response: str) -&gt; str # return the next state (i.e. updated conversation context)
+reward(contexts, attacks, responses) -&gt; Sequence[float]
+</code></pre>
+<p><strong>Gradients:</strong> only <code>get_attacker_logprobs</code> must return a tensor with <code>requires_grad=True</code>. Target/baseline should be computed under <code>torch.no_grad()</code> (return tensors detached from graphs) to save memory.</p>
+<h3 id="42-problem-helpers">4.2 Problem helpers<a class="headerlink" href="#42-problem-helpers" title="Permanent link">&para;</a></h3>
+<p><code>Problem</code> provides <code>_get_*_and_validate(...)</code> and <code>_rollout_*_and_validate(...)</code> utilities that assert shapes and (for attacker) gradient presence. Solvers in this repo call these versions.</p>
+<hr />
+<h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Vectorize everything.</strong> Batch tokenizer/model calls; avoid per-item loops.</li>
+<li><strong>Mask correctly.</strong> Compute <code>log P(continuation | context)</code> by <strong>summing only continuation token log-probs</strong>. *TODO double check this</li>
+<li><strong>Padding &amp; truncation.</strong> For causal LMs, prefer <strong>left padding</strong> and set <code>pad_token_id = eos_token_id</code>. Truncate context to fit <code>max_ctx - max_new_tokens</code>.</li>
+<li><strong>Tokenizer alignment.</strong> Each model (attacker/target/baseline) should encode/decode with its <strong>own</strong> tokenizer.</li>
+<li><strong>Determinism.</strong> Accept a <code>seed</code> from the environment; keep generation settings explicit.</li>
+<li><strong>Performance.</strong> Use <code>no_grad</code> for target/baseline; keep tensors on the correct device.</li>
+<li><strong>Scale rewards.</strong> Bound/normalize to stabilize PPO-style updates.</li>
+</ul>
+<hr />
+<h2 id="6-how-tos">6. How-Tos<a class="headerlink" href="#6-how-tos" title="Permanent link">&para;</a></h2>
+<h3 id="61-minimal-hf-subclass-hfastproblem">6.1 Minimal HF subclass (<code>HFASTProblem</code>)<a class="headerlink" href="#61-minimal-hf-subclass-hfastproblem" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">from astra_rl.methods.ast_problem import ASTProblem
+from astra_rl.core.moderator import Moderator
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch
+from typing import Sequence, Iterator
+
+class MyHFProblem(ASTProblem):
+    def __init__(self, attacker_id: str, target_id: str, baseline_id: str | None,
+                 moderator: Moderator[str, str], device: str = &quot;cuda&quot;):
+        super().__init__(moderator)
+        self.device = device
+
+        self.attacker = AutoModelForCausalLM.from_pretrained(attacker_id).to(device)
+        self.a_tok    = AutoTokenizer.from_pretrained(attacker_id)
+
+        self.target   = AutoModelForCausalLM.from_pretrained(target_id).to(device)
+        self.t_tok    = AutoTokenizer.from_pretrained(target_id)
+
+        self.baseline = (AutoModelForCausalLM.from_pretrained(baseline_id).to(device)
+                         if baseline_id is not None else self.target)
+        self.b_tok    = (AutoTokenizer.from_pretrained(baseline_id)
+                         if baseline_id is not None else self.t_tok)
+
+        for tok in (self.a_tok, self.t_tok, self.b_tok):
+            if tok.pad_token_id is None:
+                tok.pad_token_id = tok.eos_token_id
+            tok.padding_side = &quot;left&quot;  # set on the tokenizer object
+
+        # Optional: cache max ctx
+        self.max_ctx = getattr(self.attacker.config, &quot;n_positions&quot;,
+                        getattr(self.attacker.config, &quot;max_position_embeddings&quot;, 1024))
+
+    def parameters(self) -&gt; Iterator[torch.nn.Parameter]:
+        return self.attacker.parameters()
+
+    # ---- generation ----
+    def rollout_prompt_with_attacker(self, prompts: Sequence[str]) -&gt; Sequence[str]:
+        return self._rollout(self.attacker, self.a_tok, prompts)
+
+    def rollout_prompt_with_target(self, prompts: Sequence[str]) -&gt; Sequence[str]:
+        return self._rollout(self.target, self.t_tok, prompts)
+
+    def _rollout(self, model, tok, prompts):
+        max_new = 32
+        enc = tok(prompts, padding=True, return_tensors=&quot;pt&quot;, truncation=True,
+                  max_length=self.max_ctx - max_new).to(self.device)
+        with torch.no_grad():
+            out = model.generate(**enc, pad_token_id=tok.eos_token_id,
+                                 max_new_tokens=max_new, do_sample=True,
+                                 top_p=0.9, top_k=50, temperature=1.0)
+        texts = tok.batch_decode(out, skip_special_tokens=True)
+        return [full[len(p):] for full, p in zip(texts, prompts)]
+
+    # ---- logprobs ----
+    def get_attacker_logprobs(self, ctx, cont):
+        return self._get_logprobs(self.attacker, self.a_tok, ctx, cont, requires_grad=True)
+
+    def get_target_logprobs(self, ctx, cont):
+        with torch.no_grad():
+            return self._get_logprobs(self.target, self.t_tok, ctx, cont, requires_grad=False)
+
+    def get_baseline_logprobs(self, ctx, cont):
+        with torch.no_grad():
+            return self._get_logprobs(self.baseline, self.b_tok, ctx, cont, requires_grad=False)
+
+    def _get_logprobs(self, model, tok, ctx, cont, requires_grad=False):
+        # Encode separately, build mask to sum only continuation tokens
+        ctx_ids = tok(ctx).input_ids
+        cont_ids = tok(cont).input_ids
+        mask = [[False]*len(c) + [True]*len(r) for c, r in zip(ctx_ids, cont_ids)]
+        combo = [c + r for c, r in zip(ctx_ids, cont_ids)]
+        L = max(len(x) for x in combo)
+        pad = tok.eos_token_id
+
+        combo = [x + [pad]*(L-len(x)) for x in combo]
+        mask  = [m + [False]*(L-len(m)) for m in mask]
+        attn  = [[1]*len(m) + [0]*(L-len(m)) for m in mask]
+
+        combo = torch.tensor(combo, device=self.device)
+        attn  = torch.tensor(attn,  device=self.device)
+        mask  = torch.tensor(mask,  device=self.device)
+
+        logits = model(input_ids=combo, attention_mask=attn).logits[:, :-1].log_softmax(-1)
+        token_lp = logits.gather(-1, combo[:, 1:].unsqueeze(-1)).squeeze(-1)
+        token_lp = token_lp.masked_fill(~mask[:, 1:], 0.0)
+        return token_lp.sum(dim=-1)  # shape [B]
+</code></pre>
+<p><strong>Notes</strong></p>
+<ul>
+<li>Prefer setting <code>tokenizer.padding_side = "left"</code> on the object (don’t pass <code>padding_side</code> to <code>__call__</code>).</li>
+<li>When preparing <strong>input contexts</strong> you’ll later concatenate with generated text, leave <code>add_special_tokens=False</code> to avoid BOS/SEP drift.</li>
+<li>Keep <code>max_ctx - max_new_tokens</code> headroom to prevent device-side indexing errors.</li>
+</ul>
+<h3 id="62-non-hf-custom-problem-skeleton">6.2 Non-HF custom <code>Problem</code> skeleton<a class="headerlink" href="#62-non-hf-custom-problem-skeleton" title="Permanent link">&para;</a></h3>
+<pre><code class="language-python">class MyProblem(Problem[str, str]):
+    def __init__(self, moderator, attacker_model, target_model, baseline_model, device=&quot;cuda&quot;):
+        super().__init__(moderator)
+        self.device = device
+        self.attacker = attacker_model.to(device)
+        self.target   = target_model.to(device)
+        self.baseline = baseline_model.to(device)
+
+        # TODO: load the attacker, target and baseline tokenizers
+        # TODO: set your padding tokenins for each tokenizer
+        # TODO: set your model's usable max sequence length (e.g GPT-2: 1024)
+
+    def rollout_prompt_with_attacker(self, prompts):
+        # TODO: your generator over token ids/text → list[str] continuations
+        ...
+
+    def rollout_prompt_with_target(self, prompts):
+        ...
+
+    def get_attacker_logprobs(self, ctx, cont):
+        # Return sum log P(cont | ctx) per example; tensor requires grad
+        return self._logprobs(self.attacker, ctx, cont, requires_grad=True)
+
+    def get_target_logprobs(self, ctx, cont):
+        with torch.no_grad():
+            return self._logprobs(self.target, ctx, cont, requires_grad=False)
+
+    def get_baseline_logprobs(self, ctx, cont):
+        with torch.no_grad():
+            return self._logprobs(self.baseline, ctx, cont, requires_grad=False)
+
+    def _logprobs(self, model, ctx, cont, requires_grad):
+        # Implement your own encode/combine/mask logic (not HF)
+        # 1) encode ctx, cont → id tensors
+        # 2) build attention + continuation mask
+        # 3) forward model → logits → log_softmax
+        # 4) gather per-token logprobs, mask out context, sum over continuation
+        ...
+
+    def advance(self, context, attack, response):
+        # Conversation concatenation or your custom state transition
+        return context + attack + response
+
+    def parameters(self):
+        return self.attacker.parameters()
+
+    def reward(self, contexts, attacks, responses):
+        # calculate your custom reward 
+        return r
+</code></pre>
+<h3 id="63-designing-rewards">6.3 Designing rewards<a class="headerlink" href="#63-designing-rewards" title="Permanent link">&para;</a></h3>
+<p>Common patterns (return one float per sample):</p>
+<ul>
+<li><strong>harm-driven:</strong> use moderator-generated scores for defender harm as a key component of the reward</li>
+<li><strong>Preference methods (DPO/IPO/ORPO):</strong> may not use rewards directly; rely on log-prob differences.</li>
+<li><strong>Tips:</strong> bound/clip; normalize across a batch; document “higher is worse” vs “higher is better”.</li>
+</ul>
+<h3 id="64-implementing-advance">6.4 implementing <code>advance(...)</code><a class="headerlink" href="#64-implementing-advance" title="Permanent link">&para;</a></h3>
+<p>Default text setting is simple concatenation (below) but you can customize how the next state is created.</p>
+<pre><code class="language-python">def advance(self, context, attack, response):
+    return context + attack + response
+</code></pre>
+<h3 id="65-saving-models-hf-non-hf">6.5 Saving models (HF &amp; non-HF)<a class="headerlink" href="#65-saving-models-hf-non-hf" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>HF:</strong> <code>model.save_pretrained(path)</code> and <code>tokenizer.save_pretrained(path)</code>.</li>
+<li><strong>Non-HF:</strong> <code>torch.save(model.state_dict(), path)</code> and a small loader util. Ensure your trainer saves anything else your algorithm needs (e.g., optimizer/scheduler state).</li>
+</ul>
+<hr />
+<h2 id="7-plug-into-environment-solver">7. Plug into Environment / Solver<a class="headerlink" href="#7-plug-into-environment-solver" title="Permanent link">&para;</a></h2>
+<p>Your problem will be passed to the 'Environment' and 'Solver'. The 'Trainer' will have acsess to the problem through the environment (env.problem).</p>
+<pre><code class="language-python">problem = MyHFProblem(&quot;gpt2&quot;, &quot;gpt2&quot;, &quot;gpt2&quot;, DetoxifyModerator(), device=&quot;cuda&quot;)
+env     = ASTEnvironment(problem, PROMPTS, tree_width=2, tree_depth=3)
+solver  = DPO(problem, beta=0.1)
+trainer = Trainer(config=config, environment=env, algorithm=solver)
+trainer.train()
+</code></pre>
+<hr />
+<h2 id="8-debug-checklist">8. Debug Checklist<a class="headerlink" href="#8-debug-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Batching:</strong> input list lengths match; outputs align (<code>[B]</code> tensors).</li>
+<li><strong>Gradients:</strong> attacker log-probs require grad; target/baseline under <code>no_grad</code>.</li>
+<li><strong>Masking:</strong> only continuation tokens contribute to <code>log P(cont | ctx)</code>.</li>
+<li><strong>Context window:</strong> <code>len(ctx_tokens) + max_new_tokens ≤ max_ctx</code>.</li>
+<li><strong>Tokenizer differences:</strong> never cross-decode; keep model/tokenizer pairs.</li>
+<li><strong>Device/type:</strong> tensors on right device/dtype; <code>pad_token_id</code> set.</li>
+<li><strong>Numerics:</strong> watch for <code>nan/inf</code>; clip/normalize rewards.</li>
+<li><strong>Repro:</strong> fixed seeds for rollout sampling and generation settings.</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+    
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 4, 2025 17:15:50 UTC">2025-09-04</span>
+  </span>
+
+    
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Created">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 28, 2025 16:29:28 UTC">2025-08-28</span>
+  </span>
+
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      
+    
+  </body>
+</html>
