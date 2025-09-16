@@ -203,3 +203,7 @@ def main():
 
     with open(out_dir / "overall_metrics.json", "w", encoding="utf-8") as f:
         json.dump(overall, f, ensure_ascii=False, indent=2)
+
+
+if __name__ == "__main__":
+    main()
