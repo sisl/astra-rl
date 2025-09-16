@@ -1,6 +1,6 @@
 """
 ast_basic.py
-A basic example of how to use the ASTRA package.
+A basic example of how to use the ASTRA package with PPO
 We use GPT-2 as our attack, defense, and use the bulit-in
 detoxify moderator. We will train using a manually written
 corpora below of initial prompts.
@@ -10,16 +10,23 @@ corpora below of initial prompts.
 # requirements: ..
 
 import torch
+import torch.nn as nn
 from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
 
-from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
+from astra_rl import (
+    ASTProblem,
+    ASTEnvironment,
+    PPO,
+    DetoxifyModerator,
+    Harness,
+    ValueFunctionProblem,
+)
 
-# MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"
 
 
-class ExampleDetoxifyProblem(ASTProblem):
+class ExampleDetoxifyProblem(ASTProblem, ValueFunctionProblem):
     def __init__(self, device="cpu"):
         # TASK: initialize and pass to superclass
         # your choice of moderator
@@ -28,6 +35,12 @@ class ExampleDetoxifyProblem(ASTProblem):
         self.device = device
         self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
         self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+
+        self.vf = nn.Sequential(
+            nn.Linear(self.attacker.config.n_embd, self.attacker.config.n_embd),
+            nn.GELU(),
+            nn.Linear(self.attacker.config.n_embd, 1),
+        ).to(self.device)
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
@@ -52,6 +65,50 @@ class ExampleDetoxifyProblem(ASTProblem):
 
     def parameters(self):
         return self.attacker.parameters()
+
+    def value(self, context, continuation):
+        # tokenize both context and continuation
+        context = self.tokenizer(context)
+        continuation = self.tokenizer(continuation)
+
+        # create a mask such that the context is masked out
+        # in order to only compute logprobs of P(continuation|context)
+        combined_mask = [
+            [False] * len(i) + [True] * len(j)
+            for i, j in zip(context.input_ids, continuation.input_ids)
+        ]
+
+        # combine context + continuation; compute how much to pad
+        combined = [i + j for i, j in zip(context.input_ids, continuation.input_ids)]
+        max_length = max(len(i) for i in combined)
+
+        # pad the combined input and context mask
+        # use eos_token as padding
+        combined = [
+            i + [self.tokenizer.eos_token_id] * (max_length - len(i)) for i in combined
+        ]
+        combined_mask = [i + [False] * (max_length - len(i)) for i in combined_mask]
+        attention_mask = [
+            [True] * len(i) + [False] * (max_length - len(i)) for i in combined_mask
+        ]
+
+        # move things to torch and cuda
+        combined = torch.tensor(combined).to(self.device)
+        attention_mask = torch.tensor(attention_mask).to(self.device)
+        combined_mask = torch.tensor(combined_mask).to(self.device)
+
+        # run inference
+        output = self.attacker(
+            input_ids=combined, attention_mask=attention_mask, output_hidden_states=True
+        )
+        projected = self.vf(output.hidden_states[-1])
+
+        # compute per-token likelihoods
+        gathered = projected.masked_fill(
+            ~(combined_mask.unsqueeze(-1).repeat(1, 1, projected.size(-1))), 0.0
+        )
+
+        return gathered[:, :-1]
 
     # two helper methods to make the implementatinos above easy
     # you don't have to implement these for the API, but you should probably
@@ -136,7 +193,7 @@ def main() -> None:
     env = ASTEnvironment(problem, PROMPTS)
 
     # instantiate our solution
-    solver = DPO(problem)
+    solver = PPO(problem)
     optimizer = AdamW(problem.parameters(), lr=1e-5)
 
     # this is a training harness, from which we can call various functions to
@@ -145,7 +202,7 @@ def main() -> None:
         env,
         solver,
         num_episodes_per_experience=2,
-        use_wandb=True,
+        use_wandb=False,
         dataloader_kwargs={"batch_size": 4},
     )
 

@@ -95,6 +95,16 @@ uv run coverage report # Generate CLI report
 uv run coverage html   # Generate HTML report
 ```
 
+#### Running Tests with GPU
+
+Some tests may require a GPU to run. You can enable GPU tests by passing the `--gpu` option:
+
+```bash
+uv run pytest --gpu
+```
+
+These tests will be _skipped_ by default unless you specify the `--gpu` option.
+
 ### Generating Documentation
 
 To generate the documentation, you can use the following command:

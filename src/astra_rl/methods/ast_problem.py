@@ -51,9 +51,9 @@ class ASTProblem(Problem[str, str]):
         combined_uts = [j + k for j, k in zip(attack, response)]
         combined_scores: Sequence[float] = self.moderator.moderate(combined_uts)
         defender_scores: Sequence[float] = self.moderator.moderate(response)
-        attack_ppls: torch.Tensor = self._get_target_logprobs_and_validate(
-            context, attack
-        ).exp()
+        attack_ppls: torch.Tensor = (
+            self._get_target_logprobs_and_validate(context, attack).sum(dim=-1).exp()
+        )  # Sum per-token logprobs before taking exp
 
         reward: Sequence[float] = (
             (
