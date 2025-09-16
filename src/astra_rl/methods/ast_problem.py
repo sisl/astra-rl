@@ -57,7 +57,7 @@ class ASTProblem(Problem[str, str]):
 
         reward: Sequence[float] = (
             (
-                self.ppl_weight * attack_ppls
+                self.ppl_weight * attack_ppls.sum(dim=-1)
                 + self.combined_weight
                 * torch.tensor(combined_scores).to(attack_ppls.device)
                 + self.defense_toxicity_weight
