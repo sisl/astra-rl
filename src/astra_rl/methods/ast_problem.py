@@ -192,7 +192,7 @@ class ASTEnvironment(Environment[str, str]):
         return Graph(prompt, nodes)
 
     # Allie TODO: test this code
-    def handle_eval_prompt(self, prompt: str, depth: int = 3) -> Sequence[CustomNode]:
+    def __handle_eval_prompt(self, prompt: str, depth: int = 3) -> Sequence[CustomNode]:
         if depth == 0:
             return []
         width = 1
@@ -207,18 +207,19 @@ class ASTEnvironment(Environment[str, str]):
         attack_logprobs = self.problem._get_target_logprobs_and_validate(
             prompts, attacks
         )
+
         nodes = [
             CustomNode(
                 prompt,
                 attack,
                 defense,
                 reward,
-                self.handle_eval_prompt(
+                self.__handle_eval_prompt(
                     self.problem.advance(prompt, attack, defense), depth - 1
                 ),
                 attack_tox=attack_tox,
                 target_tox=target_tox,
-                attack_logprob=attack_logprob.item(),
+                attack_logprob=attack_logprob.sum().item(),
             )
             for prompt, attack, defense, reward, attack_tox, target_tox, attack_logprob in zip(
                 prompts,
@@ -234,7 +235,7 @@ class ASTEnvironment(Environment[str, str]):
 
     # new method generates rollout for evaluation, only a single path
     def eval_rollout(self, prompt: str) -> Graph[str, str]:
-        nodes = self.__handle_prompt(prompt, self.tree_depth, width=1)
+        nodes = self.__handle_eval_prompt(prompt, self.tree_depth)
         return Graph(prompt, nodes)
 
     # new method to get final reward from eval rollout
