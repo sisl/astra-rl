@@ -1,5 +1,5 @@
 """
-malibu.py
+backup.py
 This uses the ast environment and Huggingface extensions. However, with modifications to the environment,
 we can enable the backup of discounted future rewards during multi-turn conversation rollouts used in PPO.
 
@@ -15,7 +15,7 @@ from astra_rl.ext.transformers.hf_ast_problem import (
     HFASTConfiguration,
 )
 
-from astra_rl import ASTEnvironment, DPO, ASTNode
+from astra_rl import DPO, ASTNode, ASTEnvironment
 
 # GPT2 v GPT2 with Detoxify Moderator
 from ast_basic_1 import ExampleDetoxifyProblem
@@ -24,7 +24,7 @@ from ast_basic_1 import ExampleDetoxifyProblem
 from astra_rl.core.environment import Graph
 
 
-class MalibuEnv(ASTEnvironment):
+class BackupEnv(ASTEnvironment):
     def __init__(self, problem, prompts, gamma=0.9, tree_width=2, tree_depth=3):
         super().__init__(problem, prompts, tree_width, tree_depth)
         self.gamma = gamma
@@ -78,12 +78,12 @@ def main() -> None:
 
     # instatiate our problem and environment
     # instatiate our problem with GPT-2 attacker, target, and baseline
-    # TODO HFASTProblem needs to be updated to ensure device-side out of indexing error (same issue as earlier Detoxify Problem)
+
     # bend can't handle this much memory
     # problem = HFASTProblem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyModerator(), DEVICE)
 
     problem = ExampleDetoxifyProblem(DEVICE)
-    env = MalibuEnv(problem, PROMPTS, gamma=0.9)
+    env = BackupEnv(problem, PROMPTS, gamma=0.9)
 
     # # print out rollouts - checked that backing up rewards works!
     # for i in range(1):
