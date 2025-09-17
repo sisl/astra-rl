@@ -19,6 +19,7 @@ from transformers import (
     AutoTokenizer,
     PreTrainedTokenizer,
     BatchEncoding,
+    ValueFunctionProblem,
 )
 
 from astra_rl.core.moderator import Moderator
@@ -28,7 +29,7 @@ import os
 from astra_rl.logging import logger
 
 
-class HFASTProblem(ASTProblem):
+class HFASTProblem(ASTProblem, ValueFunctionProblem):
     """Huggingface Transformers adaptor for ASTProblem.
 
     This class extends the ASTProblem to work with Huggingface Transformers models without
@@ -180,6 +181,50 @@ class HFASTProblem(ASTProblem):
         ]
         return continuation
 
+    def value(self, context, continuation):
+        # tokenize both context and continuation
+        context = self.tokenizer(context)
+        continuation = self.tokenizer(continuation)
+
+        # create a mask such that the context is masked out
+        # in order to only compute logprobs of P(continuation|context)
+        combined_mask = [
+            [False] * len(i) + [True] * len(j)
+            for i, j in zip(context.input_ids, continuation.input_ids)
+        ]
+
+        # combine context + continuation; compute how much to pad
+        combined = [i + j for i, j in zip(context.input_ids, continuation.input_ids)]
+        max_length = max(len(i) for i in combined)
+
+        # pad the combined input and context mask
+        # use eos_token as padding
+        combined = [
+            i + [self.tokenizer.eos_token_id] * (max_length - len(i)) for i in combined
+        ]
+        combined_mask = [i + [False] * (max_length - len(i)) for i in combined_mask]
+        attention_mask = [
+            [True] * len(i) + [False] * (max_length - len(i)) for i in combined_mask
+        ]
+
+        # move things to torch and cuda
+        combined = torch.tensor(combined).to(self.device)
+        attention_mask = torch.tensor(attention_mask).to(self.device)
+        combined_mask = torch.tensor(combined_mask).to(self.device)
+
+        # run inference
+        output = self.attacker(
+            input_ids=combined, attention_mask=attention_mask, output_hidden_states=True
+        )
+        projected = self.vf(output.hidden_states[-1])
+
+        # compute per-token likelihoods
+        gathered = projected.masked_fill(
+            ~(combined_mask.unsqueeze(-1).repeat(1, 1, projected.size(-1))), 0.0
+        )
+
+        return gathered[:, :-1]
+
     @staticmethod
     def __get_logprobs(
         model: GenerationMixin,
@@ -225,12 +270,13 @@ class HFASTProblem(ASTProblem):
             .log_softmax(dim=-1)
         )
 
-        # compute likelihoods
+        # compute likelihoods per token
         gathered = logits.gather(-1, combined[:, 1:].unsqueeze(-1)).squeeze(-1)
+        # mask out padding tokens' probabilities (i.e. set them to e^0 = 1).
         gathered = gathered.masked_fill(~combined_mask[:, 1:], 0.0)
-        logprobs = gathered.sum(dim=-1)
 
-        return logprobs
+        # Return per-token logprobs instead of aggregating
+        return gathered
 
 
 class HFASTConfiguration(TrainingConfiguration):

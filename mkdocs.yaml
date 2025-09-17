@@ -8,8 +8,13 @@ use_directory_urls: false
 
 plugins:
   - search
-  - mkdocstrings
   - section-index
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_root_heading: true
   - git-revision-date-localized:
       enable_creation_date: true
       fallback_to_build_date: true
@@ -55,21 +60,37 @@ theme:
       - navigation.tabs
       - navigation.tabs.sticky
       - navigation.expand
+      - navigation.expand
       - toc.follow
 
 nav:
-  - ASTRA: 
-    - index.md
-    - Installation: installation.md
-    - Development Setup: dev_setup.md
+  - ASTRA: index.md
+  - Getting Started: getting_started.md
   - Tutorials: 
       - tutorials/index.md
-      - Training Quick Start: tutorials/quick_start_training.md
-      - Evaluation Quick Start: tutorials/quick_start_evaluation.md
-      - Customization:
-          - Problems: tutorials/customize_training/problems.md
-          - Environments: tutorials/customize_training/environments.md
-          - Moderators: tutorials/customize_training/moderators.md
-          - Solvers: tutorials/customize_training/solvers.md
-          - Trainers: tutorials/customize_training/trainers.md
-  - Library API Reference: api/index.md
+      - tutorials/training_an_evaluator.md
+      - tutorials/running_an_evaluation.md
+  - API Reference: 
+      - api/index.md
+      - Core Module:
+          - api/core/index.md
+          - api/core/common.md
+          - api/core/problem.md
+          - api/core/environment.md
+          - api/core/moderator.md
+          - api/core/algorithm.md
+      - Algorithms:
+          - api/algorithms/index.md
+          - api/algorithms/dpo.md
+      - Moderators:
+          - api/moderators/index.md
+          - api/moderators/detoxify.md
+      - Training:
+          - api/training/index.md
+          - api/training/harness.md
+          - api/training/trainer.md
+      - Methods:
+          - api/methods/index.md
+          - api/methods/ast_problem.md
+  - Contributing: contributing.md
+      

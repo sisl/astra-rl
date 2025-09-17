@@ -87,7 +87,7 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         environment: Environment[StateT, ActionT],
         algorithm: Algorithm[StateT, ActionT, Step, Batch],
         num_episodes_per_experience: int = 32,
-        use_wandb: bool = True,
+        use_wandb: bool = False,
         wandb_kwargs: Optional[Dict[str, Any]] = None,
         dataloader_kwargs: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -95,7 +95,7 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         Args:
             environment (Environment): The environment to run the algorithm in.
             algorithm (Algorithm): The algorithm to run.
-            rollouts_per_eps (int, optional): Number of episodes per call to `.experience()`. Defaults to 32.
+            num_episodes_per_experience (int, optional): Number of episodes per call to `.experience()`. Defaults to 32.
             wandb_kwargs (Optional[Dict[str, Any]], optional): Keyword arguments for configuring Weights & Biases. Defaults to None.
             dataloader_kwargs (Optional[Dict[str, Any]], optional): Keyword arguments for the PyTorch DataLoader, such as batch size and shuffle. Defaults to None.
         """
@@ -114,7 +114,7 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         """Run a step of the algorithm on the dataset.
 
         Args:
-            dataset (ListDataset): The dataset to run the algorithm on.
+            batch (Batch): The dataset batch to run the algorithm on.
 
         Returns:
             tuple[torch.Tensor, Dict[Any, Any]]: A tuple containing:

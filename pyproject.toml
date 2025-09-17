@@ -83,3 +83,8 @@ omit = [
     "tests/*",
     "*/conftest.py",
 ]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: Mark a test as slow.",
+]
