@@ -12,24 +12,28 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/dev_setup.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/training_an_evaluator.html">
       
       
+        <link rel="prev" href="index.html">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+        <link rel="next" href="running_an_evaluation.html">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
-        <title>Development Setup Guide - ASTRA-RL Toolbox Documentation</title>
+        <title>Training an Evaluator - ASTRA-RL Toolbox Documentation</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -48,11 +52,11 @@
       
     
     
-      <link rel="stylesheet" href="assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -78,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#development-setup-guide" class="md-skip">
+        <a href="#training-an-evaluator" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Development Setup Guide
+              Training an Evaluator
             
           </span>
         </div>
@@ -219,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="index.html" class="md-tabs__link">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
@@ -238,7 +242,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="getting_started.html" class="md-tabs__link">
+      <a href="../getting_started.html" class="md-tabs__link">
         
   
   
@@ -255,9 +259,11 @@
   
   
   
+    
   
-    <li class="md-tabs__item">
-      <a href="tutorials/index.html" class="md-tabs__link">
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="index.html" class="md-tabs__link">
         
   
   
@@ -276,7 +282,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="api/index.html" class="md-tabs__link">
+      <a href="../api/index.html" class="md-tabs__link">
         
   
   
@@ -295,7 +301,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="contributing.html" class="md-tabs__link">
+      <a href="../contributing.html" class="md-tabs__link">
         
   
   
@@ -336,7 +342,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -366,7 +372,7 @@
   
   
     <li class="md-nav__item">
-      <a href="index.html" class="md-nav__link">
+      <a href="../index.html" class="md-nav__link">
         
   
   
@@ -388,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="getting_started.html" class="md-nav__link">
+      <a href="../getting_started.html" class="md-nav__link">
         
   
   
@@ -407,27 +413,30 @@
       
   
   
+    
   
   
+  
     
     
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="tutorials/index.html" class="md-nav__link ">
+            <a href="index.html" class="md-nav__link ">
               
   
   
@@ -440,13 +449,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Tutorials
@@ -457,20 +466,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="tutorials/training_an_evaluator.md" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="training_an_evaluator.html" class="md-nav__link md-nav__link--active">
         
   
   
   <span class="md-ellipsis">
-    None
+    Training an Evaluator
     
   </span>
   
 
       </a>
+      
     </li>
   
 
@@ -483,12 +502,12 @@
   
   
     <li class="md-nav__item">
-      <a href="tutorials/running_an_evaluation.md" class="md-nav__link">
+      <a href="running_an_evaluation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Running An Evaluation
     
   </span>
   
@@ -530,7 +549,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/index.html" class="md-nav__link ">
+            <a href="../api/index.html" class="md-nav__link ">
               
   
   
@@ -580,7 +599,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/core/index.html" class="md-nav__link ">
+            <a href="../api/core/index.html" class="md-nav__link ">
               
   
   
@@ -613,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/common.html" class="md-nav__link">
+      <a href="../api/core/common.html" class="md-nav__link">
         
   
   
@@ -636,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/problem.html" class="md-nav__link">
+      <a href="../api/core/problem.html" class="md-nav__link">
         
   
   
@@ -659,7 +678,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/environment.html" class="md-nav__link">
+      <a href="../api/core/environment.html" class="md-nav__link">
         
   
   
@@ -682,7 +701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/moderator.html" class="md-nav__link">
+      <a href="../api/core/moderator.html" class="md-nav__link">
         
   
   
@@ -705,7 +724,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/algorithm.html" class="md-nav__link">
+      <a href="../api/core/algorithm.html" class="md-nav__link">
         
   
   
@@ -753,7 +772,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/algorithms/index.html" class="md-nav__link ">
+            <a href="../api/algorithms/index.html" class="md-nav__link ">
               
   
   
@@ -786,7 +805,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/algorithms/dpo.html" class="md-nav__link">
+      <a href="../api/algorithms/dpo.html" class="md-nav__link">
         
   
   
@@ -834,7 +853,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/moderators/index.html" class="md-nav__link ">
+            <a href="../api/moderators/index.html" class="md-nav__link ">
               
   
   
@@ -867,7 +886,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../api/moderators/detoxify.html" class="md-nav__link">
         
   
   
@@ -915,7 +934,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/training/index.html" class="md-nav__link ">
+            <a href="../api/training/index.html" class="md-nav__link ">
               
   
   
@@ -948,7 +967,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/training/harness.html" class="md-nav__link">
+      <a href="../api/training/harness.html" class="md-nav__link">
         
   
   
@@ -971,7 +990,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/training/trainer.html" class="md-nav__link">
+      <a href="../api/training/trainer.html" class="md-nav__link">
         
   
   
@@ -1019,7 +1038,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/methods/index.html" class="md-nav__link ">
+            <a href="../api/methods/index.html" class="md-nav__link ">
               
   
   
@@ -1052,7 +1071,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/methods/ast_problem.html" class="md-nav__link">
+      <a href="../api/methods/ast_problem.html" class="md-nav__link">
         
   
   
@@ -1090,7 +1109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing.html" class="md-nav__link">
+      <a href="../contributing.html" class="md-nav__link">
         
   
   
@@ -1125,101 +1144,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-the-development-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Setting Up the Development Environment
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#running-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      Running Tests
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generating-coverage-reports" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generating Coverage Reports
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#building-documentation-locally" class="md-nav__link">
-    <span class="md-ellipsis">
-      Building Documentation Locally
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#code-quality-tools" class="md-nav__link">
-    <span class="md-ellipsis">
-      Code Quality Tools
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      Troubleshooting
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#common-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      Common Issues
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#getting-help" class="md-nav__link">
-    <span class="md-ellipsis">
-      Getting Help
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1237,94 +1161,8 @@
   
 
 
-<h1 id="development-setup-guide">Development Setup Guide<a class="headerlink" href="#development-setup-guide" title="Permanent link">&para;</a></h1>
-<p>If you want to contribute to ASTRA-RL, modify it for your needs, or run the examples from the repository, follow these steps.</p>
-<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
-<p>We <strong>strongly</strong> recommend using <a href="https://docs.astral.sh/uv/">uv</a> to manage your Python environment. This ensures you have the correct dependencies and versions installed.</p>
-<h3 id="setting-up-the-development-environment">Setting Up the Development Environment<a class="headerlink" href="#setting-up-the-development-environment" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Clone the repository:</strong></li>
-</ol>
-<p><code>bash
-   git clone https://github.com/sisl/astra-rl.git
-   cd astra-rl</code></p>
-<ol>
-<li><strong>Sync package dependencies:</strong></li>
-</ol>
-<p><code>bash
-   uv sync --dev</code></p>
-<p>This creates a <code>.venv</code> directory in the project root with all necessary dependencies installed.</p>
-<ol>
-<li><strong>Install pre-commit hooks:</strong></li>
-</ol>
-<p><code>bash
-   uv run pre-commit install</code></p>
-<p>This ensures that the linter (<code>ruff</code>), formatter (<code>ruff</code>), and type checker (<code>mypy</code>) validate your code before each commit.</p>
-<h3 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h3>
-<p>After setting up your development environment, you can run tests using:</p>
-<pre><code class="language-bash">pytest
-</code></pre>
-<p>or with uv:</p>
-<pre><code class="language-bash">uv run pytest
-</code></pre>
-<h3 id="generating-coverage-reports">Generating Coverage Reports<a class="headerlink" href="#generating-coverage-reports" title="Permanent link">&para;</a></h3>
-<p>To generate local coverage reports:</p>
-<pre><code class="language-bash">uv run coverage run -m pytest
-uv run coverage report  # Generate CLI report
-uv run coverage html    # Generate HTML report
-</code></pre>
-<p>The HTML report will be available in the <code>htmlcov</code> directory.</p>
-<h3 id="building-documentation-locally">Building Documentation Locally<a class="headerlink" href="#building-documentation-locally" title="Permanent link">&para;</a></h3>
-<p>To build and serve the documentation locally:</p>
-<pre><code class="language-bash">uv run mkdocs serve
-</code></pre>
-<p>This will start a local server at <code>http://127.0.0.1:8000</code> where you can preview documentation changes.</p>
-<h3 id="code-quality-tools">Code Quality Tools<a class="headerlink" href="#code-quality-tools" title="Permanent link">&para;</a></h3>
-<p>The project uses several tools to maintain code quality:</p>
-<ul>
-<li><strong>Ruff</strong>: For linting and formatting</li>
-<li><strong>MyPy</strong>: For type checking</li>
-<li><strong>Pre-commit</strong>: For running checks before commits</li>
-</ul>
-<p>To run these manually:</p>
-<pre><code class="language-bash"># Linting and formatting
-uv run ruff check .
-uv run ruff format .
-
-# Type checking
-uv run mypy .
-
-# Run all pre-commit hooks
-uv run pre-commit run --all-files
-</code></pre>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
-<ol>
-<li><strong>Import errors after installation:</strong></li>
-<li>Ensure you're using the correct Python environment</li>
-<li>
-<p>Try reinstalling: <code>pip install --upgrade --force-reinstall astra-rl</code></p>
-</li>
-<li>
-<p><strong>Development environment issues:</strong></p>
-</li>
-<li>Make sure uv is properly installed</li>
-<li>
-<p>Try removing <code>.venv</code> and running <code>uv sync --dev</code> again</p>
-</li>
-<li>
-<p><strong>GPU/CUDA issues:</strong></p>
-</li>
-<li>Ensure you have the appropriate PyTorch version for your CUDA installation</li>
-<li>Check PyTorch installation: <code>python -c "import torch; print(torch.cuda.is_available())"</code></li>
-</ol>
-<h3 id="getting-help">Getting Help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h3>
-<p>If you encounter issues:</p>
-<ul>
-<li>Check the <a href="https://github.com/sisl/astra-rl/issues">GitHub Issues</a> for similar problems</li>
-<li>Open a new issue with details about your environment and the problem</li>
-<li>Join the discussions on the repository's Discussions tab</li>
-</ul>
+<h1 id="training-an-evaluator">Training an Evaluator<a class="headerlink" href="#training-an-evaluator" title="Permanent link">&para;</a></h1>
+<p>This tutorial will guide you through the process of training a custom model evaluator using the ASTRA-RL toolbox. The evaluator is a model that can be used to assess the quality of other models' outputs.</p>
 
 
 
@@ -1347,7 +1185,7 @@ uv run pre-commit run --all-files
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 16, 2025 20:22:23 UTC">2025-09-16</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 20:30:23 UTC">2025-07-02</span>
   </span>
 
     
@@ -1357,7 +1195,7 @@ uv run pre-commit run --all-files
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 16, 2025 20:22:23 UTC">2025-09-16</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 06:52:58 UTC">2025-07-02</span>
   </span>
 
     
@@ -1405,10 +1243,10 @@ uv run pre-commit run --all-files
     
     
       
-      <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>

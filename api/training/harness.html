@@ -466,12 +466,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/training_an_evaluator.md" class="md-nav__link">
+      <a href="../../tutorials/training_an_evaluator.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Training an Evaluator
     
   </span>
   
@@ -489,12 +489,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/running_an_evaluation.md" class="md-nav__link">
+      <a href="../../tutorials/running_an_evaluation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Running An Evaluation
     
   </span>
   
@@ -1567,13 +1567,7 @@ Batch (type): The type of a batch of steps, passed to the <code>.step()</code> f
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Harness</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">Batch</span><span class="p">]):</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Harness</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">Batch</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Harness for running an algorithm in a given environment.</span>
 
 <span class="sd">    Example:</span>
@@ -1704,12 +1698,6 @@ Batch (type): The type of a batch of steps, passed to the <code>.step()</code> f
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_episodes_per_experience</span><span class="p">):</span>
             <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">rollout</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
             <span class="n">graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
-        <span class="c1"># for _ in range(self.num_episodes_per_experience):</span>
-        <span class="c1">#     try:</span>
-        <span class="c1">#         graph = self.environment.rollout(seed=seed)</span>
-        <span class="c1">#         graphs.append(graph)</span>
-        <span class="c1">#     except Exception as e:</span>
-        <span class="c1">#         print(f&quot;Skipping rollout due to error: {e}&quot;)</span>
 
         <span class="n">steps</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">],</span> <span class="p">[])</span>
 
@@ -2024,13 +2012,7 @@ Batch (type): The type of a batch of steps, passed to the <code>.step()</code> f
 <span class="normal">166</span>
 <span class="normal">167</span>
 <span class="normal">168</span>
-<span class="normal">169</span>
-<span class="normal">170</span>
-<span class="normal">171</span>
-<span class="normal">172</span>
-<span class="normal">173</span>
-<span class="normal">174</span>
-<span class="normal">175</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">experience</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Batch</span><span class="p">]:</span>
+<span class="normal">169</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">experience</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Batch</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect some experiences!</span>
 
 <span class="sd">    Args:</span>
@@ -2048,12 +2030,6 @@ Batch (type): The type of a batch of steps, passed to the <code>.step()</code> f
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_episodes_per_experience</span><span class="p">):</span>
         <span class="n">graph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">rollout</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">graphs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
-    <span class="c1"># for _ in range(self.num_episodes_per_experience):</span>
-    <span class="c1">#     try:</span>
-    <span class="c1">#         graph = self.environment.rollout(seed=seed)</span>
-    <span class="c1">#         graphs.append(graph)</span>
-    <span class="c1">#     except Exception as e:</span>
-    <span class="c1">#         print(f&quot;Skipping rollout due to error: {e}&quot;)</span>
 
     <span class="n">steps</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">algorithm</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">graphs</span><span class="p">],</span> <span class="p">[])</span>
 
@@ -2122,18 +2098,18 @@ Batch (type): The type of a batch of steps, passed to the <code>.step()</code> f
 
             <details class="quote">
               <summary>Source code in <code>src/astra_rl/training/harness.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">177</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
 <span class="normal">178</span>
 <span class="normal">179</span>
 <span class="normal">180</span>
 <span class="normal">181</span>
-<span class="normal">182</span>
-<span class="normal">183</span>
-<span class="normal">184</span>
-<span class="normal">185</span>
-<span class="normal">186</span>
-<span class="normal">187</span>
-<span class="normal">188</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">log_current_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_logs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="normal">182</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">log_current_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_logs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Log the current step metrics to Weights &amp; Biases (if enabled) and logger.</span>
 
 <span class="sd">    Args:</span>
@@ -2370,7 +2346,7 @@ Batch (type): The type of a batch of steps, passed to the <code>.step()</code> f
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
