@@ -45,6 +45,22 @@ class Evaluator(ABC, Generic[StateT, ActionT, SeedT]):
     The class takes an `Environment' as input, and calls its `eval_rollout`
     method subject to some seeds which you pass. The resulting graph is
     then analyzed to yield some metrics for printing.
+
+    Example:
+    >>> prompts = (
+    ...     GET_PROMPTS()
+    ... )
+    >>> evaluator = Evaluator(
+    ...     env,
+    ...     seeds=prompts,
+    ... )
+    >>> metrics = evaluator.evaluate(
+    ...     n_rollouts=10
+    ... )
+    >>> Evaluator.write_json(
+    ...     metrics,
+    ...     "metrics.json",
+    ... )
     """
 
     def __init__(
