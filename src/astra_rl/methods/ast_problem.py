@@ -110,11 +110,13 @@ class ASTEnvironment(Environment[str, str]):
         self.tree_width = tree_width
         self.tree_depth = tree_depth
 
-    def __handle_prompt(self, prompt: str, depth: int = 3) -> Sequence[Node[str, str]]:
+    def __handle_prompt(
+        self, prompt: str, depth: int = 3, width: int = 2
+    ) -> Sequence[Node[str, str]]:
         if depth == 0:
             return []
 
-        prompts = [prompt for _ in range(self.tree_width)]
+        prompts = [prompt for _ in range(width)]
         attacks = self.problem._rollout_prompt_with_attacker_and_validate(prompts)
         defenses = self.problem._rollout_prompt_with_target_and_validate(
             [prompt + i for i in attacks]
@@ -128,7 +130,7 @@ class ASTEnvironment(Environment[str, str]):
                 defense,
                 reward,
                 self.__handle_prompt(
-                    self.problem.advance(prompt, attack, defense), depth - 1
+                    self.problem.advance(prompt, attack, defense), depth - 1, width
                 ),
             )
             for prompt, attack, defense, reward in zip(
@@ -143,6 +145,13 @@ class ASTEnvironment(Environment[str, str]):
         if seed:
             R = Random(seed)
         prompt = R.choice(self.prompts)
-        nodes = self.__handle_prompt(prompt, self.tree_depth)
+        nodes = self.__handle_prompt(prompt, self.tree_depth, self.tree_width)
 
+        return Graph(prompt, nodes)
+
+    def eval_rollout(self, prompt: Optional[str] = None) -> Graph[str, str]:
+        if prompt is None:
+            return self.rollout()
+
+        nodes = self.__handle_prompt(prompt, self.tree_depth, 1)
         return Graph(prompt, nodes)

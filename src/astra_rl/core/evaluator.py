@@ -5,7 +5,9 @@ Rollout a problem, and print some desirable metrics.
 
 from abc import abstractmethod, ABC
 from dataclass import dataclass
-from typing import Dict, Any, List, Union, TypedDict, Generic
+from typing import Dict, Any, List, Union, TypedDict, Generic, TypeVar, Optional
+
+from tqdm import tqdm
 
 from astra_rl.core.common import StateT, ActionT
 from astra_rl.core.environment import Environment, Graph
@@ -33,8 +35,11 @@ class GraphMetrics:
     per_turn: List[Dict[str, Any]]
 
 
+SeedT = TypeVar("SeedT")
+
+
 # the actual evaluator, which is used to find metrics
-class Evaluator(ABC, Generic[StateT, ActionT]):
+class Evaluator(ABC, Generic[StateT, ActionT, SeedT]):
     """An Evaluator used for rolling out a problem and computing metrics.
 
     The class takes an `Environment' as input, and calls its `eval_rollout`
@@ -42,8 +47,49 @@ class Evaluator(ABC, Generic[StateT, ActionT]):
     then analyzed to yield some metrics for printing.
     """
 
-    def __init__(self, env: Environment[StateT, ActionT]):
+    def __init__(
+        self, env: Environment[StateT, ActionT], seeds: Optional[List[SeedT]] = None
+    ):
+        self.seeds = seeds
         self.env = env
+
+    def evaluate(
+        self, n_rollouts: Optional[int] = None, progress: bool = True
+    ) -> JSONLike:
+        """Performs evaluation by rolling out environment many times
+
+        Args:
+            n_rollouts (Optional[int]): The number of rollouts to perform, otherwise all seeds.
+            progress (bool): Whether to use tqdm for progress bar.
+
+        Returns:
+            JSONLike: The aggregated metrics from all rollouts.
+        """
+
+        # use number as deterministic seeds, or just use the provided seeds
+        # while checking that everything is the right size
+        seeds: List[Any] = []
+        if self.seeds is None:
+            assert n_rollouts is not None, (
+                "Must provide n_rollouts if no seeds are given."
+            )
+            seeds = list(range(n_rollouts))
+        else:
+            assert n_rollouts is None or n_rollouts <= len(self.seeds), (
+                "n_rollouts cannot be greater than number of seeds."
+            )
+            seeds = self.seeds[:n_rollouts] if n_rollouts is not None else self.seeds
+
+        # aggergate metrics
+        all_metrics: List[GraphMetrics] = []
+        iterator = tqdm(seeds) if progress else seeds
+        for i in iterator:
+            g = self.env.eval_rollout(seed=i)
+            metrics = self.compute_metrics(g)
+            all_metrics.append(metrics)
+
+        aggregated = self.aggregate_metrics(all_metrics)
+        return aggregated
 
     @abstractmethod
     def compute_metrics(self, g: Graph[StateT, ActionT]) -> GraphMetrics:
