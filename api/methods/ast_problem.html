@@ -1471,7 +1471,16 @@ ActionT (str): The type of the action in the environment, which is also a string
 <span class="normal">145</span>
 <span class="normal">146</span>
 <span class="normal">147</span>
-<span class="normal">148</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ASTEnvironment</span><span class="p">(</span><span class="n">Environment</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ASTEnvironment</span><span class="p">(</span><span class="n">Environment</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;The ASTPrompter Rollout Environment</span>
 
 <span class="sd">    Implements https://arxiv.org/abs/2407.09447.</span>
@@ -1508,11 +1517,13 @@ ActionT (str): The type of the action in the environment, which is also a string
         <span class="bp">self</span><span class="o">.</span><span class="n">tree_width</span> <span class="o">=</span> <span class="n">tree_width</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tree_depth</span> <span class="o">=</span> <span class="n">tree_depth</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">__handle_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Node</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">__handle_prompt</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Node</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
         <span class="k">if</span> <span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
 
-        <span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span><span class="n">prompt</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_width</span><span class="p">)]</span>
+        <span class="n">prompts</span> <span class="o">=</span> <span class="p">[</span><span class="n">prompt</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span><span class="p">)]</span>
         <span class="n">attacks</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_rollout_prompt_with_attacker_and_validate</span><span class="p">(</span><span class="n">prompts</span><span class="p">)</span>
         <span class="n">defenses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_rollout_prompt_with_target_and_validate</span><span class="p">(</span>
             <span class="p">[</span><span class="n">prompt</span> <span class="o">+</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">attacks</span><span class="p">]</span>
@@ -1526,7 +1537,7 @@ ActionT (str): The type of the action in the environment, which is also a string
                 <span class="n">defense</span><span class="p">,</span>
                 <span class="n">reward</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__handle_prompt</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">attack</span><span class="p">,</span> <span class="n">defense</span><span class="p">),</span> <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">advance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">attack</span><span class="p">,</span> <span class="n">defense</span><span class="p">),</span> <span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">width</span>
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">prompt</span><span class="p">,</span> <span class="n">attack</span><span class="p">,</span> <span class="n">defense</span><span class="p">,</span> <span class="n">reward</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
@@ -1541,8 +1552,15 @@ ActionT (str): The type of the action in the environment, which is also a string
         <span class="k">if</span> <span class="n">seed</span><span class="p">:</span>
             <span class="n">R</span> <span class="o">=</span> <span class="n">Random</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
         <span class="n">prompt</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prompts</span><span class="p">)</span>
-        <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_depth</span><span class="p">)</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_depth</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_width</span><span class="p">)</span>
 
+        <span class="k">return</span> <span class="n">Graph</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_rollout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Graph</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">prompt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rollout</span><span class="p">()</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__handle_prompt</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree_depth</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Graph</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">nodes</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
               </details>
