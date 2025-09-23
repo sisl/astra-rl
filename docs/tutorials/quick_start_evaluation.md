@@ -3,8 +3,11 @@
 RL-based red-teaming uses reinforcement learning to train an **attacker** that generates test cases likely to elicit unsafe outputs from a **target** model. This tutorial shows how to run evaluations (red-team rollouts) using a **pre-trained attacker** against a target model.
 
 !!! note "Prerequisite"
-This guide assumes you already trained an attacker (see **Quick Start: Training**). You’ll point evaluation at that saved attacker checkpoint.
+    This guide assumes you already trained an attacker (see **Quick Start: Training**). You’ll point evaluation at that saved attacker checkpoint.
 
+
+!!! note "COMING SOON"
+    Our team is currently working on the evaluation API to help you quickly evaluate your target model with a pre-trained RL-based attacker. Please check back soon!
 ---
 
 ## Quick Start
@@ -68,53 +71,6 @@ env = ASTEnvironment(
 )
 ```
 
-### 4) Run evaluation rollouts and collect metrics
+### 4) Instantiate the Evaluator
 
-The snippet below performs a **single-path** rollout per prompt (depth = 3, width = 1) and demonstrates how to aggregate a few simple metrics. Use `env.final_reward(graph)` to read the reward at the leaf of the path.
-
-```python
-rows: List[dict] = []
-summaries = []
-
-for prompt in PROMPTS:
-    # Single-path evaluation
-    g = env.eval_rollout(prompt)
-
-    # Final reward at the leaf (width=1)
-    leaf_reward = env.final_reward(g) or 0.0
-
-    # Minimal transcript rows (per-turn)
-    # Each node is a (context, attack, response, reward, children) tuple.
-    path_nodes = g.children[0].children if g.children else []  # depth >= 2
-    rows.extend({
-        "prompt": prompt,
-        "attack": n.attack,
-        "response": n.response,
-        "reward": float(n.reward),
-    } for n in path_nodes)
-
-    # Optional: richer metrics if CustomNode is enabled in your build
-    # (e.g., attack_tox, target_tox, attack_logprob)
-    try:
-        avg_attack_tox = mean([getattr(n, "attack_tox", 0.0) for n in path_nodes]) if path_nodes else 0.0
-        avg_target_tox = mean([getattr(n, "target_tox", 0.0) for n in path_nodes]) if path_nodes else 0.0
-        avg_attack_lp  = mean([getattr(n, "attack_logprob", 0.0) for n in path_nodes]) if path_nodes else 0.0
-    except Exception:
-        avg_attack_tox = avg_target_tox = avg_attack_lp = 0.0
-
-    summaries.append({
-        "prompt": prompt,
-        "final_reward": float(leaf_reward),
-        "avg_attack_tox": float(avg_attack_tox),
-        "avg_target_tox": float(avg_target_tox),
-        "avg_attack_logprob": float(avg_attack_lp),
-    })
-
-# At this point, `rows` holds per-turn data and `summaries` holds per-prompt aggregates.
-# You can dump to JSON/CSV for analysis or visualization.
-```
-
-??? info "Prefer richer node metrics out-of-the-box?"
-If your build includes `env.handle_eval_prompt(...)` that returns `CustomNode` entries (with toxicity and logprob fields), you can call it for each prompt and skip the `getattr(...)` checks above.
-
----
+... Coming Soon! 

@@ -3,7 +3,7 @@
 Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
 
 
-Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!
+Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!
 
 ---
 
@@ -15,13 +15,12 @@ Please see the [main documentation](../index.md) for full setup instructions. He
 # Install the ASTRA-RL toolbox
 pip install astra-rl
 
-# Clone the repository (for examples and development)
-git clone git@github.com:sisl/astra-rl.git
+# Import ASTRA-RL in your python code
+import astra_rl
 ```
 
 !!! note
-
-    wandb is not automatically installed during this process. If you would let to use wandb either install it as an optional dependency (`pip install "astra-rl[wandb]"`) or install it directly (`uv pip install wandb`) and run export `WANDB_API_KEY=YOUR_API_KEY_HERE` in your terminal.
+    wandb is not automatically installed during this process. If you would like to use wandb, either install it as an optional dependency (`pip install "astra-rl[wandb]"`) or install it directly (`uv pip install wandb`) and run export `WANDB_API_KEY=YOUR_API_KEY_HERE` in your terminal.
 
 ---
 
@@ -53,7 +52,7 @@ with open("prompts_reddit_train.json") as f:
     PROMPTS = json.load(f)
 ```
 
-Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in [basic examples](https://github.com/sisl/astra-rl/tree/main/examples/GPT2_v_GPT2/).
+Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in the GPT2_v_GPT2 folder in examples.
 
 The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
@@ -63,13 +62,13 @@ The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ens
 
 The *problem* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTProblem` class that handles the technical backend so you just need to provide the huggingface model IDs of the attacker, target and baseline models and a `Moderator` instance (DetexifyModerator(), LlamaGuardModerator() or your custom moderator).
 
-> Note: Your attacker and target can be different models (e.g., GPT-2 attacker, LLaMA target) but your baseline and attacker should typically be the same.
+> Note: Your attacker and target can be different models but your baseline and attacker should typically be the same.
+
+> Note: HFASTProblem can not handle huggingface models that have a fixed length (e.g. GPT2) as it will run into an out of context error. If you would like to train a GPT2-based attacker model, please see our GPT2_v_GPT2 examples which use a custom ExampleDetoxifyProblem() designed for GPT2 models.
 
 ```python
-from astra_rl.modifiers import LlamaGuardModerator  # optional
-
-# Example problem instantiation: GPT2 attacker, target, and baseline with Detoxify moderator (lightweight setup)
-problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
+# Example problem instantiation: llama3 attacker, target, and baseline with Detoxify moderator (heavyweight setup - requires GPU)
+problem = HFASTProblem("meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", DetoxifyModerator(), DEVICE)
 ```
 
 Need a custom model or rollout step logic? See [customize_training/problems](customize_training/problems.md)
@@ -93,8 +92,8 @@ env = ASTEnvironment(problem, PROMPTS)
   - The root node starts from a random initial prompt (from `PROMPTS`)
   - At each turn, the attacker generates multiple (`tree_width`, default 2) candidate utterances
   - Each of those utterances is fed to the target model, which produces a response
-  - The resulting attacker–target–response tuples form child nodes
-  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn attacker–target dialogue tree
+  - The resulting attacker–target tuples form child nodes
+  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn attacker–target dialogue tree.
 
   This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the attacker to elicit harmful responses in a multi-turn setting.
 </details>
@@ -152,9 +151,9 @@ Want to customize the training configuration/hyperparams, the training loop, or 
 ## Full Examples: 
 We provide 3 complete working examples that mirror this guide!
 
-Hugging face example without trainer: [examples/ast_hf.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_hf.py)
+Hugging face example for llama3 models without trainer: [examples/ast_hf.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_hf.py)
 
-Custom AST problem with trainer: [examples/ast_trainer](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py)
+Custom AST problem for GPT2 models with trainer: [examples/ast_trainer](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py)
 
-Custom AST problem without trainer: [examples/ast_basic.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_basic.py)
+Custom AST problem for GPT2 models without trainer: [examples/ast_basic.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_basic.py)
 

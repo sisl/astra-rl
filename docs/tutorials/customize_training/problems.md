@@ -27,7 +27,7 @@ A `Problem` is the bridge between abstract rollouts and concrete model calls. It
 ## 2. Built-in / Convenience Problems
 
 * **`ASTProblem`** — text-first base with a default `advance()` and a reference reward that combines likelihood and moderator scores (ASTPrompter reward).
-* **`HFASTProblem`** — Hugging Face adaptor that subclasses ASTProblem and adds tokenization, generation, and log-prob computation for any HF model.
+* **`HFASTProblem`** — Hugging Face adaptor that subclasses ASTProblem and adds tokenization, generation, and log-prob computation for any HF model that does not have a fixed length (eg. not GPT2, but works for other models like llama models).
 
 Use these as templates; override or subclass to fit your needs.
 
@@ -50,7 +50,7 @@ Keep HF models/tokenizers but override specifics (generation kwargs, reward mix,
 
 ### 4.1 Methods & gradient expectations
 
-Implement **batched** methods (lists in, tensors/lists out, index-aligned):
+Every Problem must implement the following **batched** methods (lists in, tensors/lists out, index-aligned):
 
 ```python
 rollout_prompt_with_attacker(prompts: Sequence[str]) -> Sequence[str]
@@ -87,110 +87,19 @@ reward(contexts, attacks, responses) -> Sequence[float]
 
 ## 6. How-Tos
 
-### 6.1 Minimal HF subclass (`HFASTProblem`)
+To create your custom Problem class, we encourage you to find what existing problem is the closest fit to your desired Problem and subclass from there. 
 
-```python
-from astra_rl.methods.ast_problem import ASTProblem
-from astra_rl.core.moderator import Moderator
-from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
-from typing import Sequence, Iterator
+For example, if you are still using huggingface models but want to change how the state advances or how the reward is calculated, you should subclass from the HFASTProblem, define the methods you wish to change, and let the pre-defined methods in HFASTProblem remain. 
 
-class MyHFProblem(ASTProblem):
-    def __init__(self, attacker_id: str, target_id: str, baseline_id: str | None,
-                 moderator: Moderator[str, str], device: str = "cuda"):
-        super().__init__(moderator)
-        self.device = device
-
-        self.attacker = AutoModelForCausalLM.from_pretrained(attacker_id).to(device)
-        self.a_tok    = AutoTokenizer.from_pretrained(attacker_id)
-
-        self.target   = AutoModelForCausalLM.from_pretrained(target_id).to(device)
-        self.t_tok    = AutoTokenizer.from_pretrained(target_id)
-
-        self.baseline = (AutoModelForCausalLM.from_pretrained(baseline_id).to(device)
-                         if baseline_id is not None else self.target)
-        self.b_tok    = (AutoTokenizer.from_pretrained(baseline_id)
-                         if baseline_id is not None else self.t_tok)
-
-        for tok in (self.a_tok, self.t_tok, self.b_tok):
-            if tok.pad_token_id is None:
-                tok.pad_token_id = tok.eos_token_id
-            tok.padding_side = "left"  # set on the tokenizer object
-
-        # Optional: cache max ctx
-        self.max_ctx = getattr(self.attacker.config, "n_positions",
-                        getattr(self.attacker.config, "max_position_embeddings", 1024))
-
-    def parameters(self) -> Iterator[torch.nn.Parameter]:
-        return self.attacker.parameters()
-
-    # ---- generation ----
-    def rollout_prompt_with_attacker(self, prompts: Sequence[str]) -> Sequence[str]:
-        return self._rollout(self.attacker, self.a_tok, prompts)
-
-    def rollout_prompt_with_target(self, prompts: Sequence[str]) -> Sequence[str]:
-        return self._rollout(self.target, self.t_tok, prompts)
-
-    def _rollout(self, model, tok, prompts):
-        max_new = 32
-        enc = tok(prompts, padding=True, return_tensors="pt", truncation=True,
-                  max_length=self.max_ctx - max_new).to(self.device)
-        with torch.no_grad():
-            out = model.generate(**enc, pad_token_id=tok.eos_token_id,
-                                 max_new_tokens=max_new, do_sample=True,
-                                 top_p=0.9, top_k=50, temperature=1.0)
-        texts = tok.batch_decode(out, skip_special_tokens=True)
-        return [full[len(p):] for full, p in zip(texts, prompts)]
-
-    # ---- logprobs ----
-    def get_attacker_logprobs(self, ctx, cont):
-        return self._get_logprobs(self.attacker, self.a_tok, ctx, cont, requires_grad=True)
-
-    def get_target_logprobs(self, ctx, cont):
-        with torch.no_grad():
-            return self._get_logprobs(self.target, self.t_tok, ctx, cont, requires_grad=False)
-
-    def get_baseline_logprobs(self, ctx, cont):
-        with torch.no_grad():
-            return self._get_logprobs(self.baseline, self.b_tok, ctx, cont, requires_grad=False)
-
-    def _get_logprobs(self, model, tok, ctx, cont, requires_grad=False):
-        # Encode separately, build mask to sum only continuation tokens
-        ctx_ids = tok(ctx).input_ids
-        cont_ids = tok(cont).input_ids
-        mask = [[False]*len(c) + [True]*len(r) for c, r in zip(ctx_ids, cont_ids)]
-        combo = [c + r for c, r in zip(ctx_ids, cont_ids)]
-        L = max(len(x) for x in combo)
-        pad = tok.eos_token_id
-
-        combo = [x + [pad]*(L-len(x)) for x in combo]
-        mask  = [m + [False]*(L-len(m)) for m in mask]
-        attn  = [[1]*len(m) + [0]*(L-len(m)) for m in mask]
-
-        combo = torch.tensor(combo, device=self.device)
-        attn  = torch.tensor(attn,  device=self.device)
-        mask  = torch.tensor(mask,  device=self.device)
-
-        logits = model(input_ids=combo, attention_mask=attn).logits[:, :-1].log_softmax(-1)
-        token_lp = logits.gather(-1, combo[:, 1:].unsqueeze(-1)).squeeze(-1)
-        token_lp = token_lp.masked_fill(~mask[:, 1:], 0.0)
-        return token_lp.sum(dim=-1)  # shape [B]
-```
-
-**Notes**
-
-* Prefer setting `tokenizer.padding_side = "left"` on the object (don’t pass `padding_side` to `__call__`).
-* When preparing **input contexts** you’ll later concatenate with generated text, leave `add_special_tokens=False` to avoid BOS/SEP drift.
-* Keep `max_ctx - max_new_tokens` headroom to prevent device-side indexing errors.
-
-### 6.2 Non-HF custom `Problem` skeleton
+The following code shows how to subclass from the base Problem class and where you should implement your custom methods to create the changes you desire. 
 
 ```python
 class MyProblem(Problem[str, str]):
     def __init__(self, moderator, attacker_model, target_model, baseline_model, device="cuda"):
         super().__init__(moderator)
         self.device = device
+
+        # set your attacker, target, and baseline models
         self.attacker = attacker_model.to(device)
         self.target   = target_model.to(device)
         self.baseline = baseline_model.to(device)
@@ -219,7 +128,7 @@ class MyProblem(Problem[str, str]):
             return self._logprobs(self.baseline, ctx, cont, requires_grad=False)
 
     def _logprobs(self, model, ctx, cont, requires_grad):
-        # Implement your own encode/combine/mask logic (not HF)
+        # Implement your own encode/combine/mask logic 
         # 1) encode ctx, cont → id tensors
         # 2) build attention + continuation mask
         # 3) forward model → logits → log_softmax
@@ -234,7 +143,8 @@ class MyProblem(Problem[str, str]):
         return self.attacker.parameters()
 
     def reward(self, contexts, attacks, responses):
-        # calculate your custom reward 
+        # calculate your custom reward here! 
+        # return a scalar value. Note that binary signals are not as helpful for training. Try to make the reward continuous from 0-1. 
         return r
 ```
 

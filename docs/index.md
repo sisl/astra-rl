@@ -45,7 +45,7 @@ For detailed installation instructions, including development setup, see the **[
 - **[Installation](installation.md)** - Setup instructions for users and developers
 - **[Tutorials](tutorials/index.md)** - Learn how to use ASTRA-RL with hands-on examples
     - [Quick Start Training](tutorials/quick_start_training.md) - Train your first red-teaming model
-    - [Quick Start Evaluation](tutorials/quick_start_evaluation.md) - Evaluate models with pre-trained attackers
+    - [Quick Start Evaluation](tutorials/quick_start_evaluation.md) - Evaluate models with pre-trained attackers. (Work in progress!)
     - [Customization Guides](tutorials/index.md#package-overview) - Adapt ASTRA-RL to your needs
 - **[API Reference](api/index.md)** - Complete API documentation
 

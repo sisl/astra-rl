@@ -27,7 +27,13 @@ def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our problem and environment
-    problem = HFASTProblem("gpt2", "gpt2", "gpt2", DetoxifyModerator(), DEVICE)
+    problem = HFASTProblem(
+        "meta-llama/Llama-3.1-8B",
+        "meta-llama/Llama-3.1-8B",
+        "meta-llama/Llama-3.1-8B",
+        DetoxifyModerator(),
+        DEVICE,
+    )
     env = ASTEnvironment(problem, PROMPTS)
 
     # instantiate our solution
