@@ -466,12 +466,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/training_an_evaluator.html" class="md-nav__link">
+      <a href="../../tutorials/training_an_evaluator.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Training an Evaluator
+    None
     
   </span>
   
@@ -489,12 +489,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../tutorials/running_an_evaluation.html" class="md-nav__link">
+      <a href="../../tutorials/running_an_evaluation.md" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Running An Evaluation
+    None
     
   </span>
   
@@ -1374,62 +1374,50 @@ ActionT (type): The type of the action in the environment.</p>
 
               <details class="quote">
                 <summary>Source code in <code>src/astra_rl/core/environment.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Environment</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Environment</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An Environment used for rolling out a problem.</span>
 
 <span class="sd">    The primary point of this class is to make a `Graph` of the problem</span>
@@ -1461,30 +1449,18 @@ ActionT (type): The type of the action in the environment.</p>
 
         <span class="k">pass</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">eval_rollout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Roll out for evaluation, by default just the standard rollout</span>
-
-<span class="sd">        Notes:</span>
-<span class="sd">            This can be customized to whatever the user desires in terms of rollout for eval.</span>
-<span class="sd">            For instance, for evaluation the seed maybe StateT instead of int since there may</span>
-<span class="sd">            be another evaluation dataset.</span>
-
-<span class="sd">            However, if the seed given is None or an int, a default implementation exists</span>
-<span class="sd">            which just calls `self.rollout(seed)` and so evaluation can be done without</span>
-<span class="sd">            needing to override this method.</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">eval_rollout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="n">StateT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Roll out a problem following a SPECIFIC state for evaulations.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            seed (Optional[Any]): An optional seed; the same seed should produce the same graph.</span>
+<span class="sd">            prompt (StateT): The state to begin to roll out from.</span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            Graph[StateT, ActionT]: A graph representing the rollout of the problem.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rollout</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;eval_rollout not implemented for non-int seeds; please override this method.&quot;</span>
-        <span class="p">)</span>
+        <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -1504,25 +1480,19 @@ ActionT (type): The type of the action in the environment.</p>
 
 
 <h4 id="astra_rl.core.environment.Environment.eval_rollout" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">eval_rollout</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">eval_rollout</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
 
 <a href="#astra_rl.core.environment.Environment.eval_rollout" class="headerlink" title="Permanent link">&para;</a></h4>
 
 
     <div class="doc doc-contents ">
 
-        <p>Roll out for evaluation, by default just the standard rollout</p>
+        <p>Roll out a problem following a SPECIFIC state for evaulations.</p>
 
-
-<details class="notes" open>
-  <summary>Notes</summary>
-  <p>This can be customized to whatever the user desires in terms of rollout for eval.
-For instance, for evaluation the seed maybe StateT instead of int since there may
-be another evaluation dataset.</p>
-<p>However, if the seed given is None or an int, a default implementation exists
-which just calls <code>self.rollout(seed)</code> and so evaluation can be done without
-needing to override this method.</p>
-</details>
 
 <p><span class="doc-section-title">Parameters:</span></p>
     <table>
@@ -1537,75 +1507,77 @@ needing to override this method.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>seed</code>
+                <code>prompt</code>
             </td>
             <td>
-                  <code><span title="typing.Optional">Optional</span>[<span title="typing.Any">Any</span>]</code>
+                  <code><span title="astra_rl.core.common.StateT">StateT</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>An optional seed; the same seed should produce the same graph.</p>
+                <p>The state to begin to roll out from.</p>
               </div>
             </td>
             <td>
-                  <code>None</code>
+                <em>required</em>
             </td>
           </tr>
       </tbody>
     </table>
-        <p>Returns:
-    Graph[StateT, ActionT]: A graph representing the rollout of the problem.</p>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Graph
+
+
+  
+      dataclass
+   (astra_rl.core.environment.Graph)" href="#astra_rl.core.environment.Graph">Graph</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Graph[StateT, ActionT]: A graph representing the rollout of the problem.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
             <details class="quote">
               <summary>Source code in <code>src/astra_rl/core/environment.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">eval_rollout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Roll out for evaluation, by default just the standard rollout</span>
-
-<span class="sd">    Notes:</span>
-<span class="sd">        This can be customized to whatever the user desires in terms of rollout for eval.</span>
-<span class="sd">        For instance, for evaluation the seed maybe StateT instead of int since there may</span>
-<span class="sd">        be another evaluation dataset.</span>
-
-<span class="sd">        However, if the seed given is None or an int, a default implementation exists</span>
-<span class="sd">        which just calls `self.rollout(seed)` and so evaluation can be done without</span>
-<span class="sd">        needing to override this method.</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span>
+<span class="normal">94</span>
+<span class="normal">95</span>
+<span class="normal">96</span>
+<span class="normal">97</span>
+<span class="normal">98</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@abstractmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">eval_rollout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompt</span><span class="p">:</span> <span class="n">StateT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Roll out a problem following a SPECIFIC state for evaulations.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        seed (Optional[Any]): An optional seed; the same seed should produce the same graph.</span>
+<span class="sd">        prompt (StateT): The state to begin to roll out from.</span>
+
 <span class="sd">    Returns:</span>
 <span class="sd">        Graph[StateT, ActionT]: A graph representing the rollout of the problem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">seed</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rollout</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
-
-    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-        <span class="s2">&quot;eval_rollout not implemented for non-int seeds; please override this method.&quot;</span>
-    <span class="p">)</span>
+    <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
             </details>
     </div>
@@ -2118,7 +2090,7 @@ ActionT (type): The type of the action in the environment.</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
