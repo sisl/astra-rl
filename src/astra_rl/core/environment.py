@@ -5,7 +5,7 @@ Roll out a problem, and specify how its environment behaves.
 
 from abc import abstractmethod, ABC
 from dataclasses import dataclass
-from typing import Sequence, Generic, Self, Optional
+from typing import Sequence, Generic, Self, Optional, Any
 
 from astra_rl.core.common import StateT, ActionT
 from astra_rl.core.problem import Problem
@@ -84,15 +84,29 @@ class Environment(ABC, Generic[StateT, ActionT]):
 
         pass
 
-    @abstractmethod
-    def eval_rollout(self, prompt: StateT) -> Graph[StateT, ActionT]:
-        """Roll out a problem following a SPECIFIC state for evaulations.
+    def eval_rollout(self, seed: Optional[Any] = None) -> Graph[StateT, ActionT]:
+        """Roll out for evaluation, by default just the standard rollout
+
+        Notes:
+            This can be customized to whatever the user desires in terms of rollout for eval.
+            For instance, for evaluation the seed maybe StateT instead of int since there may
+            be another evaluation dataset.
+
+            However, if the seed given is None or an int, a default implementation exists
+            which just calls `self.rollout(seed)` and so evaluation can be done without
+            needing to override this method.
 
         Args:
-            prompt (StateT): The state to begin to roll out from.
+            seed (Optional[Any]): An optional seed; the same seed should produce the same graph.
 
         Returns:
             Graph[StateT, ActionT]: A graph representing the rollout of the problem.
         """
 
-        pass
+        if seed is None or isinstance(seed, int):
+            return self.rollout(seed)
+
+        raise NotImplementedError(
+            "eval_rollout not implemented for non-int seeds; please override this method."
+        )
+

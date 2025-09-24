@@ -156,13 +156,10 @@ class ASTEnvironment(Environment[str, str]):
         self.tree_depth = tree_depth
 
     def __handle_prompt(
-        self, prompt: str, depth: int = 3, width: Optional[int] = None
+        self, prompt: str, depth: int = 3, width: int = 2
     ) -> Sequence[Node[str, str]]:
         if depth == 0:
             return []
-
-        if width is None:
-            width = self.tree_width
 
         prompts = [prompt for _ in range(width)]
         attacks = self.problem._rollout_prompt_with_attacker_and_validate(prompts)
@@ -197,80 +194,10 @@ class ASTEnvironment(Environment[str, str]):
 
         return Graph(prompt, nodes)
 
-    # This method performs an evaluation rollout and collects extra metrics
-    # at each turn, returning a tree of CustomNodes with the extra data.
-    def handle_eval_prompt(
-        self,
-        prompt: str,
-        turn: int = 1,
-        depth: int = 3,
-        first_attack: int = -1,
-        first_target: int = -1,
-    ) -> tuple[Sequence[CustomNode], int, int]:
-        """Single-path eval rollout that also records first toxic turns."""
-        if depth == 0:
-            return [], first_attack, first_target
+    def eval_rollout(self, prompt: Optional[str] = None) -> Graph[str, str]:
+        if prompt is None:
+            return self.rollout()
 
-        # width fixed to 1 for eval path
-        prompts = [prompt]
-        attacks = self.problem._rollout_prompt_with_attacker_and_validate(prompts)
-        defenses = self.problem._rollout_prompt_with_target_and_validate(
-            [prompt + attacks[0]]
-        )
-        rewards = self.problem.reward(prompts, attacks, defenses)
-
-        # moderator outputs are sequences; width==1 so index at 0
-        attack_toxs = self.problem.moderator.moderate(attacks)
-        target_toxs = self.problem.moderator.moderate(defenses)
-        attack_tox = float(attack_toxs[0])
-        target_tox = float(target_toxs[0])
-
-        if attack_tox > 0.5 and first_attack == -1:
-            first_attack = turn
-        if target_tox > 0.5 and first_target == -1:
-            first_target = turn
-
-        # logprobs tensor -> take scalar for this single sample
-        attack_logprobs = self.problem._get_target_logprobs_and_validate(
-            prompts, attacks
-        )
-        attack_logprob = float(attack_logprobs[0].item())
-
-        # recurse one step deeper along the single path
-        next_context = self.problem.advance(prompt, attacks[0], defenses[0])
-        child_nodes, first_attack, first_target = self.handle_eval_prompt(
-            next_context, turn + 1, depth - 1, first_attack, first_target
-        )
-
-        node = CustomNode(
-            context=prompt,
-            attack=attacks[0],
-            response=defenses[0],
-            reward=float(rewards[0]),
-            children=child_nodes,
-            attack_tox=attack_tox,
-            target_tox=target_tox,
-            attack_logprob=attack_logprob,
-            first_attack_tox_turn=first_attack if first_attack != -1 else None,
-            first_target_tox_turn=first_target if first_target != -1 else None,
-        )
-        return [node], first_attack, first_target
-
-    # new method generates rollout for evaluation, only a single path
-    def eval_rollout(self, prompt: str) -> Graph[str, str]:
-        nodes, _, _ = self.handle_eval_prompt(
-            prompt, turn=1, depth=self.tree_depth, first_attack=-1, first_target=-1
-        )
+        nodes = self.__handle_prompt(prompt, self.tree_depth, 1)
         return Graph(prompt, nodes)
 
-    # new method to get final reward from eval rollout
-    def final_reward(self, graph: "Graph[str, str]") -> Optional[float]:
-        """Return reward at the leaf along the single path (width==1)."""
-        if not graph.children:
-            return None
-        n = graph.children[0]
-        last = n.reward
-        while n.children:
-            n = n.children[0]
-            last = n.reward
-        return last
