@@ -83,3 +83,16 @@ class Environment(ABC, Generic[StateT, ActionT]):
         """
 
         pass
+
+    @abstractmethod
+    def eval_rollout(self, prompt: StateT) -> Graph[StateT, ActionT]:
+        """Roll out a problem following a SPECIFIC state for evaulations.
+
+        Args:
+            prompt (StateT): The state to begin to roll out from.
+
+        Returns:
+            Graph[StateT, ActionT]: A graph representing the rollout of the problem.
+        """
+
+        pass

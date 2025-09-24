@@ -11,21 +11,24 @@ corpora below of initial prompts.
 
 import torch
 import json
-import os
-from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
-from astra_rl.logging import logger
+from astra_rl.ext.transformers.hf_ast_problem import (
+    HFASTTrainer,
+    HFASTConfiguration,
+)
+
+from astra_rl import ASTProblem, ASTEnvironment, DPO
+from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"
 
 
-class ExampleDetoxifyProblem(ASTProblem):
+class ExampleLlamaGuardProblem(ASTProblem):
     def __init__(self, device="cuda"):
         # TASK: initialize and pass to superclass
-        # your choice of moderator
-        super().__init__(DetoxifyModerator())
+        # one line of code difference to call a different moderator!!
+        super().__init__(LlamaGuardModerator(device))
 
         self.device = device
         self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
@@ -159,99 +162,45 @@ class ExampleDetoxifyProblem(ASTProblem):
             .log_softmax(dim=-1)
         )
 
-        # compute per-token likelihoods
+        # compute likelihoods
         gathered = logits.gather(-1, combined[:, 1:].unsqueeze(-1)).squeeze(-1)
         gathered = gathered.masked_fill(~combined_mask[:, 1:], 0.0)
+        logprobs = gathered.sum(dim=-1)
 
-        # Return per-token logprobs instead of aggregating
-        return gathered
-
-
-# the following two functions will be implemented in the trainer class. This example
-# does not use a trainer so we implement it here
-def save(eval_env, step, tag="step"):
-    if tag == "best":
-        out = os.path.join("checkpoints", "best")  # single fixed path
-    else:
-        out = os.path.join("checkpoints", f"{tag}-{step}")
-
-    # Save attacker/target in HF format
-    os.makedirs(out, exist_ok=True)
-    eval_env.problem.attacker.save_pretrained(out)
-    eval_env.problem.tokenizer.save_pretrained(out)
-
-
-def eval_epoch(env, dev_prompts, best_score, step, tag="step"):
-    print(f"EVALUATING after training step {step}...")
-    rewards = []
-
-    for indx, i in enumerate(dev_prompts):
-        if indx % 30 == 0:
-            print(f"EVAULATED {indx}/{len(dev_prompts)} steps...")
-        # perform a sigle eval rollout per dev prompt and collect a list of rewards
-        # FIND WAY to extract rewards from the rollout
-        rollout = env.eval_rollout(i)
-        final_rollout_reward = env.final_reward(rollout)
-
-        rewards += [final_rollout_reward]
-
-    print(f"EVAULATED {indx}/{len(dev_prompts)} steps...")
-    dev_score = sum(rewards) / len(rewards)
-
-    if dev_score > best_score:
-        logger.info(f"NEW BEST! {round(dev_score, 3)}")
-        logger.info({"training/dev_score": dev_score}, step=step)
-        save(env, step, "best")
+        return logprobs
 
 
 def main() -> None:
-    best_score = -float("inf")  # best score so far, used to save the best model
     # prompts to use to seed initial stage
     # read in training prompts
     with open("prompts_reddit_train.json") as f:
         PROMPTS = json.load(f)
+
     # read in dev set of prompts
     with open("prompts_reddit_dev.json") as f:
-        dev_prompts = json.load(f)
+        DEV_PROMPTS = json.load(f)
 
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our problem and environment
-    problem = ExampleDetoxifyProblem(DEVICE)  # or "cuda" if you have a GPU
+    problem = ExampleLlamaGuardProblem(DEVICE)  # or "cuda" if you have a GPU
     env = ASTEnvironment(problem, PROMPTS)
 
     # instantiate our solution
     solver = DPO(problem)
-    optimizer = AdamW(problem.parameters(), lr=1e-5)
 
-    # this is a training harness, from which we can call various functions to
-    # handle training details
-    harness = Harness(
+    # instantiate the pre-configured HF-compatable traininer class
+    # Source code is in src/astra_rl/ext/transformers/hf_ast_problem.py (shows training hyperparams and how checkpointing/saving models)
+    config = HFASTConfiguration()
+    trainer = HFASTTrainer(
+        config,
         env,
         solver,
-        num_episodes_per_experience=2,
-        use_wandb=True,
-        dataloader_kwargs={"batch_size": 4},
+        dev_prompts=DEV_PROMPTS,
+        eval_every=100,
+        ckpt_dir="checkpoints",
     )
-
-    # optimization step
-    for step in range(1000):
-        # collect some experiences using current weights
-        buf = harness.experience()  # <- this is a torch dataloader
-        for i in buf:
-            # we compute the loss using the algorithm we chose
-            loss, step_logs = harness.step(i)
-            # this is normal optimization; feel free to do weight decay, etc.
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-
-            # Add custom and algorithm external logging here (e.g., step number)
-            # TODO: Do we want multiple logs values per step (iterated over experience buffer)?
-            # TODO: Do we want to add other things here to logging?
-            step_logs["step"] = step
-            harness.log_current_step(step_logs)
-            eval_epoch(env, dev_prompts, best_score, step, "best")
+    trainer.train()
 
 
 if __name__ == "__main__":

@@ -190,3 +190,16 @@ cython_debug/
 # Weights & Biases
 wandb/
 wandb-debug.log
+
+# Ingore initial prompt json files
+prompts_reddit_dev.json
+prompts_reddit_test.json
+prompts_reddit_train.json
+data/
+
+# Ignore evals and checkpoints
+evals/
+checkpoints/
+
+# ignore my really rough eval code for now
+examples/GPT2_v_GPT2/ast_basic_eval.py

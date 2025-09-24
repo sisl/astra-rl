@@ -24,6 +24,9 @@ from transformers import (
 
 from astra_rl.core.moderator import Moderator
 from astra_rl.methods.ast_problem import ASTProblem
+from astra_rl.training.trainer import Trainer, TrainingConfiguration
+import os
+from astra_rl.logging import logger
 
 
 class HFASTProblem(ASTProblem, ValueFunctionProblem):
@@ -94,6 +97,33 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
         if self.baseline_tokenizer.pad_token_id is None:
             self.baseline_tokenizer.pad_token_id = self.baseline_tokenizer.eos_token_id
 
+        # set the tokenizer padding and truncation side
+        self.attacker_tokenizer.padding_side = self.target_tokenizer.padding_side = (
+            self.baseline_tokenizer.padding_side
+        ) = "left"
+        self.attacker_tokenizer.truncation_side = (
+            self.target_tokenizer.truncation_side
+        ) = self.baseline_tokenizer.truncation_side = "left"
+
+        # model’s usable max sequence length (GPT-2: 1024) - fix for GPT2, dont need for llama
+        # self.attacker_max_ctx = int(getattr(self.attacker.config,"n_positions",getattr(self.attacker.config, "max_position_embeddings", 1024),))
+        # self.target_max_ctx = int(getattr(self.target.config,"n_positions",getattr(self.target.config, "max_position_embeddings", 1024),))
+        # self.baseline_max_ctx = int(getattr(self.baseline.config,"n_positions",getattr(self.baseline.config, "max_position_embeddings", 1024),))
+
+        # better set up?
+
+    #     for tok, model in [
+    #     (self.attacker_tokenizer, self.attacker_model),
+    #     (self.target_tokenizer,   self.target_model),
+    #     (self.baseline_tokenizer, self.baseline_model),]:
+    #     # 1) Padding/truncation policy (left padding is safest for generation with KV cache)
+    #     tok.padding_side   = "left"
+    #     tok.truncation_side = "left"   # keep the tail if sequences are too long (optional)
+
+    #     # 2) Ensure a valid pad token for GPT-2
+    #     if tok.pad_token is None:
+    #         tok.pad_token = tok.eos_token
+    #     model.config.pad_token_id = tok.pad_token_id
     def get_target_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
@@ -247,6 +277,110 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
 
         # Return per-token logprobs instead of aggregating
         return gathered
+
+
+class HFASTConfiguration(TrainingConfiguration):
+    def __init__(self):
+        super().__init__(
+            lr=1e-5,
+            batch_size=4,
+            optimizer="adamw",
+            gradient_accumulation_steps=1,
+            training_steps=1000,
+            num_episodes_per_experience=2,
+        )
+
+
+class HFASTTrainer(Trainer):
+    """
+    Subclass that reuses base init (harness, optimizer, counters) and adds:
+      - periodic evaluation on a dev set
+      - checkpointing of the attacker/tokenizer
+    """
+
+    def __init__(
+        self,
+        config,
+        environment,
+        algorithm,
+        *,
+        dev_prompts=None,
+        eval_every=200,
+        ckpt_dir="checkpoints",
+    ):
+        super().__init__(config, environment, algorithm)
+        self.dev_prompts = dev_prompts or []
+        self.eval_every = max(1, int(eval_every))
+        self.best_score = float("-inf")
+        self.ckpt_dir = ckpt_dir
+        os.makedirs(self.ckpt_dir, exist_ok=True)
+        self.environment = self.harness.environment
+        self.problem = self.environment.problem
+
+    # helper function that saves the attacker model in HF format
+    def save(self, step: int | None, tag: str = "step"):
+        if tag == "best":
+            out = os.path.join(self.ckpt_dir, "best")  # single fixed path
+        else:
+            out = os.path.join(self.ckpt_dir, f"{tag}-{step}")
+
+        # Save attacker/target in HF format
+        os.makedirs(out, exist_ok=True)
+        self.problem.attacker.save_pretrained(out)
+        self.problem.tokenizer.save_pretrained(out)
+        logger.info(f"Saved checkpoint to {out}")
+
+    @torch.no_grad()
+    def eval_epoch(self, step: int, tag: str = "dev"):
+        if not self.dev_prompts:
+            return float("nan")
+
+        logger.info(f"EVALUATING after training step {step}...")
+        rewards = []
+        num_dev_prompts = len(self.dev_prompts)
+
+        # TODO batch later for speed
+        for indx, i in enumerate(self.dev_prompts):
+            if indx % 30 == 0:
+                logger.info(f"EVAULATED {indx}/{num_dev_prompts} steps...")
+            # perform a sigle eval rollout per dev prompt and collect a list of rewards
+            eval_rollout = self.environment.eval_rollout(i)
+            final_rollout_reward = self.environment.final_reward(eval_rollout)
+            rewards += [final_rollout_reward]
+
+        logger.info(f"EVAULATED {indx}/{num_dev_prompts} steps...")
+        dev_score = sum(rewards) / len(rewards)
+
+        if dev_score > self.best_score:
+            logger.info(f"NEW BEST! {round(dev_score, 3)}")
+            logger.info({"training/dev_score": dev_score}, step=step)
+            self.save(step, tag="best")
+        else:
+            logger.info(
+                f"Dev score did not improve: {round(dev_score, 3)} vs {round(self.best_score, 3)}"
+            )
+
+    # over-write the base Train class's train method to include eval and save
+    def train(self):
+        for step_num in range(self.config.training_steps):
+            # collect some experiences using current weights
+            buf = self.harness.experience()  # <- this is a torch dataloader
+            for i in buf:
+                # we compute the loss using the algorithm we chose
+                loss, step_logs = self.harness.step(i)
+
+                # this is normal optimization; feel free to do weight decay, etc.
+                loss.backward()
+                self.optimizer.step()
+                self.optimizer.zero_grad()
+
+                # Add custom and algorithm external logging here (e.g., step number)
+                step_logs["step"] = step_num
+                self.harness.log_current_step(step_logs)
+
+                # every x number of training steps, run a dev set eval and save the best model so far
+                if (step_num + 1) % self.eval_every == 0:
+                    self.eval_epoch(step=step_num + 1, tag="dev")
 
 
 __all__ = ("HFASTProblem",)
