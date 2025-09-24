@@ -159,15 +159,15 @@ class ExampleDetoxifyProblem(ASTProblem):
             .log_softmax(dim=-1)
         )
 
-        # compute per-token likelihoods
+        # compute likelihoods
         gathered = logits.gather(-1, combined[:, 1:].unsqueeze(-1)).squeeze(-1)
         gathered = gathered.masked_fill(~combined_mask[:, 1:], 0.0)
+        logprobs = gathered.sum(dim=-1)
 
-        # Return per-token logprobs instead of aggregating
-        return gathered
+        return logprobs
 
 
-# the following two functions will be implemented in the trainer class. This example
+# the following two functions will be implemented in the trainer class (see ast_trainer.py). This example
 # does not use a trainer so we implement it here
 def save(eval_env, step, tag="step"):
     if tag == "best":

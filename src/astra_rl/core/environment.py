@@ -98,6 +98,7 @@ class Environment(ABC, Generic[StateT, ActionT]):
 
         Args:
             seed (Optional[Any]): An optional seed; the same seed should produce the same graph.
+
         Returns:
             Graph[StateT, ActionT]: A graph representing the rollout of the problem.
         """
@@ -108,3 +109,4 @@ class Environment(ABC, Generic[StateT, ActionT]):
         raise NotImplementedError(
             "eval_rollout not implemented for non-int seeds; please override this method."
         )
+
