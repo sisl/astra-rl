@@ -1,17 +1,17 @@
 from typing import Optional
-import torch
 import json
 from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
 from astra_rl import ASTProblem, DetoxifyModerator, ASTEnvironment
-
-# How to import ExampleDetoxifyProblem
 from ast_basic import ExampleDetoxifyProblem
-from astra_rl.core.evaluator import Evaluator
+from astra_rl.methods.ast_problem import ASTEvaluator
+from astra_rl.moderators.llamaGuard import LlamaGuardModerator
+
 
 # set the attacker and target models here: we are using a pre-trained, local attacker and a "gpt2" target
-ATTACKER_MODEL = (
-    "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_Detoxify_backup_GPT2"
-)
+# ATTACKER_MODEL = ("/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_Detoxify_backup_GPT2")
+# ATTACKER_MODEL = "gpt2"
+# ATTACKER_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_Detoxify_noBackup_GPT2"
+ATTACKER_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_llamaguard_noBackup_GPT2"
 TARGET_MODEL = "gpt2"
 
 
@@ -46,8 +46,22 @@ class EvaluationProblem(ExampleDetoxifyProblem):
 
         # Tokenizer is shared between attacker and target (both gpt2-based)
         self.tokenizer = AutoTokenizer.from_pretrained(target_model)
+
+        # modify the tokenizer to account for GPT2's special fixed set up
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
         self.tokenizer.padding_side = "left"
+        self.tokenizer.truncation_side = "left"
+        self.attacker.config.pad_token_id = self.tokenizer.eos_token_id
+        self.target.config.pad_token_id = self.tokenizer.eos_token_id
+
+        # model’s usable max sequence length (GPT-2: 1024)
+        self.max_ctx = int(
+            getattr(
+                self.attacker.config,
+                "n_positions",
+                getattr(self.attacker.config, "max_position_embeddings", 1024),
+            )
+        )
 
         # NOTE: We inherit all the rollout/logprob methods from ExampleDetoxifyProblem.
 
@@ -55,7 +69,7 @@ class EvaluationProblem(ExampleDetoxifyProblem):
 # main code
 def main() -> None:
     # set device
-    DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+    DEVICE = "cuda"
 
     # load evaluator prompts
     with open("prompts_reddit_test.json") as f:
@@ -63,28 +77,20 @@ def main() -> None:
 
     # instantiate your custom problem with your attacker and target models
     problem = EvaluationProblem(
-        attacker_model_id=ATTACKER_MODEL,
-        target_model_id=TARGET_MODEL,
-        moderator=DetoxifyModerator(),
-        device=DEVICE,
+        ATTACKER_MODEL, TARGET_MODEL, DEVICE, LlamaGuardModerator()
     )
 
     # instantiate the AST environment - no adjustments needed because already has eval_rollout
-    env = ASTEnvironment(
-        problem=problem,
-        prompts=PROMPTS,
-        tree_width=1,
-        tree_depth=3,
-    )
+    env = ASTEnvironment(problem, PROMPTS, 1, 3)
 
-    # instantiate the evaluator
-    evaluator = Evaluator(env, seeds=PROMPTS)
+    # instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)
+    evaluator = ASTEvaluator(env, seeds=PROMPTS)
 
     # collect metrics by running n_rollouts
-    metrics = evaluator.evaluate(n_rollouts=10)
+    metrics = evaluator.evaluate(n_rollouts=20, progress=True)
 
     # save metrics to json file
-    Evaluator.write_json(metrics, "metrics.json")
+    evaluator.write_json(metrics, "metrics.json")
 
 
 if __name__ == "__main__":

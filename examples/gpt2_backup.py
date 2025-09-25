@@ -18,7 +18,7 @@ from astra_rl.ext.transformers.hf_ast_problem import (
 from astra_rl import DPO, ASTNode, ASTEnvironment
 
 # GPT2 v GPT2 with Detoxify Moderator
-from ast_basic_1 import ExampleDetoxifyProblem
+from ast_basic import ExampleDetoxifyProblem
 
 # GPT2 v GPT2 with LlamaGuard Moderator
 from astra_rl.core.environment import Graph
