@@ -1169,9 +1169,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-instantiate-the-evaluator" class="md-nav__link">
+  <a href="#4-evaluate" class="md-nav__link">
     <span class="md-ellipsis">
-      4) Instantiate the Evaluator
+      4) Evaluate!
     </span>
   </a>
   
@@ -1205,33 +1205,32 @@
 <p>RL-based red-teaming uses reinforcement learning to train an <strong>attacker</strong> that generates test cases likely to elicit unsafe outputs from a <strong>target</strong> model. This tutorial shows how to run evaluations (red-team rollouts) using a <strong>pre-trained attacker</strong> against a target model.</p>
 <div class="admonition note">
 <p class="admonition-title">Prerequisite</p>
-<p>This guide assumes you already trained an attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">COMING SOON</p>
-<p>Our team is currently working on the evaluation API to help you quickly evaluate your target model with a pre-trained RL-based attacker. Please check back soon!</p>
+<p>This guide assumes you already trained a GPT2 attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
 </div>
 <hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <p>Evaluation at a glance: run a set of attacker↔target rollouts (seeded by a test set of prompts), collect per-turn data, and compute summary metrics.</p>
 <h3 id="1-setup-imports-model-paths-and-device">1) Setup: imports, model paths, and device<a class="headerlink" href="#1-setup-imports-model-paths-and-device" title="Permanent link">&para;</a></h3>
-<p>Load dependencies and define the Hugging Face–style models you’ll use for <strong>attacker</strong> and <strong>target</strong>.</p>
-<pre><code class="language-python">from typing import List
-from statistics import mean
-import json
+<p>Load dependencies and define the models you’ll use as the <strong>attacker</strong> and <strong>target</strong>.</p>
+<pre><code class="language-python">
+# import dependencies 
+from typing import Optional
 import torch
-from transformers import AutoTokenizer  # optional if you post-process text
-
-from astra_rl.ext.transformers import HFASTProblem
-from astra_rl import ASTEnvironment, DetoxifyModerator
-# Optional (richer eval nodes). If available in your build:
-from astra_rl.methods.ast_problem import CustomNode  # optional
+import json
+from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
+from astra_rl import ASTProblem, DetoxifyModerator, ASTEnvironment
+from ast_eval_test.py import EvaluationProblem
+from astra_rl.core.evaluator import Evaluator
+# import ASTEvaluator for the quickstart guide
+from astra_rl.methods.ast_problem import ASTEvaluator
+# optional: only import llamaguardModerator if you want to use it during evaluations
+from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
 DEVICE = &quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;
 
-# Paths or HF model IDs
-ATTACKER_MODEL_PATH = &quot;path/or/hub-id/of/attacker&quot;  # e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;
-TARGET_MODEL_PATH   = &quot;path/or/hub-id/of/target&quot;    # e.g., &quot;meta-llama/Llama-3-8B&quot; (example)
+# Path to your pre-trained attacker gpt2 model
+ATTACKER_MODEL = &quot;path/or/hub-id/of/attacker&quot;  # e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;
+TARGET_MODEL   = &quot;gpt2&quot;    # e.g., &quot;meta-llama/Llama-3-8B&quot; (example)
 </code></pre>
 <h3 id="2-load-evaluation-prompts">2) Load evaluation prompts<a class="headerlink" href="#2-load-evaluation-prompts" title="Permanent link">&para;</a></h3>
 <p>Evaluation prompts <strong>start</strong> the attacker–target conversation. Make sure they:</p>
@@ -1244,24 +1243,30 @@ TARGET_MODEL_PATH   = &quot;path/or/hub-id/of/target&quot;    # e.g., &quot;meta
     PROMPTS = json.load(f)  # e.g., [&quot;prompt 1&quot;, &quot;prompt 2&quot;, ...]
 </code></pre>
 <h3 id="3-instantiate-the-problem-and-environment">3) Instantiate the Problem and Environment<a class="headerlink" href="#3-instantiate-the-problem-and-environment" title="Permanent link">&para;</a></h3>
-<p>Use the preconfigured <strong>HFASTProblem</strong> (HF-friendly) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
-<pre><code class="language-python">problem = HFASTProblem(
-    attacker_model_id=ATTACKER_MODEL_PATH,
-    target_model_id=TARGET_MODEL_PATH,
-    baseline_model_id=TARGET_MODEL_PATH,  # a simple default; can also use a frozen attacker ref
-    moderator=DetoxifyModerator(),
-    device=DEVICE,
-)
+<p>Use the preconfigured <strong>EvaluationProblem</strong> (takes in a pre-trained GPT2 model) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
+<pre><code class="language-python"># instantiate the evaluation problem with your attacker and target models
+problem = EvaluationProblem(ATTACKER_MODEL, TARGET_MODEL, DEVICE, DetoxifyModerator())
 
-env = ASTEnvironment(
-    problem=problem,
-    prompts=PROMPTS,
-    tree_width=1,  # single-path evaluation
-    tree_depth=3,
-)
+# instantiate the AST environment - no adjustments needed because already has eval_rollout
+env = ASTEnvironment(problem, PROMPTS, 1, 3)
 </code></pre>
-<h3 id="4-instantiate-the-evaluator">4) Instantiate the Evaluator<a class="headerlink" href="#4-instantiate-the-evaluator" title="Permanent link">&para;</a></h3>
-<p>... Coming Soon! </p>
+<p>If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, please visit the following guide to see how to create a custom Evaluation Problem.
+* Guide: <a href="customize_evaluation/evaluation_problem.html">Evaluation Problem Customization</a></p>
+<h3 id="4-evaluate">4) Evaluate!<a class="headerlink" href="#4-evaluate" title="Permanent link">&para;</a></h3>
+<p>This step will instantiate the ASTEvaluator class which will collect standard red-teaming metrics such as average target toxicity, attack succsess rate, average reward, average first turn the target is toxic. </p>
+<p>Then, we will perform evaluation rollouts (attaker-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json. </p>
+<pre><code class="language-python"># instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)
+evaluator = ASTEvaluator(env, seeds=PROMPTS)
+
+# collect metrics by running n_rollouts
+metrics = evaluator.evaluate(n_rollouts=20, progress=True)
+
+# save metrics to json file
+Evaluator.write_json(metrics, &quot;metrics.json&quot;)
+</code></pre>
+<p>The source code for ASTEvaluator is located at examples/ast_eval.py . Here you can see how metrics are collected and aggregated with the supported evaluator.</p>
+<p>If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts) visit the Evaluator customization guide.
+* Guide: <a href="customize_evaluation/evaluator.html">Evaluator Customization</a></p>
 
 
 
@@ -1284,7 +1289,7 @@ env = ASTEnvironment(
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 24, 2025 00:31:03 UTC">2025-09-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 27, 2025 00:03:30 UTC">2025-09-27</span>
   </span>
 
     
@@ -1294,7 +1299,7 @@ env = ASTEnvironment(
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 24, 2025 00:31:03 UTC">2025-09-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 06:52:58 UTC">2025-07-02</span>
   </span>
 
     
