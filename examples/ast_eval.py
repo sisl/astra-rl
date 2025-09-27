@@ -8,9 +8,6 @@ from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
 
 # set the attacker and target models here: we are using a pre-trained, local attacker and a "gpt2" target
-# ATTACKER_MODEL = ("/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_Detoxify_backup_GPT2")
-# ATTACKER_MODEL = "gpt2"
-# ATTACKER_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_Detoxify_noBackup_GPT2"
 ATTACKER_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_llamaguard_noBackup_GPT2"
 TARGET_MODEL = "gpt2"
 
