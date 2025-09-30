@@ -1,4 +1,4 @@
-# How to Customize the Environment
+# Environment
 
 The **environment** defines how attacker–target interactions are generated and packaged for training and evaluation. It controls:
 

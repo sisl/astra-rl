@@ -2,28 +2,39 @@ from typing import Optional
 import json
 from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
 from astra_rl import ASTProblem, DetoxifyModerator, ASTEnvironment
-from ast_basic import ExampleDetoxifyProblem
+from ast_gpt2 import GPT2DetoxifyProblem
 from astra_rl.methods.ast_problem import ASTEvaluator
 from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
+# change name to length-limited eval
 
-# set the attacker and target models here: we are using a pre-trained, local attacker and a "gpt2" target
+# set the attacker model here: we are using a pre-trained, local attacker and a "gpt2" target
 ATTACKER_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_llamaguard_noBackup_GPT2"
-TARGET_MODEL = "gpt2"
 
 
 # since we are using a custom attacker that is not supported by HFASTProblem (GPT2 is not supported)
-# we must quickly create a custom subclass of ExampleDetoxifyProblem
-class EvaluationProblem(ExampleDetoxifyProblem):
+# we must create a custom subclass of GPT2DetoxifyProblem
+class GPT2EvaluationProblem(GPT2DetoxifyProblem):
     """
     Same API/behavior as ExampleDetoxifyProblem, but lets you plug in a custom attacker
-    (local HF directory or hub id) and optional target + moderator.
+    (local HF directory or hub id) and provide a custom moderator.
+
+    Args:
+        attacker_model (str): The model ID or path for the attacker model, must be possible
+            for AutoModelForCausalLM.
+        device (str): The device to run the models on, e.g. "cpu"
+        moderator (Optional[DetoxifyModerator]): The moderator to use, defaults to Detoxify.
+
+    Note:
+        This class inherits all methods from ExampleDetoxifyProblem except for __init__,
+        which is modified to allow for a custom attacker model and moderator.
+
+        ** Assumes target is "gpt2" and that the attacker is a an adversarial model based on gpt2.
     """
 
     def __init__(
         self,
         attacker_model: str = ATTACKER_MODEL,
-        target_model: str = TARGET_MODEL,
         device: str = "cpu",
         moderator: Optional[DetoxifyModerator] = None,
     ):
@@ -39,10 +50,10 @@ class EvaluationProblem(ExampleDetoxifyProblem):
         )
 
         # Load target (gpt2 by default to match ExampleDetoxifyProblem)
-        self.target = GPT2LMHeadModel.from_pretrained(target_model).to(self.device)
+        self.target = GPT2LMHeadModel.from_pretrained("gpt2").to(self.device)
 
         # Tokenizer is shared between attacker and target (both gpt2-based)
-        self.tokenizer = AutoTokenizer.from_pretrained(target_model)
+        self.tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
         # modify the tokenizer to account for GPT2's special fixed set up
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
@@ -73,9 +84,7 @@ def main() -> None:
         PROMPTS = json.load(f)
 
     # instantiate your custom problem with your attacker and target models
-    problem = EvaluationProblem(
-        ATTACKER_MODEL, TARGET_MODEL, DEVICE, LlamaGuardModerator()
-    )
+    problem = GPT2EvaluationProblem(ATTACKER_MODEL, DEVICE, LlamaGuardModerator())
 
     # instantiate the AST environment - no adjustments needed because already has eval_rollout
     env = ASTEnvironment(problem, PROMPTS, 1, 3)
