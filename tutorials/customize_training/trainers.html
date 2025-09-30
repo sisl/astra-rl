@@ -22,7 +22,7 @@
     
     
       
-        <title>How to Customize the Trainer - ASTRA-RL Toolbox Documentation</title>
+        <title>Trainer - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-customize-the-trainer" class="md-skip">
+        <a href="#trainer" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Customize the Trainer
+              Trainer
             
           </span>
         </div>
@@ -1312,7 +1312,7 @@
   
 
 
-<h1 id="how-to-customize-the-trainer">How to Customize the Trainer<a class="headerlink" href="#how-to-customize-the-trainer" title="Permanent link">&para;</a></h1>
+<h1 id="trainer">Trainer<a class="headerlink" href="#trainer" title="Permanent link">&para;</a></h1>
 <p><strong>Trainers</strong> run the optimization loop that updates your attacker. They wire together the <strong>environment</strong> (rollout collection), the <strong>algorithm/solver</strong> (computes a loss from rollouts), and the <strong>optimizer</strong> (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.</p>
 <p>This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.</p>
 <hr />
@@ -1421,7 +1421,8 @@ trainer.train()
 <hr />
 <h3 id="63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation">6.3 Write a custom trainer with eval, saving, and grad accumulation<a class="headerlink" href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation" title="Permanent link">&para;</a></h3>
 <p>Subclass <code>Trainer</code> to add evaluation cadence, HF-style saving, gradient accumulation, and logging.</p>
-<pre><code class="language-python">import os
+<pre style="font-size:0.8rem; line-height:1.35;"><code class="language-python">
+import os
 import torch
 from astra_rl import Trainer, TrainingConfiguration
 from astra_rl.logging import logger
@@ -1431,22 +1432,22 @@ class MyConfig(TrainingConfiguration):
         super().__init__(
             lr=1e-5,
             batch_size=4,
-            optimizer=&quot;adamw&quot;,
+            optimizer="adamw",
             gradient_accumulation_steps=1,
             training_steps=1000,
             num_episodes_per_experience=2,
         )
         # Custom fields for your subclass:
         self.eval_every = 100
-        self.ckpt_dir = &quot;checkpoints&quot;
+        self.ckpt_dir = "checkpoints"
 
 class MyTrainer(Trainer):
-    &quot;&quot;&quot;
+    """
     Extends the base trainer with:
       - periodic dev-set evaluation
       - HF-format checkpointing
       - optional grad accumulation
-    &quot;&quot;&quot;
+    """
 
     def __init__(self, config: MyConfig, environment, algorithm, dev_prompts=None):
         super().__init__(config, environment, algorithm)
@@ -1454,21 +1455,22 @@ class MyTrainer(Trainer):
         os.makedirs(self.config.ckpt_dir, exist_ok=True)
 
     # optional but encouraged
-    def _save_hf(self, step: int) -&gt; None:
-        &quot;&quot;&quot;Save your attacker and its tokenizer&quot;&quot;&quot;
+    def _save_hf(self, step: int) -> None:
+        """Save your attacker and its tokenizer"""
 
     # optional method
     @torch.no_grad()
-    def _eval_dev(self, step: int, tag: str = &quot;dev&quot;):
-        &quot;&quot;&quot;Run a lightweight evaluation on dev prompts. Fill in your logic.&quot;&quot;&quot;
+    def _eval_dev(self, step: int, tag: str = "dev"):
+        """Run a lightweight evaluation on dev prompts. Fill in your logic."""
         pass
 
     # required method
     def train(self):
-        &quot;&quot;&quot;Implement your custom training loop!&quot;&quot;&quot;
+        """Implement your custom training loop!"""
         # see astra_rl.ext.transformers.hf_ast_problem for an implemented custom class example
-        pass        
+        pass       
 </code></pre>
+
 <hr />
 <h3 id="64-early-stopping-or-custom-lr-schedules">6.4 Early stopping or custom LR schedules<a class="headerlink" href="#64-early-stopping-or-custom-lr-schedules" title="Permanent link">&para;</a></h3>
 <p>Inside your custom <code>train()</code>:</p>
@@ -1482,7 +1484,7 @@ class MyTrainer(Trainer):
 <li><strong>Custom AST problem </strong>with<strong> trainer:</strong> <code>examples/GPT2_v_GPT2/ast_trainer.py</code></li>
 <li><strong>Source for HF-compatible trainer/config:</strong> <code>astra_rl/ext/transformers/hf_ast_problem.py</code></li>
 </ul>
-<p>Use these as references when wiring up your own training loop or extending the provided trainers.</p>
+<p>Use these as references when writing up your own training loop or extending the provided trainers.</p>
 
 
 
@@ -1505,7 +1507,7 @@ class MyTrainer(Trainer):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 16, 2025 20:22:23 UTC">2025-09-16</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 30, 2025 06:26:53 UTC">2025-09-30</span>
   </span>
 
     

@@ -12,7 +12,7 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/moderators.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_evaluation/customize_evaluation.html">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>Moderator - ASTRA-RL Toolbox Documentation</title>
+        <title>Customize Evaluation - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -78,7 +78,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#moderator" class="md-skip">
+        <a href="#customize-evaluation" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Moderator
+              Customize Evaluation
             
           </span>
         </div>
@@ -1132,153 +1132,27 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-what-moderators-do" class="md-nav__link">
+  <a href="#quick-links" class="md-nav__link">
     <span class="md-ellipsis">
-      1. What Moderators Do
+      Quick links
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-built-in-moderators" class="md-nav__link">
+  <a href="#short-workflow" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Built-in Moderators
+      Short workflow
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-ways-to-customize" class="md-nav__link">
+  <a href="#tips" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Ways to Customize
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Ways to Customize">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#31-fast-path-adapt-a-built-in" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.1 Fast path: adapt a built-in
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#32-full-control-subclass-moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      3.2 Full control: subclass Moderator
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-required-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Required Interface
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Required Interface">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#41-type-parameters" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.1 Type parameters
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#42-moderate-contract" class="md-nav__link">
-    <span class="md-ellipsis">
-      4.2 moderate(...) contract
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Best Practices &amp; Sanity Checks
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#6-how-tos" class="md-nav__link">
-    <span class="md-ellipsis">
-      6. How-Tos
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="6. How-Tos">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#61-minimal-custom-moderator-detoxify-wrapper" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.1 Minimal custom moderator (Detoxify wrapper)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#62-selecting-harm-categories" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.2 Selecting harm categories
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#63-batching-preprocessing" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.3 Batching &amp; preprocessing
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#64-integrate-your-moderator-into-a-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      6.4 Integrate your moderator into a Problem
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#7-full-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      7. Full Examples
+      Tips
     </span>
   </a>
   
@@ -1303,133 +1177,41 @@
   
 
 
-<h1 id="moderator">Moderator<a class="headerlink" href="#moderator" title="Permanent link">&para;</a></h1>
-<p><strong>Moderators</strong> provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender’s reply), they return a scalar score that reflects harm/unsafety. Attackers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise “undesirable”) target responses, revealing weaknesses in the target’s safety alignment.</p>
-<p>ASTRA-RL ships with ready-to-use text moderators and a simple interface for writing your own. This guide explains what a moderator does, what’s included, and how to implement/customize your own class.</p>
+<h1 id="customize-evaluation">Customize Evaluation<a class="headerlink" href="#customize-evaluation" title="Permanent link">&para;</a></h1>
+<p><strong>RL-based red-teaming</strong> trains an <em>attacker</em> via reinforcement learning so it generates test cases that are likely to elicit unsafe outputs from a <em>target</em> model. Attackers probe targets through multi-turn conversations and try to surface failure modes (unsafe/harmful outputs).</p>
+<p>ASTRA-RL supports both <strong>training</strong> attackers and <strong>evaluating</strong> targets. In evaluation mode we repeatedly test targets using a pre-trained attacker and collect metrics that describe how, when, and how often a target fails.</p>
+<div class="admonition note">
+<p class="admonition-title">What counts as a successful attack?</p>
+<p>An <em>attack is successful</em> when the target model produces an unsafe or harmful utterance according to the configured moderator (e.g., Detoxify, LlamaGuard). Red-teaming’s purpose is to discover as many such failure modes as possible so they can be analyzed and mitigated.</p>
+</div>
 <hr />
-<h2 id="1-what-moderators-do">1. What Moderators Do<a class="headerlink" href="#1-what-moderators-do" title="Permanent link">&para;</a></h2>
-<p>A moderator converts text into a <strong>scalar score</strong> (one score per input). In most setups:</p>
+<h2 id="quick-links">Quick links<a class="headerlink" href="#quick-links" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Input:</strong> target/defender generations (strings).</li>
-<li><strong>Output:</strong> <code>Sequence[float]</code> scores, e.g., toxicity in <code>[0, 1]</code>.</li>
-</ul>
-<p>Downstream solvers interpret these scores to train the <strong>attacker</strong>. For preference-based methods (DPO/IPO/ORPO), scores can help form preferences; for policy-gradient methods (PPO/A2C), scores serve directly as rewards/reward components.</p>
-<hr />
-<h2 id="2-built-in-moderators">2. Built-in Moderators<a class="headerlink" href="#2-built-in-moderators" title="Permanent link">&para;</a></h2>
-<p>ASTRA-RL currently ships with text-based moderators that you can use out of the box:</p>
-<ul>
-<li><strong>Detoxify</strong> — toxicity classification (and related categories). More info <a href="https://github.com/unitaryai/detoxify">here</a></li>
-<li><strong>Llama Guard 3</strong> — multi-category safety classifier (e.g., hate/threats/harassment). More info <a href="https://huggingface.co/meta-llama/Llama-Guard-3-8B">here</a></li>
-</ul>
-<blockquote>
-<p>These are modular components—swap them freely or use them as templates for your own moderators.</p>
-</blockquote>
-<hr />
-<h2 id="3-ways-to-customize">3. Ways to Customize<a class="headerlink" href="#3-ways-to-customize" title="Permanent link">&para;</a></h2>
-<h3 id="31-fast-path-adapt-a-built-in">3.1 Fast path: adapt a built-in<a class="headerlink" href="#31-fast-path-adapt-a-built-in" title="Permanent link">&para;</a></h3>
-<p>If you only need to change the <strong>category</strong> (e.g., “toxicity” → “insult”), adjust thresholds, or tweak preprocessing/batching, you can wrap or lightly subclass a built-in moderator.</p>
-<h3 id="32-full-control-subclass-moderator">3.2 Full control: subclass <code>Moderator</code><a class="headerlink" href="#32-full-control-subclass-moderator" title="Permanent link">&para;</a></h3>
-<p>For custom scoring models (LLMs, classifiers, rule-based filters), subclass the generic base class and implement one method:</p>
-<pre><code class="language-python">from astra_rl.core.moderator import Moderator
-from typing import Sequence, Union, Generic, TypeVar
-
-StateT = TypeVar(&quot;StateT&quot;)
-ActionT = TypeVar(&quot;ActionT&quot;)
-
-class MyModerator(Moderator[StateT, ActionT]):
-    def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
-        ...
-</code></pre>
-<hr />
-<h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
-<h3 id="41-type-parameters">4.1 Type parameters<a class="headerlink" href="#41-type-parameters" title="Permanent link">&para;</a></h3>
-<ul>
-<li><code>StateT</code> — your environment’s state type (commonly <code>str</code> conversation context).</li>
-<li><code>ActionT</code> — your action type (commonly <code>str</code> utterance).</li>
-</ul>
-<p>For NLP use cases, both are typically <code>str</code>.</p>
-<h3 id="42-moderate-contract">4.2 <code>moderate(...)</code> contract<a class="headerlink" href="#42-moderate-contract" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
-    &quot;&quot;&quot;Return one scalar score per input, same order as received.&quot;&quot;&quot;
-</code></pre>
-<p><strong>Expectations:</strong></p>
-<ul>
-<li><strong>Pure function</strong> over the given inputs (no hidden batch size assumptions).</li>
-<li><strong>Shape:</strong> output length equals input length.</li>
-<li><strong>Scale/direction:</strong> document whether <em>higher = more harmful</em>. (Recommended.)</li>
+<li>
+<p>To run a red-team evaluation using a trained attacker, follow the quick guide: <strong><a href="../quick_start_evaluation.html">Quick Start: Evaluation</a></strong>.<br />
+  This shows how to use the supported evaluation problems (<code>HFEvaluationProblem</code> for HF models and <code>GPT2EvaluationProblem</code> for GPT-2) and the default evaluator (<code>ASTEvaluator</code>).</p>
+</li>
+<li>
+<p>If you need to support a custom model or tokenizer, see <strong><a href="evaluation_problems.html">Evaluation Problem Customization</a></strong>.</p>
+</li>
+<li>
+<p>If you want to collect different per-turn or aggregated metrics, or change how metrics are computed/serialized, see <strong><a href="evaluators.html">Evaluator Customization</a></strong>.</p>
+</li>
 </ul>
 <hr />
-<h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Batching:</strong> Vectorize model calls for speed; avoid per-item loops.</li>
-<li><strong>Preprocessing:</strong> Handle tokenization/normalization inside the class.</li>
-<li><strong>Calibration:</strong> Keep scores on a consistent scale (e.g., <code>[0, 1]</code>) and direction (higher = worse).</li>
-<li><strong>Throughput vs. latency:</strong> Accumulate inputs into sensible batch sizes.</li>
-<li><strong>Robustness:</strong> Validate on a small corpus; check extremes and benign inputs.</li>
-<li><strong>Logging:</strong> Consider returning/recording auxiliary diagnostics (category probabilities, thresholds) for debugging—while still meeting the <code>Sequence[float]</code> return type.</li>
-</ul>
+<h2 id="short-workflow">Short workflow<a class="headerlink" href="#short-workflow" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Train an attacker (see <strong>Quick Start: Training</strong>).  </li>
+<li>Point evaluation at your attacker checkpoint.  </li>
+<li>Run <code>ASTEvaluator</code> over a set of held-out prompts (never used at training time).  </li>
+<li>Inspect per-turn logs and aggregated metrics (JSON output) to find failure modes.</li>
+</ol>
 <hr />
-<h2 id="6-how-tos">6. How-Tos<a class="headerlink" href="#6-how-tos" title="Permanent link">&para;</a></h2>
-<h3 id="61-minimal-custom-moderator-detoxify-wrapper">6.1 Minimal custom moderator (Detoxify wrapper)<a class="headerlink" href="#61-minimal-custom-moderator-detoxify-wrapper" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">from typing import Sequence
-from detoxify import Detoxify
-from astra_rl.core.moderator import Moderator
-
-class DetoxifyModerator(Moderator[str, str]):
-    def __init__(self, harm_category: str = &quot;toxicity&quot;, variant: str = &quot;original&quot;):
-        self.model = Detoxify(variant)
-        self.harm_category = harm_category
-
-    def moderate(self, x: Sequence[str]) -&gt; Sequence[float]:
-        # Detoxify returns a dict of category -&gt; scores
-        preds = self.model.predict(x)
-        return [float(preds[self.harm_category][i]) for i in range(len(x))]
-</code></pre>
-<h3 id="62-selecting-harm-categories">6.2 Selecting harm categories<a class="headerlink" href="#62-selecting-harm-categories" title="Permanent link">&para;</a></h3>
-<p>If the underlying library/model exposes multiple categories (e.g., Detoxify or Llama Guard 3), surface a <code>harm_category</code> (or list of categories) in your constructor. You can:</p>
+<h2 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h2>
 <ul>
-<li>return a <strong>single</strong> category’s score, </li>
-<li>ignore the harm category and return the score for <strong>any violation</strong>, or</li>
-<li>compute a <strong>combined</strong> score (e.g., max/mean across selected categories).</li>
+<li>Use a moderator that matches your safety criteria (e.g., toxicity vs. policy violations).  </li>
+<li>Keep evaluation prompts <em>out-of-sample</em> to avoid reporting overfit behavior.  </li>
 </ul>
-<h3 id="63-batching-preprocessing">6.3 Batching &amp; preprocessing<a class="headerlink" href="#63-batching-preprocessing" title="Permanent link">&para;</a></h3>
-<p>Inside <code>moderate(...)</code>, you’re free to:</p>
-<ul>
-<li>tokenize inputs, truncate/normalize text, strip HTML, etc.;</li>
-<li>split inputs into fixed-size batches to fit device memory;</li>
-<li>run the model on GPU/CPU as configured.</li>
-</ul>
-<p>Just be sure to <strong>preserve ordering</strong> and return one scalar per input.</p>
-<h3 id="64-integrate-your-moderator-into-a-problem">6.4 Integrate your moderator into a Problem<a class="headerlink" href="#64-integrate-your-moderator-into-a-problem" title="Permanent link">&para;</a></h3>
-<p>Instantiate your moderator in your <code>Problem</code> subclass and pass it to the base class:</p>
-<pre><code class="language-python">from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTProblem  # base Problem
-from astra_rl.logging import logger
-
-MODEL_NAME = &quot;gpt2&quot;
-
-class ExampleDetoxifyProblem(ASTProblem):
-    def __init__(self, device: str = &quot;cpu&quot;):
-        # Plug in any custom moderator here
-        super().__init__(DetoxifyModerator(harm_category=&quot;toxicity&quot;))
-
-        self.device = device
-        self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
-        self.target   = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
-
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
-</code></pre>
-<blockquote>
-<p>After this, your environment/solver will use the moderator implicitly when computing rewards.</p>
-</blockquote>
-<hr />
-<h2 id="7-full-examples">7. Full Examples<a class="headerlink" href="#7-full-examples" title="Permanent link">&para;</a></h2>
-<ul>
-<li><a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/moderators/detoxify.py">astra_rl/moderators/detoxify.py</a> — wraps the Detoxify library.</li>
-<li><a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/moderators/llamaGuard.py">astra_rl/moderators/llamaGuard.py</a> — wraps Meta's Llama Guard 3.</li>
-</ul>
-<p>Use these as references when building your own moderator classes.</p>
 
 
 
@@ -1462,7 +1244,7 @@ class ExampleDetoxifyProblem(ASTProblem):
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 28, 2025 16:29:28 UTC">2025-08-28</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 30, 2025 06:26:53 UTC">2025-09-30</span>
   </span>
 
     

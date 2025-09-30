@@ -1251,7 +1251,7 @@ problem = EvaluationProblem(ATTACKER_MODEL, TARGET_MODEL, DEVICE, DetoxifyModera
 env = ASTEnvironment(problem, PROMPTS, 1, 3)
 </code></pre>
 <p>If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, please visit the following guide to see how to create a custom Evaluation Problem.
-* Guide: <a href="customize_evaluation/evaluation_problem.html">Evaluation Problem Customization</a></p>
+* Guide: <a href="customize_evaluation/evaluation_problem.md">Evaluation Problem Customization</a></p>
 <h3 id="4-evaluate">4) Evaluate!<a class="headerlink" href="#4-evaluate" title="Permanent link">&para;</a></h3>
 <p>This step will instantiate the ASTEvaluator class which will collect standard red-teaming metrics such as average target toxicity, attack succsess rate, average reward, average first turn the target is toxic. </p>
 <p>Then, we will perform evaluation rollouts (attaker-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json. </p>
@@ -1266,7 +1266,7 @@ Evaluator.write_json(metrics, &quot;metrics.json&quot;)
 </code></pre>
 <p>The source code for ASTEvaluator is located at examples/ast_eval.py . Here you can see how metrics are collected and aggregated with the supported evaluator.</p>
 <p>If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts) visit the Evaluator customization guide.
-* Guide: <a href="customize_evaluation/evaluator.html">Evaluator Customization</a></p>
+* Guide: <a href="customize_evaluation/evaluator.md">Evaluator Customization</a></p>
 
 
 
