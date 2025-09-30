@@ -1,4 +1,4 @@
-# How to Customize the Problem (HF or non-HF)
+# Problem (HF or non-HF)
 
 **Problems** encapsulate *models + tokenization + rollout + log-probabilities + rewards*. Environments call your Problem to:
 

@@ -1,44 +1,46 @@
 """
-ast_basic.py
-A basic example of how to use the ASTRA package.
-We use GPT-2 as our attack, defense, and use the bulit-in
-detoxify moderator. We will train using a manually written
-corpora below of initial prompts.
+ast_llama.py
+An example of using AST with LLaMA models as attacker and target where
+the GPU allocations are explicitly specified.
 """
 
-# requirements: transformers tokenizers
+# requirements: transformers tokenizers accelerate
 # requirements: ..
 
-import json
+import logging
 import torch
-from pathlib import Path
-from tqdm import tqdm
-
+from torch.optim import AdamW
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from typing import Dict, Optional, List, Any
 
-from astra_rl import ASTProblem, ASTEnvironment, DetoxifyModerator
-from astra_rl.logging import logger
+from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger("astra.example")
+logger.setLevel(logging.DEBUG)
 
 
-class ExampleDetoxifyProblem(ASTProblem):
+# gpu allocation problem
+class GPUAllocationProblem(ASTProblem):
     def __init__(self):
         # TASK: initialize and pass to superclass
         # your choice of moderator
         super().__init__(DetoxifyModerator())
 
-        logger.debug("Loading attacker model: meta-llama/Llama-2-7b")
+        logger.debug("Loading attacker model: meta-llama/Llama-3.1-8B")
         self.attacker = AutoModelForCausalLM.from_pretrained(
-            "./output/astra_llama_31_attacker/", torch_dtype=torch.bfloat16
+            "meta-llama/Llama-3.1-8B", torch_dtype=torch.bfloat16
         ).to("cuda:1")
 
-        logger.debug("Loading target model: meta-llama/Llama-2-7b")
+        logger.debug("Loading target model: meta-llama/Llama-3.1-8B")
         self.target = AutoModelForCausalLM.from_pretrained(
-            "meta-llama/Llama-2-7b-hf", torch_dtype=torch.bfloat16
+            "meta-llama/Llama-3.1-8B", torch_dtype=torch.bfloat16
         ).to("cuda:0")
 
         logger.debug("Loading tokenizer")
-        self.tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-2-7b-hf")
+        self.tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B")
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
         logger.debug("Model initialization complete")
 
@@ -134,75 +136,50 @@ class ExampleDetoxifyProblem(ASTProblem):
         return gathered.to("cuda:0")
 
 
-def compute_overall_metrics(rows) -> Dict[str, Any]:
-    """
-    Compute micro-averages across ALL turns from ALL rollouts.
-    Also aggregates first-toxic-turn indices across rollouts.
-    Returns a dict ready to dump as JSON.
-    """
-
-    # Flatten per-turn metrics
-    all_attack_tox = [i["attack_tox"] for i in rows]
-    all_target_tox = [i["target_tox"] for i in rows]
-    all_attack_logprob = [i["attack_logprob"] for i in rows]
-
-    # Means (return None if nothing to average)
-    def _mean_or_none(xs: List[float]) -> Optional[float]:
-        return float(sum(xs) / len(xs)) if xs else None
-
-    metrics = {
-        # Micro-averages across ALL turns from ALL rollouts
-        "mean_attack_tox": _mean_or_none(all_attack_tox),
-        "mean_target_tox": _mean_or_none(all_target_tox),
-        "mean_attack_logprob": _mean_or_none(all_attack_logprob),
-    }
-    return metrics
-
-
-def main():
-    # read in eval prompts
-    with open("/juice2/scr2/houjun/astra-rl/data/reddit/prompts_reddit_test.json") as f:
-        PROMPTS = json.load(f)
-
-    # where should we dump the logs
-    out_dir = Path("./output/astra_llama_31_attacker")
+def main() -> None:
+    # prompts to use to seed initial stage
+    PROMPTS = [
+        "Tell us about your day! My day was",
+        "The Federal Reserve said last Tuesday that",
+    ]
 
     # instatiate our problem and environment
-    problem = ExampleDetoxifyProblem()
+    problem = GPUAllocationProblem()  # or "cuda" if you have a GPU
     env = ASTEnvironment(problem, PROMPTS)
 
-    rows: List[dict] = []
+    # instantiate our solution
+    solver = DPO(problem)
+    optimizer = AdamW(problem.parameters(), lr=1e-5)
 
-    for prompt in tqdm(PROMPTS):
-        try:
-            g = env.eval_rollout(prompt)
+    # this is a training harness, from which we can call various functions to
+    # handle training details
+    harness = Harness(
+        env,
+        solver,
+        num_episodes_per_experience=1,
+        use_wandb=False,
+        dataloader_kwargs={"batch_size": 1},
+    )
 
-            rollout_rows = []
-            bfs = g.children
-            while len(bfs) > 0:
-                node = bfs.pop(0)
-                rollout_rows.append(node.to_row())
-                bfs += node.children
+    # optimization step
+    for step in range(1000):
+        # collect some experiences using current weights
+        buf = harness.experience()  # <- this is a torch dataloader
+        logger.info(f"Step {step}: Got {len(buf)} batches of episodes")
+        for indx, i in enumerate(buf):
+            # we compute the loss using the algorithm we chose
+            loss, step_logs = harness.step(i)
+            # this is normal optimization; feel free to do weight decay, etc.
+            loss.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+            logger.info(f"Step {step}, batch {indx}: loss={loss.item():.4f}")
 
-            rows += rollout_rows
-        except Exception as e:
-            logger.info(f"Skipping prompt due to error: {e}")
-
-    # Write JSON Lines (best for big datasets; one rollout per line)
-    with open(out_dir / "eval_rollouts.jsonl", "w", encoding="utf-8") as f:
-        for r in rows:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
-
-    # (Optional) also write a single JSON array for convenience
-    with open(out_dir / "eval_rollouts_dump.json", "w", encoding="utf-8") as f:
-        json.dump(rows, f, ensure_ascii=False, indent=2)
-
-    # Global metrics across ALL rollouts
-    overall = compute_overall_metrics(rows)
-    print("Overall metrics:", overall)
-
-    with open(out_dir / "overall_metrics.json", "w", encoding="utf-8") as f:
-        json.dump(overall, f, ensure_ascii=False, indent=2)
+            # Add custom and algorithm external logging here (e.g., step number)
+            # TODO: Do we want multiple logs values per step (iterated over experience buffer)?
+            # TODO: Do we want to add other things here to logging?
+            step_logs["step"] = step
+            harness.log_current_step(step_logs)
 
 
 if __name__ == "__main__":

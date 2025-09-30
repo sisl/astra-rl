@@ -4,7 +4,7 @@ Rollout a problem, and print some desirable metrics.
 """
 
 from abc import abstractmethod, ABC
-from dataclass import dataclass
+from dataclasses import dataclass
 from typing import Dict, Any, List, Union, TypedDict, Generic, TypeVar, Optional
 
 from tqdm import tqdm

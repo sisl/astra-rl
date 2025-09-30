@@ -1,4 +1,4 @@
-# How to Customize the Trainer
+# Trainer
 
 **Trainers** run the optimization loop that updates your attacker. They wire together the **environment** (rollout collection), the **algorithm/solver** (computes a loss from rollouts), and the **optimizer** (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.
 
@@ -143,7 +143,7 @@ trainer.train()
 
 Subclass `Trainer` to add evaluation cadence, HF-style saving, gradient accumulation, and logging.
 
-```python
+<pre style="font-size:0.8rem; line-height:1.35;"><code class="language-python">
 import os
 import torch
 from astra_rl import Trainer, TrainingConfiguration
@@ -190,8 +190,9 @@ class MyTrainer(Trainer):
     def train(self):
         """Implement your custom training loop!"""
         # see astra_rl.ext.transformers.hf_ast_problem for an implemented custom class example
-        pass        
-```
+        pass       
+</code></pre>
+
 ---
 
 ### 6.4 Early stopping or custom LR schedules
@@ -208,4 +209,4 @@ Inside your custom `train()`:
 * **Custom AST problem **with** trainer:** `examples/GPT2_v_GPT2/ast_trainer.py`
 * **Source for HF-compatible trainer/config:** `astra_rl/ext/transformers/hf_ast_problem.py`
 
-Use these as references when wiring up your own training loop or extending the provided trainers.
+Use these as references when writing up your own training loop or extending the provided trainers.

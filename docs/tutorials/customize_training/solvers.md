@@ -1,4 +1,4 @@
-# How to Customize the Solver (RL Algorithm) 
+# Solver (RL Algorithm) 
 
 **Solvers** (a.k.a. algorithms) define *how learning happens*. They consume rollout graphs from the **Environment**, ask the **Problem** for model log-probs/rewards, and return a scalar **loss** (plus optional logs) to the **Trainer**. In ASTRA-RL a solver subclasses `Algorithm[...]` and typically implements three things:
 

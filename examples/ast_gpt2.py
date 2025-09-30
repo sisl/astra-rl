@@ -21,7 +21,7 @@ from astra_rl.logging import logger
 MODEL_NAME = "gpt2"
 
 
-class ExampleDetoxifyProblem(ASTProblem):
+class GPT2DetoxifyProblem(ASTProblem):
     def __init__(self, device="cuda"):
         # TASK: initialize and pass to superclass
         # your choice of moderator
@@ -159,15 +159,15 @@ class ExampleDetoxifyProblem(ASTProblem):
             .log_softmax(dim=-1)
         )
 
-        # compute likelihoods
+        # compute per-token likelihoods
         gathered = logits.gather(-1, combined[:, 1:].unsqueeze(-1)).squeeze(-1)
         gathered = gathered.masked_fill(~combined_mask[:, 1:], 0.0)
-        logprobs = gathered.sum(dim=-1)
 
-        return logprobs
+        # Return per-token logprobs instead of aggregating
+        return gathered
 
 
-# the following two functions will be implemented in the trainer class (see ast_trainer.py). This example
+# the following two functions will be implemented in the trainer class. This example
 # does not use a trainer so we implement it here
 def save(eval_env, step, tag="step"):
     if tag == "best":
@@ -217,7 +217,7 @@ def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our problem and environment
-    problem = ExampleDetoxifyProblem(DEVICE)  # or "cuda" if you have a GPU
+    problem = GPT2DetoxifyProblem(DEVICE)  # or "cuda" if you have a GPU
     env = ASTEnvironment(problem, PROMPTS)
 
     # instantiate our solution
