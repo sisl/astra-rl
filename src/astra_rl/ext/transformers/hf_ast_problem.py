@@ -9,7 +9,7 @@ so we ignore types here.
 https://discuss.huggingface.co/t/static-type-checking-with-mypy-whats-the-official-position/464/4
 """
 
-from typing import Sequence, Iterator
+from typing import Sequence, Iterator, Optional
 
 import torch
 
@@ -105,25 +105,6 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
             self.target_tokenizer.truncation_side
         ) = self.baseline_tokenizer.truncation_side = "left"
 
-        # model’s usable max sequence length (GPT-2: 1024) - fix for GPT2, dont need for llama
-        # self.attacker_max_ctx = int(getattr(self.attacker.config,"n_positions",getattr(self.attacker.config, "max_position_embeddings", 1024),))
-        # self.target_max_ctx = int(getattr(self.target.config,"n_positions",getattr(self.target.config, "max_position_embeddings", 1024),))
-        # self.baseline_max_ctx = int(getattr(self.baseline.config,"n_positions",getattr(self.baseline.config, "max_position_embeddings", 1024),))
-
-        # better set up?
-
-    #     for tok, model in [
-    #     (self.attacker_tokenizer, self.attacker_model),
-    #     (self.target_tokenizer,   self.target_model),
-    #     (self.baseline_tokenizer, self.baseline_model),]:
-    #     # 1) Padding/truncation policy (left padding is safest for generation with KV cache)
-    #     tok.padding_side   = "left"
-    #     tok.truncation_side = "left"   # keep the tail if sequences are too long (optional)
-
-    #     # 2) Ensure a valid pad token for GPT-2
-    #     if tok.pad_token is None:
-    #         tok.pad_token = tok.eos_token
-    #     model.config.pad_token_id = tok.pad_token_id
     def get_target_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
@@ -381,6 +362,68 @@ class HFASTTrainer(Trainer):
                 # every x number of training steps, run a dev set eval and save the best model so far
                 if (step_num + 1) % self.eval_every == 0:
                     self.eval_epoch(step=step_num + 1, tag="dev")
+
+
+class HFEvaluationProblem(HFASTProblem):
+    """
+    Thin evaluation wrapper around HFASTProblem that:
+      - loads ATTACKER_MODEL weights from `attacker_checkpoint`
+      - sets the attacker model tokenizer to align with `attacker_base_model_id`
+      - inherets all rollout/logprob methods from HFASTProblem.
+
+    Attributes:
+        device (str): The device to run the models on (default is "cpu").
+        attacker (AutoModelForCausalLM): The attacker model used for generating sequences, dervied from `attacker_checkpoint`.
+        attacker_tokenizer (PreTrainedTokenizer): The tokenizer for the attacker model, dervied from attacker_base_model_id.
+        target (AutoModelForCausalLM): The target model used for evaluating sequences.
+        target_tokenizer (PreTrainedTokenizer): The tokenizer for the target model.
+
+    """
+
+    def __init__(
+        self,
+        attacker_checkpoint: str,
+        attacker_base_model_id: str,
+        target_model_id: str,
+        device: str = "cpu",
+        moderator: Optional[Moderator] = None,
+    ) -> None:
+        """Initialize an HFEvaluationProblem instance
+        Args:
+            attacker_checkpoint (str): The model ID/checpoint path for the attacker model, must be possible for AutoModelForCausalLM.
+            attacker_base_model_id (str): The model ID used to train the attacker, used to load the correct tokenizer.
+            target_model_id (str): The model ID for the target model, must be possible for AutoModelForCausalLM.
+            moderator (Moderator): The moderator used to evaluate sequences.
+            device (str): The device to run the models on (default is "cpu").
+        """
+        super().__init__(moderator)
+
+        self.device = device
+
+        # initialize models and tokenizer
+        self.attacker = AutoModelForCausalLM.from_pretrained(attacker_checkpoint).to(
+            self.device
+        )
+        self.attacker_tokenizer = AutoTokenizer.from_pretrained(attacker_base_model_id)
+
+        self.target = AutoModelForCausalLM.from_pretrained(target_model_id).to(
+            self.device
+        )
+        self.target_tokenizer = AutoTokenizer.from_pretrained(target_model_id)
+
+        # a bunch of models doesn't have padding, so we set the pad token to the eos token
+        if self.attacker_tokenizer.pad_token_id is None:
+            self.attacker_tokenizer.pad_token_id = self.attacker_tokenizer.eos_token_id
+        if self.target_tokenizer.pad_token_id is None:
+            self.target_tokenizer.pad_token_id = self.target_tokenizer.eos_token_id
+
+        # set the tokenizer padding and truncation side
+        self.attacker_tokenizer.padding_side = self.target_tokenizer.padding_side = (
+            "left"
+        )
+        self.attacker_tokenizer.truncation_side = (
+            self.target_tokenizer.truncation_side
+        ) = "left"
 
 
 __all__ = ("HFASTProblem",)
