@@ -26,12 +26,6 @@ import astra_rl
 
 For detailed installation instructions, including development setup, see the **[Installation Guide](installation.md)**.
 
-### Quick Links
-
-- **[Installation Guide](installation.md)** - Detailed installation and setup instructions
-- **[Tutorials](tutorials/index.md)** - Step-by-step guides for common tasks
-- **[API Reference](api/index.md)** - Detailed documentation of all classes and functions
-
 ## Key Features
 
 - **Modular Architecture**: Easily swap components for your specific use case
@@ -39,15 +33,6 @@ For detailed installation instructions, including development setup, see the **[
 - **Multiple Moderators**: Integration with Llama-Guard 3, Detoxify, and custom moderators
 - **HuggingFace Compatible**: Seamless integration with HuggingFace models
 - **Extensible Framework**: Build custom problems, environments, and solvers
-
-## Documentation Structure
-
-- **[Installation](installation.md)** - Setup instructions for users and developers
-- **[Tutorials](tutorials/index.md)** - Learn how to use ASTRA-RL with hands-on examples
-    - [Quick Start Training](tutorials/quick_start_training.md) - Train your first red-teaming model
-    - [Quick Start Evaluation](tutorials/quick_start_evaluation.md) - Evaluate models with pre-trained attackers. (Work in progress!)
-    - [Customization Guides](tutorials/index.md#package-overview) - Adapt ASTRA-RL to your needs
-- **[API Reference](api/index.md)** - Complete API documentation
 
 ## Support
 
