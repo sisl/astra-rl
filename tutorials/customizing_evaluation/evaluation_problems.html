@@ -12,28 +12,28 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/quick_start_evaluation.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customizing_evaluation/evaluation_problems.html">
       
       
-        <link rel="prev" href="quick_start_training.html">
+        <link rel="prev" href="index.html">
       
       
-        <link rel="next" href="customizing_training/index.html">
+        <link rel="next" href="evaluators.html">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
-        <title>How to Run an Evaluation - ASTRA-RL Toolbox Documentation</title>
+        <title>Evaluation Problems - ASTRA-RL Toolbox Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,11 +52,11 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-run-an-evaluation" class="md-skip">
+        <a href="#evaluation-problems" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Run an Evaluation
+              Evaluation Problems
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../index.html" class="md-tabs__link">
+      <a href="../../index.html" class="md-tabs__link">
         
   
   
@@ -244,7 +244,7 @@
   
   
     <li class="md-tabs__item md-tabs__item--active">
-      <a href="index.html" class="md-tabs__link">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
@@ -263,7 +263,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../api/index.html" class="md-tabs__link">
+      <a href="../../api/index.html" class="md-tabs__link">
         
   
   
@@ -304,7 +304,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -351,7 +351,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
+            <a href="../../index.html" class="md-nav__link ">
               
   
   
@@ -384,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation.html" class="md-nav__link">
+      <a href="../../installation.html" class="md-nav__link">
         
   
   
@@ -407,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev_setup.html" class="md-nav__link">
+      <a href="../../dev_setup.html" class="md-nav__link">
         
   
   
@@ -430,7 +430,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing.html" class="md-nav__link">
+      <a href="../../contributing.html" class="md-nav__link">
         
   
   
@@ -480,7 +480,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link ">
+            <a href="../index.html" class="md-nav__link ">
               
   
   
@@ -513,7 +513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick_start_training.html" class="md-nav__link">
+      <a href="../quick_start_training.html" class="md-nav__link">
         
   
   
@@ -533,32 +533,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    How to Run an Evaluation
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="quick_start_evaluation.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../quick_start_evaluation.html" class="md-nav__link">
         
   
   
@@ -569,77 +547,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      Quick Start
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-setup-imports-model-paths-and-device" class="md-nav__link">
-    <span class="md-ellipsis">
-      1) Setup: imports, model paths, and device
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-load-evaluation-prompts" class="md-nav__link">
-    <span class="md-ellipsis">
-      2) Load evaluation prompts
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-instantiate-the-problem-and-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      3) Instantiate the Problem and Environment
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-evaluate" class="md-nav__link">
-    <span class="md-ellipsis">
-      4) Evaluate!
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -669,7 +576,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="customizing_training/index.html" class="md-nav__link ">
+            <a href="../customizing_training/index.html" class="md-nav__link ">
               
   
   
@@ -702,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/problems.html" class="md-nav__link">
+      <a href="../customizing_training/problems.html" class="md-nav__link">
         
   
   
@@ -725,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/environments.html" class="md-nav__link">
+      <a href="../customizing_training/environments.html" class="md-nav__link">
         
   
   
@@ -748,7 +655,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/moderators.html" class="md-nav__link">
+      <a href="../customizing_training/moderators.html" class="md-nav__link">
         
   
   
@@ -771,7 +678,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/solvers.html" class="md-nav__link">
+      <a href="../customizing_training/solvers.html" class="md-nav__link">
         
   
   
@@ -794,7 +701,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/trainers.html" class="md-nav__link">
+      <a href="../customizing_training/trainers.html" class="md-nav__link">
         
   
   
@@ -822,8 +729,10 @@
                 
   
   
+    
   
   
+  
     
     
     
@@ -832,17 +741,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_4" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="customizing_evaluation/index.html" class="md-nav__link ">
+            <a href="index.html" class="md-nav__link ">
               
   
   
@@ -861,7 +768,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_4">
             <span class="md-nav__icon md-icon"></span>
             Customizing Evaluation
@@ -872,10 +779,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="customizing_evaluation/evaluation_problems.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Evaluation Problems
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="evaluation_problems.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -886,6 +815,80 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-using-hugging-face-models-non-gpt2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Using Hugging Face Models (non-GPT2)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-using-gpt-2based-attackers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Using GPT-2–based Attackers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-fully-custom-attackers-or-targets" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Fully Custom Attackers or Targets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-example-gpt-2-custom-evaluation-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Example: GPT-2 Custom Evaluation Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Putting It All Together
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recap
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -898,7 +901,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_evaluation/evaluators.html" class="md-nav__link">
+      <a href="evaluators.html" class="md-nav__link">
         
   
   
@@ -953,7 +956,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/index.html" class="md-nav__link ">
+            <a href="../../api/index.html" class="md-nav__link ">
               
   
   
@@ -1003,7 +1006,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/core/index.html" class="md-nav__link ">
+            <a href="../../api/core/index.html" class="md-nav__link ">
               
   
   
@@ -1036,7 +1039,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/common.html" class="md-nav__link">
+      <a href="../../api/core/common.html" class="md-nav__link">
         
   
   
@@ -1059,7 +1062,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/problem.html" class="md-nav__link">
+      <a href="../../api/core/problem.html" class="md-nav__link">
         
   
   
@@ -1082,7 +1085,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/environment.html" class="md-nav__link">
+      <a href="../../api/core/environment.html" class="md-nav__link">
         
   
   
@@ -1105,7 +1108,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/moderator.html" class="md-nav__link">
+      <a href="../../api/core/moderator.html" class="md-nav__link">
         
   
   
@@ -1128,7 +1131,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/algorithm.html" class="md-nav__link">
+      <a href="../../api/core/algorithm.html" class="md-nav__link">
         
   
   
@@ -1176,7 +1179,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/algorithms/index.html" class="md-nav__link ">
+            <a href="../../api/algorithms/index.html" class="md-nav__link ">
               
   
   
@@ -1209,7 +1212,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/algorithms/dpo.html" class="md-nav__link">
+      <a href="../../api/algorithms/dpo.html" class="md-nav__link">
         
   
   
@@ -1232,7 +1235,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/algorithms/ppo.html" class="md-nav__link">
+      <a href="../../api/algorithms/ppo.html" class="md-nav__link">
         
   
   
@@ -1280,7 +1283,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/moderators/index.html" class="md-nav__link ">
+            <a href="../../api/moderators/index.html" class="md-nav__link ">
               
   
   
@@ -1313,7 +1316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../../api/moderators/detoxify.html" class="md-nav__link">
         
   
   
@@ -1336,7 +1339,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../../api/moderators/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1384,7 +1387,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/training/index.html" class="md-nav__link ">
+            <a href="../../api/training/index.html" class="md-nav__link ">
               
   
   
@@ -1417,7 +1420,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/training/harness.html" class="md-nav__link">
+      <a href="../../api/training/harness.html" class="md-nav__link">
         
   
   
@@ -1440,7 +1443,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/training/trainer.html" class="md-nav__link">
+      <a href="../../api/training/trainer.html" class="md-nav__link">
         
   
   
@@ -1488,7 +1491,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/methods/index.html" class="md-nav__link ">
+            <a href="../../api/methods/index.html" class="md-nav__link ">
               
   
   
@@ -1521,7 +1524,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/methods/ast_problem.html" class="md-nav__link">
+      <a href="../../api/methods/ast_problem.html" class="md-nav__link">
         
   
   
@@ -1579,53 +1582,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
+  <a href="#1-using-hugging-face-models-non-gpt2" class="md-nav__link">
     <span class="md-ellipsis">
-      Quick Start
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Quick Start">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-setup-imports-model-paths-and-device" class="md-nav__link">
-    <span class="md-ellipsis">
-      1) Setup: imports, model paths, and device
+      1. Using Hugging Face Models (non-GPT2)
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#2-load-evaluation-prompts" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#2-using-gpt-2based-attackers" class="md-nav__link">
     <span class="md-ellipsis">
-      2) Load evaluation prompts
+      2. Using GPT-2–based Attackers
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#3-instantiate-the-problem-and-environment" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#3-fully-custom-attackers-or-targets" class="md-nav__link">
     <span class="md-ellipsis">
-      3) Instantiate the Problem and Environment
+      3. Fully Custom Attackers or Targets
     </span>
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
-  <a href="#4-evaluate" class="md-nav__link">
+      
+        <li class="md-nav__item">
+  <a href="#4-example-gpt-2-custom-evaluation-problem" class="md-nav__link">
     <span class="md-ellipsis">
-      4) Evaluate!
+      4. Example: GPT-2 Custom Evaluation Problem
     </span>
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#5-putting-it-all-together" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Putting It All Together
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#recap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recap
+    </span>
+  </a>
   
 </li>
       
@@ -1648,71 +1654,132 @@
   
 
 
-<h1 id="how-to-run-an-evaluation">How to Run an Evaluation<a class="headerlink" href="#how-to-run-an-evaluation" title="Permanent link">&para;</a></h1>
-<p>RL-based adversarial testing uses reinforcement learning to train an <strong>attacker</strong> that generates test cases likely to elicit unsafe outputs from a <strong>target</strong> model. This tutorial shows how to run evaluations using a <strong>pre-trained attacker</strong> against a target model.</p>
-<div class="admonition note">
-<p class="admonition-title">Prerequisite</p>
-<p>This guide assumes you already trained a GPT2 attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
+<h1 id="evaluation-problems">Evaluation Problems<a class="headerlink" href="#evaluation-problems" title="Permanent link">&para;</a></h1>
+<p>When performing an <strong>evaluation</strong>, you need to create a <em>problem class</em> that correctly loads your <strong>trained attacker model</strong> and its tokenizer.</p>
+<p>Most of the time, the only change required is <strong>how the attacker model and tokenizer are instantiated</strong>. All rollout logic and evaluation APIs remain the same.</p>
+<hr />
+<h2 id="1-using-hugging-face-models-non-gpt2">1. Using Hugging Face Models (non-GPT2)<a class="headerlink" href="#1-using-hugging-face-models-non-gpt2" title="Permanent link">&para;</a></h2>
+<p>If your trained attacker is a Hugging Face model that does <strong>not</strong> have a fixed maximum context length (e.g. LLaMA-3), you can simply use <code>HFEvaluationProblem</code>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.ext.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFEvaluationProblem</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">HFEvaluationProblem</span><span class="p">(</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">attacker_model</span><span class="o">=</span><span class="s2">&quot;/path/to/your/attacker/checkpoint&quot;</span><span class="p">,</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">attacker_base_model_id</span><span class="o">=</span><span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span><span class="p">,</span>  <span class="c1"># base tokenizer</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">target_model_id</span><span class="o">=</span><span class="s2">&quot;meta-llama/Meta-Llama-3-8B&quot;</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="p">)</span>
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>See the <a href="../quick_start_evaluation.html">Quick Start: Evaluation</a> tutorial or the <a href="https://github.com/sisl/astra-rl/tree/main/examples/hf_eval.py">full example</a>.</p>
 </div>
 <hr />
-<h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<p>Evaluation at a glance: run a set of attacker↔target rollouts (seeded by a test set of prompts), collect per-turn data, and compute summary metrics.</p>
-<h3 id="1-setup-imports-model-paths-and-device">1) Setup: imports, model paths, and device<a class="headerlink" href="#1-setup-imports-model-paths-and-device" title="Permanent link">&para;</a></h3>
-<p>Load dependencies and define the models you'll use as the <strong>attacker</strong> and <strong>target</strong>.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># import dependencies </span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">GPT2LMHeadModel</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTProblem</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">,</span> <span class="n">ASTEnvironment</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ast_eval_test.py</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationProblem</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.core.evaluator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluator</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># import ASTEvaluator for the quickstart guide</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.methods.ast_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTEvaluator</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># optional: only import llamaguardModerator if you want to use it during evaluations</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.moderators.llamaGuard</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaGuardModerator</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1"># Path to your pre-trained attacker gpt2 model</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="n">ATTACKER_MODEL</span> <span class="o">=</span> <span class="s2">&quot;path/or/hub-id/of/attacker&quot;</span>  <span class="c1"># e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="n">TARGET_MODEL</span>   <span class="o">=</span> <span class="s2">&quot;gpt2&quot;</span>    <span class="c1"># e.g., &quot;meta-llama/Llama-3-8B&quot; (example)</span>
+<h2 id="2-using-gpt-2based-attackers">2. Using GPT-2–based Attackers<a class="headerlink" href="#2-using-gpt-2based-attackers" title="Permanent link">&para;</a></h2>
+<p>GPT-2 has some quirks (fixed max length of 1024, special padding setup).
+We provide <a href="ttps://github.com/sisl/astra-rl/tree/main/examples/gpt2_eval.py"><code>GPT2EvaluationProblem</code></a>, which handles this automatically:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">gpt2_eval</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPT2EvaluationProblem</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">GPT2EvaluationProblem</span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">attacker_model</span><span class="o">=</span><span class="s2">&quot;/path/to/attacker/checkpoint&quot;</span><span class="p">,</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
 </span></code></pre></div>
-<h3 id="2-load-evaluation-prompts">2) Load evaluation prompts<a class="headerlink" href="#2-load-evaluation-prompts" title="Permanent link">&para;</a></h3>
-<p>Evaluation prompts <strong>start</strong> the attacker–target conversation. Make sure they:</p>
+<p><strong>Key details:</strong></p>
+<ul>
+<li>Inherits from <code>GPT2DetoxifyProblem</code>.</li>
+<li>Only overrides <code>__init__</code> to let you pass in a custom attacker and moderator.</li>
+<li>
+<p>Assumes:</p>
+</li>
+<li>
+<p>Target = <code>"gpt2"</code></p>
+</li>
+<li>Attacker = GPT-2–based adversarial model.</li>
+</ul>
+<hr />
+<h2 id="3-fully-custom-attackers-or-targets">3. Fully Custom Attackers or Targets<a class="headerlink" href="#3-fully-custom-attackers-or-targets" title="Permanent link">&para;</a></h2>
+<p>If you are using a <strong>completely custom pre-trained attacker or target</strong>, you will need to define your own subclass of <code>ASTProblem</code>.
+This subclass must:</p>
 <ol>
-<li>Match the context you care about (e.g., diagnostic agent prompts for a diagnostic system).</li>
-<li>Were <strong>never</strong> seen during training or dev.</li>
-<li>Are provided as a <strong>list of strings</strong>.</li>
+<li>Instantiate attacker, target, and tokenizers.</li>
+<li>Implement rollout logic (text generation given context).</li>
 </ol>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;prompts_reddit_test.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">PROMPTS</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># e.g., [&quot;prompt 1&quot;, &quot;prompt 2&quot;, ...]</span>
+<p>See the <a href="../customizing_training/problems.html">Problem Customization guide</a> for details.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you already created a custom problem class for <strong>training</strong>, it is often easiest to <strong>subclass it for evaluation</strong> and just modify the attacker instantiation.</p>
+<p>For example, the <code>GPT2EvaluationProblem</code> is a thin subclass that changes only the constructor.</p>
+</div>
+<hr />
+<h2 id="4-example-gpt-2-custom-evaluation-problem">4. Example: GPT-2 Custom Evaluation Problem<a class="headerlink" href="#4-example-gpt-2-custom-evaluation-problem" title="Permanent link">&para;</a></h2>
+<p>Here’s a concrete example showing how to create a custom problem that loads a trained GPT-2 attacker and a standard GPT-2 target:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">ATTACKER_MODEL</span> <span class="o">=</span> <span class="s2">&quot;path/to/your/attacker/checkpoint&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">class</span><span class="w"> </span><span class="nc">GPT2EvaluationProblem</span><span class="p">(</span><span class="n">GPT2DetoxifyProblem</span><span class="p">):</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="sd">    Same API/behavior as GPT2DetoxifyProblem, but with a custom attacker and moderator.</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="sd">    Assumes target is GPT-2.</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attacker_model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ATTACKER_MODEL</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>                 <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>                 <span class="n">moderator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DetoxifyModerator</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="n">ASTProblem</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moderator</span> <span class="ow">or</span> <span class="n">DetoxifyModerator</span><span class="p">())</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="c1"># Attacker (trained GPT-2 adversary)</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">attacker_model</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="c1"># Target (plain GPT-2)</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">GPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        <span class="c1"># Shared tokenizer</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">)</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">padding_side</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">truncation_side</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27" href="#__codelineno-2-27"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28" href="#__codelineno-2-28"></a>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a>        <span class="c1"># Max context length</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">max_ctx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;n_positions&quot;</span><span class="p">,</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a>                                   <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;max_position_embeddings&quot;</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)))</span>
 </span></code></pre></div>
-<h3 id="3-instantiate-the-problem-and-environment">3) Instantiate the Problem and Environment<a class="headerlink" href="#3-instantiate-the-problem-and-environment" title="Permanent link">&para;</a></h3>
-<p>Use the preconfigured <strong>EvaluationProblem</strong> (takes in a pre-trained GPT2 model) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
-<p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># instantiate the evaluation problem with your attacker and target models</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">EvaluationProblem</span><span class="p">(</span><span class="n">ATTACKER_MODEL</span><span class="p">,</span> <span class="n">TARGET_MODEL</span><span class="p">,</span> <span class="n">DEVICE</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">())</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># instantiate the AST environment - no adjustments needed because already has eval_rollout</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-</span></code></pre></div>
-If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, see the <a href="customizing_evaluation/evaluation_problems.html">Evaluation Problem Customization</a> guide.</p>
-<h3 id="4-evaluate">4) Evaluate!<a class="headerlink" href="#4-evaluate" title="Permanent link">&para;</a></h3>
-<p>This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, attack success rate, average reward, average first turn the target is toxic. </p>
-<p>Then, we will perform evaluation rollouts (attaker-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json. </p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">evaluator</span> <span class="o">=</span> <span class="n">ASTEvaluator</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">seeds</span><span class="o">=</span><span class="n">PROMPTS</span><span class="p">)</span>
+<hr />
+<h2 id="5-putting-it-all-together">5. Putting It All Together<a class="headerlink" href="#5-putting-it-all-together" title="Permanent link">&para;</a></h2>
+<p>After creating your custom problem, pass the problem instantiation to the environment instantiation. The rest of evlauation will be untouched since changing the problem is simply making sure your attacker is being called and tokenized correctly during attacker-target evaluation rollouts. </p>
+<p>See the <a href="../quick_start_evaluation.html">quick_start_evaluation</a> guide for more information on the evaluation steps. </p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    <span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># collect metrics by running n_rollouts</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">n_rollouts</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># save metrics to json file</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">Evaluator</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;metrics.json&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="c1"># Load evaluation prompts</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;prompts_reddit_test.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>        <span class="n">PROMPTS</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="c1"># Instantiate problem</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">problem</span> <span class="o">=</span> <span class="n">GPT2EvaluationProblem</span><span class="p">(</span><span class="n">ATTACKER_MODEL</span><span class="p">,</span> <span class="n">DEVICE</span><span class="p">,</span> <span class="n">LlamaGuardModerator</span><span class="p">())</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="c1"># Create environment &amp; evaluator</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">,</span> <span class="n">tree_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tree_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">evaluator</span> <span class="o">=</span> <span class="n">ASTEvaluator</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">seeds</span><span class="o">=</span><span class="n">PROMPTS</span><span class="p">)</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>    <span class="c1"># Run evaluation</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>    <span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">n_rollouts</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    <span class="c1"># Save results</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>    <span class="n">evaluator</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;metrics.json&quot;</span><span class="p">)</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="n">main</span><span class="p">()</span>
 </span></code></pre></div>
-<p>The source code for ASTEvaluator is located at examples/ast_eval.py . Here you can see how metrics are collected and aggregated with the supported evaluator.</p>
-<p>If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts), see the <a href="customizing_evaluation/evaluators.html">Evaluator Customization</a> guide.</p>
+<hr />
+<h2 id="recap">Recap<a class="headerlink" href="#recap" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Most users don't need to write new classes</strong> — just pick <code>HFEvaluationProblem</code> (non-GPT2) or <code>GPT2EvaluationProblem</code>.</li>
+<li>If you already subclassed a problem for training, reuse it for evaluation and only swap in your trained attacker.</li>
+<li>For fully custom architectures, subclass <code>ASTProblem</code> directly. Visit the <a href="../customizing_training/problems.html">Problem Customization guide</a> for more information on the Problem class.</li>
+</ul>
 
 
 
@@ -1745,7 +1812,7 @@ If you would like to evaluate HF-based attackers, use the HFASTProblem instead o
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 24, 2025 00:31:03 UTC">2025-09-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 30, 2025 17:20:43 UTC">2025-09-30</span>
   </span>
 
     
@@ -1793,10 +1860,10 @@ If you would like to evaluate HF-based attackers, use the HFASTProblem instead o
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>
