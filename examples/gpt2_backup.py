@@ -18,7 +18,7 @@ from astra_rl.ext.transformers.hf_ast_problem import (
 from astra_rl import DPO, ASTNode, ASTEnvironment
 
 # GPT2 v GPT2 with Detoxify Moderator
-from ast_basic import ExampleDetoxifyProblem
+from ast_gpt2 import GPT2DetoxifyProblem
 
 # GPT2 v GPT2 with LlamaGuard Moderator
 from astra_rl.core.environment import Graph
@@ -82,7 +82,7 @@ def main() -> None:
     # bend can't handle this much memory
     # problem = HFASTProblem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyModerator(), DEVICE)
 
-    problem = ExampleDetoxifyProblem(DEVICE)
+    problem = GPT2DetoxifyProblem(DEVICE)
     env = BackupEnv(problem, PROMPTS, gamma=0.9)
 
     # # print out rollouts - checked that backing up rewards works!

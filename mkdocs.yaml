@@ -23,6 +23,7 @@ plugins:
 markdown_extensions:
   - admonition
   - footnotes
+  - pymdownx.details
   - tables
   - toc:
       permalink: true
