@@ -22,13 +22,28 @@ class LlamaGuardModerator(Moderator[str, str]):
         harm_category (str): The category of harm to detect (default is "toxicity"); see below.
         variant (str): The variant of the Detoxify model to use (default is "original").
 
-    Notes:
-        Possible harm categories include:
-        S1 (Violent Crimes), S2 (Non-Violent Crimes), S3 (Sex-Related Crimes),
-        S4 (Child Sexual Exploitation), S5 (Defamation), S6 (Specialized Advice),
-        S7 (Privacy), S8 (Intellectual Property), S9 (Indiscriminate Weapons),
-        S10 (Hate), S11 (Suicide & Self-Harm), S12 (Sexual Content),
-        S13 (Elections), S14 (Code Interpreter Abuse)
+    **Notes:**
+
+    Possible harm categories include:
+
+    - S1 (Violent Crimes)
+    - S2 (Non-Violent Crimes)
+    - S3 (Sex-Related Crimes),
+    - S4 (Child Sexual Exploitation)
+    - S5 (Defamation)
+    - S6 (Specialized Advice),
+    - S7 (Privacy)
+    - S8 (Intellectual Property)
+    - S9 (Indiscriminate Weapons),
+    - S10 (Hate)
+    - S11 (Suicide & Self-Harm)
+    - S12 (Sexual Content),
+    - S13 (Elections)
+    - S14 (Code Interpreter Abuse)
+
+    **References:**
+
+    - Inan et al. "Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations", 2023. [arXiv:2312.06674](https://arxiv.org/abs/2312.06674)
     """
 
     def __init__(self, DEVICE: str = "cuda"):

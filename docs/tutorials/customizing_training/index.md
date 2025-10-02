@@ -1,6 +1,6 @@
 # Customize Training
 
-To go beyond the supported training classes presented in the [quick start training guide](../quick_start_training), please see the following resources:
+To go beyond the supported training classes presented in the [quick start training guide](../quick_start_training.md), please see the following resources:
 
 ### 1) Problem — *How models run/interact*
 

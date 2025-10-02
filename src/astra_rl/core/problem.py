@@ -295,7 +295,8 @@ class ValueFunctionProblem(Problem[StateT, ActionT], ABC):
            just passing the intermediate activations through another layer.
 
         Args:
-            elem (Sequence[StateT]): The sequence to evaluate.
+            context: The context sequence.
+            continuation: The continuation sequence to evaluate.
 
         Returns:
             torch.Tensor[batch_size, max_continuation_length]: The per-token values of

@@ -1,4 +1,4 @@
-# Trainer
+# Trainers
 
 **Trainers** run the optimization loop that updates your attacker. They wire together the **environment** (rollout collection), the **algorithm/solver** (computes a loss from rollouts), and the **optimizer** (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.
 

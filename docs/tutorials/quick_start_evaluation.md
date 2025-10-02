@@ -1,6 +1,6 @@
-# How to Run an Evaluation / Red Team
+# How to Run an Evaluation
 
-RL-based red-teaming uses reinforcement learning to train an **attacker** that generates test cases likely to elicit unsafe outputs from a **target** model. This tutorial shows how to run evaluations (red-team rollouts) using a **pre-trained attacker** against a target model.
+RL-based adversarial testing uses reinforcement learning to train an **attacker** that generates test cases likely to elicit unsafe outputs from a **target** model. This tutorial shows how to run evaluations using a **pre-trained attacker** against a target model.
 
 !!! note "Prerequisite"
     This guide assumes you already trained a GPT2 attacker (see **Quick Start: Training**). You’ll point evaluation at that saved attacker checkpoint.
@@ -13,10 +13,9 @@ Evaluation at a glance: run a set of attacker↔target rollouts (seeded by a tes
 
 ### 1) Setup: imports, model paths, and device
 
-Load dependencies and define the models you’ll use as the **attacker** and **target**.
+Load dependencies and define the models you'll use as the **attacker** and **target**.
 
 ```python
-
 # import dependencies 
 from typing import Optional
 import torch
@@ -25,8 +24,10 @@ from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
 from astra_rl import ASTProblem, DetoxifyModerator, ASTEnvironment
 from ast_eval_test.py import EvaluationProblem
 from astra_rl.core.evaluator import Evaluator
+
 # import ASTEvaluator for the quickstart guide
 from astra_rl.methods.ast_problem import ASTEvaluator
+
 # optional: only import llamaguardModerator if you want to use it during evaluations
 from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
@@ -61,12 +62,11 @@ problem = EvaluationProblem(ATTACKER_MODEL, TARGET_MODEL, DEVICE, DetoxifyModera
 # instantiate the AST environment - no adjustments needed because already has eval_rollout
 env = ASTEnvironment(problem, PROMPTS, 1, 3)
 ```
-If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, please visit the following guide to see how to create a custom Evaluation Problem.
-* Guide: [Evaluation Problem Customization](customize_evaluation/evaluation_problem.md)
+If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, see the [Evaluation Problem Customization](customizing_evaluation/evaluation_problems.md) guide.
 
 ### 4) Evaluate!
 
-This step will instantiate the ASTEvaluator class which will collect standard red-teaming metrics such as average target toxicity, attack succsess rate, average reward, average first turn the target is toxic. 
+This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, attack success rate, average reward, average first turn the target is toxic. 
 
 Then, we will perform evaluation rollouts (attaker-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json. 
 
@@ -83,5 +83,4 @@ Evaluator.write_json(metrics, "metrics.json")
 
 The source code for ASTEvaluator is located at examples/ast_eval.py . Here you can see how metrics are collected and aggregated with the supported evaluator.
 
-If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts) visit the Evaluator customization guide.
-* Guide: [Evaluator Customization](customize_evaluation/evaluator.md)
+If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts), see the [Evaluator Customization](customizing_evaluation/evaluators.md) guide.

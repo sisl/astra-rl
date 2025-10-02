@@ -1,4 +1,4 @@
-# Environment
+# Environments
 
 The **environment** defines how attacker–target interactions are generated and packaged for training and evaluation. It controls:
 
@@ -40,9 +40,9 @@ class MyASTVariant(ASTEnvironment):
     #     ...
 ```
 
-The source code for ASTEnvironment can be found [here](../../../src/astra_rl/methods/ast_problem.py)
+The source code for ASTEnvironment can be found [here](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/methods/ast_problem.py)
 
-For a full example of subclassing ASTEnvironment to add custom capabilities see [examples/malibu_backup](../../../examples/malibu_backup.py)
+For a full example of subclassing ASTEnvironment to add custom capabilities see [malibu_backup example](https://github.com/sisl/astra-rl/blob/main/examples/malibu_backup.py)
 
 ### 1.2 Full control: subclass `Environment`
 

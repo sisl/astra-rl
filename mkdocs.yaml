@@ -27,6 +27,13 @@ markdown_extensions:
   - toc:
       permalink: true
       toc_depth: 3
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 extra_css:
     - stylesheets/extra.css
@@ -35,10 +42,6 @@ theme:
   name: material
   # logo: assets/icon.png
   # favicon: assets/favicon.png
-  highlightjs: true
-  hljs_languages:
-      - yaml
-      - python
   language: en
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -64,33 +67,47 @@ theme:
       - toc.follow
 
 nav:
-  - ASTRA: index.md
-  - Getting Started: getting_started.md
-  - Tutorials: 
-      - tutorials/index.md
-      - tutorials/training_an_evaluator.md
-      - tutorials/running_an_evaluation.md
-  - API Reference: 
-      - api/index.md
-      - Core Module:
-          - api/core/index.md
-          - api/core/common.md
-          - api/core/problem.md
-          - api/core/environment.md
-          - api/core/moderator.md
-          - api/core/algorithm.md
-      - Algorithms:
-          - api/algorithms/index.md
-          - api/algorithms/dpo.md
-      - Moderators:
-          - api/moderators/index.md
-          - api/moderators/detoxify.md
-      - Training:
-          - api/training/index.md
-          - api/training/harness.md
-          - api/training/trainer.md
-      - Methods:
-          - api/methods/index.md
-          - api/methods/ast_problem.md
-  - Contributing: contributing.md
-      
+    - ASTRA: 
+        - index.md
+        - installation.md
+        - dev_setup.md
+        - contributing.md
+    - Tutorials: 
+        - tutorials/index.md
+        - tutorials/quick_start_training.md
+        - tutorials/quick_start_evaluation.md
+        - Customizing Training:
+            - tutorials/customizing_training/index.md
+            - tutorials/customizing_training/problems.md
+            - tutorials/customizing_training/environments.md
+            - tutorials/customizing_training/moderators.md
+            - tutorials/customizing_training/solvers.md
+            - tutorials/customizing_training/trainers.md
+        - Customizing Evaluation:
+            - tutorials/customizing_evaluation/index.md
+            - tutorials/customizing_evaluation/evaluation_problems.md
+            - tutorials/customizing_evaluation/evaluators.md
+    - API Reference: 
+        - api/index.md
+        - Core Module:
+            - api/core/index.md
+            - api/core/common.md
+            - api/core/problem.md
+            - api/core/environment.md
+            - api/core/moderator.md
+            - api/core/algorithm.md
+        - Algorithms:
+            - api/algorithms/index.md
+            - api/algorithms/dpo.md
+            - api/algorithms/ppo.md
+        - Moderators:
+            - api/moderators/index.md
+            - api/moderators/detoxify.md
+            - api/moderators/llamaguard.md
+        - Training:
+            - api/training/index.md
+            - api/training/harness.md
+            - api/training/trainer.md
+        - Methods:
+            - api/methods/index.md
+            - api/methods/ast_problem.md
