@@ -1,4 +1,4 @@
-# Moderator
+# Moderators
 
 **Moderators** provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender’s reply), they return a scalar score that reflects harm/unsafety. Attackers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise “undesirable”) target responses, revealing weaknesses in the target’s safety alignment.
 

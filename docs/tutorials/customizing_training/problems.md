@@ -1,4 +1,4 @@
-# Problem (HF or non-HF)
+# Problems
 
 **Problems** encapsulate *models + tokenization + rollout + log-probabilities + rewards*. Environments call your Problem to:
 

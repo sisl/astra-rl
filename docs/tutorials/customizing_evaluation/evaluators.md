@@ -1,4 +1,4 @@
-# Evaluator
+# Evaluators
 
 The **Evaluator** is responsible for:
 
