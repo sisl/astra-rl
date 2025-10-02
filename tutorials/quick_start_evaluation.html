@@ -26,7 +26,7 @@
     
     
       
-        <title>How to Run an Evaluation - ASTRA-RL Toolbox Documentation</title>
+        <title>Quick Start: Evaluation - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-run-an-evaluation" class="md-skip">
+        <a href="#quick-start-evaluation" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Run an Evaluation
+              Quick Start: Evaluation
             
           </span>
         </div>
@@ -518,7 +518,7 @@
   
   
   <span class="md-ellipsis">
-    Quick Start: Training a HuggingFace Attacker with ASTRA-RL
+    Quick Start: Training
     
   </span>
   
@@ -550,7 +550,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation
+    Quick Start: Evaluation
     
   </span>
   
@@ -563,7 +563,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation
+    Quick Start: Evaluation
     
   </span>
   
@@ -1648,11 +1648,11 @@
   
 
 
-<h1 id="how-to-run-an-evaluation">How to Run an Evaluation<a class="headerlink" href="#how-to-run-an-evaluation" title="Permanent link">&para;</a></h1>
+<h1 id="quick-start-evaluation">Quick Start: Evaluation<a class="headerlink" href="#quick-start-evaluation" title="Permanent link">&para;</a></h1>
 <p>RL-based adversarial testing uses reinforcement learning to train an <strong>attacker</strong> that generates test cases likely to elicit unsafe outputs from a <strong>target</strong> model. This tutorial shows how to run evaluations using a <strong>pre-trained attacker</strong> against a target model.</p>
 <div class="admonition note">
 <p class="admonition-title">Prerequisite</p>
-<p>This guide assumes you already trained a GPT2 attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
+<p>This guide assumes you already trained a Hugging Face (i.e. llama3) attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
 </div>
 <hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
@@ -1660,25 +1660,17 @@
 <h3 id="1-setup-imports-model-paths-and-device">1) Setup: imports, model paths, and device<a class="headerlink" href="#1-setup-imports-model-paths-and-device" title="Permanent link">&para;</a></h3>
 <p>Load dependencies and define the models you'll use as the <strong>attacker</strong> and <strong>target</strong>.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># import dependencies </span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">GPT2LMHeadModel</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTProblem</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">,</span> <span class="n">ASTEnvironment</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ast_eval_test.py</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationProblem</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.core.evaluator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluator</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">DetoxifyModerator</span><span class="p">,</span> <span class="n">ASTEnvironment</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.methods.ast_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTEvaluator</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.ext.transformers.hf_ast_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFEvaluationProblem</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># import ASTEvaluator for the quickstart guide</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.methods.ast_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTEvaluator</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># optional: only import llamaguardModerator if you want to use it during evaluations</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.moderators.llamaGuard</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaGuardModerator</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1"># Path to your pre-trained attacker gpt2 model</span>
-</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="n">ATTACKER_MODEL</span> <span class="o">=</span> <span class="s2">&quot;path/or/hub-id/of/attacker&quot;</span>  <span class="c1"># e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;</span>
-</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="n">TARGET_MODEL</span>   <span class="o">=</span> <span class="s2">&quot;gpt2&quot;</span>    <span class="c1"># e.g., &quot;meta-llama/Llama-3-8B&quot; (example)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Path to your attacker model checkpoint from training</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">ATTACKER_MODEL</span> <span class="o">=</span> <span class="s2">&quot;/home/user/astra-rl/examples/checkpoints/best&quot;</span> <span class="c1"># assuming tokenizer is in checkpoint (default save in training)</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">TARGET_MODEL</span> <span class="o">=</span> <span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span>  <span class="c1"># can be any HF model</span>
 </span></code></pre></div>
 <h3 id="2-load-evaluation-prompts">2) Load evaluation prompts<a class="headerlink" href="#2-load-evaluation-prompts" title="Permanent link">&para;</a></h3>
 <p>Evaluation prompts <strong>start</strong> the attacker–target conversation. Make sure they:</p>
@@ -1691,14 +1683,40 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">PROMPTS</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># e.g., [&quot;prompt 1&quot;, &quot;prompt 2&quot;, ...]</span>
 </span></code></pre></div>
 <h3 id="3-instantiate-the-problem-and-environment">3) Instantiate the Problem and Environment<a class="headerlink" href="#3-instantiate-the-problem-and-environment" title="Permanent link">&para;</a></h3>
-<p>Use the preconfigured <strong>EvaluationProblem</strong> (takes in a pre-trained GPT2 model) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
-<p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># instantiate the evaluation problem with your attacker and target models</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">EvaluationProblem</span><span class="p">(</span><span class="n">ATTACKER_MODEL</span><span class="p">,</span> <span class="n">TARGET_MODEL</span><span class="p">,</span> <span class="n">DEVICE</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">())</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># instantiate the AST environment - no adjustments needed because already has eval_rollout</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<p>Use the preconfigured <strong>HFEvaluationProblem</strong> (takes in a pre-trained HF model) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># instantiate the HF evaluation problem with your attacker and target models</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">HFEvaluationProblem</span><span class="p">(</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">attacker_checkpoint</span><span class="o">=</span><span class="n">ATTACKER_MODEL</span><span class="p">,</span>      <span class="c1"># local HF dir or Hub id with trained attacker</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">attacker_base_model_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>             <span class="c1"># optional fallback; None if checkpoint includes tokenizer</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">target_model_id</span><span class="o">=</span><span class="n">TARGET_MODEL</span><span class="p">,</span>            <span class="c1"># HF id of the target model</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">device</span><span class="o">=</span><span class="n">DEVICE</span><span class="p">,</span>                           <span class="c1"># &quot;cuda&quot; or &quot;cpu&quot;</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    <span class="n">moderator</span><span class="o">=</span><span class="n">DetoxifyModerator</span><span class="p">(),</span>           <span class="c1"># harm classifier (optional)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># instantiate the AST environment — no adjustments needed because eval_rollout is available</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">,</span> <span class="n">tree_width</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">tree_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </span></code></pre></div>
-If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, see the <a href="customizing_evaluation/evaluation_problems.html">Evaluation Problem Customization</a> guide.</p>
+<details class="info">
+<summary>HFEvaluation inputs</summary>
+<ul>
+<li><code>ATTACKER_MODEL</code> — Path or Hugging Face hub id for your trained attacker checkpoint (e.g. <code>"/home/user/checkpoints/best"</code> or <code>"username/attacker-checkpoint"</code>). The checkpoint may include model weights <strong>and</strong> tokenizer files.</li>
+<li><code>ATTACKER_BASE_MODEL</code> <em>(optional)</em> — Hugging Face model id used as the <strong>base tokenizer</strong> at training-time (e.g. <code>"meta-llama/Llama-3.1-8B"</code>). Only required if the checkpoint <strong>does not</strong> include tokenizer files.</li>
+<li><code>TARGET_MODEL</code> — Hugging Face id of the model you want to evaluate (e.g. <code>"meta-llama/Llama-3.1-8B"</code>).</li>
+<li><code>DEVICE</code> — Device string where you want to load models/tokenizers (e.g. <code>"cuda"</code> or <code>"cpu"</code>).</li>
+<li><code>MODERATOR</code> — Moderator instance that defines the harm metric (e.g. <code>DetoxifyModerator()</code> or <code>LlamaGuardModerator()</code>).</li>
+</ul>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prefer using <strong>keyword arguments</strong> (as shown) to avoid accidentally passing parameters in the wrong order.  </p>
+<p>If your attacker checkpoint includes tokenizer files (common when saving via <code>model.save_pretrained()</code> + <code>tokenizer.save_pretrained()</code> during training), set <code>attacker_base_model_id=None</code> — the evaluation class will load the tokenizer from the checkpoint. If the checkpoint lacks tokenizer files, provide <code>attacker_base_model_id</code> so the correct tokenizer can be loaded.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you want to evaluate GPT-2 attackers, use <code>GPT2EvaluationProblem</code> instead of <code>HFEvaluationProblem</code>.<br />
+See the full GPT-2 evaluation example: <a href="https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py"><code>gpt2_eval.py</code></a>.</p>
+</div>
+<p>If you want to evaluate a custom attacker or target, create a new <code>Problem</code> subclass. See the <a href="customizing_evaluation/evaluation_problems.html">Evaluation Problem Customization</a> guide.</p>
 <h3 id="4-evaluate">4) Evaluate!<a class="headerlink" href="#4-evaluate" title="Permanent link">&para;</a></h3>
 <p>This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, attack success rate, average reward, average first turn the target is toxic. </p>
 <p>Then, we will perform evaluation rollouts (attaker-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json. </p>
@@ -1706,12 +1724,45 @@ If you would like to evaluate HF-based attackers, use the HFASTProblem instead o
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">evaluator</span> <span class="o">=</span> <span class="n">ASTEvaluator</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">seeds</span><span class="o">=</span><span class="n">PROMPTS</span><span class="p">)</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># collect metrics by running n_rollouts</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">n_rollouts</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">n_rollouts</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># save metrics to json file</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">Evaluator</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;metrics.json&quot;</span><span class="p">)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">evaluator</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;metrics.json&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>The source code for ASTEvaluator is located at examples/ast_eval.py . Here you can see how metrics are collected and aggregated with the supported evaluator.</p>
+<details class="info">
+<summary>What metrics does <code>ASTEvaluator</code> collect?</summary>
+<p><strong>Per-turn metrics</strong> <em>(one entry per conversation step)</em></p>
+<ul>
+<li><code>turn</code> — turn number in the rollout  </li>
+<li><code>reward</code> — environment reward at that turn  </li>
+<li><code>adversarial_toxicity</code> — toxicity of the attacker’s message  </li>
+<li><code>target_toxicity</code> — toxicity of the target’s response  </li>
+<li><code>context</code> — truncated conversation context  </li>
+<li><code>attack</code> — attacker’s utterance  </li>
+<li><code>response</code> — target’s response  </li>
+</ul>
+<p><strong>Overall rollout metrics</strong></p>
+<ul>
+<li><code>num_turns</code> — number of turns in the rollout  </li>
+<li><code>avg_reward</code> — mean reward across turns  </li>
+<li><code>avg_adversarial_toxicity</code> — average toxicity of attacker turns  </li>
+<li><code>avg_target_toxicity</code> — average toxicity of target turns  </li>
+<li><code>first_adversarial_toxicity_turn</code> — earliest turn attacker became toxic  </li>
+<li><code>first_target_toxicity_turn</code> — earliest turn target became toxic  </li>
+</ul>
+<p><strong>Aggregated metrics</strong> <em>(across all rollouts)</em></p>
+<ul>
+<li><code>avg_reward</code> — average reward per rollout  </li>
+<li><code>avg_adversarial_toxicity</code> — average attacker toxicity across rollouts  </li>
+<li><code>avg_target_toxicity</code> — average target toxicity across rollouts  </li>
+<li><code>pct_rollouts_with_adversarial_toxicity</code> — fraction of rollouts where attacker was toxic at least once  </li>
+<li><code>pct_rollouts_with_target_toxicity / attack_success_rate</code> — fraction of rollouts where target became toxic  </li>
+</ul>
+</details>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The source code for ASTEvaluator is located at <a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/methods/ast_problem.py">methods/ast_problem</a>. Here you can see how metrics are collected and aggregated with the supported evaluator.</p>
+</div>
 <p>If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts), see the <a href="customizing_evaluation/evaluators.html">Evaluator Customization</a> guide.</p>
 
 
@@ -1735,7 +1786,7 @@ If you would like to evaluate HF-based attackers, use the HFASTProblem instead o
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 18:44:51 UTC">2025-10-02</span>
   </span>
 
     
