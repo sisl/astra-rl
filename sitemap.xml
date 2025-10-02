@@ -13,10 +13,6 @@
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/getting_started.html</loc>
-         <lastmod>2025-10-02</lastmod>
-    </url>
-    <url>
          <loc>https://github.com/sisl/astra-rl/installation.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
@@ -101,39 +97,39 @@
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_evaluation/customize_evaluation.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_evaluation/index.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_evaluation/evaluation_problems.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_evaluation/evaluation_problems.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_evaluation/evaluators.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_evaluation/evaluators.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/customize_training.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_training/index.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/environments.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_training/environments.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/moderators.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_training/moderators.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/problems.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_training/problems.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/solvers.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_training/solvers.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
     <url>
-         <loc>https://github.com/sisl/astra-rl/tutorials/customize_training/trainers.html</loc>
+         <loc>https://github.com/sisl/astra-rl/tutorials/customizing_training/trainers.html</loc>
          <lastmod>2025-10-02</lastmod>
     </url>
 </urlset>

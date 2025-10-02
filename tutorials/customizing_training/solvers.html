@@ -12,28 +12,28 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/quick_start_training.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customizing_training/solvers.html">
       
       
-        <link rel="prev" href="index.html">
+        <link rel="prev" href="moderators.html">
       
       
-        <link rel="next" href="quick_start_evaluation.html">
+        <link rel="next" href="trainers.html">
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.15">
     
     
       
-        <title>Quick Start: Training a HuggingFace Attacker with ASTRA-RL - ASTRA-RL Toolbox Documentation</title>
+        <title>Solvers (RL Algorithm) - ASTRA-RL Toolbox Documentation</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -52,11 +52,11 @@
       
     
     
-      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#quick-start-training-a-huggingface-attacker-with-astra-rl" class="md-skip">
+        <a href="#solvers-rl-algorithm" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Quick Start: Training a HuggingFace Attacker with ASTRA-RL
+              Solvers (RL Algorithm)
             
           </span>
         </div>
@@ -223,7 +223,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../index.html" class="md-tabs__link">
+      <a href="../../index.html" class="md-tabs__link">
         
   
   
@@ -244,7 +244,7 @@
   
   
     <li class="md-tabs__item md-tabs__item--active">
-      <a href="index.html" class="md-tabs__link">
+      <a href="../index.html" class="md-tabs__link">
         
   
   
@@ -263,7 +263,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../api/index.html" class="md-tabs__link">
+      <a href="../../api/index.html" class="md-tabs__link">
         
   
   
@@ -304,7 +304,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -351,7 +351,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
+            <a href="../../index.html" class="md-nav__link ">
               
   
   
@@ -384,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../installation.html" class="md-nav__link">
+      <a href="../../installation.html" class="md-nav__link">
         
   
   
@@ -407,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../dev_setup.html" class="md-nav__link">
+      <a href="../../dev_setup.html" class="md-nav__link">
         
   
   
@@ -457,7 +457,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link ">
+            <a href="../index.html" class="md-nav__link ">
               
   
   
@@ -487,32 +487,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Quick Start: Training a HuggingFace Attacker with ASTRA-RL
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="quick_start_training.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../quick_start_training.html" class="md-nav__link">
         
   
   
@@ -523,98 +501,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#step-1-setup" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 1: Setup
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-2-import-required-modules-and-set-device" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 2: Import Required Modules and set device
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-3-load-your-initial-prompts" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 3: Load Your Initial Prompts
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-instantiate-your-problem" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 4: Instantiate Your Problem
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-instantiate-the-environment" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 5: Instantiate the Environment
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-choose-your-algorithm-and-optimizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 6: Choose Your Algorithm and Optimizer
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-7-train-the-attacker" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 7: Train the Attacker
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#full-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Full Examples:
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -627,7 +513,7 @@
   
   
     <li class="md-nav__item">
-      <a href="quick_start_evaluation.html" class="md-nav__link">
+      <a href="../quick_start_evaluation.html" class="md-nav__link">
         
   
   
@@ -647,8 +533,10 @@
                 
   
   
+    
   
   
+  
     
     
     
@@ -657,17 +545,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="customizing_training/index.html" class="md-nav__link ">
+            <a href="index.html" class="md-nav__link ">
               
   
   
@@ -686,7 +572,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_3">
             <span class="md-nav__icon md-icon"></span>
             Customizing Training
@@ -700,7 +586,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/problems.html" class="md-nav__link">
+      <a href="problems.html" class="md-nav__link">
         
   
   
@@ -723,7 +609,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/environments.html" class="md-nav__link">
+      <a href="environments.html" class="md-nav__link">
         
   
   
@@ -746,7 +632,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/moderators.html" class="md-nav__link">
+      <a href="moderators.html" class="md-nav__link">
         
   
   
@@ -766,10 +652,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="customizing_training/solvers.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Solvers (RL Algorithm)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="solvers.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -780,6 +688,146 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-solvers-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Solvers Do
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-built-in-solversexamples" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Built-in Solvers/Examples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ways-to-customize" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-fast-path-adapt-a-built-in-eg-dpo-ipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Fast path: adapt a built-in (e.g., DPO → IPO)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-full-control-subclass-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Full control: subclass Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-stepbatch-data-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Step/Batch data contracts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-flatten-collate_fn-step-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 flatten, collate_fn, step contracts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-interacting-with-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Interacting with Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Best Practices &amp; Sanity Checks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-plug-into-the-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Plug into the Trainer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-debug-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Debug Checklist
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -792,7 +840,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_training/trainers.html" class="md-nav__link">
+      <a href="trainers.html" class="md-nav__link">
         
   
   
@@ -840,7 +888,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="customizing_evaluation/index.html" class="md-nav__link ">
+            <a href="../customizing_evaluation/index.html" class="md-nav__link ">
               
   
   
@@ -873,7 +921,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_evaluation/evaluation_problems.html" class="md-nav__link">
+      <a href="../customizing_evaluation/evaluation_problems.html" class="md-nav__link">
         
   
   
@@ -896,7 +944,7 @@
   
   
     <li class="md-nav__item">
-      <a href="customizing_evaluation/evaluators.html" class="md-nav__link">
+      <a href="../customizing_evaluation/evaluators.html" class="md-nav__link">
         
   
   
@@ -951,7 +999,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/index.html" class="md-nav__link ">
+            <a href="../../api/index.html" class="md-nav__link ">
               
   
   
@@ -1001,7 +1049,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/core/index.html" class="md-nav__link ">
+            <a href="../../api/core/index.html" class="md-nav__link ">
               
   
   
@@ -1034,7 +1082,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/common.html" class="md-nav__link">
+      <a href="../../api/core/common.html" class="md-nav__link">
         
   
   
@@ -1057,7 +1105,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/problem.html" class="md-nav__link">
+      <a href="../../api/core/problem.html" class="md-nav__link">
         
   
   
@@ -1080,7 +1128,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/environment.html" class="md-nav__link">
+      <a href="../../api/core/environment.html" class="md-nav__link">
         
   
   
@@ -1103,7 +1151,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/moderator.html" class="md-nav__link">
+      <a href="../../api/core/moderator.html" class="md-nav__link">
         
   
   
@@ -1126,7 +1174,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/algorithm.html" class="md-nav__link">
+      <a href="../../api/core/algorithm.html" class="md-nav__link">
         
   
   
@@ -1174,7 +1222,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/algorithms/index.html" class="md-nav__link ">
+            <a href="../../api/algorithms/index.html" class="md-nav__link ">
               
   
   
@@ -1207,7 +1255,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/algorithms/dpo.html" class="md-nav__link">
+      <a href="../../api/algorithms/dpo.html" class="md-nav__link">
         
   
   
@@ -1255,7 +1303,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/moderators/index.html" class="md-nav__link ">
+            <a href="../../api/moderators/index.html" class="md-nav__link ">
               
   
   
@@ -1288,7 +1336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../../api/moderators/detoxify.html" class="md-nav__link">
         
   
   
@@ -1336,7 +1384,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/training/index.html" class="md-nav__link ">
+            <a href="../../api/training/index.html" class="md-nav__link ">
               
   
   
@@ -1369,7 +1417,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/training/harness.html" class="md-nav__link">
+      <a href="../../api/training/harness.html" class="md-nav__link">
         
   
   
@@ -1392,7 +1440,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/training/trainer.html" class="md-nav__link">
+      <a href="../../api/training/trainer.html" class="md-nav__link">
         
   
   
@@ -1440,7 +1488,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/methods/index.html" class="md-nav__link ">
+            <a href="../../api/methods/index.html" class="md-nav__link ">
               
   
   
@@ -1473,7 +1521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/methods/ast_problem.html" class="md-nav__link">
+      <a href="../../api/methods/ast_problem.html" class="md-nav__link">
         
   
   
@@ -1531,72 +1579,120 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#step-1-setup" class="md-nav__link">
+  <a href="#1-what-solvers-do" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 1: Setup
+      1. What Solvers Do
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-import-required-modules-and-set-device" class="md-nav__link">
+  <a href="#2-built-in-solversexamples" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 2: Import Required Modules and set device
+      2. Built-in Solvers/Examples
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-load-your-initial-prompts" class="md-nav__link">
+  <a href="#3-ways-to-customize" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 3: Load Your Initial Prompts
+      3. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-fast-path-adapt-a-built-in-eg-dpo-ipo" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Fast path: adapt a built-in (e.g., DPO → IPO)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-full-control-subclass-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Full control: subclass Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-stepbatch-data-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 Step/Batch data contracts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-flatten-collate_fn-step-contracts" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 flatten, collate_fn, step contracts
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-interacting-with-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.3 Interacting with Problem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Best Practices &amp; Sanity Checks
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-instantiate-your-problem" class="md-nav__link">
+  <a href="#6-plug-into-the-trainer" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 4: Instantiate Your Problem
+      6. Plug into the Trainer
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-5-instantiate-the-environment" class="md-nav__link">
+  <a href="#7-debug-checklist" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 5: Instantiate the Environment
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-6-choose-your-algorithm-and-optimizer" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 6: Choose Your Algorithm and Optimizer
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-7-train-the-attacker" class="md-nav__link">
-    <span class="md-ellipsis">
-      Step 7: Train the Attacker
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#full-examples" class="md-nav__link">
-    <span class="md-ellipsis">
-      Full Examples:
+      7. Debug Checklist
     </span>
   </a>
   
@@ -1621,115 +1717,113 @@
   
 
 
-<h1 id="quick-start-training-a-huggingface-attacker-with-astra-rl">Quick Start: Training a HuggingFace Attacker with ASTRA-RL<a class="headerlink" href="#quick-start-training-a-huggingface-attacker-with-astra-rl" title="Permanent link">&para;</a></h1>
-<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">RL - Perez</a>, MALIBU<em>, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)? </em>coming soon</p>
-<p>Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!</p>
+<h1 id="solvers-rl-algorithm">Solvers (RL Algorithm)<a class="headerlink" href="#solvers-rl-algorithm" title="Permanent link">&para;</a></h1>
+<p><strong>Solvers</strong> (a.k.a. algorithms) define <em>how learning happens</em>. They consume rollout graphs from the <strong>Environment</strong>, ask the <strong>Problem</strong> for model log-probs/rewards, and return a scalar <strong>loss</strong> (plus optional logs) to the <strong>Trainer</strong>. In ASTRA-RL a solver subclasses <code>Algorithm[...]</code> and typically implements three things:</p>
+<ol>
+<li><code>flatten(graph)</code> → turn a rollout <code>Graph</code> into per-sample <strong>Steps</strong></li>
+<li><code>collate_fn(steps)</code> → batch those steps into a <strong>Batch</strong></li>
+<li><code>step(batch)</code> → compute the training <strong>loss</strong> and a <code>logs</code> dict</li>
+</ol>
 <hr />
-<h2 id="step-1-setup">Step 1: Setup<a class="headerlink" href="#step-1-setup" title="Permanent link">&para;</a></h2>
-<p>Please see the <a href="../index.html">main documentation</a> for full setup instructions. Here's a quick recap:</p>
-<pre><code class="language-bash"># Install the ASTRA-RL toolbox
-pip install astra-rl
+<h2 id="1-what-solvers-do">1. What Solvers Do<a class="headerlink" href="#1-what-solvers-do" title="Permanent link">&para;</a></h2>
+<p>Given rollouts (graphs of attacker–target turns), a solver decides <strong>what examples to learn from</strong> (via <code>flatten</code>), <strong>how to batch them</strong> (<code>collate_fn</code>), and <strong>what objective to optimize</strong> (<code>step</code>). This keeps “<em>how we learn</em>” separate from:</p>
+<ul>
+<li><strong>Environment</strong>: <em>how data is collected/structured</em> (single path vs tree, etc.)</li>
+<li><strong>Problem</strong>: <em>how models are run</em> (log-probs, rewards, advance logic)</li>
+</ul>
+<hr />
+<h2 id="2-built-in-solversexamples">2. Built-in Solvers/Examples<a class="headerlink" href="#2-built-in-solversexamples" title="Permanent link">&para;</a></h2>
+<p>ASTRA-RL includes preference-learning solvers commonly used for LM alignment/red-teaming:</p>
+<ul>
+<li><strong>DPO</strong> — Direct Preference Optimization (pairwise preferred vs rejected)</li>
+<li><strong>IPO</strong> — Implicit Preference Optimization (margin-style objective over log-ratio differences)</li>
+<li><strong>PPO</strong> - Proximal Policy Optimization </li>
+</ul>
+<p>These serve as concrete references for writing your own solver. Find the code for these solvers <a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/core/algorithm.py">here</a>!</p>
+<hr />
+<h2 id="3-ways-to-customize">3. Ways to Customize<a class="headerlink" href="#3-ways-to-customize" title="Permanent link">&para;</a></h2>
+<h3 id="31-fast-path-adapt-a-built-in-eg-dpo-ipo">3.1 Fast path: adapt a built-in (e.g., DPO → IPO)<a class="headerlink" href="#31-fast-path-adapt-a-built-in-eg-dpo-ipo" title="Permanent link">&para;</a></h3>
+<p>If your rollout selection and batching are the same, you can <strong>reuse <code>flatten</code> and <code>collate_fn</code></strong> and only change the <strong>loss</strong> in <code>step</code>. IPO in our codebase demonstrates this pattern by inheriting from DPO and overriding <code>step</code>. Therefore, if you are only making a small change to how the loss is calculated, a great option would be to inheret from the DPO, IPO or PPO and ovverid 'step' to include your custom loss calculation.</p>
+<h3 id="32-full-control-subclass-algorithm">3.2 Full control: subclass <code>Algorithm</code><a class="headerlink" href="#32-full-control-subclass-algorithm" title="Permanent link">&para;</a></h3>
+<p>When your algorithm needs a different sampling strategy, subclass <code>Algorithm[...]</code> and implement <code>flatten</code>, <code>collate_fn</code>, and <code>step</code> to match your data/learning objective.</p>
+<hr />
+<h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
+<h3 id="41-stepbatch-data-contracts">4.1 Step/Batch data contracts<a class="headerlink" href="#41-stepbatch-data-contracts" title="Permanent link">&para;</a></h3>
+<p>Define explicit dataclasses that encode exactly what your algorithm needs.</p>
+<pre><code class="language-python">from dataclasses import dataclass
+from typing import Generic, Sequence
+from astra_rl.core.common import StateT, ActionT
 
-# Import ASTRA-RL in your python code
-import astra_rl
+@dataclass
+class MyStep(Generic[StateT, ActionT]):
+    context: StateT
+    action: ActionT
+    reward: float  # or advantage/return/log-ratio/etc.
+
+@dataclass
+class MyBatch(Generic[StateT, ActionT]):
+    contexts: Sequence[StateT]
+    actions:  Sequence[ActionT]
+    rewards:  torch.Tensor  # tensors for math
 </code></pre>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>wandb is not automatically installed during this process. If you would like to use wandb, either install it as an optional dependency (<code>pip install "astra-rl[wandb]"</code>) or install it directly (<code>uv pip install wandb</code>) and run export <code>WANDB_API_KEY=YOUR_API_KEY_HERE</code> in your terminal.</p>
-</div>
-<hr />
-<h2 id="step-2-import-required-modules-and-set-device">Step 2: Import Required Modules and set device<a class="headerlink" href="#step-2-import-required-modules-and-set-device" title="Permanent link">&para;</a></h2>
-<pre><code class="language-python">from torch.optim import AdamW
-
-# ASTRA-RL core components
-from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
-
-# HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
-from astra_rl.ext.transformers import HFASTProblem
-from astra_rl.training import Trainer, TrainingConfiguration
-
-DEVICE = &quot;cuda&quot;  # or &quot;cpu&quot; if GPU is not available
-</code></pre>
-<p>We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and moderator sizes that fit your compute!</p>
-<hr />
-<h2 id="step-3-load-your-initial-prompts">Step 3: Load Your Initial Prompts<a class="headerlink" href="#step-3-load-your-initial-prompts" title="Permanent link">&para;</a></h2>
-<p>To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. </p>
-<pre><code class="language-python">import json
-
-with open(&quot;prompts_reddit_train.json&quot;) as f:
-    PROMPTS = json.load(f)
-</code></pre>
-<p>Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in the GPT2_v_GPT2 folder in examples.</p>
-<p>The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.</p>
-<hr />
-<h2 id="step-4-instantiate-your-problem">Step 4: Instantiate Your Problem<a class="headerlink" href="#step-4-instantiate-your-problem" title="Permanent link">&para;</a></h2>
-<p>The <em>problem</em> is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the <code>HFASTProblem</code> class that handles the technical backend so you just need to provide the huggingface model IDs of the attacker, target and baseline models and a <code>Moderator</code> instance (DetexifyModerator(), LlamaGuardModerator() or your custom moderator).</p>
 <blockquote>
-<p>Note: Your attacker and target can be different models but your baseline and attacker should typically be the same.</p>
-<p>Note: HFASTProblem can not handle huggingface models that have a fixed length (e.g. GPT2) as it will run into an out of context error. If you would like to train a GPT2-based attacker model, please see our GPT2_v_GPT2 examples which use a custom ExampleDetoxifyProblem() designed for GPT2 models.</p>
+<p>Keep these minimal and algorithm-specific. They are the <em>contract</em> between your data selection (<code>flatten</code>) and your loss (<code>step</code>).</p>
 </blockquote>
-<pre><code class="language-python"># Example problem instantiation: llama3 attacker, target, and baseline with Detoxify moderator (heavyweight setup - requires GPU)
-problem = HFASTProblem(&quot;meta-llama/Llama-3.1-8B&quot;, &quot;meta-llama/Llama-3.1-8B&quot;, &quot;meta-llama/Llama-3.1-8B&quot;, DetoxifyModerator(), DEVICE)
-</code></pre>
-<p>Need a custom model or rollout step logic? See <a href="customize_training/problems.md">customize_training/problems</a></p>
-<p>Want to use a custom moderator? See <a href="customize_training/moderators.md">customize_training/moderators</a></p>
+<h3 id="42-flatten-collate_fn-step-contracts">4.2 <code>flatten</code>, <code>collate_fn</code>, <code>step</code> contracts<a class="headerlink" href="#42-flatten-collate_fn-step-contracts" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>flatten(graph: Graph) -&gt; Sequence[Step]</code></strong>
+  Select and transform nodes/edges from the rollout graph into per-sample <code>Step</code>s (BFS/DFS as you like).</li>
+<li><strong><code>collate_fn(steps: Sequence[Step]) -&gt; Batch</code></strong>
+  Convert a list of steps into batched tensors/sequences for efficient training.</li>
+<li><strong><code>step(batch: Batch) -&gt; tuple[torch.Tensor, dict]</code></strong>
+  Compute a scalar <strong>loss</strong> (used for backprop) and a <strong>logs</strong> dict of floats (the base trainer may ignore them; custom trainers can log them).</li>
+</ul>
+<h3 id="43-interacting-with-problem">4.3 Interacting with <code>Problem</code><a class="headerlink" href="#43-interacting-with-problem" title="Permanent link">&para;</a></h3>
+<p>Your solver calls into the <code>Problem</code> for model computations:</p>
+<ul>
+<li><code>problem._get_attacker_logprobs_and_validate(contexts, actions)</code></li>
+<li><code>problem._get_baseline_logprobs_and_validate(contexts, actions)</code></li>
+<li>optionally: <code>problem.get_target_logprobs(...)</code>, <code>problem.reward(...)</code>, etc.</li>
+</ul>
+<p><strong>Tip:</strong> Target/baseline log-prob calls usually should be in <code>torch.no_grad()</code>; the attacker’s log-probs must require grad.</p>
 <hr />
-<h2 id="step-5-instantiate-the-environment">Step 5: Instantiate the Environment<a class="headerlink" href="#step-5-instantiate-the-environment" title="Permanent link">&para;</a></h2>
-<p>The environment defines how training rollouts are structured and collected. In ASTRA-RL, the default is the <code>ASTEnvironment</code>, which implements the conversation tree rollout used in the <a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a> paper.</p>
-<pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS)
-</code></pre>
-<details>
-  <summary><strong>Curious about how this environment structures rollouts?</strong></summary>
-
-  This environment builds a tree-structured conversation graph, where:
-  - The root node starts from a random initial prompt (from `PROMPTS`)
-  - At each turn, the attacker generates multiple (`tree_width`, default 2) candidate utterances
-  - Each of those utterances is fed to the target model, which produces a response
-  - The resulting attacker–target tuples form child nodes
-  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn attacker–target dialogue tree.
-
-  This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the attacker to elicit harmful responses in a multi-turn setting.
-</details>
-
-<p>By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:</p>
-<pre><code class="language-python">env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
-</code></pre>
-<p>Want a different rollout graph structure or a multi-agent setup? See <a href="customize_training/environments.md">customize_training/environments</a></p>
+<h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Pairwise methods need width ≥ 2.</strong> For DPO/IPO, set <code>tree_width &gt;= 2</code> so each context has at least two candidate actions.</li>
+<li><strong>Stable scales.</strong> Keep losses well-scaled (e.g., use a <code>beta</code> like in DPO/IPO). Normalize or clip rewards if needed.</li>
+<li><strong>Efficient batching.</strong> Vectorize log-prob calls; avoid per-item model runs.</li>
+<li><strong>Validate shapes.</strong> Collated tensors must be aligned and same length.</li>
+<li><strong>Freeze the ref/baseline.</strong> Only attacker params should receive gradients.</li>
+<li><strong>KL anchor (when applicable).</strong> If training drifts, increase KL pressure (or use adaptive control) where appropriate.</li>
+</ul>
 <hr />
-<h2 id="step-6-choose-your-algorithm-and-optimizer">Step 6: Choose Your Algorithm and Optimizer<a class="headerlink" href="#step-6-choose-your-algorithm-and-optimizer" title="Permanent link">&para;</a></h2>
-<p>The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update attacker model weights 
-to minimize this loss, teaching the attacker to more effectively ellicit target toxicity.</p>
-<p>We use DPO and Adam as the default for this quickstart.</p>
-<pre><code class="language-python">solver = DPO(problem)
-optimizer = AdamW(problem.parameters(), lr=1e-5)
-</code></pre>
-<p>To integrate your own RL algorithm, see <a href="customize_training/solvers.md">customize_training/solvers</a></p>
-<hr />
-<h2 id="step-7-train-the-attacker">Step 7: Train the Attacker<a class="headerlink" href="#step-7-train-the-attacker" title="Permanent link">&para;</a></h2>
-<p>For the quick start approach, simply call our training configuration and trainer classes and start training!</p>
-<pre><code class="language-python"># instantiate the pre-configured HF-compatable configuration and traininer class
-config = HFASTConfiguration() # lr = 1e-5, batch size = 4, optimizer = &quot;adamw&quot;, no gradient accumulation, 1000 training steps, 2 episodes per experience
-# this trainer will train the attacker and evaluate it on a dev set every 100 steps, saving the best model to &quot;checkpoints&quot;
-trainer = HFASTTrainer(
-    config,
-    env,
-    solver,
-    dev_prompts=DEV_PROMPTS,
-    eval_every=100,
-    ckpt_dir=&quot;checkpoints&quot;,
-)
+<h2 id="6-plug-into-the-trainer">6. Plug into the Trainer<a class="headerlink" href="#6-plug-into-the-trainer" title="Permanent link">&para;</a></h2>
+<p>Instantiate and pass your solver to the trainer:</p>
+<pre><code class="language-python">solver  = DPO(problem, beta=0.1)  # or IPO(...)
+trainer = Trainer(config=config, environment=env, algorithm=solver)
 trainer.train()
 </code></pre>
+<p>Under the hood, the <strong>Trainer</strong> will:</p>
+<ol>
+<li>collect rollout graphs,</li>
+<li>call your solver’s <code>flatten</code> to produce <code>Steps</code>,</li>
+<li>use your solver’s <code>collate_fn</code> to form batches, and</li>
+<li>call your solver’s <code>step</code> to get <code>(loss, logs)</code>.</li>
+</ol>
 <blockquote>
-<p>The source code for the training configuration and trainer are at <a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/ext/transformers/hf_ast_problem.py">hf_ast_problem</a></p>
+<p>The base <code>Trainer</code> uses <code>loss</code> for optimization and may ignore <code>logs</code>. Use <code>HFASTTrainer</code> or a custom trainer to evaluate and checkpoint.</p>
 </blockquote>
-<p>Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to <a href="customize_training/trainers.md">customize_training/trainers</a>!</p>
 <hr />
-<h2 id="full-examples">Full Examples:<a class="headerlink" href="#full-examples" title="Permanent link">&para;</a></h2>
-<p>We provide 3 complete working examples that mirror this guide!</p>
-<p>Hugging face example for llama3 models without trainer: <a href="https://github.com/sisl/astra-rl/blob/main/examples/ast_hf.py">examples/ast_hf.py</a></p>
-<p>Custom AST problem for GPT2 models with trainer: <a href="https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py">examples/ast_trainer</a></p>
-<p>Custom AST problem for GPT2 models without trainer: <a href="https://github.com/sisl/astra-rl/blob/main/examples/ast_basic.py">examples/ast_basic.py</a></p>
+<h2 id="7-debug-checklist">7. Debug Checklist<a class="headerlink" href="#7-debug-checklist" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Shapes match:</strong> <code>len(prefixes) == len(pos) == len(neg)</code> (or analogous fields).</li>
+<li><strong>Gradients only through attacker:</strong> wrap baseline/target log-prob calls in <code>torch.no_grad()</code> if you surface them directly.</li>
+<li><strong>Finite values:</strong> check for <code>nan/inf</code> in losses and rewards (clip/normalize if necessary).</li>
+<li><strong>Tree width OK:</strong> preference solvers require <code>tree_width ≥ 2</code>.</li>
+<li><strong>KL anchor:</strong> if the attacker drifts, increase β or add an explicit KL penalty to the loss.</li>
+<li><strong>Determinism:</strong> set seeds and/or make selection in <code>flatten</code> deterministic to repro bugs.</li>
+</ul>
+<hr />
 
 
 
@@ -1752,7 +1846,7 @@ trainer.train()
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 24, 2025 00:31:03 UTC">2025-09-24</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 01:12:44 UTC">2025-10-02</span>
   </span>
 
     
@@ -1810,10 +1904,10 @@ trainer.train()
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.tabs", "navigation.tabs.sticky", "navigation.expand", "navigation.expand", "toc.follow"], "search": "../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.56ea9cef.min.js"></script>
+      <script src="../../assets/javascripts/bundle.56ea9cef.min.js"></script>
       
     
   </body>

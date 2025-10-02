@@ -12,9 +12,13 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customize_training/trainers.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/tutorials/customizing_training/trainers.html">
       
       
+        <link rel="prev" href="solvers.html">
+      
+      
+        <link rel="next" href="../customizing_evaluation/index.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +26,7 @@
     
     
       
-        <title>Trainer - ASTRA-RL Toolbox Documentation</title>
+        <title>Trainers - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -78,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#trainer" class="md-skip">
+        <a href="#trainers" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +98,7 @@
 
 <header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-header__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -114,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Trainer
+              Trainers
             
           </span>
         </div>
@@ -236,27 +240,10 @@
   
   
   
-  
-    <li class="md-tabs__item">
-      <a href="../../getting_started.html" class="md-tabs__link">
-        
-  
-  
     
   
-  Getting Started
-
-      </a>
-    </li>
   
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
+    <li class="md-tabs__item md-tabs__item--active">
       <a href="../index.html" class="md-tabs__link">
         
   
@@ -283,25 +270,6 @@
     
   
   API Reference
-
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../contributing.html" class="md-tabs__link">
-        
-  
-  
-    
-  
-  Contributing
 
       </a>
     </li>
@@ -336,7 +304,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../index.html" title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
+    <a href="../.." title="ASTRA-RL Toolbox Documentation" class="md-nav__button md-logo" aria-label="ASTRA-RL Toolbox Documentation" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -365,9 +333,26 @@
   
   
   
-    <li class="md-nav__item">
-      <a href="../../index.html" class="md-nav__link">
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
         
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_1" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../index.html" class="md-nav__link ">
+              
   
   
   <span class="md-ellipsis">
@@ -376,24 +361,35 @@
   </span>
   
 
-      </a>
-    </li>
-  
-
-    
-      
-      
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_1" id="__nav_1_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            ASTRA
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
   
   
   
   
     <li class="md-nav__item">
-      <a href="../../getting_started.html" class="md-nav__link">
+      <a href="../../installation.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Getting Started
+    Installation Guide
     
   </span>
   
@@ -402,9 +398,516 @@
     </li>
   
 
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev_setup.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development Setup Guide
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
     
       
       
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Tutorials
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Tutorials
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start_training.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start: Training a HuggingFace Attacker with ASTRA-RL
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quick_start_evaluation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    How to Run an Evaluation / Red Team
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="index.html" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    Customizing Training
+    
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            Customizing Training
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="problems.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Problems
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="environments.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Environments
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="moderators.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Moderators
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="solvers.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Solvers (RL Algorithm)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Trainers
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="trainers.html" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Trainers
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-what-trainers-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. What Trainers Do
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-built-in-trainers" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Built-in Trainers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-ways-to-customize" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Ways to Customize
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Ways to Customize">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-fast-path-use-the-base-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Fast path: use the base Trainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-fast-path-hf-compatible-trainer-hfasttrainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Fast path: HF-compatible trainer (HFASTTrainer)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-full-control-subclass-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 Full control: subclass Trainer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-required-interface" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Required Interface
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Required Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-trainingconfiguration-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 TrainingConfiguration knobs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-what-the-trainer-expects-from-the-harnessalgorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 What the Trainer expects from the Harness/Algorithm
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-best-practices-sanity-checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Best Practices &amp; Sanity Checks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-how-tos" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. How-Tos
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. How-Tos">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-minimal-usage-of-the-base-trainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Minimal usage of the base Trainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-periodic-eval-hf-checkpoints-via-hfasttrainer" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Periodic eval + HF checkpoints via HFASTTrainer
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Write a custom trainer with eval, saving, and grad accumulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-early-stopping-or-custom-lr-schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Early stopping or custom LR schedules
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-full-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Full Examples
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
   
   
   
@@ -423,16 +926,16 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_4" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../index.html" class="md-nav__link ">
+            <a href="../customizing_evaluation/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Tutorials
+    Customizing Evaluation
     
   </span>
   
@@ -440,16 +943,16 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_2_4" id="__nav_2_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_4">
             <span class="md-nav__icon md-icon"></span>
-            Tutorials
+            Customizing Evaluation
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -460,12 +963,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../training_an_evaluator.md" class="md-nav__link">
+      <a href="../customizing_evaluation/evaluation_problems.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Evaluation Problems
     
   </span>
   
@@ -483,17 +986,25 @@
   
   
     <li class="md-nav__item">
-      <a href="../running_an_evaluation.md" class="md-nav__link">
+      <a href="../customizing_evaluation/evaluators.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    None
+    Evaluators
     
   </span>
   
 
       </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -526,7 +1037,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -543,14 +1054,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             API Reference
           </label>
@@ -576,7 +1087,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_1" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -593,14 +1104,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_1" id="__nav_3_1_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_1">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Core Module
           </label>
@@ -749,7 +1260,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -766,14 +1277,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             Algorithms
           </label>
@@ -830,7 +1341,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_3" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -847,14 +1358,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_3">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             Moderators
           </label>
@@ -911,7 +1422,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_4" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -928,14 +1439,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_4">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
             <span class="md-nav__icon md-icon"></span>
             Training
           </label>
@@ -1015,7 +1526,7 @@
         
           
         
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_5" >
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
         
           
           <div class="md-nav__link md-nav__container">
@@ -1032,14 +1543,14 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_5" id="__nav_3_5_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_5">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
             <span class="md-nav__icon md-icon"></span>
             Methods
           </label>
@@ -1079,28 +1590,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../contributing.html" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Contributing
-    
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1312,7 +1801,7 @@
   
 
 
-<h1 id="trainer">Trainer<a class="headerlink" href="#trainer" title="Permanent link">&para;</a></h1>
+<h1 id="trainers">Trainers<a class="headerlink" href="#trainers" title="Permanent link">&para;</a></h1>
 <p><strong>Trainers</strong> run the optimization loop that updates your attacker. They wire together the <strong>environment</strong> (rollout collection), the <strong>algorithm/solver</strong> (computes a loss from rollouts), and the <strong>optimizer</strong> (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.</p>
 <p>This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.</p>
 <hr />
@@ -1507,7 +1996,7 @@ class MyTrainer(Trainer):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 30, 2025 17:20:43 UTC">2025-09-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 01:12:44 UTC">2025-10-02</span>
   </span>
 
     
