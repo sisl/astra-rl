@@ -9,7 +9,7 @@ so we ignore types here.
 https://discuss.huggingface.co/t/static-type-checking-with-mypy-whats-the-official-position/464/4
 """
 
-from typing import Sequence, Iterator
+from typing import Sequence, Iterator, Optional
 
 import torch
 
@@ -19,9 +19,8 @@ from transformers import (
     AutoTokenizer,
     PreTrainedTokenizer,
     BatchEncoding,
-    ValueFunctionProblem,
 )
-
+from astra_rl.core.problem import ValueFunctionProblem
 from astra_rl.core.moderator import Moderator
 from astra_rl.methods.ast_problem import ASTProblem
 from astra_rl.training.trainer import Trainer, TrainingConfiguration
@@ -105,25 +104,6 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
             self.target_tokenizer.truncation_side
         ) = self.baseline_tokenizer.truncation_side = "left"
 
-        # model’s usable max sequence length (GPT-2: 1024) - fix for GPT2, dont need for llama
-        # self.attacker_max_ctx = int(getattr(self.attacker.config,"n_positions",getattr(self.attacker.config, "max_position_embeddings", 1024),))
-        # self.target_max_ctx = int(getattr(self.target.config,"n_positions",getattr(self.target.config, "max_position_embeddings", 1024),))
-        # self.baseline_max_ctx = int(getattr(self.baseline.config,"n_positions",getattr(self.baseline.config, "max_position_embeddings", 1024),))
-
-        # better set up?
-
-    #     for tok, model in [
-    #     (self.attacker_tokenizer, self.attacker_model),
-    #     (self.target_tokenizer,   self.target_model),
-    #     (self.baseline_tokenizer, self.baseline_model),]:
-    #     # 1) Padding/truncation policy (left padding is safest for generation with KV cache)
-    #     tok.padding_side   = "left"
-    #     tok.truncation_side = "left"   # keep the tail if sequences are too long (optional)
-
-    #     # 2) Ensure a valid pad token for GPT-2
-    #     if tok.pad_token is None:
-    #         tok.pad_token = tok.eos_token
-    #     model.config.pad_token_id = tok.pad_token_id
     def get_target_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
@@ -381,6 +361,78 @@ class HFASTTrainer(Trainer):
                 # every x number of training steps, run a dev set eval and save the best model so far
                 if (step_num + 1) % self.eval_every == 0:
                     self.eval_epoch(step=step_num + 1, tag="dev")
+
+
+class HFEvaluationProblem(HFASTProblem):
+    """
+    Minimal evaluation wrapper for non-GPT2 HF models.
+
+    - Initializes the HFASTProblem using a sensible base id so HFASTProblem
+      sets up tokenizers/target/baseline exactly as it does for training.
+    - Replaces the attacker model weights from `attacker_checkpoint`.
+    - If the checkpoint contains a tokenizer, prefers that tokenizer; otherwise
+      leaves the tokenizers configured by HFASTProblem intact.
+
+    Note: This class intentionally does NOT apply GPT-2 specific fixes
+    (pad_token/eos_token mapping or max_ctx handling). Use a GPT2-specific
+    subclass for GPT-2 quirks.
+    """
+
+    def __init__(
+        self,
+        attacker_checkpoint: str,
+        attacker_base_model_id: Optional[str],
+        target_model_id: str,
+        device: str = "cpu",
+        moderator: Optional[Moderator] = None,
+        baseline_model_id: Optional[str] = None,
+    ) -> None:
+        # Choose a safe model id to give the parent: prefer an explicit base id if provided,
+        # otherwise pass the checkpoint itself. HFASTProblem will create tokenizers from that id.
+        base_id_for_super = attacker_base_model_id or attacker_checkpoint
+
+        # Initialize HFASTProblem exactly as it would for training (so tokenizers are set up the same way)
+        super().__init__(
+            attacker_model_id=base_id_for_super,
+            target_model_id=target_model_id,
+            baseline_model_id=baseline_model_id,
+            moderator=moderator,
+            device=device,
+        )
+
+        self.device = device
+
+        # Replace attacker weights with the trained checkpoint (local HF dir or hub id).
+        try:
+            self.attacker = AutoModelForCausalLM.from_pretrained(
+                attacker_checkpoint
+            ).to(self.device)
+            logger.info(f"Loaded attacker model weights from: {attacker_checkpoint}")
+        except Exception as e:
+            # fallback: keep attacker loaded by super().__init__ (from base_id_for_super)
+            logger.warning(
+                f"Failed to load attacker checkpoint '{attacker_checkpoint}': {e}. "
+                "Using attacker model loaded by HFASTProblem (from base id)."
+            )
+
+        # If the checkpoint contains tokenizer files, prefer them. Otherwise keep the tokenizers that HFASTProblem created.
+        try:
+            # This will succeed when the checkpoint folder contains tokenizer files (tokenizer.json, vocab.json, merges.txt, etc.)
+            ckpt_tokenizer = AutoTokenizer.from_pretrained(attacker_checkpoint)
+            self.attacker_tokenizer = ckpt_tokenizer
+            logger.info(
+                f"Loaded attacker tokenizer from checkpoint: {attacker_checkpoint}"
+            )
+        except Exception:
+            # No tokenizer in checkpoint — leave the tokenizer created by HFASTProblem (from base_id_for_super)
+            logger.debug(
+                "No tokenizer found in attacker_checkpoint; using tokenizer from HFASTProblem initialization."
+            )
+
+        # canonical alias expected by other code (trainer.save uses problem.tokenizer)
+        self.tokenizer = self.attacker_tokenizer
+
+        logger.info("HFEvaluationProblem initialized (non-GPT2 path).")
 
 
 __all__ = ("HFASTProblem",)

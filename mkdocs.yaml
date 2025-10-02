@@ -23,6 +23,7 @@ plugins:
 markdown_extensions:
   - admonition
   - footnotes
+  - pymdownx.details
   - tables
   - toc:
       permalink: true
@@ -103,10 +104,11 @@ nav:
         - Moderators:
             - api/moderators/index.md
             - api/moderators/detoxify.md
+            - api/moderators/llamaguard.md
         - Training:
             - api/training/index.md
             - api/training/harness.md
             - api/training/trainer.md
         - Methods:
             - api/methods/index.md
-            - api/methods/ast_problem.md      
+            - api/methods/ast_problem.md

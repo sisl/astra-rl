@@ -74,51 +74,6 @@ class ASTProblem(Problem[str, str]):
 ASTNode = Node[str, str]
 
 
-# # custom node class to hold extra eval metrics
-# class CustomNode(Node[str, str]):
-#     """
-#     A Node with extra per-turn metadata for evaluation/training diagnostics.
-#     Compatible anywhere a plain Node is expected (isinstance(CustomNode, Node) == True).
-#     """
-
-#     def __init__(
-#         self,
-#         context: str,
-#         attack: str,
-#         response: str,
-#         reward: float,
-#         children: Sequence["Node[str, str]"],
-#         *,
-#         attack_tox: float = 0.0,
-#         target_tox: float = 0.0,
-#         attack_logprob: float = 0.0,
-#         first_attack_tox_turn: Optional[int] = None,
-#         first_target_tox_turn: Optional[int] = None,
-#     ):
-#         # Initialize the base Node fields first
-#         super().__init__(context, attack, response, reward, list(children))
-#         # attach custom metrics
-#         self.attack_tox: float = float(attack_tox)
-#         self.target_tox: float = float(target_tox)
-#         self.attack_logprob: float = float(attack_logprob)
-#         self.first_attack_tox_turn: Optional[int] = first_attack_tox_turn
-#         self.first_target_tox_turn: Optional[int] = first_target_tox_turn
-
-#     # convert to dict for easier saving/analysis
-#     def to_row(self) -> Dict[str, Any]:
-#         return {
-#             "context": self.context,
-#             "attack": self.attack,
-#             "response": self.response,
-#             "reward": float(self.reward),
-#             "attack_tox": float(self.attack_tox),
-#             "target_tox": float(self.target_tox),
-#             "attack_logprob": float(self.attack_logprob),
-#             "first_attack_tox_turn": self.first_attack_tox_turn,
-#             "first_target_tox_turn": self.first_target_tox_turn,
-#         }
-
-
 class ASTEnvironment(Environment[str, str]):
     """The ASTPrompter Rollout Environment
 
@@ -198,12 +153,19 @@ class ASTEnvironment(Environment[str, str]):
 
         return Graph(prompt, nodes)
 
-    def eval_rollout(self, prompt: Optional[Any] = None) -> Graph[str, str]:
-        if prompt is None:
-            return self.rollout()
+    def eval_rollout(self, seed: Optional[Any] = None) -> Graph[str, str]:
+        # if seed is a string, use it as the prompt directly
+        if isinstance(seed, str):
+            nodes = self.__handle_prompt(seed, self.tree_depth, 1)
+            return Graph(seed, nodes)
 
-        nodes = self.__handle_prompt(prompt, self.tree_depth, 1)
-        return Graph(prompt, nodes)
+        # if seed is an int, use it as a random seed to select a prompt
+        elif isinstance(seed, int):
+            return self.rollout(seed)
+
+        # otherwise just do a random rollout
+        else:
+            return self.rollout()
 
 
 class ASTEvaluator(Evaluator[str, str, str]):

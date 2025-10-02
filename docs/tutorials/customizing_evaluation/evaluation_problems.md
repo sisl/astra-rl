@@ -22,7 +22,7 @@ problem = HFEvaluationProblem(
 ```
 
 !!! tip
-    See the [Quick Start: Evaluation](../quick_start_evaluation.md) tutorial or the [full example](https://github.com/sisl/astra-rl/tree/main/examples/hf_eval.py).
+    See the [Quick Start: Evaluation](../quick_start_evaluation.md) tutorial or the [full HF evaluation example](https://github.com/sisl/astra-rl/tree/main/examples/hf_eval.py).
 
 ---
 
@@ -49,6 +49,8 @@ problem = GPT2EvaluationProblem(
   * Target = `"gpt2"`
   * Attacker = GPT-2–based adversarial model.
 
+!!! tip
+    See the [full GPT2 evaluation example](https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py).
 ---
 
 ## 3. Fully Custom Attackers or Targets
@@ -64,7 +66,7 @@ See the [Problem Customization guide](../customizing_training/problems.md) for d
 !!! note
     If you already created a custom problem class for **training**, it is often easiest to **subclass it for evaluation** and just modify the attacker instantiation.
 
-    For example, the `GPT2EvaluationProblem` is a thin subclass that changes only the constructor.
+    For example, the [`GPT2EvaluationProblem`](https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py) is a thin subclass that changes only the constructor.
 
 ---
 

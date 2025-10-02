@@ -1,4 +1,4 @@
-# Quick Start: Training a HuggingFace Attacker with ASTRA-RL
+# Quick Start: Training
 
 Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [Perez et al.](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
 
