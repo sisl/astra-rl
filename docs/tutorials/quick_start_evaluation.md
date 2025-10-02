@@ -25,10 +25,8 @@ from astra_rl.ext.transformers.hf_ast_problem import HFEvaluationProblem
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Path to your pre-trained llama3 attacker model
-# Note: this ATTACKER_MODEL example points to a standard llama3 model as we don't know where your trained attacker checkpoint iS
-ATTACKER_MODEL = "meta-llama/Llama-3.1-8B"  # e.g., "/home/checkpoints/best" 
-ATTACKER_BASE_MODEL = "meta-llama/Llama-3.1-8B"  # assuming you used a llama3 model as the attacker during training
+# Path to your attacker model checkpoint from training
+ATTACKER_MODEL = "/home/user/astra-rl/examples/checkpoints/best" # assuming tokenizer is in checkpoint (default save in training)
 TARGET_MODEL = "meta-llama/Llama-3.1-8B"  # can be any HF model
 ```
 
@@ -47,22 +45,34 @@ with open("prompts_reddit_test.json") as f:
 
 ### 3) Instantiate the Problem and Environment
 
-Use the preconfigured **HFEvaluationProblem** (takes in a pre-trained HF model and it's "base" HF model) and the **ASTEnvironment** (ASTPrompter-style rollouts).
+Use the preconfigured **HFEvaluationProblem** (takes in a pre-trained HF model) and the **ASTEnvironment** (ASTPrompter-style rollouts).
 
 ```python
 # instantiate the HF evaluation problem with your attacker and target models
-problem = HFEvaluationProblem(ATTACKER_MODEL, ATTACKER_BASE_MODEL, TARGET_MODEL, DEVICE, DetoxifyModerator())
+problem = HFEvaluationProblem(
+    attacker_checkpoint=ATTACKER_MODEL,      # local HF dir or Hub id with trained attacker
+    attacker_base_model_id=None,             # optional fallback; None if checkpoint includes tokenizer
+    target_model_id=TARGET_MODEL,            # HF id of the target model
+    device=DEVICE,                           # "cuda" or "cpu"
+    moderator=DetoxifyModerator(),           # harm classifier (optional)
+)
 
-# instantiate the AST environment - no adjustments needed because already has eval_rollout
-env = ASTEnvironment(problem, PROMPTS, 1, 3)
+# instantiate the AST environment — no adjustments needed because eval_rollout is available
+env = ASTEnvironment(problem, PROMPTS, tree_width=1, tree_depth=3)
 ```
-??? info "HFEvaluation" inputs
-    ATTACKER_MODEL = path to your trained attacker checkpoint. ex: "home/examples/checkpoints/best"
-    ATTACKER_BASE_MODEL = Hugging Face ID you used as the attacker during training. This is used to ensure your attacker has the correct tokenizer. ex: "meta-llama/Llama-3.1-8B"
-    TARGET_MODEL = Hugging Face ID of the model you want to evaluate. 
-    DEVICE = where you want to hold your models and tokenizers. ex: "cuda" or "cpu"
-    MODERATOR = classifier model that defines the harm you are evaluating the target for. ex" DetoxifyModerator() or LlamaGuardModerator()
 
+
+??? info "HFEvaluation inputs"
+    - `ATTACKER_MODEL` — Path or Hugging Face hub id for your trained attacker checkpoint (e.g. `"/home/user/checkpoints/best"` or `"username/attacker-checkpoint"`). The checkpoint may include model weights **and** tokenizer files.
+    - `ATTACKER_BASE_MODEL` *(optional)* — Hugging Face model id used as the **base tokenizer** at training-time (e.g. `"meta-llama/Llama-3.1-8B"`). Only required if the checkpoint **does not** include tokenizer files.
+    - `TARGET_MODEL` — Hugging Face id of the model you want to evaluate (e.g. `"meta-llama/Llama-3.1-8B"`).
+    - `DEVICE` — Device string where you want to load models/tokenizers (e.g. `"cuda"` or `"cpu"`).
+    - `MODERATOR` — Moderator instance that defines the harm metric (e.g. `DetoxifyModerator()` or `LlamaGuardModerator()`).
+
+!!! note
+    Prefer using **keyword arguments** (as shown) to avoid accidentally passing parameters in the wrong order.  
+
+    If your attacker checkpoint includes tokenizer files (common when saving via `model.save_pretrained()` + `tokenizer.save_pretrained()` during training), set `attacker_base_model_id=None` — the evaluation class will load the tokenizer from the checkpoint. If the checkpoint lacks tokenizer files, provide `attacker_base_model_id` so the correct tokenizer can be loaded.
 
 !!! tip
     If you want to evaluate GPT-2 attackers, use `GPT2EvaluationProblem` instead of `HFEvaluationProblem`.  

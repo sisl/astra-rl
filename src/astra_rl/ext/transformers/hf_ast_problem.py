@@ -19,9 +19,8 @@ from transformers import (
     AutoTokenizer,
     PreTrainedTokenizer,
     BatchEncoding,
-    ValueFunctionProblem,
 )
-
+from astra_rl.core.problem import ValueFunctionProblem
 from astra_rl.core.moderator import Moderator
 from astra_rl.methods.ast_problem import ASTProblem
 from astra_rl.training.trainer import Trainer, TrainingConfiguration
@@ -366,64 +365,74 @@ class HFASTTrainer(Trainer):
 
 class HFEvaluationProblem(HFASTProblem):
     """
-    Thin evaluation wrapper around HFASTProblem that:
-      - loads ATTACKER_MODEL weights from `attacker_checkpoint`
-      - sets the attacker model tokenizer to align with `attacker_base_model_id`
-      - inherets all rollout/logprob methods from HFASTProblem.
+    Minimal evaluation wrapper for non-GPT2 HF models.
 
-    Attributes:
-        device (str): The device to run the models on (default is "cpu").
-        attacker (AutoModelForCausalLM): The attacker model used for generating sequences, dervied from `attacker_checkpoint`.
-        attacker_tokenizer (PreTrainedTokenizer): The tokenizer for the attacker model, dervied from attacker_base_model_id.
-        target (AutoModelForCausalLM): The target model used for evaluating sequences.
-        target_tokenizer (PreTrainedTokenizer): The tokenizer for the target model.
+    - Initializes the HFASTProblem using a sensible base id so HFASTProblem
+      sets up tokenizers/target/baseline exactly as it does for training.
+    - Replaces the attacker model weights from `attacker_checkpoint`.
+    - If the checkpoint contains a tokenizer, prefers that tokenizer; otherwise
+      leaves the tokenizers configured by HFASTProblem intact.
 
+    Note: This class intentionally does NOT apply GPT-2 specific fixes
+    (pad_token/eos_token mapping or max_ctx handling). Use a GPT2-specific
+    subclass for GPT-2 quirks.
     """
 
     def __init__(
         self,
         attacker_checkpoint: str,
-        attacker_base_model_id: str,
+        attacker_base_model_id: Optional[str],
         target_model_id: str,
         device: str = "cpu",
         moderator: Optional[Moderator] = None,
+        baseline_model_id: Optional[str] = None,
     ) -> None:
-        """Initialize an HFEvaluationProblem instance
-        Args:
-            attacker_checkpoint (str): The model ID/checpoint path for the attacker model, must be possible for AutoModelForCausalLM.
-            attacker_base_model_id (str): The model ID used to train the attacker, used to load the correct tokenizer.
-            target_model_id (str): The model ID for the target model, must be possible for AutoModelForCausalLM.
-            moderator (Moderator): The moderator used to evaluate sequences.
-            device (str): The device to run the models on (default is "cpu").
-        """
-        super().__init__(moderator)
+        # Choose a safe model id to give the parent: prefer an explicit base id if provided,
+        # otherwise pass the checkpoint itself. HFASTProblem will create tokenizers from that id.
+        base_id_for_super = attacker_base_model_id or attacker_checkpoint
+
+        # Initialize HFASTProblem exactly as it would for training (so tokenizers are set up the same way)
+        super().__init__(
+            attacker_model_id=base_id_for_super,
+            target_model_id=target_model_id,
+            baseline_model_id=baseline_model_id,
+            moderator=moderator,
+            device=device,
+        )
 
         self.device = device
 
-        # initialize models and tokenizer
-        self.attacker = AutoModelForCausalLM.from_pretrained(attacker_checkpoint).to(
-            self.device
-        )
-        self.attacker_tokenizer = AutoTokenizer.from_pretrained(attacker_base_model_id)
+        # Replace attacker weights with the trained checkpoint (local HF dir or hub id).
+        try:
+            self.attacker = AutoModelForCausalLM.from_pretrained(
+                attacker_checkpoint
+            ).to(self.device)
+            logger.info(f"Loaded attacker model weights from: {attacker_checkpoint}")
+        except Exception as e:
+            # fallback: keep attacker loaded by super().__init__ (from base_id_for_super)
+            logger.warning(
+                f"Failed to load attacker checkpoint '{attacker_checkpoint}': {e}. "
+                "Using attacker model loaded by HFASTProblem (from base id)."
+            )
 
-        self.target = AutoModelForCausalLM.from_pretrained(target_model_id).to(
-            self.device
-        )
-        self.target_tokenizer = AutoTokenizer.from_pretrained(target_model_id)
+        # If the checkpoint contains tokenizer files, prefer them. Otherwise keep the tokenizers that HFASTProblem created.
+        try:
+            # This will succeed when the checkpoint folder contains tokenizer files (tokenizer.json, vocab.json, merges.txt, etc.)
+            ckpt_tokenizer = AutoTokenizer.from_pretrained(attacker_checkpoint)
+            self.attacker_tokenizer = ckpt_tokenizer
+            logger.info(
+                f"Loaded attacker tokenizer from checkpoint: {attacker_checkpoint}"
+            )
+        except Exception:
+            # No tokenizer in checkpoint — leave the tokenizer created by HFASTProblem (from base_id_for_super)
+            logger.debug(
+                "No tokenizer found in attacker_checkpoint; using tokenizer from HFASTProblem initialization."
+            )
 
-        # a bunch of models doesn't have padding, so we set the pad token to the eos token
-        if self.attacker_tokenizer.pad_token_id is None:
-            self.attacker_tokenizer.pad_token_id = self.attacker_tokenizer.eos_token_id
-        if self.target_tokenizer.pad_token_id is None:
-            self.target_tokenizer.pad_token_id = self.target_tokenizer.eos_token_id
+        # canonical alias expected by other code (trainer.save uses problem.tokenizer)
+        self.tokenizer = self.attacker_tokenizer
 
-        # set the tokenizer padding and truncation side
-        self.attacker_tokenizer.padding_side = self.target_tokenizer.padding_side = (
-            "left"
-        )
-        self.attacker_tokenizer.truncation_side = (
-            self.target_tokenizer.truncation_side
-        ) = "left"
+        logger.info("HFEvaluationProblem initialized (non-GPT2 path).")
 
 
 __all__ = ("HFASTProblem",)
