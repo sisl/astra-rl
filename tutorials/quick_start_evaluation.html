@@ -26,7 +26,7 @@
     
     
       
-        <title>How to Run an Evaluation / Red Team - ASTRA-RL Toolbox Documentation</title>
+        <title>How to Run an Evaluation - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#how-to-run-an-evaluation-red-team" class="md-skip">
+        <a href="#how-to-run-an-evaluation" class="md-skip">
           Skip to content
         </a>
       
@@ -118,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How to Run an Evaluation / Red Team
+              How to Run an Evaluation
             
           </span>
         </div>
@@ -423,6 +423,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -527,7 +550,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -540,7 +563,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -1202,6 +1225,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/algorithms/ppo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1579,8 +1625,8 @@
   
 
 
-<h1 id="how-to-run-an-evaluation-red-team">How to Run an Evaluation / Red Team<a class="headerlink" href="#how-to-run-an-evaluation-red-team" title="Permanent link">&para;</a></h1>
-<p>RL-based red-teaming uses reinforcement learning to train an <strong>attacker</strong> that generates test cases likely to elicit unsafe outputs from a <strong>target</strong> model. This tutorial shows how to run evaluations (red-team rollouts) using a <strong>pre-trained attacker</strong> against a target model.</p>
+<h1 id="how-to-run-an-evaluation">How to Run an Evaluation<a class="headerlink" href="#how-to-run-an-evaluation" title="Permanent link">&para;</a></h1>
+<p>RL-based adversarial testing uses reinforcement learning to train an <strong>attacker</strong> that generates test cases likely to elicit unsafe outputs from a <strong>target</strong> model. This tutorial shows how to run evaluations using a <strong>pre-trained attacker</strong> against a target model.</p>
 <div class="admonition note">
 <p class="admonition-title">Prerequisite</p>
 <p>This guide assumes you already trained a GPT2 attacker (see <strong>Quick Start: Training</strong>). You’ll point evaluation at that saved attacker checkpoint.</p>
@@ -1589,27 +1635,28 @@
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <p>Evaluation at a glance: run a set of attacker↔target rollouts (seeded by a test set of prompts), collect per-turn data, and compute summary metrics.</p>
 <h3 id="1-setup-imports-model-paths-and-device">1) Setup: imports, model paths, and device<a class="headerlink" href="#1-setup-imports-model-paths-and-device" title="Permanent link">&para;</a></h3>
-<p>Load dependencies and define the models you’ll use as the <strong>attacker</strong> and <strong>target</strong>.</p>
-<pre><code class="language-python">
-# import dependencies 
-from typing import Optional
-import torch
-import json
-from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
-from astra_rl import ASTProblem, DetoxifyModerator, ASTEnvironment
-from ast_eval_test.py import EvaluationProblem
-from astra_rl.core.evaluator import Evaluator
-# import ASTEvaluator for the quickstart guide
-from astra_rl.methods.ast_problem import ASTEvaluator
-# optional: only import llamaguardModerator if you want to use it during evaluations
-from astra_rl.moderators.llamaGuard import LlamaGuardModerator
-
-DEVICE = &quot;cuda&quot; if torch.cuda.is_available() else &quot;cpu&quot;
-
-# Path to your pre-trained attacker gpt2 model
-ATTACKER_MODEL = &quot;path/or/hub-id/of/attacker&quot;  # e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;
-TARGET_MODEL   = &quot;gpt2&quot;    # e.g., &quot;meta-llama/Llama-3-8B&quot; (example)
-</code></pre>
+<p>Load dependencies and define the models you'll use as the <strong>attacker</strong> and <strong>target</strong>.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># import dependencies </span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoModelForCausalLM</span><span class="p">,</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">GPT2LMHeadModel</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTProblem</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">,</span> <span class="n">ASTEnvironment</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">ast_eval_test.py</span><span class="w"> </span><span class="kn">import</span> <span class="n">EvaluationProblem</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.core.evaluator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Evaluator</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># import ASTEvaluator for the quickstart guide</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.methods.ast_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTEvaluator</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># optional: only import llamaguardModerator if you want to use it during evaluations</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.moderators.llamaGuard</span><span class="w"> </span><span class="kn">import</span> <span class="n">LlamaGuardModerator</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1"># Path to your pre-trained attacker gpt2 model</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="n">ATTACKER_MODEL</span> <span class="o">=</span> <span class="s2">&quot;path/or/hub-id/of/attacker&quot;</span>  <span class="c1"># e.g., &quot;/home/checkpoints/best&quot; or &quot;gpt2&quot;</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="n">TARGET_MODEL</span>   <span class="o">=</span> <span class="s2">&quot;gpt2&quot;</span>    <span class="c1"># e.g., &quot;meta-llama/Llama-3-8B&quot; (example)</span>
+</span></code></pre></div>
 <h3 id="2-load-evaluation-prompts">2) Load evaluation prompts<a class="headerlink" href="#2-load-evaluation-prompts" title="Permanent link">&para;</a></h3>
 <p>Evaluation prompts <strong>start</strong> the attacker–target conversation. Make sure they:</p>
 <ol>
@@ -1617,34 +1664,32 @@ TARGET_MODEL   = &quot;gpt2&quot;    # e.g., &quot;meta-llama/Llama-3-8B&quot; (
 <li>Were <strong>never</strong> seen during training or dev.</li>
 <li>Are provided as a <strong>list of strings</strong>.</li>
 </ol>
-<pre><code class="language-python">with open(&quot;prompts_reddit_test.json&quot;) as f:
-    PROMPTS = json.load(f)  # e.g., [&quot;prompt 1&quot;, &quot;prompt 2&quot;, ...]
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;prompts_reddit_test.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="n">PROMPTS</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>  <span class="c1"># e.g., [&quot;prompt 1&quot;, &quot;prompt 2&quot;, ...]</span>
+</span></code></pre></div>
 <h3 id="3-instantiate-the-problem-and-environment">3) Instantiate the Problem and Environment<a class="headerlink" href="#3-instantiate-the-problem-and-environment" title="Permanent link">&para;</a></h3>
 <p>Use the preconfigured <strong>EvaluationProblem</strong> (takes in a pre-trained GPT2 model) and the <strong>ASTEnvironment</strong> (ASTPrompter-style rollouts).</p>
-<pre><code class="language-python"># instantiate the evaluation problem with your attacker and target models
-problem = EvaluationProblem(ATTACKER_MODEL, TARGET_MODEL, DEVICE, DetoxifyModerator())
-
-# instantiate the AST environment - no adjustments needed because already has eval_rollout
-env = ASTEnvironment(problem, PROMPTS, 1, 3)
-</code></pre>
-<p>If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, please visit the following guide to see how to create a custom Evaluation Problem.
-* Guide: <a href="customize_evaluation/evaluation_problem.md">Evaluation Problem Customization</a></p>
+<p><div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># instantiate the evaluation problem with your attacker and target models</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">EvaluationProblem</span><span class="p">(</span><span class="n">ATTACKER_MODEL</span><span class="p">,</span> <span class="n">TARGET_MODEL</span><span class="p">,</span> <span class="n">DEVICE</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">())</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># instantiate the AST environment - no adjustments needed because already has eval_rollout</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</span></code></pre></div>
+If you would like to evaluate HF-based attackers, use the HFASTProblem instead of the EvaluationProblem. If you would like to evaluate a custom attacker, see the <a href="customizing_evaluation/evaluation_problems.html">Evaluation Problem Customization</a> guide.</p>
 <h3 id="4-evaluate">4) Evaluate!<a class="headerlink" href="#4-evaluate" title="Permanent link">&para;</a></h3>
-<p>This step will instantiate the ASTEvaluator class which will collect standard red-teaming metrics such as average target toxicity, attack succsess rate, average reward, average first turn the target is toxic. </p>
+<p>This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, attack success rate, average reward, average first turn the target is toxic. </p>
 <p>Then, we will perform evaluation rollouts (attaker-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json. </p>
-<pre><code class="language-python"># instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)
-evaluator = ASTEvaluator(env, seeds=PROMPTS)
-
-# collect metrics by running n_rollouts
-metrics = evaluator.evaluate(n_rollouts=20, progress=True)
-
-# save metrics to json file
-Evaluator.write_json(metrics, &quot;metrics.json&quot;)
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">evaluator</span> <span class="o">=</span> <span class="n">ASTEvaluator</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">seeds</span><span class="o">=</span><span class="n">PROMPTS</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># collect metrics by running n_rollouts</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">metrics</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">n_rollouts</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># save metrics to json file</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">Evaluator</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">metrics</span><span class="p">,</span> <span class="s2">&quot;metrics.json&quot;</span><span class="p">)</span>
+</span></code></pre></div>
 <p>The source code for ASTEvaluator is located at examples/ast_eval.py . Here you can see how metrics are collected and aggregated with the supported evaluator.</p>
-<p>If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts) visit the Evaluator customization guide.
-* Guide: <a href="customize_evaluation/evaluator.md">Evaluator Customization</a></p>
+<p>If you would like to customize the evaluator (change how evaluation rollouts are performed, what metrics are collected for each rollout, or how metrics are aggregated over rollouts), see the <a href="customizing_evaluation/evaluators.html">Evaluator Customization</a> guide.</p>
 
 
 
@@ -1667,7 +1712,7 @@ Evaluator.write_json(metrics, &quot;metrics.json&quot;)
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="September 30, 2025 17:20:43 UTC">2025-09-30</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 01:57:49 UTC">2025-10-02</span>
   </span>
 
     

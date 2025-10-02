@@ -423,6 +423,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -518,7 +541,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -1304,6 +1327,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/algorithms/ppo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1823,17 +1869,17 @@
 <h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
 <h3 id="41-methods-gradient-expectations">4.1 Methods &amp; gradient expectations<a class="headerlink" href="#41-methods-gradient-expectations" title="Permanent link">&para;</a></h3>
 <p>Every Problem must implement the following <strong>batched</strong> methods (lists in, tensors/lists out, index-aligned):</p>
-<pre><code class="language-python">rollout_prompt_with_attacker(prompts: Sequence[str]) -&gt; Sequence[str]
-rollout_prompt_with_target  (prompts: Sequence[str]) -&gt; Sequence[str]
-
-get_attacker_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -&gt; torch.Tensor  # requires grad
-get_target_logprobs  (contexts: Sequence[str], continuations: Sequence[str]) -&gt; torch.Tensor  # no grad
-get_baseline_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -&gt; torch.Tensor  # no grad
-
-parameters() -&gt; Iterator[torch.nn.Parameter]   # usually attacker params
-advance(context: str, attack: str, response: str) -&gt; str # return the next state (i.e. updated conversation context)
-reward(contexts, attacks, responses) -&gt; Sequence[float]
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">rollout_prompt_with_attacker</span><span class="p">(</span><span class="n">prompts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">rollout_prompt_with_target</span>  <span class="p">(</span><span class="n">prompts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">get_attacker_logprobs</span><span class="p">(</span><span class="n">contexts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">continuations</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>  <span class="c1"># requires grad</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">get_target_logprobs</span>  <span class="p">(</span><span class="n">contexts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">continuations</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>  <span class="c1"># no grad</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">get_baseline_logprobs</span><span class="p">(</span><span class="n">contexts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">continuations</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>  <span class="c1"># no grad</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">parameters</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">]</span>   <span class="c1"># usually attacker params</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">advance</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">attack</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="c1"># return the next state (i.e. updated conversation context)</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">reward</span><span class="p">(</span><span class="n">contexts</span><span class="p">,</span> <span class="n">attacks</span><span class="p">,</span> <span class="n">responses</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+</span></code></pre></div>
 <p><strong>Gradients:</strong> only <code>get_attacker_logprobs</code> must return a tensor with <code>requires_grad=True</code>. Target/baseline should be computed under <code>torch.no_grad()</code> (return tensors detached from graphs) to save memory.</p>
 <h3 id="42-problem-helpers">4.2 Problem helpers<a class="headerlink" href="#42-problem-helpers" title="Permanent link">&para;</a></h3>
 <p><code>Problem</code> provides <code>_get_*_and_validate(...)</code> and <code>_rollout_*_and_validate(...)</code> utilities that assert shapes and (for attacker) gradient presence. Solvers in this repo call these versions.</p>
@@ -1853,59 +1899,59 @@ reward(contexts, attacks, responses) -&gt; Sequence[float]
 <p>To create your custom Problem class, we encourage you to find what existing problem is the closest fit to your desired Problem and subclass from there. </p>
 <p>For example, if you are still using huggingface models but want to change how the state advances or how the reward is calculated, you should subclass from the HFASTProblem, define the methods you wish to change, and let the pre-defined methods in HFASTProblem remain. </p>
 <p>The following code shows how to subclass from the base Problem class and where you should implement your custom methods to create the changes you desire. </p>
-<pre><code class="language-python">class MyProblem(Problem[str, str]):
-    def __init__(self, moderator, attacker_model, target_model, baseline_model, device=&quot;cuda&quot;):
-        super().__init__(moderator)
-        self.device = device
-
-        # set your attacker, target, and baseline models
-        self.attacker = attacker_model.to(device)
-        self.target   = target_model.to(device)
-        self.baseline = baseline_model.to(device)
-
-        # TODO: load the attacker, target and baseline tokenizers
-        # TODO: set your padding tokenins for each tokenizer
-        # TODO: set your model's usable max sequence length (e.g GPT-2: 1024)
-
-    def rollout_prompt_with_attacker(self, prompts):
-        # TODO: your generator over token ids/text → list[str] continuations
-        ...
-
-    def rollout_prompt_with_target(self, prompts):
-        ...
-
-    def get_attacker_logprobs(self, ctx, cont):
-        # Return sum log P(cont | ctx) per example; tensor requires grad
-        return self._logprobs(self.attacker, ctx, cont, requires_grad=True)
-
-    def get_target_logprobs(self, ctx, cont):
-        with torch.no_grad():
-            return self._logprobs(self.target, ctx, cont, requires_grad=False)
-
-    def get_baseline_logprobs(self, ctx, cont):
-        with torch.no_grad():
-            return self._logprobs(self.baseline, ctx, cont, requires_grad=False)
-
-    def _logprobs(self, model, ctx, cont, requires_grad):
-        # Implement your own encode/combine/mask logic 
-        # 1) encode ctx, cont → id tensors
-        # 2) build attention + continuation mask
-        # 3) forward model → logits → log_softmax
-        # 4) gather per-token logprobs, mask out context, sum over continuation
-        ...
-
-    def advance(self, context, attack, response):
-        # Conversation concatenation or your custom state transition
-        return context + attack + response
-
-    def parameters(self):
-        return self.attacker.parameters()
-
-    def reward(self, contexts, attacks, responses):
-        # calculate your custom reward here! 
-        # return a scalar value. Note that binary signals are not as helpful for training. Try to make the reward continuous from 0-1. 
-        return r
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyProblem</span><span class="p">(</span><span class="n">Problem</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">moderator</span><span class="p">,</span> <span class="n">attacker_model</span><span class="p">,</span> <span class="n">target_model</span><span class="p">,</span> <span class="n">baseline_model</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">):</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">moderator</span><span class="p">)</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="c1"># set your attacker, target, and baseline models</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span> <span class="o">=</span> <span class="n">attacker_model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">target</span>   <span class="o">=</span> <span class="n">target_model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">baseline</span> <span class="o">=</span> <span class="n">baseline_model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>        <span class="c1"># TODO: load the attacker, target and baseline tokenizers</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="c1"># TODO: set your padding tokenins for each tokenizer</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="c1"># TODO: set your model&#39;s usable max sequence length (e.g GPT-2: 1024)</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">rollout_prompt_with_attacker</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompts</span><span class="p">):</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="c1"># TODO: your generator over token ids/text → list[str] continuations</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>        <span class="o">...</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">rollout_prompt_with_target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prompts</span><span class="p">):</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>        <span class="o">...</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_attacker_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>        <span class="c1"># Return sum log P(cont | ctx) per example; tensor requires grad</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_target_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_baseline_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">):</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseline</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">_logprobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">cont</span><span class="p">,</span> <span class="n">requires_grad</span><span class="p">):</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>        <span class="c1"># Implement your own encode/combine/mask logic </span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>        <span class="c1"># 1) encode ctx, cont → id tensors</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>        <span class="c1"># 2) build attention + continuation mask</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        <span class="c1"># 3) forward model → logits → log_softmax</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        <span class="c1"># 4) gather per-token logprobs, mask out context, sum over continuation</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        <span class="o">...</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">attack</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>        <span class="c1"># Conversation concatenation or your custom state transition</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>        <span class="k">return</span> <span class="n">context</span> <span class="o">+</span> <span class="n">attack</span> <span class="o">+</span> <span class="n">response</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexts</span><span class="p">,</span> <span class="n">attacks</span><span class="p">,</span> <span class="n">responses</span><span class="p">):</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>        <span class="c1"># calculate your custom reward here! </span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a>        <span class="c1"># return a scalar value. Note that binary signals are not as helpful for training. Try to make the reward continuous from 0-1. </span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a>        <span class="k">return</span> <span class="n">r</span>
+</span></code></pre></div>
 <h3 id="63-designing-rewards">6.3 Designing rewards<a class="headerlink" href="#63-designing-rewards" title="Permanent link">&para;</a></h3>
 <p>Common patterns (return one float per sample):</p>
 <ul>
@@ -1915,9 +1961,9 @@ reward(contexts, attacks, responses) -&gt; Sequence[float]
 </ul>
 <h3 id="64-implementing-advance">6.4 implementing <code>advance(...)</code><a class="headerlink" href="#64-implementing-advance" title="Permanent link">&para;</a></h3>
 <p>Default text setting is simple concatenation (below) but you can customize how the next state is created.</p>
-<pre><code class="language-python">def advance(self, context, attack, response):
-    return context + attack + response
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">advance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">,</span> <span class="n">attack</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">return</span> <span class="n">context</span> <span class="o">+</span> <span class="n">attack</span> <span class="o">+</span> <span class="n">response</span>
+</span></code></pre></div>
 <h3 id="65-saving-models-hf-non-hf">6.5 Saving models (HF &amp; non-HF)<a class="headerlink" href="#65-saving-models-hf-non-hf" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>HF:</strong> <code>model.save_pretrained(path)</code> and <code>tokenizer.save_pretrained(path)</code>.</li>
@@ -1925,13 +1971,13 @@ reward(contexts, attacks, responses) -&gt; Sequence[float]
 </ul>
 <hr />
 <h2 id="7-plug-into-environment-solver">7. Plug into Environment / Solver<a class="headerlink" href="#7-plug-into-environment-solver" title="Permanent link">&para;</a></h2>
-<p>Your problem will be passed to the 'Environment' and 'Solver'. The 'Trainer' will have acsess to the problem through the environment (env.problem).</p>
-<pre><code class="language-python">problem = MyHFProblem(&quot;gpt2&quot;, &quot;gpt2&quot;, &quot;gpt2&quot;, DetoxifyModerator(), device=&quot;cuda&quot;)
-env     = ASTEnvironment(problem, PROMPTS, tree_width=2, tree_depth=3)
-solver  = DPO(problem, beta=0.1)
-trainer = Trainer(config=config, environment=env, algorithm=solver)
-trainer.train()
-</code></pre>
+<p>Your problem will be passed to the 'Environment' and 'Solver'. The 'Trainer' will have acsess to the problem through the environment (env.problem).
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">MyHFProblem</span><span class="p">(</span><span class="s2">&quot;gpt2&quot;</span><span class="p">,</span> <span class="s2">&quot;gpt2&quot;</span><span class="p">,</span> <span class="s2">&quot;gpt2&quot;</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">(),</span> <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">env</span>     <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">,</span> <span class="n">tree_width</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">tree_depth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">solver</span>  <span class="o">=</span> <span class="n">DPO</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</span></code></pre></div></p>
 <hr />
 <h2 id="8-debug-checklist">8. Debug Checklist<a class="headerlink" href="#8-debug-checklist" title="Permanent link">&para;</a></h2>
 <ul>

@@ -18,7 +18,7 @@
         <link rel="prev" href="installation.html">
       
       
-        <link rel="next" href="tutorials/index.html">
+        <link rel="next" href="contributing.html">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -555,6 +555,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -647,7 +670,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -1238,6 +1261,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="api/algorithms/ppo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1659,39 +1705,39 @@
 <ol>
 <li><strong>Clone the repository:</strong></li>
 </ol>
-<p><code>bash
-   git clone https://github.com/sisl/astra-rl.git
-   cd astra-rl</code></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/sisl/astra-rl.git
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">cd</span><span class="w"> </span>astra-rl
+</span></code></pre></div>
 <ol>
 <li><strong>Sync package dependencies:</strong></li>
 </ol>
-<p><code>bash
-   uv sync --dev</code></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uv<span class="w"> </span>sync<span class="w"> </span>--dev
+</span></code></pre></div>
 <p>This creates a <code>.venv</code> directory in the project root with all necessary dependencies installed.</p>
 <ol>
 <li><strong>Install pre-commit hooks:</strong></li>
 </ol>
-<p><code>bash
-   uv run pre-commit install</code></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>install
+</span></code></pre></div>
 <p>This ensures that the linter (<code>ruff</code>), formatter (<code>ruff</code>), and type checker (<code>mypy</code>) validate your code before each commit.</p>
 <h3 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h3>
 <p>After setting up your development environment, you can run tests using:</p>
-<pre><code class="language-bash">pytest
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pytest
+</span></code></pre></div>
 <p>or with uv:</p>
-<pre><code class="language-bash">uv run pytest
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest
+</span></code></pre></div>
 <h3 id="generating-coverage-reports">Generating Coverage Reports<a class="headerlink" href="#generating-coverage-reports" title="Permanent link">&para;</a></h3>
 <p>To generate local coverage reports:</p>
-<pre><code class="language-bash">uv run coverage run -m pytest
-uv run coverage report  # Generate CLI report
-uv run coverage html    # Generate HTML report
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>uv<span class="w"> </span>run<span class="w"> </span>coverage<span class="w"> </span>run<span class="w"> </span>-m<span class="w"> </span>pytest
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>uv<span class="w"> </span>run<span class="w"> </span>coverage<span class="w"> </span>report<span class="w">  </span><span class="c1"># Generate CLI report</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>uv<span class="w"> </span>run<span class="w"> </span>coverage<span class="w"> </span>html<span class="w">    </span><span class="c1"># Generate HTML report</span>
+</span></code></pre></div>
 <p>The HTML report will be available in the <code>htmlcov</code> directory.</p>
 <h3 id="building-documentation-locally">Building Documentation Locally<a class="headerlink" href="#building-documentation-locally" title="Permanent link">&para;</a></h3>
 <p>To build and serve the documentation locally:</p>
-<pre><code class="language-bash">uv run mkdocs serve
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>uv<span class="w"> </span>run<span class="w"> </span>mkdocs<span class="w"> </span>serve
+</span></code></pre></div>
 <p>This will start a local server at <code>http://127.0.0.1:8000</code> where you can preview documentation changes.</p>
 <h3 id="code-quality-tools">Code Quality Tools<a class="headerlink" href="#code-quality-tools" title="Permanent link">&para;</a></h3>
 <p>The project uses several tools to maintain code quality:</p>
@@ -1701,16 +1747,16 @@ uv run coverage html    # Generate HTML report
 <li><strong>Pre-commit</strong>: For running checks before commits</li>
 </ul>
 <p>To run these manually:</p>
-<pre><code class="language-bash"># Linting and formatting
-uv run ruff check .
-uv run ruff format .
-
-# Type checking
-uv run mypy .
-
-# Run all pre-commit hooks
-uv run pre-commit run --all-files
-</code></pre>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Linting and formatting</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>.
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>uv<span class="w"> </span>run<span class="w"> </span>ruff<span class="w"> </span>format<span class="w"> </span>.
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Type checking</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>uv<span class="w"> </span>run<span class="w"> </span>mypy<span class="w"> </span>.
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># Run all pre-commit hooks</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>uv<span class="w"> </span>run<span class="w"> </span>pre-commit<span class="w"> </span>run<span class="w"> </span>--all-files
+</span></code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <h3 id="common-issues">Common Issues<a class="headerlink" href="#common-issues" title="Permanent link">&para;</a></h3>
 <ol>

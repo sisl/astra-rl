@@ -18,7 +18,7 @@
         <link rel="prev" href="index.html">
       
       
-        <link rel="next" href="../moderators/index.html">
+        <link rel="next" href="ppo.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -423,6 +423,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -515,7 +538,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -1175,6 +1198,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ppo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1583,228 +1629,228 @@
 
               <details class="quote">
                 <summary>Source code in <code>src/astra_rl/algorithms/dpo.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 29</span>
-<span class="normal"> 30</span>
-<span class="normal"> 31</span>
-<span class="normal"> 32</span>
-<span class="normal"> 33</span>
-<span class="normal"> 34</span>
-<span class="normal"> 35</span>
-<span class="normal"> 36</span>
-<span class="normal"> 37</span>
-<span class="normal"> 38</span>
-<span class="normal"> 39</span>
-<span class="normal"> 40</span>
-<span class="normal"> 41</span>
-<span class="normal"> 42</span>
-<span class="normal"> 43</span>
-<span class="normal"> 44</span>
-<span class="normal"> 45</span>
-<span class="normal"> 46</span>
-<span class="normal"> 47</span>
-<span class="normal"> 48</span>
-<span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
-<span class="normal"> 54</span>
-<span class="normal"> 55</span>
-<span class="normal"> 56</span>
-<span class="normal"> 57</span>
-<span class="normal"> 58</span>
-<span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
-<span class="normal"> 64</span>
-<span class="normal"> 65</span>
-<span class="normal"> 66</span>
-<span class="normal"> 67</span>
-<span class="normal"> 68</span>
-<span class="normal"> 69</span>
-<span class="normal"> 70</span>
-<span class="normal"> 71</span>
-<span class="normal"> 72</span>
-<span class="normal"> 73</span>
-<span class="normal"> 74</span>
-<span class="normal"> 75</span>
-<span class="normal"> 76</span>
-<span class="normal"> 77</span>
-<span class="normal"> 78</span>
-<span class="normal"> 79</span>
-<span class="normal"> 80</span>
-<span class="normal"> 81</span>
-<span class="normal"> 82</span>
-<span class="normal"> 83</span>
-<span class="normal"> 84</span>
-<span class="normal"> 85</span>
-<span class="normal"> 86</span>
-<span class="normal"> 87</span>
-<span class="normal"> 88</span>
-<span class="normal"> 89</span>
-<span class="normal"> 90</span>
-<span class="normal"> 91</span>
-<span class="normal"> 92</span>
-<span class="normal"> 93</span>
-<span class="normal"> 94</span>
-<span class="normal"> 95</span>
-<span class="normal"> 96</span>
-<span class="normal"> 97</span>
-<span class="normal"> 98</span>
-<span class="normal"> 99</span>
-<span class="normal">100</span>
-<span class="normal">101</span>
-<span class="normal">102</span>
-<span class="normal">103</span>
-<span class="normal">104</span>
-<span class="normal">105</span>
-<span class="normal">106</span>
-<span class="normal">107</span>
-<span class="normal">108</span>
-<span class="normal">109</span>
-<span class="normal">110</span>
-<span class="normal">111</span>
-<span class="normal">112</span>
-<span class="normal">113</span>
-<span class="normal">114</span>
-<span class="normal">115</span>
-<span class="normal">116</span>
-<span class="normal">117</span>
-<span class="normal">118</span>
-<span class="normal">119</span>
-<span class="normal">120</span>
-<span class="normal">121</span>
-<span class="normal">122</span>
-<span class="normal">123</span>
-<span class="normal">124</span>
-<span class="normal">125</span>
-<span class="normal">126</span>
-<span class="normal">127</span>
-<span class="normal">128</span>
-<span class="normal">129</span>
-<span class="normal">130</span>
-<span class="normal">131</span>
-<span class="normal">132</span>
-<span class="normal">133</span>
-<span class="normal">134</span>
-<span class="normal">135</span>
-<span class="normal">136</span>
-<span class="normal">137</span>
-<span class="normal">138</span>
-<span class="normal">139</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DPO</span><span class="p">(</span>
-    <span class="n">Algorithm</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]],</span>
-    <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span>
-<span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Direct Preference Optimization (DPO) algorithm.&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]:</span>
-        <span class="c1"># in DPO, we sample from each branch the most rewarded</span>
-        <span class="c1"># and least rewarded actions in order to use them as our contrastive</span>
-        <span class="c1"># pairs.</span>
-
-        <span class="n">pairs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">bfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
-        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfs</span><span class="p">):</span>
-            <span class="n">front</span> <span class="o">=</span> <span class="n">bfs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-            <span class="n">sorted_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">front</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">reward</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="c1"># if there is no pair, we skip this node</span>
-                <span class="k">continue</span>
-
-            <span class="n">pos_entry</span> <span class="o">=</span> <span class="n">sorted_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">neg_entry</span> <span class="o">=</span> <span class="n">sorted_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-
-            <span class="k">assert</span> <span class="n">pos_entry</span><span class="o">.</span><span class="n">context</span> <span class="o">==</span> <span class="n">neg_entry</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="p">(</span>
-                <span class="s2">&quot;paired rollouts for DPO must share the same prefix!&quot;</span>
-            <span class="p">)</span>
-
-            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">DPOStep</span><span class="p">(</span>
-                    <span class="n">prefix</span><span class="o">=</span><span class="n">pos_entry</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
-                    <span class="n">suffix_pos</span><span class="o">=</span><span class="n">pos_entry</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span>
-                    <span class="n">suffix_neg</span><span class="o">=</span><span class="n">neg_entry</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_list</span><span class="p">:</span>
-                <span class="n">bfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">pairs</span>
-
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
-        <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">prefix</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-        <span class="n">suffix_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix_pos</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-        <span class="n">suffix_neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix_neg</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">DPOBatch</span><span class="p">(</span><span class="n">prefixes</span><span class="o">=</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">suffix_pos</span><span class="o">=</span><span class="n">suffix_pos</span><span class="p">,</span> <span class="n">suffix_neg</span><span class="o">=</span><span class="n">suffix_neg</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-        <span class="n">attacker_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-        <span class="n">attacker_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-        <span class="n">baseline_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-        <span class="n">baseline_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
-        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
-
-        <span class="c1"># https://github.com/eric-mitchell/direct-preference-optimization/blob/ \</span>
-        <span class="c1"># f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87</span>
-        <span class="n">pi_logratios</span> <span class="o">=</span> <span class="n">attacker_logprobs_win</span> <span class="o">-</span> <span class="n">attacker_logprobs_loss</span>
-        <span class="n">ref_logratios</span> <span class="o">=</span> <span class="n">baseline_logprobs_win</span> <span class="o">-</span> <span class="n">baseline_logprobs_loss</span>
-        <span class="n">logits</span> <span class="o">=</span> <span class="n">pi_logratios</span> <span class="o">-</span> <span class="n">ref_logratios</span>
-
-        <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="n">logits</span><span class="p">)</span>
-
-        <span class="c1"># Calculate addition quantities</span>
-        <span class="c1"># TODO: CHECK ME for correctness and completion!</span>
-        <span class="n">chosen_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">attacker_logprobs_win</span> <span class="o">-</span> <span class="n">baseline_logprobs_win</span><span class="p">)</span>
-        <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">attacker_logprobs_loss</span> <span class="o">-</span> <span class="n">baseline_logprobs_loss</span><span class="p">)</span>
-        <span class="n">reward_accuracies</span> <span class="o">=</span> <span class="p">(</span><span class="n">chosen_rewards</span> <span class="o">&gt;</span> <span class="n">rejected_rewards</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
-        <span class="n">reward_margin</span> <span class="o">=</span> <span class="n">chosen_rewards</span> <span class="o">-</span> <span class="n">rejected_rewards</span>
-
-        <span class="n">logging_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;training/loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/chosen_rewards&quot;</span><span class="p">:</span> <span class="n">chosen_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/rejected_rewards&quot;</span><span class="p">:</span> <span class="n">rejected_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/reward_accuracies&quot;</span><span class="p">:</span> <span class="n">reward_accuracies</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;reward/reward_margin&quot;</span><span class="p">:</span> <span class="n">reward_margin</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;policy/logprobs_chosen&quot;</span><span class="p">:</span> <span class="n">attacker_logprobs_win</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;policy/logprobs_rejected&quot;</span><span class="p">:</span> <span class="n">attacker_logprobs_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;ref/logprobs_chosen&quot;</span><span class="p">:</span> <span class="n">baseline_logprobs_win</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-            <span class="s2">&quot;ref/logprobs_rejected&quot;</span><span class="p">:</span> <span class="n">baseline_logprobs_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
-            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
-        <span class="p">}</span>
-        <span class="c1"># TODO: Add this from old code?</span>
-        <span class="c1"># &quot;policy/rollout&quot;: wandb.Html(str(r&quot;&lt;span&gt;&quot;+batch[&quot;prompt_win&quot;][0][0]+&quot;&lt;/span&gt;&lt;span style=&#39;color:Tomato;&#39;&gt;&quot;+batch[&quot;prompt_win&quot;][0][1]+r&quot;&lt;/span&gt;&lt;span style=&#39;color:DodgerBlue&#39;&gt;&quot;+batch[&quot;prompt_win&quot;][0][2]+r&quot;&lt;/span&gt;&quot;)),</span>
-
-        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">logging_dict</span>
-</code></pre></div></td></tr></table></div>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-29"> 29</a></span>
+<span class="normal"><a href="#__codelineno-0-30"> 30</a></span>
+<span class="normal"><a href="#__codelineno-0-31"> 31</a></span>
+<span class="normal"><a href="#__codelineno-0-32"> 32</a></span>
+<span class="normal"><a href="#__codelineno-0-33"> 33</a></span>
+<span class="normal"><a href="#__codelineno-0-34"> 34</a></span>
+<span class="normal"><a href="#__codelineno-0-35"> 35</a></span>
+<span class="normal"><a href="#__codelineno-0-36"> 36</a></span>
+<span class="normal"><a href="#__codelineno-0-37"> 37</a></span>
+<span class="normal"><a href="#__codelineno-0-38"> 38</a></span>
+<span class="normal"><a href="#__codelineno-0-39"> 39</a></span>
+<span class="normal"><a href="#__codelineno-0-40"> 40</a></span>
+<span class="normal"><a href="#__codelineno-0-41"> 41</a></span>
+<span class="normal"><a href="#__codelineno-0-42"> 42</a></span>
+<span class="normal"><a href="#__codelineno-0-43"> 43</a></span>
+<span class="normal"><a href="#__codelineno-0-44"> 44</a></span>
+<span class="normal"><a href="#__codelineno-0-45"> 45</a></span>
+<span class="normal"><a href="#__codelineno-0-46"> 46</a></span>
+<span class="normal"><a href="#__codelineno-0-47"> 47</a></span>
+<span class="normal"><a href="#__codelineno-0-48"> 48</a></span>
+<span class="normal"><a href="#__codelineno-0-49"> 49</a></span>
+<span class="normal"><a href="#__codelineno-0-50"> 50</a></span>
+<span class="normal"><a href="#__codelineno-0-51"> 51</a></span>
+<span class="normal"><a href="#__codelineno-0-52"> 52</a></span>
+<span class="normal"><a href="#__codelineno-0-53"> 53</a></span>
+<span class="normal"><a href="#__codelineno-0-54"> 54</a></span>
+<span class="normal"><a href="#__codelineno-0-55"> 55</a></span>
+<span class="normal"><a href="#__codelineno-0-56"> 56</a></span>
+<span class="normal"><a href="#__codelineno-0-57"> 57</a></span>
+<span class="normal"><a href="#__codelineno-0-58"> 58</a></span>
+<span class="normal"><a href="#__codelineno-0-59"> 59</a></span>
+<span class="normal"><a href="#__codelineno-0-60"> 60</a></span>
+<span class="normal"><a href="#__codelineno-0-61"> 61</a></span>
+<span class="normal"><a href="#__codelineno-0-62"> 62</a></span>
+<span class="normal"><a href="#__codelineno-0-63"> 63</a></span>
+<span class="normal"><a href="#__codelineno-0-64"> 64</a></span>
+<span class="normal"><a href="#__codelineno-0-65"> 65</a></span>
+<span class="normal"><a href="#__codelineno-0-66"> 66</a></span>
+<span class="normal"><a href="#__codelineno-0-67"> 67</a></span>
+<span class="normal"><a href="#__codelineno-0-68"> 68</a></span>
+<span class="normal"><a href="#__codelineno-0-69"> 69</a></span>
+<span class="normal"><a href="#__codelineno-0-70"> 70</a></span>
+<span class="normal"><a href="#__codelineno-0-71"> 71</a></span>
+<span class="normal"><a href="#__codelineno-0-72"> 72</a></span>
+<span class="normal"><a href="#__codelineno-0-73"> 73</a></span>
+<span class="normal"><a href="#__codelineno-0-74"> 74</a></span>
+<span class="normal"><a href="#__codelineno-0-75"> 75</a></span>
+<span class="normal"><a href="#__codelineno-0-76"> 76</a></span>
+<span class="normal"><a href="#__codelineno-0-77"> 77</a></span>
+<span class="normal"><a href="#__codelineno-0-78"> 78</a></span>
+<span class="normal"><a href="#__codelineno-0-79"> 79</a></span>
+<span class="normal"><a href="#__codelineno-0-80"> 80</a></span>
+<span class="normal"><a href="#__codelineno-0-81"> 81</a></span>
+<span class="normal"><a href="#__codelineno-0-82"> 82</a></span>
+<span class="normal"><a href="#__codelineno-0-83"> 83</a></span>
+<span class="normal"><a href="#__codelineno-0-84"> 84</a></span>
+<span class="normal"><a href="#__codelineno-0-85"> 85</a></span>
+<span class="normal"><a href="#__codelineno-0-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-0-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-0-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-0-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-0-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-0-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-0-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-0-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-0-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-0-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-0-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-0-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-0-100">100</a></span>
+<span class="normal"><a href="#__codelineno-0-101">101</a></span>
+<span class="normal"><a href="#__codelineno-0-102">102</a></span>
+<span class="normal"><a href="#__codelineno-0-103">103</a></span>
+<span class="normal"><a href="#__codelineno-0-104">104</a></span>
+<span class="normal"><a href="#__codelineno-0-105">105</a></span>
+<span class="normal"><a href="#__codelineno-0-106">106</a></span>
+<span class="normal"><a href="#__codelineno-0-107">107</a></span>
+<span class="normal"><a href="#__codelineno-0-108">108</a></span>
+<span class="normal"><a href="#__codelineno-0-109">109</a></span>
+<span class="normal"><a href="#__codelineno-0-110">110</a></span>
+<span class="normal"><a href="#__codelineno-0-111">111</a></span>
+<span class="normal"><a href="#__codelineno-0-112">112</a></span>
+<span class="normal"><a href="#__codelineno-0-113">113</a></span>
+<span class="normal"><a href="#__codelineno-0-114">114</a></span>
+<span class="normal"><a href="#__codelineno-0-115">115</a></span>
+<span class="normal"><a href="#__codelineno-0-116">116</a></span>
+<span class="normal"><a href="#__codelineno-0-117">117</a></span>
+<span class="normal"><a href="#__codelineno-0-118">118</a></span>
+<span class="normal"><a href="#__codelineno-0-119">119</a></span>
+<span class="normal"><a href="#__codelineno-0-120">120</a></span>
+<span class="normal"><a href="#__codelineno-0-121">121</a></span>
+<span class="normal"><a href="#__codelineno-0-122">122</a></span>
+<span class="normal"><a href="#__codelineno-0-123">123</a></span>
+<span class="normal"><a href="#__codelineno-0-124">124</a></span>
+<span class="normal"><a href="#__codelineno-0-125">125</a></span>
+<span class="normal"><a href="#__codelineno-0-126">126</a></span>
+<span class="normal"><a href="#__codelineno-0-127">127</a></span>
+<span class="normal"><a href="#__codelineno-0-128">128</a></span>
+<span class="normal"><a href="#__codelineno-0-129">129</a></span>
+<span class="normal"><a href="#__codelineno-0-130">130</a></span>
+<span class="normal"><a href="#__codelineno-0-131">131</a></span>
+<span class="normal"><a href="#__codelineno-0-132">132</a></span>
+<span class="normal"><a href="#__codelineno-0-133">133</a></span>
+<span class="normal"><a href="#__codelineno-0-134">134</a></span>
+<span class="normal"><a href="#__codelineno-0-135">135</a></span>
+<span class="normal"><a href="#__codelineno-0-136">136</a></span>
+<span class="normal"><a href="#__codelineno-0-137">137</a></span>
+<span class="normal"><a href="#__codelineno-0-138">138</a></span>
+<span class="normal"><a href="#__codelineno-0-139">139</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="k">class</span><span class="w"> </span><span class="nc">DPO</span><span class="p">(</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>    <span class="n">Algorithm</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">,</span> <span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]],</span>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="p">):</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Direct Preference Optimization (DPO) algorithm.&quot;&quot;&quot;</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">],</span> <span class="n">beta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+</span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>
+</span><span id="__span-0-40"><a id="__codelineno-0-40" name="__codelineno-0-40"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span>
+</span><span id="__span-0-41"><a id="__codelineno-0-41" name="__codelineno-0-41"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
+</span><span id="__span-0-42"><a id="__codelineno-0-42" name="__codelineno-0-42"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]:</span>
+</span><span id="__span-0-43"><a id="__codelineno-0-43" name="__codelineno-0-43"></a>        <span class="c1"># in DPO, we sample from each branch the most rewarded</span>
+</span><span id="__span-0-44"><a id="__codelineno-0-44" name="__codelineno-0-44"></a>        <span class="c1"># and least rewarded actions in order to use them as our contrastive</span>
+</span><span id="__span-0-45"><a id="__codelineno-0-45" name="__codelineno-0-45"></a>        <span class="c1"># pairs.</span>
+</span><span id="__span-0-46"><a id="__codelineno-0-46" name="__codelineno-0-46"></a>
+</span><span id="__span-0-47"><a id="__codelineno-0-47" name="__codelineno-0-47"></a>        <span class="n">pairs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-0-48"><a id="__codelineno-0-48" name="__codelineno-0-48"></a>        <span class="n">bfs</span> <span class="o">=</span> <span class="p">[</span><span class="n">graph</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
+</span><span id="__span-0-49"><a id="__codelineno-0-49" name="__codelineno-0-49"></a>        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">bfs</span><span class="p">):</span>
+</span><span id="__span-0-50"><a id="__codelineno-0-50" name="__codelineno-0-50"></a>            <span class="n">front</span> <span class="o">=</span> <span class="n">bfs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span><span id="__span-0-51"><a id="__codelineno-0-51" name="__codelineno-0-51"></a>            <span class="n">sorted_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">front</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">reward</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-52"><a id="__codelineno-0-52" name="__codelineno-0-52"></a>
+</span><span id="__span-0-53"><a id="__codelineno-0-53" name="__codelineno-0-53"></a>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+</span><span id="__span-0-54"><a id="__codelineno-0-54" name="__codelineno-0-54"></a>                <span class="c1"># if there is no pair, we skip this node</span>
+</span><span id="__span-0-55"><a id="__codelineno-0-55" name="__codelineno-0-55"></a>                <span class="k">continue</span>
+</span><span id="__span-0-56"><a id="__codelineno-0-56" name="__codelineno-0-56"></a>
+</span><span id="__span-0-57"><a id="__codelineno-0-57" name="__codelineno-0-57"></a>            <span class="n">pos_entry</span> <span class="o">=</span> <span class="n">sorted_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span><span id="__span-0-58"><a id="__codelineno-0-58" name="__codelineno-0-58"></a>            <span class="n">neg_entry</span> <span class="o">=</span> <span class="n">sorted_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</span><span id="__span-0-59"><a id="__codelineno-0-59" name="__codelineno-0-59"></a>
+</span><span id="__span-0-60"><a id="__codelineno-0-60" name="__codelineno-0-60"></a>            <span class="k">assert</span> <span class="n">pos_entry</span><span class="o">.</span><span class="n">context</span> <span class="o">==</span> <span class="n">neg_entry</span><span class="o">.</span><span class="n">context</span><span class="p">,</span> <span class="p">(</span>
+</span><span id="__span-0-61"><a id="__codelineno-0-61" name="__codelineno-0-61"></a>                <span class="s2">&quot;paired rollouts for DPO must share the same prefix!&quot;</span>
+</span><span id="__span-0-62"><a id="__codelineno-0-62" name="__codelineno-0-62"></a>            <span class="p">)</span>
+</span><span id="__span-0-63"><a id="__codelineno-0-63" name="__codelineno-0-63"></a>
+</span><span id="__span-0-64"><a id="__codelineno-0-64" name="__codelineno-0-64"></a>            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+</span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>                <span class="n">DPOStep</span><span class="p">(</span>
+</span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a>                    <span class="n">prefix</span><span class="o">=</span><span class="n">pos_entry</span><span class="o">.</span><span class="n">context</span><span class="p">,</span>
+</span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>                    <span class="n">suffix_pos</span><span class="o">=</span><span class="n">pos_entry</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>                    <span class="n">suffix_neg</span><span class="o">=</span><span class="n">neg_entry</span><span class="o">.</span><span class="n">attack</span><span class="p">,</span>
+</span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>                <span class="p">)</span>
+</span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>            <span class="p">)</span>
+</span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>
+</span><span id="__span-0-72"><a id="__codelineno-0-72" name="__codelineno-0-72"></a>            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_list</span><span class="p">:</span>
+</span><span id="__span-0-73"><a id="__codelineno-0-73" name="__codelineno-0-73"></a>                <span class="n">bfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+</span><span id="__span-0-74"><a id="__codelineno-0-74" name="__codelineno-0-74"></a>
+</span><span id="__span-0-75"><a id="__codelineno-0-75" name="__codelineno-0-75"></a>        <span class="k">return</span> <span class="n">pairs</span>
+</span><span id="__span-0-76"><a id="__codelineno-0-76" name="__codelineno-0-76"></a>
+</span><span id="__span-0-77"><a id="__codelineno-0-77" name="__codelineno-0-77"></a>    <span class="nd">@staticmethod</span>
+</span><span id="__span-0-78"><a id="__codelineno-0-78" name="__codelineno-0-78"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">collate_fn</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">DPOStep</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]:</span>
+</span><span id="__span-0-79"><a id="__codelineno-0-79" name="__codelineno-0-79"></a>        <span class="n">prefixes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">prefix</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+</span><span id="__span-0-80"><a id="__codelineno-0-80" name="__codelineno-0-80"></a>        <span class="n">suffix_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix_pos</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+</span><span id="__span-0-81"><a id="__codelineno-0-81" name="__codelineno-0-81"></a>        <span class="n">suffix_neg</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">suffix_neg</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+</span><span id="__span-0-82"><a id="__codelineno-0-82" name="__codelineno-0-82"></a>
+</span><span id="__span-0-83"><a id="__codelineno-0-83" name="__codelineno-0-83"></a>        <span class="k">return</span> <span class="n">DPOBatch</span><span class="p">(</span><span class="n">prefixes</span><span class="o">=</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">suffix_pos</span><span class="o">=</span><span class="n">suffix_pos</span><span class="p">,</span> <span class="n">suffix_neg</span><span class="o">=</span><span class="n">suffix_neg</span><span class="p">)</span>
+</span><span id="__span-0-84"><a id="__codelineno-0-84" name="__codelineno-0-84"></a>
+</span><span id="__span-0-85"><a id="__codelineno-0-85" name="__codelineno-0-85"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span>
+</span><span id="__span-0-86"><a id="__codelineno-0-86" name="__codelineno-0-86"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">DPOBatch</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]</span>
+</span><span id="__span-0-87"><a id="__codelineno-0-87" name="__codelineno-0-87"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+</span><span id="__span-0-88"><a id="__codelineno-0-88" name="__codelineno-0-88"></a>        <span class="n">attacker_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
+</span><span id="__span-0-89"><a id="__codelineno-0-89" name="__codelineno-0-89"></a>            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
+</span><span id="__span-0-90"><a id="__codelineno-0-90" name="__codelineno-0-90"></a>        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
+</span><span id="__span-0-91"><a id="__codelineno-0-91" name="__codelineno-0-91"></a>        <span class="n">attacker_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_attacker_logprobs_and_validate</span><span class="p">(</span>
+</span><span id="__span-0-92"><a id="__codelineno-0-92" name="__codelineno-0-92"></a>            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
+</span><span id="__span-0-93"><a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
+</span><span id="__span-0-94"><a id="__codelineno-0-94" name="__codelineno-0-94"></a>        <span class="n">baseline_logprobs_win</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
+</span><span id="__span-0-95"><a id="__codelineno-0-95" name="__codelineno-0-95"></a>            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_pos</span>
+</span><span id="__span-0-96"><a id="__codelineno-0-96" name="__codelineno-0-96"></a>        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
+</span><span id="__span-0-97"><a id="__codelineno-0-97" name="__codelineno-0-97"></a>        <span class="n">baseline_logprobs_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">problem</span><span class="o">.</span><span class="n">_get_baseline_logprobs_and_validate</span><span class="p">(</span>
+</span><span id="__span-0-98"><a id="__codelineno-0-98" name="__codelineno-0-98"></a>            <span class="n">batch</span><span class="o">.</span><span class="n">prefixes</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">suffix_neg</span>
+</span><span id="__span-0-99"><a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Sum per-token logprobs to get sequence logprobs</span>
+</span><span id="__span-0-100"><a id="__codelineno-0-100" name="__codelineno-0-100"></a>
+</span><span id="__span-0-101"><a id="__codelineno-0-101" name="__codelineno-0-101"></a>        <span class="c1"># https://github.com/eric-mitchell/direct-preference-optimization/blob/ \</span>
+</span><span id="__span-0-102"><a id="__codelineno-0-102" name="__codelineno-0-102"></a>        <span class="c1"># f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87</span>
+</span><span id="__span-0-103"><a id="__codelineno-0-103" name="__codelineno-0-103"></a>        <span class="n">pi_logratios</span> <span class="o">=</span> <span class="n">attacker_logprobs_win</span> <span class="o">-</span> <span class="n">attacker_logprobs_loss</span>
+</span><span id="__span-0-104"><a id="__codelineno-0-104" name="__codelineno-0-104"></a>        <span class="n">ref_logratios</span> <span class="o">=</span> <span class="n">baseline_logprobs_win</span> <span class="o">-</span> <span class="n">baseline_logprobs_loss</span>
+</span><span id="__span-0-105"><a id="__codelineno-0-105" name="__codelineno-0-105"></a>        <span class="n">logits</span> <span class="o">=</span> <span class="n">pi_logratios</span> <span class="o">-</span> <span class="n">ref_logratios</span>
+</span><span id="__span-0-106"><a id="__codelineno-0-106" name="__codelineno-0-106"></a>
+</span><span id="__span-0-107"><a id="__codelineno-0-107" name="__codelineno-0-107"></a>        <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">logsigmoid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="n">logits</span><span class="p">)</span>
+</span><span id="__span-0-108"><a id="__codelineno-0-108" name="__codelineno-0-108"></a>
+</span><span id="__span-0-109"><a id="__codelineno-0-109" name="__codelineno-0-109"></a>        <span class="c1"># Calculate addition quantities</span>
+</span><span id="__span-0-110"><a id="__codelineno-0-110" name="__codelineno-0-110"></a>        <span class="c1"># TODO: CHECK ME for correctness and completion!</span>
+</span><span id="__span-0-111"><a id="__codelineno-0-111" name="__codelineno-0-111"></a>        <span class="n">chosen_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">attacker_logprobs_win</span> <span class="o">-</span> <span class="n">baseline_logprobs_win</span><span class="p">)</span>
+</span><span id="__span-0-112"><a id="__codelineno-0-112" name="__codelineno-0-112"></a>        <span class="n">rejected_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="p">(</span><span class="n">attacker_logprobs_loss</span> <span class="o">-</span> <span class="n">baseline_logprobs_loss</span><span class="p">)</span>
+</span><span id="__span-0-113"><a id="__codelineno-0-113" name="__codelineno-0-113"></a>        <span class="n">reward_accuracies</span> <span class="o">=</span> <span class="p">(</span><span class="n">chosen_rewards</span> <span class="o">&gt;</span> <span class="n">rejected_rewards</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+</span><span id="__span-0-114"><a id="__codelineno-0-114" name="__codelineno-0-114"></a>        <span class="n">reward_margin</span> <span class="o">=</span> <span class="n">chosen_rewards</span> <span class="o">-</span> <span class="n">rejected_rewards</span>
+</span><span id="__span-0-115"><a id="__codelineno-0-115" name="__codelineno-0-115"></a>
+</span><span id="__span-0-116"><a id="__codelineno-0-116" name="__codelineno-0-116"></a>        <span class="n">logging_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="__span-0-117"><a id="__codelineno-0-117" name="__codelineno-0-117"></a>            <span class="s2">&quot;training/loss&quot;</span><span class="p">:</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-118"><a id="__codelineno-0-118" name="__codelineno-0-118"></a>            <span class="s2">&quot;reward/chosen_rewards&quot;</span><span class="p">:</span> <span class="n">chosen_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-119"><a id="__codelineno-0-119" name="__codelineno-0-119"></a>            <span class="s2">&quot;reward/rejected_rewards&quot;</span><span class="p">:</span> <span class="n">rejected_rewards</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-120"><a id="__codelineno-0-120" name="__codelineno-0-120"></a>            <span class="s2">&quot;reward/reward_accuracies&quot;</span><span class="p">:</span> <span class="n">reward_accuracies</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-121"><a id="__codelineno-0-121" name="__codelineno-0-121"></a>            <span class="s2">&quot;reward/reward_margin&quot;</span><span class="p">:</span> <span class="n">reward_margin</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-122"><a id="__codelineno-0-122" name="__codelineno-0-122"></a>            <span class="s2">&quot;policy/logprobs_chosen&quot;</span><span class="p">:</span> <span class="n">attacker_logprobs_win</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span><span id="__span-0-123"><a id="__codelineno-0-123" name="__codelineno-0-123"></a>            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+</span><span id="__span-0-124"><a id="__codelineno-0-124" name="__codelineno-0-124"></a>            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+</span><span id="__span-0-125"><a id="__codelineno-0-125" name="__codelineno-0-125"></a>            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-126"><a id="__codelineno-0-126" name="__codelineno-0-126"></a>            <span class="s2">&quot;policy/logprobs_rejected&quot;</span><span class="p">:</span> <span class="n">attacker_logprobs_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span><span id="__span-0-127"><a id="__codelineno-0-127" name="__codelineno-0-127"></a>            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+</span><span id="__span-0-128"><a id="__codelineno-0-128" name="__codelineno-0-128"></a>            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+</span><span id="__span-0-129"><a id="__codelineno-0-129" name="__codelineno-0-129"></a>            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-130"><a id="__codelineno-0-130" name="__codelineno-0-130"></a>            <span class="s2">&quot;ref/logprobs_chosen&quot;</span><span class="p">:</span> <span class="n">baseline_logprobs_win</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-131"><a id="__codelineno-0-131" name="__codelineno-0-131"></a>            <span class="s2">&quot;ref/logprobs_rejected&quot;</span><span class="p">:</span> <span class="n">baseline_logprobs_loss</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span><span id="__span-0-132"><a id="__codelineno-0-132" name="__codelineno-0-132"></a>            <span class="o">.</span><span class="n">detach</span><span class="p">()</span>
+</span><span id="__span-0-133"><a id="__codelineno-0-133" name="__codelineno-0-133"></a>            <span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+</span><span id="__span-0-134"><a id="__codelineno-0-134" name="__codelineno-0-134"></a>            <span class="o">.</span><span class="n">item</span><span class="p">(),</span>
+</span><span id="__span-0-135"><a id="__codelineno-0-135" name="__codelineno-0-135"></a>        <span class="p">}</span>
+</span><span id="__span-0-136"><a id="__codelineno-0-136" name="__codelineno-0-136"></a>        <span class="c1"># TODO: Add this from old code?</span>
+</span><span id="__span-0-137"><a id="__codelineno-0-137" name="__codelineno-0-137"></a>        <span class="c1"># &quot;policy/rollout&quot;: wandb.Html(str(r&quot;&lt;span&gt;&quot;+batch[&quot;prompt_win&quot;][0][0]+&quot;&lt;/span&gt;&lt;span style=&#39;color:Tomato;&#39;&gt;&quot;+batch[&quot;prompt_win&quot;][0][1]+r&quot;&lt;/span&gt;&lt;span style=&#39;color:DodgerBlue&#39;&gt;&quot;+batch[&quot;prompt_win&quot;][0][2]+r&quot;&lt;/span&gt;&quot;)),</span>
+</span><span id="__span-0-138"><a id="__codelineno-0-138" name="__codelineno-0-138"></a>
+</span><span id="__span-0-139"><a id="__codelineno-0-139" name="__codelineno-0-139"></a>        <span class="k">return</span> <span class="n">loss</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">logging_dict</span>
+</span></code></pre></div></td></tr></table></div>
               </details>
 
 

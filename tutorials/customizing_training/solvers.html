@@ -423,6 +423,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -518,7 +541,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -1271,6 +1294,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/algorithms/ppo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1750,22 +1796,22 @@
 <h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
 <h3 id="41-stepbatch-data-contracts">4.1 Step/Batch data contracts<a class="headerlink" href="#41-stepbatch-data-contracts" title="Permanent link">&para;</a></h3>
 <p>Define explicit dataclasses that encode exactly what your algorithm needs.</p>
-<pre><code class="language-python">from dataclasses import dataclass
-from typing import Generic, Sequence
-from astra_rl.core.common import StateT, ActionT
-
-@dataclass
-class MyStep(Generic[StateT, ActionT]):
-    context: StateT
-    action: ActionT
-    reward: float  # or advantage/return/log-ratio/etc.
-
-@dataclass
-class MyBatch(Generic[StateT, ActionT]):
-    contexts: Sequence[StateT]
-    actions:  Sequence[ActionT]
-    rewards:  torch.Tensor  # tensors for math
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">Sequence</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.core.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@dataclass</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyStep</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">context</span><span class="p">:</span> <span class="n">StateT</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">action</span><span class="p">:</span> <span class="n">ActionT</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">reward</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># or advantage/return/log-ratio/etc.</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nd">@dataclass</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyBatch</span><span class="p">(</span><span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">contexts</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">StateT</span><span class="p">]</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="n">actions</span><span class="p">:</span>  <span class="n">Sequence</span><span class="p">[</span><span class="n">ActionT</span><span class="p">]</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">rewards</span><span class="p">:</span>  <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span>  <span class="c1"># tensors for math</span>
+</span></code></pre></div>
 <blockquote>
 <p>Keep these minimal and algorithm-specific. They are the <em>contract</em> between your data selection (<code>flatten</code>) and your loss (<code>step</code>).</p>
 </blockquote>
@@ -1799,10 +1845,10 @@ class MyBatch(Generic[StateT, ActionT]):
 <hr />
 <h2 id="6-plug-into-the-trainer">6. Plug into the Trainer<a class="headerlink" href="#6-plug-into-the-trainer" title="Permanent link">&para;</a></h2>
 <p>Instantiate and pass your solver to the trainer:</p>
-<pre><code class="language-python">solver  = DPO(problem, beta=0.1)  # or IPO(...)
-trainer = Trainer(config=config, environment=env, algorithm=solver)
-trainer.train()
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">solver</span>  <span class="o">=</span> <span class="n">DPO</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># or IPO(...)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</span></code></pre></div>
 <p>Under the hood, the <strong>Trainer</strong> will:</p>
 <ol>
 <li>collect rollout graphs,</li>

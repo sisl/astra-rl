@@ -423,6 +423,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -518,7 +541,7 @@
   
   
   <span class="md-ellipsis">
-    How to Run an Evaluation / Red Team
+    How to Run an Evaluation
     
   </span>
   
@@ -1304,6 +1327,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/algorithms/ppo.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    PPO
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1810,16 +1856,16 @@
 <p>If you only need to change the <strong>category</strong> (e.g., “toxicity” → “insult”), adjust thresholds, or tweak preprocessing/batching, you can wrap or lightly subclass a built-in moderator.</p>
 <h3 id="32-full-control-subclass-moderator">3.2 Full control: subclass <code>Moderator</code><a class="headerlink" href="#32-full-control-subclass-moderator" title="Permanent link">&para;</a></h3>
 <p>For custom scoring models (LLMs, classifiers, rule-based filters), subclass the generic base class and implement one method:</p>
-<pre><code class="language-python">from astra_rl.core.moderator import Moderator
-from typing import Sequence, Union, Generic, TypeVar
-
-StateT = TypeVar(&quot;StateT&quot;)
-ActionT = TypeVar(&quot;ActionT&quot;)
-
-class MyModerator(Moderator[StateT, ActionT]):
-    def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
-        ...
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.core.moderator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Moderator</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Generic</span><span class="p">,</span> <span class="n">TypeVar</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">StateT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;StateT&quot;</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">ActionT</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;ActionT&quot;</span><span class="p">)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">MyModerator</span><span class="p">(</span><span class="n">Moderator</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">moderate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="o">...</span>
+</span></code></pre></div>
 <hr />
 <h2 id="4-required-interface">4. Required Interface<a class="headerlink" href="#4-required-interface" title="Permanent link">&para;</a></h2>
 <h3 id="41-type-parameters">4.1 Type parameters<a class="headerlink" href="#41-type-parameters" title="Permanent link">&para;</a></h3>
@@ -1829,9 +1875,9 @@ class MyModerator(Moderator[StateT, ActionT]):
 </ul>
 <p>For NLP use cases, both are typically <code>str</code>.</p>
 <h3 id="42-moderate-contract">4.2 <code>moderate(...)</code> contract<a class="headerlink" href="#42-moderate-contract" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">def moderate(self, x: Sequence[Union[StateT, ActionT]]) -&gt; Sequence[float]:
-    &quot;&quot;&quot;Return one scalar score per input, same order as received.&quot;&quot;&quot;
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">moderate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Return one scalar score per input, same order as received.&quot;&quot;&quot;</span>
+</span></code></pre></div>
 <p><strong>Expectations:</strong></p>
 <ul>
 <li><strong>Pure function</strong> over the given inputs (no hidden batch size assumptions).</li>
@@ -1851,20 +1897,20 @@ class MyModerator(Moderator[StateT, ActionT]):
 <hr />
 <h2 id="6-how-tos">6. How-Tos<a class="headerlink" href="#6-how-tos" title="Permanent link">&para;</a></h2>
 <h3 id="61-minimal-custom-moderator-detoxify-wrapper">6.1 Minimal custom moderator (Detoxify wrapper)<a class="headerlink" href="#61-minimal-custom-moderator-detoxify-wrapper" title="Permanent link">&para;</a></h3>
-<pre><code class="language-python">from typing import Sequence
-from detoxify import Detoxify
-from astra_rl.core.moderator import Moderator
-
-class DetoxifyModerator(Moderator[str, str]):
-    def __init__(self, harm_category: str = &quot;toxicity&quot;, variant: str = &quot;original&quot;):
-        self.model = Detoxify(variant)
-        self.harm_category = harm_category
-
-    def moderate(self, x: Sequence[str]) -&gt; Sequence[float]:
-        # Detoxify returns a dict of category -&gt; scores
-        preds = self.model.predict(x)
-        return [float(preds[self.harm_category][i]) for i in range(len(x))]
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">detoxify</span><span class="w"> </span><span class="kn">import</span> <span class="n">Detoxify</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.core.moderator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Moderator</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">DetoxifyModerator</span><span class="p">(</span><span class="n">Moderator</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">harm_category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;toxicity&quot;</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">):</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Detoxify</span><span class="p">(</span><span class="n">variant</span><span class="p">)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">harm_category</span> <span class="o">=</span> <span class="n">harm_category</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">moderate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>        <span class="c1"># Detoxify returns a dict of category -&gt; scores</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>        <span class="k">return</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">preds</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">harm_category</span><span class="p">][</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))]</span>
+</span></code></pre></div>
 <h3 id="62-selecting-harm-categories">6.2 Selecting harm categories<a class="headerlink" href="#62-selecting-harm-categories" title="Permanent link">&para;</a></h3>
 <p>If the underlying library/model exposes multiple categories (e.g., Detoxify or Llama Guard 3), surface a <code>harm_category</code> (or list of categories) in your constructor. You can:</p>
 <ul>
@@ -1882,24 +1928,24 @@ class DetoxifyModerator(Moderator[str, str]):
 <p>Just be sure to <strong>preserve ordering</strong> and return one scalar per input.</p>
 <h3 id="64-integrate-your-moderator-into-a-problem">6.4 Integrate your moderator into a Problem<a class="headerlink" href="#64-integrate-your-moderator-into-a-problem" title="Permanent link">&para;</a></h3>
 <p>Instantiate your moderator in your <code>Problem</code> subclass and pass it to the base class:</p>
-<pre><code class="language-python">from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTProblem  # base Problem
-from astra_rl.logging import logger
-
-MODEL_NAME = &quot;gpt2&quot;
-
-class ExampleDetoxifyProblem(ASTProblem):
-    def __init__(self, device: str = &quot;cpu&quot;):
-        # Plug in any custom moderator here
-        super().__init__(DetoxifyModerator(harm_category=&quot;toxicity&quot;))
-
-        self.device = device
-        self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
-        self.target   = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
-
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">GPT2LMHeadModel</span><span class="p">,</span> <span class="n">AutoTokenizer</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTProblem</span>  <span class="c1"># base Problem</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">MODEL_NAME</span> <span class="o">=</span> <span class="s2">&quot;gpt2&quot;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">ExampleDetoxifyProblem</span><span class="p">(</span><span class="n">ASTProblem</span><span class="p">):</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cpu&quot;</span><span class="p">):</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>        <span class="c1"># Plug in any custom moderator here</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">DetoxifyModerator</span><span class="p">(</span><span class="n">harm_category</span><span class="o">=</span><span class="s2">&quot;toxicity&quot;</span><span class="p">))</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">attacker</span> <span class="o">=</span> <span class="n">GPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">target</span>   <span class="o">=</span> <span class="n">GPT2LMHeadModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">MODEL_NAME</span><span class="p">)</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">pad_token_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">eos_token_id</span>
+</span></code></pre></div>
 <blockquote>
 <p>After this, your environment/solver will use the moderator implicitly when computing rewards.</p>
 </blockquote>
