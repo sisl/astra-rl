@@ -1,9 +1,9 @@
 # Quick Start: Training a HuggingFace Attacker with ASTRA-RL
 
-Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [RL - Perez](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
+Do you want to train a HuggingFace **attacker** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [Perez et al.](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
 
 
-Then this guide is for you. We’ll walk through every step required to train a red-teaming attacker (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!
+Then this guide is for you. We'll walk through every step required to train an adversarial testing attacker (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!
 
 ---
 
@@ -52,7 +52,7 @@ with open("prompts_reddit_train.json") as f:
     PROMPTS = json.load(f)
 ```
 
-Since ASTPrompter red-teams for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in the GPT2_v_GPT2 folder in examples.
+Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in the GPT2_v_GPT2 folder in examples.
 
 The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
@@ -71,9 +71,7 @@ The *problem* is an important component of training that handles rollout step ge
 problem = HFASTProblem("meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", DetoxifyModerator(), DEVICE)
 ```
 
-Need a custom model or rollout step logic? See [customize_training/problems](customize_training/problems.md)
-
-Want to use a custom moderator? See [customize_training/moderators](customize_training/moderators.md)
+Need a custom model or rollout step logic? See the [Problem Customization](customizing_training/problems.md) guide. Want to use a custom moderator? See the [Moderator Customization](customizing_training/moderators.md) guide.
 
 ---
 
@@ -104,7 +102,7 @@ By default, rollouts are configured with tree_width=2 and tree_depth=3, but you 
 env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
 ```
 
-Want a different rollout graph structure or a multi-agent setup? See [customize_training/environments](customize_training/environments.md)
+Want a different rollout graph structure or a multi-agent setup? See the [Environment Customization](customizing_training/environments.md) guide.
 
 ---
 
@@ -120,7 +118,7 @@ solver = DPO(problem)
 optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
-To integrate your own RL algorithm, see [customize_training/solvers](customize_training/solvers.md)
+To integrate your own RL algorithm, see the [Solver Customization](customizing_training/solvers.md) guide.
 
 ---
 
@@ -144,7 +142,7 @@ trainer.train()
 ```
 > The source code for the training configuration and trainer are at [hf_ast_problem](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/ext/transformers/hf_ast_problem.py)
 
-Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? Go to [customize_training/trainers](customize_training/trainers.md)!
+Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? See the [Trainer Customization](customizing_training/trainers.md) guide.
 
 ---
 

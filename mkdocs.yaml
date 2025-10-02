@@ -27,6 +27,13 @@ markdown_extensions:
   - toc:
       permalink: true
       toc_depth: 3
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
 
 extra_css:
     - stylesheets/extra.css
@@ -35,10 +42,6 @@ theme:
   name: material
   # logo: assets/icon.png
   # favicon: assets/favicon.png
-  highlightjs: true
-  hljs_languages:
-      - yaml
-      - python
   language: en
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -68,6 +71,7 @@ nav:
         - index.md
         - installation.md
         - dev_setup.md
+        - contributing.md
     - Tutorials: 
         - tutorials/index.md
         - tutorials/quick_start_training.md
@@ -95,6 +99,7 @@ nav:
         - Algorithms:
             - api/algorithms/index.md
             - api/algorithms/dpo.md
+            - api/algorithms/ppo.md
         - Moderators:
             - api/moderators/index.md
             - api/moderators/detoxify.md

@@ -22,7 +22,7 @@ problem = HFEvaluationProblem(
 ```
 
 !!! tip
-    See the [Quick Start: Evaluation](quick_start_evaluation.md) tutorial or the [full example](https://github.com/sisl/astra-rl/tree/main/examples/hf_eval.py).
+    See the [Quick Start: Evaluation](../quick_start_evaluation.md) tutorial or the [full example](https://github.com/sisl/astra-rl/tree/main/examples/hf_eval.py).
 
 ---
 
@@ -59,7 +59,7 @@ This subclass must:
 1. Instantiate attacker, target, and tokenizers.
 2. Implement rollout logic (text generation given context).
 
-See the [customize training guide](../customize_training/problems.md) for details.
+See the [Problem Customization guide](../customizing_training/problems.md) for details.
 
 !!! note
     If you already created a custom problem class for **training**, it is often easiest to **subclass it for evaluation** and just modify the attacker instantiation.
@@ -145,6 +145,6 @@ if __name__ == "__main__":
 
 ## Recap
 
-* **Most users don’t need to write new classes** — just pick `HFEvaluationProblem` (non-GPT2) or `GPT2EvaluationProblem`.
+* **Most users don't need to write new classes** — just pick `HFEvaluationProblem` (non-GPT2) or `GPT2EvaluationProblem`.
 * If you already subclassed a problem for training, reuse it for evaluation and only swap in your trained attacker.
-* For fully custom architectures, subclass `ASTProblem` directly. Visit [customize_training/problems.md](../customize_training/problems.md) for more information on the Problem class.
+* For fully custom architectures, subclass `ASTProblem` directly. Visit the [Problem Customization guide](../customizing_training/problems.md) for more information on the Problem class.

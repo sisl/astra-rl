@@ -1,9 +1,5 @@
 # Contributing
 
-!!! warning
-    
-    This documentation (and project) is a work in progress. If you have any questions or suggestions, please feel free to open an issue on the [GitHub repository](https://github.com/sisl/astra-rl)
-
 Thank you for your interest in contributing to ASTRA-RL! We welcome contributions from the community to help improve the toolbox and its documentation.
 
 ## How to Contribute

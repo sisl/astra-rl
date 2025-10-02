@@ -4,9 +4,26 @@ Welcome to the ASTRA-RL toolbox documentation! This documentation provides an ov
 
 ## What is ASTRA-RL?
 
-ASTRA-RL is a Python toolbox for training and evaluating language models and generative AI systems that use textual inputs. It provides a set of tools for training, evaluating, and analyzing language models, with a focus on applying reinforcement learning based refinement techniques to improve evaluator model performance.
+ASTRA-RL is a Python toolbox for **testing and evaluating** language models and generative AI systems. It provides a modular framework for using reinforcement learning to systematically discover how language models respond to adversarial or challenging inputs.
 
-The toolbox is particularly designed for **LM red-teaming** - a process that helps identify and benchmark prompts that elicit harmful or otherwise undesirable behavior from target language models. This helps surface vulnerabilities and guides fine-tuning to reduce harmful outputs.
+### What is Adversarial Testing for Language Models?
+
+**Adversarial testing** is the process of stress-testing AI systems by trying to find inputs that cause them to behave in harmful or undesirable ways. Think of it like security testing for language models - you're trying to discover vulnerabilities before they're exploited in the real world.
+
+ASTRA-RL automates this process using **reinforcement learning**. Instead of manually crafting adversarial prompts, you train an "attacker" model to automatically generate prompts that elicit unsafe responses from your target model. This is:
+
+- **Faster** than manual testing once the attacker is trained
+- **More systematic** at finding failure modes
+- **Scalable** to large-scale evaluation
+
+### Who Should Use ASTRA-RL?
+
+This toolbox is designed for:
+
+- **Researchers** studying AI safety and robustness
+- **ML engineers** evaluating production language models
+- **Safety teams** stress-testing conversational AI systems
+- **Developers** building safer AI applications
 
 ## Getting Started
 
