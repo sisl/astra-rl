@@ -2,6 +2,9 @@
 .DS_Store
 Thumbs.db
 
+# Development
+scripts/
+
 # IDE Specific
 .idea/
 .vscode/
