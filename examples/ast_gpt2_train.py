@@ -178,14 +178,14 @@ def main() -> None:
     # instantiate the pre-configured HF-compatable configuration and traininer class
     config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
 
-    # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+    # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "./checkpoints/gpt2"
     trainer = HFASTTrainer(
         config,
         sampler,
         solver,
         dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=100,
-        ckpt_dir="checkpoints",
+        ckpt_dir="./checkpoints/gpt2",
     )
 
     trainer.train()

@@ -206,7 +206,7 @@ Inside your custom `train()`:
 
 ## 7. Full Examples
 
-* **Custom AST system **with** trainer:** `examples/GPT2_v_GPT2/ast_trainer.py`
+* **Custom AST system with trainer:** `examples/ast_gpt2_train.py`
 * **Source for HF-compatible trainer/config:** `astra_rl/ext/transformers/hf_ast_system.py`
 
 Use these as references when writing up your own training loop or extending the provided trainers.

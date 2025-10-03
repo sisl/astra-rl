@@ -3,7 +3,7 @@
  RL-based adversarial testing uses reinforcement learning to train a **tester** that generates test cases likely to elicit unsafe outputs from a **target** model. This tutorial shows how to run evaluations using a **pre-trained tester** against a target model.
 
 !!! note "Prerequisite"
-    This guide assumes you already trained a Hugging Face (i.e. llama3) tester (see **Quick Start: Training**). You'll point evaluation at that saved tester checkpoint.
+    This guide assumes you already trained a Hugging Face (i.e. llama3) tester (see **Quick Start: Training**). You'll point evaluation at that saved tester checkpoint in `./checkpoints/{model_name}/best`.
 
 ---
 
@@ -26,7 +26,7 @@ from astra_rl.ext.transformers.hf_ast_system import HFEvaluationSystem
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Path to your tester model checkpoint from training
-TESTER_MODEL = "/home/user/astra-rl/examples/checkpoints/best" # assuming tokenizer is in checkpoint (default save in training)
+TESTER_MODEL = "./checkpoints/huggingface/best"  # assuming tokenizer is in checkpoint (default save in training)
 TARGET_MODEL = "meta-llama/Llama-3.1-8B"  # can be any HF model
 ```
 
@@ -75,8 +75,8 @@ sampler = ASTSampler(system, PROMPTS, tree_width=1, tree_depth=3)
     If your tester checkpoint includes tokenizer files (common when saving via `model.save_pretrained()` + `tokenizer.save_pretrained()` during training), set `tester_base_model_id=None` — the evaluation class will load the tokenizer from the checkpoint. If the checkpoint lacks tokenizer files, provide `tester_base_model_id` so the correct tokenizer can be loaded.
 
 !!! tip
-    If you want to evaluate GPT-2 testers, use `GPT2EvaluationSystem` instead of `HFEvaluationSystem`.
-    See the full GPT-2 evaluation example: [`gpt2_eval.py`](https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py).
+    If you want to evaluate GPT-2 testers, use a custom evaluation system that extends the training system.
+    See the full GPT-2 evaluation example: [`ast_gpt2_eval.py`](https://github.com/sisl/astra-rl/blob/main/examples/ast_gpt2_eval.py).
 
 
 If you want to evaluate a custom tester or target, create a new `System` subclass. See the [Evaluation System Customization](customizing_evaluation/evaluation_problems.md) guide.

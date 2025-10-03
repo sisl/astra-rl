@@ -2,13 +2,13 @@ from typing import Optional
 from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
 from astra_rl import ASTSystem, DetoxifyScorer, ASTSampler
 from astra_rl.datasets import CONVOKIT_REDDIT_TEST
-from ast_gpt2 import GPT2DetoxifySystem
+from ast_gpt2_train import GPT2DetoxifySystem
 from astra_rl.methods.ast_system import ASTEvaluator
 from astra_rl.scorers.llamaguard import LlamaGuardScorer
 
 
 # set the tester model here: we are using a pre-trained, local tester and a "gpt2" target
-TESTER_MODEL = "/home/user/astra-rl/examples/checkpoints/best"
+TESTER_MODEL = "./checkpoints/gpt2/best"
 
 
 # since we are using a custom tester that is not supported by HFASTSystem (GPT2 is not supported)

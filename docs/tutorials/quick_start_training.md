@@ -140,11 +140,11 @@ Want to customize the training configuration/hyperparams, the training loop, or 
 ---
 
 ## Full Examples:
-We provide 3 complete working examples that mirror this guide!
+We provide complete working examples that mirror this guide!
 
-Hugging face example for llama3 models: [examples/ast_huggingface.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface.py)
+Hugging face example for llama3 models: [examples/ast_huggingface_train.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface_train.py)
 
-Custom AST system for GPT2 models with trainer: [examples/ast_trainer](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py)
+Custom AST system for GPT2 models with trainer: [examples/ast_gpt2_train.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_gpt2_train.py)
 
-Custom AST system for GPT2 models without trainer: [examples/ast_basic.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_basic.py)
+Custom AST system for PPO algorithm: [examples/ast_ppo.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_ppo.py)
 

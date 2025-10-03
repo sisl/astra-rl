@@ -22,17 +22,17 @@ system = HFEvaluationSystem(
 ```
 
 !!! tip
-    See the [Quick Start: Evaluation](../quick_start_evaluation.md) tutorial or the [full HF evaluation example](https://github.com/sisl/astra-rl/tree/main/examples/hf_eval.py).
+    See the [Quick Start: Evaluation](../quick_start_evaluation.md) tutorial or the [full HF evaluation example](https://github.com/sisl/astra-rl/tree/main/examples/ast_huggingface_eval.py).
 
 ---
 
 ## 2. Using GPT-2–based Testers
 
 GPT-2 has some quirks (fixed max length of 1024, special padding setup).
-We provide [`GPT2EvaluationSystem`](https://github.com/sisl/astra-rl/tree/main/examples/gpt2_eval.py), which handles this automatically:
+We provide [`GPT2EvaluationSystem`](https://github.com/sisl/astra-rl/tree/main/examples/ast_gpt2_eval.py), which handles this automatically:
 
 ```python
-from gpt2_eval import GPT2EvaluationSystem
+from ast_gpt2_eval import GPT2EvaluationSystem
 
 system = GPT2EvaluationSystem(
     tester_model="/path/to/tester/checkpoint",
@@ -50,7 +50,7 @@ system = GPT2EvaluationSystem(
   * Tester = GPT-2–based adversarial model.
 
 !!! tip
-    See the [full GPT2 evaluation example](https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py).
+    See the [full GPT2 evaluation example](https://github.com/sisl/astra-rl/blob/main/examples/ast_gpt2_eval.py).
 ---
 
 ## 3. Fully Custom Testers or Targets
@@ -66,7 +66,7 @@ See the [System Customization guide](../customizing_training/problems.md) for de
 !!! note
     If you already created a custom system class for **training**, it is often easiest to **subclass it for evaluation** and just modify the tester instantiation.
 
-    For example, the [`GPT2EvaluationSystem`](https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py) is a thin subclass that changes only the constructor.
+    For example, the [`GPT2EvaluationSystem`](https://github.com/sisl/astra-rl/blob/main/examples/ast_gpt2_eval.py) is a thin subclass that changes only the constructor.
 
 ---
 
@@ -76,7 +76,7 @@ Here's a concrete example showing how to create a custom system that loads a tra
 
 ```python
 
-TESTER_MODEL = "path/to/your/tester/checkpoint"
+TESTER_MODEL = "./checkpoints/gpt2/best"
 
 class GPT2EvaluationSystem(GPT2DetoxifySystem):
     """

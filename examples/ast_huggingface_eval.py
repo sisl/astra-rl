@@ -10,7 +10,7 @@ def main() -> None:
     DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
     # Path to your pre-trained llama3 tester model
-    TESTER_MODEL = "/home/user/astra-rl/examples/checkpoints/best"  # assuming tokenizer is in checkpoint (default save in training)
+    TESTER_MODEL = "./checkpoints/huggingface/best"  # assuming tokenizer is in checkpoint (default save in training)
     TARGET_MODEL = "meta-llama/Llama-3.1-8B"  # can be any HF model
 
     # instantiate the HF evaluation system with your tester and target models
