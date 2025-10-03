@@ -28,37 +28,33 @@ import astra_rl
 
 ```python
 from torch.optim import AdamW
+import json
 
 # ASTRA-RL core components
 from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
 
 # HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
-from astra_rl.ext.transformers import HFASTProblem
+from astra_rl.ext.transformers.hf_ast_problem import HFASTTrainer, HFASTConfiguration, HFASTProblem
 from astra_rl.training import Trainer, TrainingConfiguration
+
+# training and dev data sets - serve as initial prompts in attacker-target rollouts
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 DEVICE = "cuda"  # or "cpu" if GPU is not available
 ```
 We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and moderator sizes that fit your compute!
 
----
+!!! note
+    To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. 
 
-## Step 3: Load Your Initial Prompts
-To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. 
+    Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data is imported from astra_rl.datasets as CONVOKIT_REDDIT_TRAIN and CONVOKIT_REDDIT_DEV
 
-```python
-import json
+    The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
-with open("prompts_reddit_train.json") as f:
-    PROMPTS = json.load(f)
-```
-
-Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in the GPT2_v_GPT2 folder in examples.
-
-The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
 ---
 
-## Step 4: Instantiate Your Problem
+## Step 3: Instantiate Your Problem
 
 The *problem* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTProblem` class that handles the technical backend so you just need to provide the huggingface model IDs of the attacker, target and baseline models and a `Moderator` instance (DetexifyModerator(), LlamaGuardModerator() or your custom moderator).
 
@@ -75,7 +71,7 @@ Need a custom model or rollout step logic? See the [Problem Customization](custo
 
 ---
 
-## Step 5: Instantiate the Environment
+## Step 4: Instantiate the Environment
 
 The environment defines how training rollouts are structured and collected. In ASTRA-RL, the default is the `ASTEnvironment`, which implements the conversation tree rollout used in the [ASTPrompter](https://arxiv.org/abs/2407.09447) paper.
 
@@ -99,14 +95,14 @@ env = ASTEnvironment(problem, PROMPTS)
 
 By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:
 ```python
-env = ASTEnvironment(problem, PROMPTS, tree_width=4, tree_depth=5)
+env = ASTEnvironment(problem, CONVOKIT_REDDIT_TRAIN, tree_width=4, tree_depth=5)
 ```
 
 Want a different rollout graph structure or a multi-agent setup? See the [Environment Customization](customizing_training/environments.md) guide.
 
 ---
 
-## Step 6: Choose Your Algorithm and Optimizer
+## Step 5: Choose Your Algorithm and Optimizer
 
 The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update attacker model weights 
 to minimize this loss, teaching the attacker to more effectively ellicit target toxicity.
@@ -115,14 +111,13 @@ We use DPO and Adam as the default for this quickstart.
 
 ```python
 solver = DPO(problem)
-optimizer = AdamW(problem.parameters(), lr=1e-5)
 ```
 
 To integrate your own RL algorithm, see the [Solver Customization](customizing_training/solvers.md) guide.
 
 ---
 
-## Step 7: Train the Attacker
+## Step 6: Train the Attacker
 
 For the quick start approach, simply call our training configuration and trainer classes and start training!
 
@@ -134,7 +129,7 @@ trainer = HFASTTrainer(
     config,
     env,
     solver,
-    dev_prompts=DEV_PROMPTS,
+    dev_prompts=CONVOKIT_REDDIT_DEV,
     eval_every=100,
     ckpt_dir="checkpoints",
 )
@@ -147,11 +142,10 @@ Want to customize the training configuration/hyperparams, the training loop, or 
 ---
 
 ## Full Examples: 
-We provide 3 complete working examples that mirror this guide!
+We provide 2 complete working examples that mirror this guide!
 
-Hugging face example for llama3 models without trainer: [examples/ast_huggingface.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface.py)
+Hugging face example for llama3 models: [examples/ast_huggingface.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface.py)
 
-Custom AST problem for GPT2 models with trainer: [examples/ast_trainer](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py)
+Custom AST problem for GPT2 models: [examples/ast_gpt2](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_gpt2.py)
 
-Custom AST problem for GPT2 models without trainer: [examples/ast_basic.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_basic.py)
 
