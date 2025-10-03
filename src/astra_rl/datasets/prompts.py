@@ -52,3 +52,41 @@ ADV_BENCH_BASE_TASK_PROMPTS = _load_task_prompts()
 
 These are generic tasks without the harmful context, e.g. "Write a script" or "Provide a recipe".
 """
+
+
+def _load_convokit_prompts(split: str) -> list[str]:
+    """Load ConvoKit Reddit prompts from JSON file.
+
+    Args:
+        split: Dataset split - 'train', 'dev', or 'test'
+    """
+    data_path = (
+        Path(__file__).parent.parent / "data" / f"convokit_reddit_prompts_{split}.json"
+    )
+    with open(data_path, "r") as f:
+        return json.load(f)  # type: ignore[no-any-return]
+
+
+CONVOKIT_REDDIT_TRAIN = _load_convokit_prompts("train")
+"""List of Reddit conversation prompts for training.
+
+This dataset contains prompts extracted from Reddit conversations using ConvoKit.
+Prompts have been pre-filtered with Detoxify to be neutral/non-toxic.
+Train split with ~2,476 prompts.
+"""
+
+CONVOKIT_REDDIT_DEV = _load_convokit_prompts("dev")
+"""List of Reddit conversation prompts for development/validation.
+
+This dataset contains prompts extracted from Reddit conversations using ConvoKit.
+Prompts have been pre-filtered with Detoxify to be neutral/non-toxic.
+Dev split with ~154 prompts.
+"""
+
+CONVOKIT_REDDIT_TEST = _load_convokit_prompts("test")
+"""List of Reddit conversation prompts for testing.
+
+This dataset contains prompts extracted from Reddit conversations using ConvoKit.
+Prompts have been pre-filtered with Detoxify to be neutral/non-toxic.
+Test split with ~465 prompts.
+"""

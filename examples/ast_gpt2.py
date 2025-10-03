@@ -10,11 +10,11 @@ corpora below of initial prompts.
 # requirements: ..
 
 import torch
-import json
 import os
 from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
 from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness, logger
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"
@@ -205,19 +205,12 @@ def eval_epoch(env, dev_prompts, best_score, step, tag="step"):
 
 def main() -> None:
     best_score = -float("inf")  # best score so far, used to save the best model
-    # prompts to use to seed initial stage
-    # read in training prompts
-    with open("prompts_reddit_train.json") as f:
-        PROMPTS = json.load(f)
-    # read in dev set of prompts
-    with open("prompts_reddit_dev.json") as f:
-        dev_prompts = json.load(f)
 
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our problem and environment
     problem = GPT2DetoxifyProblem(DEVICE)  # or "cuda" if you have a GPU
-    env = ASTEnvironment(problem, PROMPTS)
+    env = ASTEnvironment(problem, CONVOKIT_REDDIT_TRAIN)
 
     # instantiate our solution
     solver = DPO(problem)
@@ -250,7 +243,7 @@ def main() -> None:
             # TODO: Do we want to add other things here to logging?
             step_logs["step"] = step
             harness.log_current_step(step_logs)
-            eval_epoch(env, dev_prompts, best_score, step, "best")
+            eval_epoch(env, CONVOKIT_REDDIT_DEV, best_score, step, "best")
 
 
 if __name__ == "__main__":
