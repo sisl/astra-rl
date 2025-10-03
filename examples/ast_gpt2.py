@@ -10,10 +10,9 @@ corpora below of initial prompts.
 # requirements: ..
 
 import torch
-import os
-from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTSystem, ASTSampler, DPO, DetoxifyScorer, Harness, logger
+from astra_rl import ASTSystem, ASTSampler, DPO, DetoxifyScorer
+from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, HFASTConfiguration
 from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
@@ -166,46 +165,7 @@ class GPT2DetoxifySystem(ASTSystem):
         return gathered
 
 
-# the following two functions will be implemented in the trainer class. This example
-# does not use a trainer so we implement it here
-def save(eval_sampler, step, tag="step"):
-    if tag == "best":
-        out = os.path.join("checkpoints", "best")  # single fixed path
-    else:
-        out = os.path.join("checkpoints", f"{tag}-{step}")
-
-    # Save auditor/target in HF format
-    os.makedirs(out, exist_ok=True)
-    eval_sampler.system.auditor.save_pretrained(out)
-    eval_sampler.system.tokenizer.save_pretrained(out)
-
-
-def eval_epoch(sampler, dev_prompts, best_score, step, tag="step"):
-    print(f"EVALUATING after training step {step}...")
-    rewards = []
-
-    for indx, i in enumerate(dev_prompts):
-        if indx % 30 == 0:
-            print(f"EVAULATED {indx}/{len(dev_prompts)} steps...")
-        # perform a sigle eval rollout per dev prompt and collect a list of rewards
-        # FIND WAY to extract rewards from the rollout
-        rollout = sampler.eval_rollout(i)
-        final_rollout_reward = sampler.final_reward(rollout)
-
-        rewards += [final_rollout_reward]
-
-    print(f"EVAULATED {indx}/{len(dev_prompts)} steps...")
-    dev_score = sum(rewards) / len(rewards)
-
-    if dev_score > best_score:
-        logger.info(f"NEW BEST! {round(dev_score, 3)}")
-        logger.info({"training/dev_score": dev_score}, step=step)
-        save(sampler, step, "best")
-
-
 def main() -> None:
-    best_score = -float("inf")  # best score so far, used to save the best model
-
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our system and sampler
@@ -214,36 +174,21 @@ def main() -> None:
 
     # instantiate our solution
     solver = DPO(system)
-    optimizer = AdamW(system.parameters(), lr=1e-5)
 
-    # this is a training harness, from which we can call various functions to
-    # handle training details
-    harness = Harness(
+    # instantiate the pre-configured HF-compatable configuration and traininer class
+    config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
+
+    # this trainer will train the auditor and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+    trainer = HFASTTrainer(
+        config,
         sampler,
         solver,
-        num_episodes_per_experience=2,
-        use_wandb=True,
-        dataloader_kwargs={"batch_size": 4},
+        dev_prompts=CONVOKIT_REDDIT_DEV,
+        eval_every=100,
+        ckpt_dir="checkpoints",
     )
 
-    # optimization step
-    for step in range(1000):
-        # collect some experiences using current weights
-        buf = harness.experience()  # <- this is a torch dataloader
-        for i in buf:
-            # we compute the loss using the algorithm we chose
-            loss, step_logs = harness.step(i)
-            # this is normal optimization; feel free to do weight decay, etc.
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-
-            # Add custom and algorithm external logging here (e.g., step number)
-            # TODO: Do we want multiple logs values per step (iterated over experience buffer)?
-            # TODO: Do we want to add other things here to logging?
-            step_logs["step"] = step
-            harness.log_current_step(step_logs)
-            eval_epoch(sampler, CONVOKIT_REDDIT_DEV, best_score, step, "best")
+    trainer.train()
 
 
 if __name__ == "__main__":

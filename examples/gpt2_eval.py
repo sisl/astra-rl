@@ -6,10 +6,9 @@ from ast_gpt2 import GPT2DetoxifySystem
 from astra_rl.methods.ast_system import ASTEvaluator
 from astra_rl.scorers.llamaguard import LlamaGuardScorer
 
-# change name to length-limited eval
 
 # set the auditor model here: we are using a pre-trained, local auditor and a "gpt2" target
-AUDITOR_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_llamaguard_noBackup_GPT2"
+AUDITOR_MODEL = "/home/user/astra-rl/examples/checkpoints/best"
 
 
 # since we are using a custom auditor that is not supported by HFASTSystem (GPT2 is not supported)

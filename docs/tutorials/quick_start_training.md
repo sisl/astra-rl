@@ -28,6 +28,7 @@ import astra_rl
 
 ```python
 from torch.optim import AdamW
+import json
 
 # ASTRA-RL core components
 from astra_rl import ASTSampler, DPO, DetoxifyScorer, Harness
@@ -36,29 +37,24 @@ from astra_rl import ASTSampler, DPO, DetoxifyScorer, Harness
 from astra_rl.ext.transformers import HFASTSystem
 from astra_rl.training import Trainer, TrainingConfiguration
 
+# training and dev data sets - serve as initial prompts in auditor-target rollouts
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
+
 DEVICE = "cuda"  # or "cpu" if GPU is not available
 ```
 We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and scorer sizes that fit your compute!
 
----
+!!! note
+    To train an auditor, you'll need a list of comma-separated strings that act as initial prompts—these initiate auditor-target rollouts used for online training.
 
-## Step 3: Load Your Initial Prompts
-To train an auditor, you'll need a list of comma-separated strings that act as initial prompts—these initiate auditor-target rollouts used for online training. 
+    Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data is imported from astra_rl.datasets as CONVOKIT_REDDIT_TRAIN and CONVOKIT_REDDIT_DEV
 
-```python
-import json
+    The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
-with open("prompts_reddit_train.json") as f:
-    PROMPTS = json.load(f)
-```
-
-Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data can be found in the GPT2_v_GPT2 folder in examples.
-
-The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.
 
 ---
 
-## Step 4: Instantiate Your System
+## Step 3: Instantiate Your System
 
 The *system* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTSystem` class that handles the technical backend so you just need to provide the huggingface model IDs of the auditor, target and baseline models and a `Scorer` instance (DetexifyScorer(), LlamaGuardScorer() or your custom scorer).
 
@@ -75,19 +71,19 @@ Need a custom model or rollout step logic? See the [System Customization](custom
 
 ---
 
-## Step 5: Instantiate the Sampler
+## Step 4: Instantiate the Sampler
 
 The sampler defines how training rollouts are structured and collected. In ASTRA-RL, the default is the `ASTSampler`, which implements the conversation tree rollout used in the [ASTPrompter](https://arxiv.org/abs/2407.09447) paper.
 
 ```python
-sampler = ASTSampler(system, PROMPTS)
+sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
 ```
 
 <details>
   <summary><strong>Curious about how this sampler structures rollouts?</strong></summary>
 
   This sampler builds a tree-structured conversation graph, where:
-  - The root node starts from a random initial prompt (from `PROMPTS`)
+  - The root node starts from a random initial prompt (from `CONVOKIT_REDDIT_TRAIN`)
   - At each turn, the auditor generates multiple (`tree_width`, default 2) candidate utterances
   - Each of those utterances is fed to the target model, which produces a response
   - The resulting auditor–target tuples form child nodes
@@ -99,17 +95,17 @@ sampler = ASTSampler(system, PROMPTS)
 
 By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:
 ```python
-sampler = ASTSampler(system, PROMPTS, tree_width=4, tree_depth=5)
+sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN, tree_width=4, tree_depth=5)
 ```
 
 Want a different rollout graph structure or a multi-agent setup? See the [Sampler Customization](customizing_training/environments.md) guide.
 
 ---
 
-## Step 6: Choose Your Algorithm and Optimizer
+## Step 5: Choose Your Algorithm and Optimizer
 
 The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update auditor model weights
-to minimize this loss, teaching the auditor to more effectively ellicit target toxicity.
+to minimize this loss, teaching the auditor to more effectively elicit target toxicity.
 
 We use DPO and Adam as the default for this quickstart.
 
@@ -122,25 +118,22 @@ To integrate your own RL algorithm, see the [Solver Customization](customizing_t
 
 ---
 
-## Step 7: Train the Auditor
+## Step 6: Train the Auditor
 
 For the quick start approach, simply call our training configuration and trainer classes and start training!
 
 ```python
-# instantiate the pre-configured HF-compatable configuration and traininer class
-config = HFASTConfiguration() # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
-# this trainer will train the auditor and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
-trainer = HFASTTrainer(
+# instantiate the pre-configured HF-compatible configuration and trainer class
+config = TrainingConfiguration() # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
+# this trainer will train the auditor
+trainer = Trainer(
     config,
     sampler,
     solver,
-    dev_prompts=DEV_PROMPTS,
-    eval_every=100,
-    ckpt_dir="checkpoints",
 )
 trainer.train()
 ```
-> The source code for the training configuration and trainer are at [hf_ast_system](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/ext/transformers/hf_ast_system.py)
+> The source code for the training configuration and trainer are at [trainer.py](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/training/trainer.py)
 
 Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? See the [Trainer Customization](customizing_training/trainers.md) guide.
 
@@ -149,7 +142,7 @@ Want to customize the training configuration/hyperparams, the training loop, or 
 ## Full Examples:
 We provide 3 complete working examples that mirror this guide!
 
-Hugging face example for llama3 models without trainer: [examples/ast_huggingface.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface.py)
+Hugging face example for llama3 models: [examples/ast_huggingface.py](https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface.py)
 
 Custom AST system for GPT2 models with trainer: [examples/ast_trainer](https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_trainer.py)
 
