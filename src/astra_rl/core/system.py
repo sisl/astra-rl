@@ -23,7 +23,7 @@ class System(ABC, Generic[StateT, ActionT]):
 
     This class is responsible for defining how exactly to interact
     with the system under test---with generics in terms of how to get
-    probabilities and rollouts from the auditor and target models.
+    probabilities and rollouts from the tester and target models.
 
     This allows for us to be generic over the types of states, actions
     as well as how to measure them. We ask for a scorer as a way to
@@ -72,7 +72,7 @@ class System(ABC, Generic[StateT, ActionT]):
     def get_baseline_logprobs(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        """Evaluates P(continuation|context) on *auditor's baseline distribution* for KL
+        """Evaluates P(continuation|context) on *tester's baseline distribution* for KL
            divergence measurements.
 
         Args:
@@ -85,7 +85,7 @@ class System(ABC, Generic[StateT, ActionT]):
             This should be batched; i.e., len(context) == len(continuation) and each
             represents a batch element. Note that this is *not* the defender's model, but
             rather the baseline model used for measuring KL divergence to make sure that
-            the trained auditor stays an LM.
+            the trained tester stays an LM.
 
         Returns:
             torch.Tensor: The per-token log probabilities of the continuations given their contexts.
@@ -95,10 +95,10 @@ class System(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def get_auditor_logprobs(
+    def get_tester_logprobs(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        """Evaluates P(continuation|context) on *auditor*. This must return tensor w/ grads!
+        """Evaluates P(continuation|context) on *tester*. This must return tensor w/ grads!
 
         Args:
             context (Sequence[str]): Sequence of strings, where each string is a context on which the
@@ -118,8 +118,8 @@ class System(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def rollout_prompt_with_auditor(self, x: Sequence[StateT]) -> Sequence[ActionT]:
-        """Rolls out the prompt with the auditor model. Do *not* return the prompt.
+    def rollout_prompt_with_tester(self, x: Sequence[StateT]) -> Sequence[ActionT]:
+        """Rolls out the prompt with the tester model. Do *not* return the prompt.
 
         a ~ \\pi(s)
 
@@ -203,7 +203,7 @@ class System(ABC, Generic[StateT, ActionT]):
         assert isinstance(logprobs, torch.Tensor), "Logprobs must be a torch.Tensor."
         if requires_grad:
             assert logprobs.requires_grad, (
-                "Auditor logprobs must carry gradient information."
+                "Tester logprobs must carry gradient information."
             )
         # check that the size of the tensor is B x T, where B is the batch size and T is max_continuation_length
         assert logprobs.dim() == 2, (
@@ -223,7 +223,7 @@ class System(ABC, Generic[StateT, ActionT]):
                 f"All logprobs must be on the same device. Expected {self._expected_device}, "
                 f"but {check_key} logprobs are on {logprobs.device}. "
                 f"This typically happens when models are on different devices. "
-                f"Please ensure all models (auditor, target, baseline) are on the same device."
+                f"Please ensure all models (tester, target, baseline) are on the same device."
             )
         # warn if everything is between 0 and 1
         if ((logprobs >= 0.0) & (logprobs <= 1.0)).all():
@@ -233,11 +233,11 @@ class System(ABC, Generic[StateT, ActionT]):
             )
         self._disable_asserts[check_key] = True
 
-    def _get_auditor_logprobs_and_validate(
+    def _get_tester_logprobs_and_validate(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        logprobs = self.get_auditor_logprobs(context, continuation)
-        self._check_logprobs("auditor_logprobs", logprobs, len(context), True)
+        logprobs = self.get_tester_logprobs(context, continuation)
+        self._check_logprobs("tester_logprobs", logprobs, len(context), True)
         return logprobs
 
     def _get_target_logprobs_and_validate(
@@ -254,11 +254,11 @@ class System(ABC, Generic[StateT, ActionT]):
         self._check_logprobs("baseline_logprobs", logprobs, len(context), False)
         return logprobs
 
-    def _rollout_prompt_with_auditor_and_validate(
+    def _rollout_prompt_with_tester_and_validate(
         self, x: Sequence[StateT]
     ) -> Sequence[ActionT]:
-        rolled_out = self.rollout_prompt_with_auditor(x)
-        self._check_continuation("auditor_rollout", x, rolled_out)
+        rolled_out = self.rollout_prompt_with_tester(x)
+        self._check_continuation("tester_rollout", x, rolled_out)
         return rolled_out
 
     def _rollout_prompt_with_target_and_validate(

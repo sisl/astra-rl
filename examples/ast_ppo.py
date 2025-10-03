@@ -1,7 +1,7 @@
 """
 ast_basic.py
 A basic example of how to use the ASTRA package with PPO
-We use GPT-2 as our auditor, target, and use the bulit-in
+We use GPT-2 as our tester, target, and use the bulit-in
 detoxify scorer. We will train using a manually written
 corpora below of initial prompts.
 """
@@ -33,13 +33,13 @@ class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
         super().__init__(DetoxifyScorer())
 
         self.device = device
-        self.auditor = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+        self.tester = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
         self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
 
         self.vf = nn.Sequential(
-            nn.Linear(self.auditor.config.n_embd, self.auditor.config.n_embd),
+            nn.Linear(self.tester.config.n_embd, self.tester.config.n_embd),
             nn.GELU(),
-            nn.Linear(self.auditor.config.n_embd, 1),
+            nn.Linear(self.tester.config.n_embd, 1),
         ).to(self.device)
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -55,16 +55,16 @@ class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
         return self.get_target_logprobs(context, continuation)
 
     def get_auditor_logprobs(self, context, continuation):
-        return self.__get_logprobs(self.auditor, context, continuation)
+        return self.__get_logprobs(self.tester, context, continuation)
 
     def rollout_prompt_with_auditor(self, prompt):
-        return self.__rollout(self.auditor, prompt)
+        return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
         return self.__rollout(self.target, prompt)
 
     def parameters(self):
-        return self.auditor.parameters()
+        return self.tester.parameters()
 
     def value(self, context, continuation):
         # tokenize both context and continuation
@@ -98,7 +98,7 @@ class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
         combined_mask = torch.tensor(combined_mask).to(self.device)
 
         # run inference
-        output = self.auditor(
+        output = self.tester(
             input_ids=combined, attention_mask=attention_mask, output_hidden_states=True
         )
         projected = self.vf(output.hidden_states[-1])
@@ -112,7 +112,7 @@ class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
 
     # two helper methods to make the implementatinos above easy
     # you don't have to implement these for the API, but you should probably
-    # do something like this unless your auditor and target is very different
+    # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
         tokenized_prompt = self.tokenizer(
             prompt, padding=True, return_tensors="pt", padding_side="left"

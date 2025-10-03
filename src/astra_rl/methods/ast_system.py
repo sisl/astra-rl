@@ -81,7 +81,7 @@ class ASTSampler(Sampler[str, str]):
 
     Specifically, this is the original rollout system used in the
     ASTPrompter paper, the case of red-teaming where we have
-    the auditor and defender generates successive turns of strings,
+    the tester and defender generates successive turns of strings,
     each of which is appended to the prompt of the other. They do not
     have IFT or other types of structure.
 
@@ -121,7 +121,7 @@ class ASTSampler(Sampler[str, str]):
             width = self.tree_width
 
         prompts = [prompt for _ in range(width)]
-        probes = self.system._rollout_prompt_with_auditor_and_validate(prompts)
+        probes = self.system._rollout_prompt_with_tester_and_validate(prompts)
         defenses = self.system._rollout_prompt_with_target_and_validate(
             [prompt + i for i in probes]
         )

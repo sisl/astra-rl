@@ -4,7 +4,7 @@ This is the same example as `ast.py`, but we will now use our
 Huggingface extensions to enable a dramatic reduction in
 boilerplate to rollouts.
 
-We use GPT-2 as our auditor, target, and use the bulit-in
+We use GPT-2 as our tester, target, and use the bulit-in
 detoxify scorer. We will train using a manually written
 corpora below of initial prompts.
 
@@ -21,14 +21,14 @@ from astra_rl.ext.transformers.hf_ast_system import (
     HFASTSystem,
 )
 
-# prompts to use to seed initial stage of auditor-target rollouts (training and dev)
+# prompts to use to seed initial stage of tester-target rollouts (training and dev)
 from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 
 def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
-    # Example system instantiation: llama3 auditor, target, and baseline with Detoxify scorer (heavyweight setup (8B) - requires GPU)
+    # Example system instantiation: llama3 tester, target, and baseline with Detoxify scorer (heavyweight setup (8B) - requires GPU)
     # system = HFASTSystem("meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", DetoxifyScorer(), DEVICE)
 
     # lighter weight option (1B)
@@ -47,7 +47,7 @@ def main() -> None:
     # instantiate the pre-configured HF-compatable configuration and traininer class
     config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
 
-    # this trainer will train the auditor and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+    # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
     trainer = HFASTTrainer(
         config,
         sampler,

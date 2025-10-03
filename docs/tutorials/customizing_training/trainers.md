@@ -1,6 +1,6 @@
 # Trainers
 
-**Trainers** run the optimization loop that updates your auditor. They wire together the **sampler** (rollout collection), the **algorithm/solver** (computes a loss from rollouts), and the **optimizer** (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.
+**Trainers** run the optimization loop that updates your tester. They wire together the **sampler** (rollout collection), the **algorithm/solver** (computes a loss from rollouts), and the **optimizer** (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.
 
 This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.
 
@@ -10,7 +10,7 @@ This guide explains what a trainer does, what ASTRA-RL ships with, and how to im
 
 The base trainer in `astra_rl/training/trainer.py` is responsible for:
 
-1. **Optimizer setup** — creates the optimizer that updates the auditor's weights.
+1. **Optimizer setup** — creates the optimizer that updates the tester's weights.
 2. **Harness orchestration** — uses the **Harness** to collect rollouts and feed batches to your **Algorithm** (solver).
 3. **Main training loop** — calls `train()` to iterate for `training_steps`.
 
@@ -83,9 +83,9 @@ config = TrainingConfiguration(
 
 ## 5. Best Practices & Sanity Checks
 
-* **Don’t hack the Harness** unless you truly need different data-collection semantics; most customization belongs in the trainer/config/environment/algorithm.
+* **Don't hack the Harness** unless you truly need different data-collection semantics; most customization belongs in the trainer/config/environment/algorithm.
 * **Detach when logging:** `logs["loss"] = float(loss.detach().item())` to avoid holding computation graphs.
-* **Checkpoint sensibly:** attacker + tokenizer is usually enough; if your algorithm has extra state, save it too.
+* **Checkpoint sensibly:** tester + tokenizer is usually enough; if your algorithm has extra state, save it too.
 * **Batching vs. accumulation:** prefer reasonable batch sizes; use `gradient_accumulation_steps` when memory is tight.
 * **Reproducibility:** seed PyTorch/NumPy and pass a `seed` through your environment when possible.
 * **Validation cadence:** dev eval can be slow—choose `eval_every` that matches your budget.
@@ -109,7 +109,7 @@ trainer = Trainer(
 trainer.train()
 
 # Optionally save the final HF model/tokenizer:
-system.auditor.save_pretrained("final_ckpt")
+system.tester.save_pretrained("final_ckpt")
 system.tokenizer.save_pretrained("final_ckpt")
 ```
 
@@ -178,7 +178,7 @@ class MyTrainer(Trainer):
 
     # optional but encouraged
     def _save_hf(self, step: int) -> None:
-        """Save your auditor and its tokenizer"""
+        """Save your tester and its tokenizer"""
 
     # optional method
     @torch.no_grad()

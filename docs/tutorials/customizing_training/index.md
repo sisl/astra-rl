@@ -4,13 +4,13 @@ To go beyond the supported training classes presented in the [quick start traini
 
 ### 1) System — *How models run/interact*
 
-Handles loading models/tokenizers, performing **one rollout step** (auditor/target generation), computing **log-probs** (for DPO/PPO, etc.), advancing the conversation state, and defining a **reward**.
+Handles loading models/tokenizers, performing **one rollout step** (tester/target generation), computing **log-probs** (for DPO/PPO, etc.), advancing the conversation state, and defining a **reward**.
 
 * Guide: [System Customization](problems.md)
 
 ### 2) Sampler — *How data is collected*
 
-Defines how auditor–target interactions are generated and structured for training/eval (e.g., **single-path vs. tree** rollouts), what per-step data is stored, and what the solver receives.
+Defines how tester–target interactions are generated and structured for training/eval (e.g., **single-path vs. tree** rollouts), what per-step data is stored, and what the solver receives.
 
 * Guide: [Sampler Customization](environments.md)
 
@@ -20,7 +20,7 @@ Scores target generations (scalar harm). Instantiate in your **System** for seam
 
 * Guide: [Scorer Customization](moderators.md)
 
-### 4) Solvers (Algorithms) — *How the auditor learns*
+### 4) Solvers (Algorithms) — *How the tester learns*
 
 Consume rollout graphs, **flatten** them to per-sample steps, **collate** batches, and compute the **training loss** (plus logs).
 

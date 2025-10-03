@@ -36,13 +36,13 @@ class MockSystem(System[str, str]):
         # Return tensor on device2 (potentially different)
         return torch.randn(len(context), 5, device=self.device2)
 
-    def get_auditor_logprobs(
+    def get_tester_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
         # Return tensor on device1 with gradients
         return torch.randn(len(context), 5, device=self.device1, requires_grad=True)
 
-    def rollout_prompt_with_auditor(self, x: Sequence[str]) -> Sequence[str]:
+    def rollout_prompt_with_tester(self, x: Sequence[str]) -> Sequence[str]:
         return ["response"] * len(x)
 
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
@@ -67,13 +67,13 @@ def test_device_consistency_same_device():
     continuation = ["test", "case"]
 
     # These should all pass since they're on the same device
-    auditor_logprobs = system._get_auditor_logprobs_and_validate(context, continuation)
+    tester_logprobs = system._get_tester_logprobs_and_validate(context, continuation)
     target_logprobs = system._get_target_logprobs_and_validate(context, continuation)
     baseline_logprobs = system._get_baseline_logprobs_and_validate(
         context, continuation
     )
 
-    assert auditor_logprobs.device == torch.device("cpu")
+    assert tester_logprobs.device == torch.device("cpu")
     assert target_logprobs.device == torch.device("cpu")
     assert baseline_logprobs.device == torch.device("cpu")
 
@@ -89,8 +89,8 @@ def test_device_consistency_different_devices_gpu():
     continuation = ["test", "case"]
 
     # First call should succeed and set expected device
-    auditor_logprobs = system._get_auditor_logprobs_and_validate(context, continuation)
-    assert auditor_logprobs.device == torch.device("cuda:0")
+    tester_logprobs = system._get_tester_logprobs_and_validate(context, continuation)
+    assert tester_logprobs.device == torch.device("cuda:0")
 
     # Second call with different device should fail
     with pytest.raises(AssertionError) as exc_info:
@@ -136,7 +136,7 @@ def test_device_consistency_reset_on_new_problem():
     context = ["hello"]
     continuation = ["test"]
 
-    system1._get_auditor_logprobs_and_validate(context, continuation)
+    system1._get_tester_logprobs_and_validate(context, continuation)
     assert system1._expected_device == torch.device("cpu")
 
     # Second problem should start fresh
@@ -154,14 +154,14 @@ def test_device_consistency_with_disable_asserts():
     continuation = ["test"]
 
     # First call should set device and disable further checks for this key
-    system._get_auditor_logprobs_and_validate(context, continuation)
+    system._get_tester_logprobs_and_validate(context, continuation)
     assert system._expected_device == torch.device("cpu")
-    assert system._disable_asserts["auditor_logprobs"] is True
+    assert system._disable_asserts["tester_logprobs"] is True
 
     # Second call with same key should not perform device check due to disabled asserts
     # We can't easily test this without modifying the tensor device directly,
     # but we can verify the disable mechanism works
-    system._get_auditor_logprobs_and_validate(context, continuation)  # Should not raise
+    system._get_tester_logprobs_and_validate(context, continuation)  # Should not raise
 
 
 def test_error_message_quality():
@@ -179,4 +179,4 @@ def test_error_message_quality():
     assert "All logprobs must be on the same device" in error_msg
     assert "Expected meta" in error_msg
     assert "test_logprobs logprobs are on cpu" in error_msg
-    assert "models (auditor, target, baseline) are on the same device" in error_msg
+    assert "models (tester, target, baseline) are on the same device" in error_msg

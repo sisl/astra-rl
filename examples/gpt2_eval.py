@@ -7,33 +7,33 @@ from astra_rl.methods.ast_system import ASTEvaluator
 from astra_rl.scorers.llamaguard import LlamaGuardScorer
 
 
-# set the auditor model here: we are using a pre-trained, local auditor and a "gpt2" target
-AUDITOR_MODEL = "/home/user/astra-rl/examples/checkpoints/best"
+# set the tester model here: we are using a pre-trained, local tester and a "gpt2" target
+TESTER_MODEL = "/home/user/astra-rl/examples/checkpoints/best"
 
 
-# since we are using a custom auditor that is not supported by HFASTSystem (GPT2 is not supported)
+# since we are using a custom tester that is not supported by HFASTSystem (GPT2 is not supported)
 # we must create a custom subclass of GPT2DetoxifySystem
 class GPT2EvaluationSystem(GPT2DetoxifySystem):
     """
-    Same API/behavior as ExampleDetoxifySystem, but lets you plug in a custom auditor
+    Same API/behavior as ExampleDetoxifySystem, but lets you plug in a custom tester
     (local HF directory or hub id) and provide a custom scorer.
 
     Args:
-        auditor_model (str): The model ID or path for the auditor model, must be possible
+        tester_model (str): The model ID or path for the tester model, must be possible
             for AutoModelForCausalLM.
         device (str): The device to run the models on, e.g. "cpu"
         scorer (Optional[DetoxifyScorer]): The scorer to use, defaults to Detoxify.
 
     Note:
         This class inherits all methods from ExampleDetoxifySystem except for __init__,
-        which is modified to allow for a custom auditor model and scorer.
+        which is modified to allow for a custom tester model and scorer.
 
-        ** Assumes target is "gpt2" and that the auditor is an adversarial model based on gpt2.
+        ** Assumes target is "gpt2" and that the tester is an adversarial model based on gpt2.
     """
 
     def __init__(
         self,
-        auditor_model: str = AUDITOR_MODEL,
+        tester_model: str = TESTER_MODEL,
         device: str = "cpu",
         scorer: Optional[DetoxifyScorer] = None,
     ):
@@ -43,30 +43,28 @@ class GPT2EvaluationSystem(GPT2DetoxifySystem):
 
         self.device = device
 
-        # Load auditor
-        self.auditor = AutoModelForCausalLM.from_pretrained(auditor_model).to(
-            self.device
-        )
+        # Load tester
+        self.tester = AutoModelForCausalLM.from_pretrained(tester_model).to(self.device)
 
         # Load target (gpt2 by default to match ExampleDetoxifySystem)
         self.target = GPT2LMHeadModel.from_pretrained("gpt2").to(self.device)
 
-        # Tokenizer is shared between auditor and target (both gpt2-based)
+        # Tokenizer is shared between tester and target (both gpt2-based)
         self.tokenizer = AutoTokenizer.from_pretrained("gpt2")
 
         # modify the tokenizer to account for GPT2's special fixed set up
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
         self.tokenizer.padding_side = "left"
         self.tokenizer.truncation_side = "left"
-        self.auditor.config.pad_token_id = self.tokenizer.eos_token_id
+        self.tester.config.pad_token_id = self.tokenizer.eos_token_id
         self.target.config.pad_token_id = self.tokenizer.eos_token_id
 
-        # model’s usable max sequence length (GPT-2: 1024)
+        # model's usable max sequence length (GPT-2: 1024)
         self.max_ctx = int(
             getattr(
-                self.auditor.config,
+                self.tester.config,
                 "n_positions",
-                getattr(self.auditor.config, "max_position_embeddings", 1024),
+                getattr(self.tester.config, "max_position_embeddings", 1024),
             )
         )
 
@@ -78,8 +76,8 @@ def main() -> None:
     # set device
     DEVICE = "cuda"
 
-    # instantiate your custom system with your auditor and target models
-    system = GPT2EvaluationSystem(AUDITOR_MODEL, DEVICE, LlamaGuardScorer())
+    # instantiate your custom system with your tester and target models
+    system = GPT2EvaluationSystem(TESTER_MODEL, DEVICE, LlamaGuardScorer())
 
     # instantiate the AST sampler - no adjustments needed because already has eval_rollout
     sampler = ASTSampler(system, CONVOKIT_REDDIT_TEST, 1, 3)

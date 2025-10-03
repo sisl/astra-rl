@@ -1,7 +1,7 @@
 """
 ast_basic.py
 A basic example of how to use the ASTRA package.
-We use GPT-2 as our auditor, target, and use the bulit-in
+We use GPT-2 as our tester, target, and use the bulit-in
 detoxify scorer. We will train using a manually written
 corpora below of initial prompts.
 """
@@ -26,7 +26,7 @@ class GPT2DetoxifySystem(ASTSystem):
         super().__init__(DetoxifyScorer())
 
         self.device = device
-        self.auditor = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+        self.tester = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
         self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -34,15 +34,15 @@ class GPT2DetoxifySystem(ASTSystem):
         self.tokenizer.padding_side = "left"
         self.tokenizer.truncation_side = "left"
 
-        self.auditor.config.pad_token_id = self.tokenizer.eos_token_id
+        self.tester.config.pad_token_id = self.tokenizer.eos_token_id
         self.target.config.pad_token_id = self.tokenizer.eos_token_id
 
-        # model’s usable max sequence length (GPT-2: 1024)
+        # model's usable max sequence length (GPT-2: 1024)
         self.max_ctx = int(
             getattr(
-                self.auditor.config,
+                self.tester.config,
                 "n_positions",
-                getattr(self.auditor.config, "max_position_embeddings", 1024),
+                getattr(self.tester.config, "max_position_embeddings", 1024),
             )
         )
         print(f"Using model {MODEL_NAME} with max context length {self.max_ctx}")
@@ -57,20 +57,20 @@ class GPT2DetoxifySystem(ASTSystem):
         return self.get_target_logprobs(context, continuation)
 
     def get_auditor_logprobs(self, context, continuation):
-        return self.__get_logprobs(self.auditor, context, continuation)
+        return self.__get_logprobs(self.tester, context, continuation)
 
     def rollout_prompt_with_auditor(self, prompt):
-        return self.__rollout(self.auditor, prompt)
+        return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
         return self.__rollout(self.target, prompt)
 
     def parameters(self):
-        return self.auditor.parameters()
+        return self.tester.parameters()
 
     # two helper methods to make the implementations above easy
     # you don't have to implement these for the API, but you should probably
-    # do something like this unless your auditor and target is very different
+    # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
         gen_length = 32
         max_context_len = self.max_ctx - gen_length
@@ -178,7 +178,7 @@ def main() -> None:
     # instantiate the pre-configured HF-compatable configuration and traininer class
     config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
 
-    # this trainer will train the auditor and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+    # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
     trainer = HFASTTrainer(
         config,
         sampler,

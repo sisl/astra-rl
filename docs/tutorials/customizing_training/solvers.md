@@ -80,11 +80,11 @@ class MyBatch(Generic[StateT, ActionT]):
 
 Your solver calls into the `System` for model computations:
 
-* `system._get_auditor_logprobs_and_validate(contexts, actions)`
+* `system._get_tester_logprobs_and_validate(contexts, actions)`
 * `system._get_baseline_logprobs_and_validate(contexts, actions)`
 * optionally: `system.get_target_logprobs(...)`, `system.reward(...)`, etc.
 
-**Tip:** Target/baseline log-prob calls usually should be in `torch.no_grad()`; the auditor's log-probs must require grad.
+**Tip:** Target/baseline log-prob calls usually should be in `torch.no_grad()`; the tester's log-probs must require grad.
 
 ---
 
@@ -126,7 +126,7 @@ Under the hood, the **Trainer** will:
 * **Gradients only through attacker:** wrap baseline/target log-prob calls in `torch.no_grad()` if you surface them directly.
 * **Finite values:** check for `nan/inf` in losses and rewards (clip/normalize if necessary).
 * **Tree width OK:** preference solvers require `tree_width ≥ 2`.
-* **KL anchor:** if the auditor drifts, increase β or add an explicit KL penalty to the loss.
+* **KL anchor:** if the tester drifts, increase β or add an explicit KL penalty to the loss.
 * **Determinism:** set seeds and/or make selection in `flatten` deterministic to repro bugs.
 
 ---

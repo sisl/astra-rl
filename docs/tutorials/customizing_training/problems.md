@@ -2,10 +2,10 @@
 
 **Systems** encapsulate *models + tokenization + rollout + log-probabilities + rewards*. Samplers call your System to:
 
-* sample auditor/target continuations,
+* sample tester/target continuations,
 * compute log-probs for learning objectives (e.g., DPO/IPO/PPO),
 * advance the state,
-* access auditor parameters,
+* access tester parameters,
 * compute rewards (scalar or per-step).
 
 Most users can subclass `ASTSystem` (text) or use the HF convenience `HFASTSystem`. If you're integrating a custom or non-HF model, implement the same small API.
@@ -16,11 +16,11 @@ Most users can subclass `ASTSystem` (text) or use the HF convenience `HFASTSyste
 
 A `System` is the bridge between abstract rollouts and concrete model calls. It must:
 
-* **Generate** next utterances for auditor/target,
+* **Generate** next utterances for tester/target,
 * **Score** continuations via log-probs,
 * **Compute** rewards used by solvers,
 * **Advance** the conversation state,
-* **Expose** trainable parameters (usually the auditor).
+* **Expose** trainable parameters (usually the tester).
 
 ---
 
@@ -53,19 +53,19 @@ Keep HF models/tokenizers but override specifics (generation kwargs, reward mix,
 Every System must implement the following **batched** methods (lists in, tensors/lists out, index-aligned):
 
 ```python
-rollout_prompt_with_auditor(prompts: Sequence[str]) -> Sequence[str]
+rollout_prompt_with_tester(prompts: Sequence[str]) -> Sequence[str]
 rollout_prompt_with_target  (prompts: Sequence[str]) -> Sequence[str]
 
-get_auditor_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -> torch.Tensor  # requires grad
+get_tester_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -> torch.Tensor  # requires grad
 get_target_logprobs  (contexts: Sequence[str], continuations: Sequence[str]) -> torch.Tensor  # no grad
 get_baseline_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -> torch.Tensor  # no grad
 
-parameters() -> Iterator[torch.nn.Parameter]   # usually auditor params
+parameters() -> Iterator[torch.nn.Parameter]   # usually tester params
 advance(context: str, probe: str, response: str) -> str # return the next state (i.e. updated conversation context)
 reward(contexts, probes, responses) -> Sequence[float]
 ```
 
-**Gradients:** only `get_auditor_logprobs` must return a tensor with `requires_grad=True`. Target/baseline should be computed under `torch.no_grad()` (return tensors detached from graphs) to save memory.
+**Gradients:** only `get_tester_logprobs` must return a tensor with `requires_grad=True`. Target/baseline should be computed under `torch.no_grad()` (return tensors detached from graphs) to save memory.
 
 ### 4.2 System helpers
 
@@ -95,29 +95,29 @@ The following code shows how to subclass from the base System class and where yo
 
 ```python
 class MySystem(System[str, str]):
-    def __init__(self, scorer, auditor_model, target_model, baseline_model, device="cuda"):
+    def __init__(self, scorer, tester_model, target_model, baseline_model, device="cuda"):
         super().__init__(scorer)
         self.device = device
 
-        # set your auditor, target, and baseline models
-        self.auditor = auditor_model.to(device)
+        # set your tester, target, and baseline models
+        self.tester = tester_model.to(device)
         self.target   = target_model.to(device)
         self.baseline = baseline_model.to(device)
 
-        # TODO: load the auditor, target and baseline tokenizers
+        # TODO: load the tester, target and baseline tokenizers
         # TODO: set your padding tokens for each tokenizer
         # TODO: set your model's usable max sequence length (e.g GPT-2: 1024)
 
-    def rollout_prompt_with_auditor(self, prompts):
+    def rollout_prompt_with_tester(self, prompts):
         # TODO: your generator over token ids/text → list[str] continuations
         ...
 
     def rollout_prompt_with_target(self, prompts):
         ...
 
-    def get_auditor_logprobs(self, ctx, cont):
+    def get_tester_logprobs(self, ctx, cont):
         # Return sum log P(cont | ctx) per example; tensor requires grad
-        return self._logprobs(self.auditor, ctx, cont, requires_grad=True)
+        return self._logprobs(self.tester, ctx, cont, requires_grad=True)
 
     def get_target_logprobs(self, ctx, cont):
         with torch.no_grad():
@@ -140,7 +140,7 @@ class MySystem(System[str, str]):
         return context + probe + response
 
     def parameters(self):
-        return self.auditor.parameters()
+        return self.tester.parameters()
 
     def reward(self, contexts, probes, responses):
         # calculate your custom reward here!
@@ -189,7 +189,7 @@ trainer.train()
 ## 8. Debug Checklist
 
 * **Batching:** input list lengths match; outputs align (`[B]` tensors).
-* **Gradients:** auditor log-probs require grad; target/baseline under `no_grad`.
+* **Gradients:** tester log-probs require grad; target/baseline under `no_grad`.
 * **Masking:** only continuation tokens contribute to `log P(cont | ctx)`.
 * **Context window:** `len(ctx_tokens) + max_new_tokens ≤ max_ctx`.
 * **Tokenizer differences:** never cross-decode; keep model/tokenizer pairs.

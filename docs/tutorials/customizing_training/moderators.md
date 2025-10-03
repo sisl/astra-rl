@@ -1,6 +1,6 @@
 # Scorers
 
-**Scorers** provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender's reply), they return a scalar score that reflects harm/unsafety. Auditors are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise "undesirable") target responses, revealing weaknesses in the target's safety alignment.
+**Scorers** provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender's reply), they return a scalar score that reflects harm/unsafety. Testers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise "undesirable") target responses, revealing weaknesses in the target's safety alignment.
 
 ASTRA-RL ships with ready-to-use text scorers and a simple interface for writing your own. This guide explains what a scorer does, what's included, and how to implement/customize your own class.
 
@@ -13,7 +13,7 @@ A scorer converts text into a **scalar score** (one score per input). In most se
 * **Input:** target/defender generations (strings).
 * **Output:** `Sequence[float]` scores, e.g., toxicity in `[0, 1]`.
 
-Downstream solvers interpret these scores to train the **auditor**. For preference-based methods (DPO/IPO/ORPO), scores can help form preferences; for policy-gradient methods (PPO/A2C), scores serve directly as rewards/reward components.
+Downstream solvers interpret these scores to train the **tester**. For preference-based methods (DPO/IPO/ORPO), scores can help form preferences; for policy-gradient methods (PPO/A2C), scores serve directly as rewards/reward components.
 
 ---
 

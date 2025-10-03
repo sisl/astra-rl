@@ -36,8 +36,8 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
 
     Attributes:
         device (str): The device to run the models on (default is "cpu").
-        auditor (AutoModelForCausalLM): The auditor model used for generating sequences.
-        auditor_tokenizer (PreTrainedTokenizer): The tokenizer for the auditor model.
+        tester (AutoModelForCausalLM): The tester model used for generating sequences.
+        tester_tokenizer (PreTrainedTokenizer): The tokenizer for the tester model.
         target (AutoModelForCausalLM): The target model used for evaluating sequences.
         target_tokenizer (PreTrainedTokenizer): The tokenizer for the target model.
         baseline (AutoModelForCausalLM): The baseline model used for comparison.
@@ -48,7 +48,7 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
 
     def __init__(
         self,
-        auditor_model_id: str,
+        tester_model_id: str,
         target_model_id: str,
         baseline_model_id: str,
         scorer: Scorer[str, str],
@@ -57,7 +57,7 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
         """Initialize an HFASTSystem instance from Huggingface model IDs.
 
         Args:
-            auditor_model_id (str): The model ID for the auditor model, must be possible for AutoModelForCausalLM.
+            tester_model_id (str): The model ID for the tester model, must be possible for AutoModelForCausalLM.
             target_model_id (str): The model ID for the target model, must be possible for AutoModelForCausalLM.
             baseline_model_id (Optional[str]): The model ID for the baseline model, if any; otherwise defaults to target model.
             scorer (Scorer): The scorer used to evaluate sequences.
@@ -68,10 +68,10 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
         self.device = device
 
         # initialize models and tokenizer
-        self.auditor = AutoModelForCausalLM.from_pretrained(auditor_model_id).to(
+        self.tester = AutoModelForCausalLM.from_pretrained(tester_model_id).to(
             self.device
         )
-        self.auditor_tokenizer = AutoTokenizer.from_pretrained(auditor_model_id)
+        self.tester_tokenizer = AutoTokenizer.from_pretrained(tester_model_id)
 
         self.target = AutoModelForCausalLM.from_pretrained(target_model_id).to(
             self.device
@@ -89,18 +89,18 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
             self.baseline_tokenizer = self.target_tokenizer
 
         # a bunch of models doesn't have padding, so we set the pad token to the eos token
-        if self.auditor_tokenizer.pad_token_id is None:
-            self.auditor_tokenizer.pad_token_id = self.auditor_tokenizer.eos_token_id
+        if self.tester_tokenizer.pad_token_id is None:
+            self.tester_tokenizer.pad_token_id = self.tester_tokenizer.eos_token_id
         if self.target_tokenizer.pad_token_id is None:
             self.target_tokenizer.pad_token_id = self.target_tokenizer.eos_token_id
         if self.baseline_tokenizer.pad_token_id is None:
             self.baseline_tokenizer.pad_token_id = self.baseline_tokenizer.eos_token_id
 
         # set the tokenizer padding and truncation side
-        self.auditor_tokenizer.padding_side = self.target_tokenizer.padding_side = (
+        self.tester_tokenizer.padding_side = self.target_tokenizer.padding_side = (
             self.baseline_tokenizer.padding_side
         ) = "left"
-        self.auditor_tokenizer.truncation_side = (
+        self.tester_tokenizer.truncation_side = (
             self.target_tokenizer.truncation_side
         ) = self.baseline_tokenizer.truncation_side = "left"
 
@@ -118,21 +118,21 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
             self.baseline, self.baseline_tokenizer, context, continuation, self.device
         )
 
-    def get_auditor_logprobs(
+    def get_tester_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
         return self.__get_logprobs(
-            self.auditor, self.auditor_tokenizer, context, continuation, self.device
+            self.tester, self.tester_tokenizer, context, continuation, self.device
         )
 
-    def rollout_prompt_with_auditor(self, x: Sequence[str]) -> Sequence[str]:
-        return self.__rollout(self.auditor, self.auditor_tokenizer, x, self.device)
+    def rollout_prompt_with_tester(self, x: Sequence[str]) -> Sequence[str]:
+        return self.__rollout(self.tester, self.tester_tokenizer, x, self.device)
 
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
         return self.__rollout(self.target, self.target_tokenizer, x, self.device)
 
     def parameters(self) -> Iterator[torch.nn.parameter.Parameter]:
-        return self.auditor.parameters()
+        return self.tester.parameters()
 
     @staticmethod
     def __rollout(
@@ -193,7 +193,7 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
         combined_mask = torch.tensor(combined_mask).to(self.device)
 
         # run inference
-        output = self.auditor(
+        output = self.tester(
             input_ids=combined, attention_mask=attention_mask, output_hidden_states=True
         )
         projected = self.vf(output.hidden_states[-1])
@@ -275,7 +275,7 @@ class HFASTTrainer(Trainer):
     """
     Subclass that reuses base init (harness, optimizer, counters) and adds:
       - periodic evaluation on a dev set
-      - checkpointing of the auditor/tokenizer
+      - checkpointing of the tester/tokenizer
     """
 
     def __init__(
@@ -297,16 +297,16 @@ class HFASTTrainer(Trainer):
         self.sampler = self.harness.sampler
         self.system = self.sampler.system
 
-    # helper function that saves the auditor model in HF format
+    # helper function that saves the tester model in HF format
     def save(self, step: int | None, tag: str = "step"):
         if tag == "best":
             out = os.path.join(self.ckpt_dir, "best")  # single fixed path
         else:
             out = os.path.join(self.ckpt_dir, f"{tag}-{step}")
 
-        # Save auditor/target in HF format
+        # Save tester/target in HF format
         os.makedirs(out, exist_ok=True)
-        self.system.auditor.save_pretrained(out)
+        self.system.tester.save_pretrained(out)
         self.system.tokenizer.save_pretrained(out)
         logger.info(f"Saved checkpoint to {out}")
 
@@ -369,7 +369,7 @@ class HFEvaluationSystem(HFASTSystem):
 
     - Initializes the HFASTSystem using a sensible base id so HFASTSystem
       sets up tokenizers/target/baseline exactly as it does for training.
-    - Replaces the auditor model weights from `auditor_checkpoint`.
+    - Replaces the tester model weights from `tester_checkpoint`.
     - If the checkpoint contains a tokenizer, prefers that tokenizer; otherwise
       leaves the tokenizers configured by HFASTSystem intact.
 
@@ -380,8 +380,8 @@ class HFEvaluationSystem(HFASTSystem):
 
     def __init__(
         self,
-        auditor_checkpoint: str,
-        auditor_base_model_id: Optional[str],
+        tester_checkpoint: str,
+        tester_base_model_id: Optional[str],
         target_model_id: str,
         device: str = "cpu",
         scorer: Optional[Scorer] = None,
@@ -389,11 +389,11 @@ class HFEvaluationSystem(HFASTSystem):
     ) -> None:
         # Choose a safe model id to give the parent: prefer an explicit base id if provided,
         # otherwise pass the checkpoint itself. HFASTSystem will create tokenizers from that id.
-        base_id_for_super = auditor_base_model_id or auditor_checkpoint
+        base_id_for_super = tester_base_model_id or tester_checkpoint
 
         # Initialize HFASTSystem exactly as it would for training (so tokenizers are set up the same way)
         super().__init__(
-            auditor_model_id=base_id_for_super,
+            tester_model_id=base_id_for_super,
             target_model_id=target_model_id,
             baseline_model_id=baseline_model_id,
             scorer=scorer,
@@ -402,35 +402,33 @@ class HFEvaluationSystem(HFASTSystem):
 
         self.device = device
 
-        # Replace auditor weights with the trained checkpoint (local HF dir or hub id).
+        # Replace tester weights with the trained checkpoint (local HF dir or hub id).
         try:
-            self.auditor = AutoModelForCausalLM.from_pretrained(auditor_checkpoint).to(
+            self.tester = AutoModelForCausalLM.from_pretrained(tester_checkpoint).to(
                 self.device
             )
-            logger.info(f"Loaded auditor model weights from: {auditor_checkpoint}")
+            logger.info(f"Loaded tester model weights from: {tester_checkpoint}")
         except Exception as e:
-            # fallback: keep auditor loaded by super().__init__ (from base_id_for_super)
+            # fallback: keep tester loaded by super().__init__ (from base_id_for_super)
             logger.warning(
-                f"Failed to load auditor checkpoint '{auditor_checkpoint}': {e}. "
-                "Using auditor model loaded by HFASTSystem (from base id)."
+                f"Failed to load tester checkpoint '{tester_checkpoint}': {e}. "
+                "Using tester model loaded by HFASTSystem (from base id)."
             )
 
         # If the checkpoint contains tokenizer files, prefer them. Otherwise keep the tokenizers that HFASTSystem created.
         try:
             # This will succeed when the checkpoint folder contains tokenizer files (tokenizer.json, vocab.json, merges.txt, etc.)
-            ckpt_tokenizer = AutoTokenizer.from_pretrained(auditor_checkpoint)
-            self.auditor_tokenizer = ckpt_tokenizer
-            logger.info(
-                f"Loaded auditor tokenizer from checkpoint: {auditor_checkpoint}"
-            )
+            ckpt_tokenizer = AutoTokenizer.from_pretrained(tester_checkpoint)
+            self.tester_tokenizer = ckpt_tokenizer
+            logger.info(f"Loaded tester tokenizer from checkpoint: {tester_checkpoint}")
         except Exception:
             # No tokenizer in checkpoint — leave the tokenizer created by HFASTSystem (from base_id_for_super)
             logger.debug(
-                "No tokenizer found in auditor_checkpoint; using tokenizer from HFASTSystem initialization."
+                "No tokenizer found in tester_checkpoint; using tokenizer from HFASTSystem initialization."
             )
 
         # canonical alias expected by other code (trainer.save uses system.tokenizer)
-        self.tokenizer = self.auditor_tokenizer
+        self.tokenizer = self.tester_tokenizer
 
         logger.info("HFEvaluationSystem initialized (non-GPT2 path).")
 

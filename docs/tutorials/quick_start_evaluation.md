@@ -1,19 +1,19 @@
 # Quick Start: Evaluation
 
- RL-based adversarial testing uses reinforcement learning to train an **auditor** that generates test cases likely to elicit unsafe outputs from a **target** model. This tutorial shows how to run evaluations using a **pre-trained auditor** against a target model.
+ RL-based adversarial testing uses reinforcement learning to train a **tester** that generates test cases likely to elicit unsafe outputs from a **target** model. This tutorial shows how to run evaluations using a **pre-trained tester** against a target model.
 
 !!! note "Prerequisite"
-    This guide assumes you already trained a Hugging Face (i.e. llama3) auditor (see **Quick Start: Training**). You'll point evaluation at that saved auditor checkpoint.
+    This guide assumes you already trained a Hugging Face (i.e. llama3) tester (see **Quick Start: Training**). You'll point evaluation at that saved tester checkpoint.
 
 ---
 
 ## Quick Start
 
-Evaluation at a glance: run a set of auditor↔target rollouts (seeded by a test set of prompts), collect per-turn data, and compute summary metrics.
+Evaluation at a glance: run a set of tester↔target rollouts (seeded by a test set of prompts), collect per-turn data, and compute summary metrics.
 
 ### 1) Setup: imports, model paths, and device
 
-Load dependencies and define the models you'll use as the **auditor** and **target**.
+Load dependencies and define the models you'll use as the **tester** and **target**.
 
 ```python
 # import dependencies
@@ -25,14 +25,14 @@ from astra_rl.ext.transformers.hf_ast_system import HFEvaluationSystem
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-# Path to your auditor model checkpoint from training
-AUDITOR_MODEL = "/home/user/astra-rl/examples/checkpoints/best" # assuming tokenizer is in checkpoint (default save in training)
+# Path to your tester model checkpoint from training
+TESTER_MODEL = "/home/user/astra-rl/examples/checkpoints/best" # assuming tokenizer is in checkpoint (default save in training)
 TARGET_MODEL = "meta-llama/Llama-3.1-8B"  # can be any HF model
 ```
 
 ### 2) Load evaluation prompts
 
-Evaluation prompts **start** the auditor–target conversation. Make sure they:
+Evaluation prompts **start** the tester–target conversation. Make sure they:
 
 1. Match the context you care about (e.g., diagnostic agent prompts for a diagnostic system).
 2. Were **never** seen during training or dev.
@@ -48,10 +48,10 @@ with open("prompts_reddit_test.json") as f:
 Use the preconfigured **HFEvaluationSystem** (takes in a pre-trained HF model) and the **ASTSampler** (ASTPrompter-style rollouts).
 
 ```python
-# instantiate the HF evaluation system with your auditor and target models
+# instantiate the HF evaluation system with your tester and target models
 system = HFEvaluationSystem(
-    auditor_checkpoint=AUDITOR_MODEL,      # local HF dir or Hub id with trained auditor
-    auditor_base_model_id=None,             # optional fallback; None if checkpoint includes tokenizer
+    tester_checkpoint=TESTER_MODEL,      # local HF dir or Hub id with trained tester
+    tester_base_model_id=None,             # optional fallback; None if checkpoint includes tokenizer
     target_model_id=TARGET_MODEL,            # HF id of the target model
     device=DEVICE,                           # "cuda" or "cpu"
     scorer=DetoxifyScorer(),           # harm classifier (optional)
@@ -63,8 +63,8 @@ sampler = ASTSampler(system, PROMPTS, tree_width=1, tree_depth=3)
 
 
 ??? info "HFEvaluation inputs"
-    - `AUDITOR_MODEL` — Path or Hugging Face hub id for your trained auditor checkpoint (e.g. `"/home/user/checkpoints/best"` or `"username/auditor-checkpoint"`). The checkpoint may include model weights **and** tokenizer files.
-    - `AUDITOR_BASE_MODEL` *(optional)* — Hugging Face model id used as the **base tokenizer** at training-time (e.g. `"meta-llama/Llama-3.1-8B"`). Only required if the checkpoint **does not** include tokenizer files.
+    - `TESTER_MODEL` — Path or Hugging Face hub id for your trained tester checkpoint (e.g. `"/home/user/checkpoints/best"` or `"username/tester-checkpoint"`). The checkpoint may include model weights **and** tokenizer files.
+    - `TESTER_BASE_MODEL` *(optional)* — Hugging Face model id used as the **base tokenizer** at training-time (e.g. `"meta-llama/Llama-3.1-8B"`). Only required if the checkpoint **does not** include tokenizer files.
     - `TARGET_MODEL` — Hugging Face id of the model you want to evaluate (e.g. `"meta-llama/Llama-3.1-8B"`).
     - `DEVICE` — Device string where you want to load models/tokenizers (e.g. `"cuda"` or `"cpu"`).
     - `SCORER` — Scorer instance that defines the harm metric (e.g. `DetoxifyScorer()` or `LlamaGuardScorer()`).
@@ -72,20 +72,20 @@ sampler = ASTSampler(system, PROMPTS, tree_width=1, tree_depth=3)
 !!! note
     Prefer using **keyword arguments** (as shown) to avoid accidentally passing parameters in the wrong order.
 
-    If your auditor checkpoint includes tokenizer files (common when saving via `model.save_pretrained()` + `tokenizer.save_pretrained()` during training), set `auditor_base_model_id=None` — the evaluation class will load the tokenizer from the checkpoint. If the checkpoint lacks tokenizer files, provide `auditor_base_model_id` so the correct tokenizer can be loaded.
+    If your tester checkpoint includes tokenizer files (common when saving via `model.save_pretrained()` + `tokenizer.save_pretrained()` during training), set `tester_base_model_id=None` — the evaluation class will load the tokenizer from the checkpoint. If the checkpoint lacks tokenizer files, provide `tester_base_model_id` so the correct tokenizer can be loaded.
 
 !!! tip
-    If you want to evaluate GPT-2 auditors, use `GPT2EvaluationSystem` instead of `HFEvaluationSystem`.
+    If you want to evaluate GPT-2 testers, use `GPT2EvaluationSystem` instead of `HFEvaluationSystem`.
     See the full GPT-2 evaluation example: [`gpt2_eval.py`](https://github.com/sisl/astra-rl/blob/main/examples/gpt2_eval.py).
 
 
-If you want to evaluate a custom auditor or target, create a new `System` subclass. See the [Evaluation System Customization](customizing_evaluation/evaluation_problems.md) guide.
+If you want to evaluate a custom tester or target, create a new `System` subclass. See the [Evaluation System Customization](customizing_evaluation/evaluation_problems.md) guide.
 
 ### 4) Evaluate!
 
 This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, attack success rate, average reward, average first turn the target is toxic.
 
-Then, we will perform evaluation rollouts (auditor-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json.
+Then, we will perform evaluation rollouts (tester-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json.
 
 ```python
 # instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)
@@ -103,27 +103,27 @@ evaluator.write_json(metrics, "metrics.json")
 
     - `turn` — turn number in the rollout
     - `reward` — sampler reward at that turn
-    - `adversarial_toxicity` — toxicity of the auditor's message
+    - `adversarial_toxicity` — toxicity of the tester's message
     - `target_toxicity` — toxicity of the target's response
     - `context` — truncated conversation context
-    - `probe` — auditor's utterance
+    - `probe` — tester's utterance
     - `response` — target's response
 
     **Overall rollout metrics**
 
     - `num_turns` — number of turns in the rollout
     - `avg_reward` — mean reward across turns
-    - `avg_adversarial_toxicity` — average toxicity of auditor turns
+    - `avg_adversarial_toxicity` — average toxicity of tester turns
     - `avg_target_toxicity` — average toxicity of target turns
-    - `first_adversarial_toxicity_turn` — earliest turn auditor became toxic
+    - `first_adversarial_toxicity_turn` — earliest turn tester became toxic
     - `first_target_toxicity_turn` — earliest turn target became toxic
 
     **Aggregated metrics** *(across all rollouts)*
 
     - `avg_reward` — average reward per rollout
-    - `avg_adversarial_toxicity` — average auditor toxicity across rollouts
+    - `avg_adversarial_toxicity` — average tester toxicity across rollouts
     - `avg_target_toxicity` — average target toxicity across rollouts
-    - `pct_rollouts_with_adversarial_toxicity` — fraction of rollouts where auditor was toxic at least once
+    - `pct_rollouts_with_adversarial_toxicity` — fraction of rollouts where tester was toxic at least once
     - `pct_rollouts_with_target_toxicity / attack_success_rate` — fraction of rollouts where target became toxic
 
 !!! note

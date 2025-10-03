@@ -19,9 +19,9 @@ class MockScorer(Scorer[str, str]):
 class MultiDeviceSystem(System[str, str]):
     """System that simulates models on different devices."""
 
-    def __init__(self, auditor_device: str, baseline_device: str):
+    def __init__(self, tester_device: str, baseline_device: str):
         super().__init__(MockScorer())
-        self.auditor_device = torch.device(auditor_device)
+        self.tester_device = torch.device(tester_device)
         self.baseline_device = torch.device(baseline_device)
 
     def get_target_logprobs(
@@ -34,14 +34,14 @@ class MultiDeviceSystem(System[str, str]):
     ) -> torch.Tensor:
         return torch.randn(len(context), 5, device=self.baseline_device)
 
-    def get_auditor_logprobs(
+    def get_tester_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
         return torch.randn(
-            len(context), 5, device=self.auditor_device, requires_grad=True
+            len(context), 5, device=self.tester_device, requires_grad=True
         )
 
-    def rollout_prompt_with_auditor(self, x: Sequence[str]) -> Sequence[str]:
+    def rollout_prompt_with_tester(self, x: Sequence[str]) -> Sequence[str]:
         return ["response"] * len(x)
 
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
@@ -67,12 +67,8 @@ def simulate_dpo_step(
 ):
     """Simulate what happens in DPO.step() method."""
     # This mimics the DPO algorithm's step method
-    auditor_logprobs_win = system._get_auditor_logprobs_and_validate(
-        context, suffix_pos
-    )
-    auditor_logprobs_loss = system._get_auditor_logprobs_and_validate(
-        context, suffix_neg
-    )
+    tester_logprobs_win = system._get_tester_logprobs_and_validate(context, suffix_pos)
+    tester_logprobs_loss = system._get_tester_logprobs_and_validate(context, suffix_neg)
     baseline_logprobs_win = system._get_baseline_logprobs_and_validate(
         context, suffix_pos
     )
@@ -81,13 +77,13 @@ def simulate_dpo_step(
     )
 
     # Sum per-token logprobs to get sequence logprobs (like DPO does)
-    auditor_logprobs_win_sum = auditor_logprobs_win.sum(dim=-1)
-    auditor_logprobs_loss_sum = auditor_logprobs_loss.sum(dim=-1)
+    tester_logprobs_win_sum = tester_logprobs_win.sum(dim=-1)
+    tester_logprobs_loss_sum = tester_logprobs_loss.sum(dim=-1)
     baseline_logprobs_win_sum = baseline_logprobs_win.sum(dim=-1)
     baseline_logprobs_loss_sum = baseline_logprobs_loss.sum(dim=-1)
 
     # These operations would fail with cryptic error messages if devices don't match
-    pi_logratios = auditor_logprobs_win_sum - auditor_logprobs_loss_sum
+    pi_logratios = tester_logprobs_win_sum - tester_logprobs_loss_sum
     ref_logratios = baseline_logprobs_win_sum - baseline_logprobs_loss_sum
     logits = pi_logratios - ref_logratios
 
@@ -96,7 +92,7 @@ def simulate_dpo_step(
 
 def test_integration_same_device():
     """Test that DPO-like operations work when all models are on the same device."""
-    system = MultiDeviceSystem(auditor_device="cpu", baseline_device="cpu")
+    system = MultiDeviceSystem(tester_device="cpu", baseline_device="cpu")
     context = ["hello", "world"]
     suffix_pos = ["good", "response"]
     suffix_neg = ["bad", "response"]
@@ -113,7 +109,7 @@ def test_integration_different_devices_fails_early():
     if not torch.cuda.is_available() or torch.cuda.device_count() < 2:
         pytest.skip("This test requires at least 2 CUDA devices")
 
-    system = MultiDeviceSystem(auditor_device="cuda:0", baseline_device="cuda:1")
+    system = MultiDeviceSystem(tester_device="cuda:0", baseline_device="cuda:1")
     context = ["hello", "world"]
     suffix_pos = ["good", "response"]
     suffix_neg = ["bad", "response"]
@@ -132,7 +128,7 @@ def test_integration_different_devices_fails_early():
 
 def test_integration_cpu_vs_meta_device():
     """Test device mismatch with CPU vs meta device to simulate the error without GPU."""
-    system = MultiDeviceSystem(auditor_device="cpu", baseline_device="meta")
+    system = MultiDeviceSystem(tester_device="cpu", baseline_device="meta")
     context = ["hello"]
     suffix_pos = ["good"]
     suffix_neg = ["bad"]
@@ -144,23 +140,23 @@ def test_integration_cpu_vs_meta_device():
     error_msg = str(exc_info.value)
     assert "All logprobs must be on the same device" in error_msg
     assert "Expected cpu" in error_msg
-    assert "baseline_logprobs" in error_msg  # Since baseline comes after attacker
+    assert "baseline_logprobs" in error_msg  # Since baseline comes after tester
     assert "meta" in error_msg
 
 
 def test_integration_error_prevents_cryptic_runtime_error():
     """Test that our device check prevents the cryptic RuntimeError that would occur later."""
     # This test simulates what would happen without our fix
-    system = MultiDeviceSystem(auditor_device="cpu", baseline_device="meta")
+    system = MultiDeviceSystem(tester_device="cpu", baseline_device="meta")
 
     # Create tensors manually to show what the cryptic error would look like
-    auditor_tensor = torch.randn(2, 5, device="cpu")
+    tester_tensor = torch.randn(2, 5, device="cpu")
     baseline_tensor = torch.randn(2, 5, device="meta")
 
     # This would be the cryptic error that users see without our fix
     with pytest.raises(RuntimeError):
         # This operation would fail with a cryptic message
-        _ = auditor_tensor - baseline_tensor
+        _ = tester_tensor - baseline_tensor
 
     # Now test that our validation provides a much better error message
     context = ["hello", "world"]
@@ -173,6 +169,6 @@ def test_integration_error_prevents_cryptic_runtime_error():
 
     # Our error message should be much more helpful
     assert "All logprobs must be on the same device" in our_error_msg
-    assert "models (auditor, target, baseline) are on the same device" in our_error_msg
+    assert "models (tester, target, baseline) are on the same device" in our_error_msg
     # Our error is more specific about which component failed
     assert "baseline_logprobs" in our_error_msg or "target_logprobs" in our_error_msg

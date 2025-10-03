@@ -75,7 +75,7 @@ class PPO(
     def step(
         self, batch: PPOBatch[StateT, ActionT]
     ) -> tuple[torch.Tensor, Dict[Any, Any]]:
-        logprobs_auditor = self.system._get_auditor_logprobs_and_validate(
+        logprobs_tester = self.system._get_tester_logprobs_and_validate(
             batch.prefix, batch.suffix
         )
         logprobs_baseline = self.system._get_baseline_logprobs_and_validate(
@@ -87,7 +87,7 @@ class PPO(
         # also its bootstrapped without discount throughout the stream
         Q = (
             torch.tensor(batch.reward)
-            .to(logprobs_auditor.device)
+            .to(logprobs_tester.device)
             .unsqueeze(-1)
             .unsqueeze(-1)
             .repeat(1, *values.shape[1:])
@@ -100,7 +100,7 @@ class PPO(
         else:
             A = (A - A.mean()) / (A.std() + 1e-8)
         # compute ratio, should be 1 at the first iteration
-        ratio = torch.exp((logprobs_auditor - logprobs_baseline.detach()))
+        ratio = torch.exp((logprobs_tester - logprobs_baseline.detach()))
 
         # compute clipped surrogate lolss
         policy_loss_1 = A * ratio
@@ -121,7 +121,7 @@ class PPO(
             "training/value_loss": value_loss.mean().cpu().item(),
             "reward/mean_reward": torch.tensor(batch.reward).mean().cpu().item(),
             "reward/std_reward": torch.tensor(batch.reward).std().cpu().item(),
-            "policy/logprobs": logprobs_auditor.mean().detach().cpu().item(),
+            "policy/logprobs": logprobs_tester.mean().detach().cpu().item(),
             "ref/logprobs": logprobs_baseline.mean().detach().cpu().item(),
         }
 

@@ -1,9 +1,9 @@
 # Quick Start: Training
 
-Do you want to train a HuggingFace **auditor** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and system formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [Perez et al.](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
+Do you want to train a HuggingFace **tester** using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and system formulation ([ASTPrompter](https://arxiv.org/abs/2407.09447), [Perez et al.](https://aclanthology.org/2022.emnlp-main.225/), MALIBU*, [CRT*](https://arxiv.org/abs/2402.19464))? *coming soon
 
 
-Then this guide is for you. We'll walk through every step required to train an adversarial testing auditor (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your auditor in 7 easy steps!
+Then this guide is for you. We'll walk through every step required to train an adversarial testing tester (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your tester in 7 easy steps!
 
 ---
 
@@ -45,7 +45,7 @@ DEVICE = "cuda"  # or "cpu" if GPU is not available
 We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and scorer sizes that fit your compute!
 
 !!! note
-    To train an auditor, you'll need a list of comma-separated strings that act as initial prompts—these initiate auditor-target rollouts used for online training.
+    To train a tester, you'll need a list of comma-separated strings that act as initial prompts—these initiate tester-target rollouts used for online training.
 
     Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data is imported from astra_rl.datasets as CONVOKIT_REDDIT_TRAIN and CONVOKIT_REDDIT_DEV
 
@@ -56,14 +56,14 @@ We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaM
 
 ## Step 3: Instantiate Your System
 
-The *system* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTSystem` class that handles the technical backend so you just need to provide the huggingface model IDs of the auditor, target and baseline models and a `Scorer` instance (DetexifyScorer(), LlamaGuardScorer() or your custom scorer).
+The *system* is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the `HFASTSystem` class that handles the technical backend so you just need to provide the huggingface model IDs of the tester, target and baseline models and a `Scorer` instance (DetexifyScorer(), LlamaGuardScorer() or your custom scorer).
 
-> Note: Your auditor and target can be different models but your baseline and auditor should typically be the same.
+> Note: Your tester and target can be different models but your baseline and tester should typically be the same.
 
-> Note: HFASTSystem can not handle huggingface models that have a fixed length (e.g. GPT2) as it will run into an out of context error. If you would like to train a GPT2-based auditor model, please see our GPT2_v_GPT2 examples which use a custom ExampleDetoxifySystem() designed for GPT2 models.
+> Note: HFASTSystem can not handle huggingface models that have a fixed length (e.g. GPT2) as it will run into an out of context error. If you would like to train a GPT2-based tester model, please see our GPT2_v_GPT2 examples which use a custom ExampleDetoxifySystem() designed for GPT2 models.
 
 ```python
-# Example system instantiation: llama3 auditor, target, and baseline with Detoxify scorer (heavyweight setup - requires GPU)
+# Example system instantiation: llama3 tester, target, and baseline with Detoxify scorer (heavyweight setup - requires GPU)
 system = HFASTSystem("meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", DetoxifyScorer(), DEVICE)
 ```
 
@@ -84,12 +84,12 @@ sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
 
   This sampler builds a tree-structured conversation graph, where:
   - The root node starts from a random initial prompt (from `CONVOKIT_REDDIT_TRAIN`)
-  - At each turn, the auditor generates multiple (`tree_width`, default 2) candidate utterances
+  - At each turn, the tester generates multiple (`tree_width`, default 2) candidate utterances
   - Each of those utterances is fed to the target model, which produces a response
-  - The resulting auditor–target tuples form child nodes
-  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn auditor–target dialogue tree.
+  - The resulting tester–target tuples form child nodes
+  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn tester–target dialogue tree.
 
-  This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the auditor to elicit harmful responses in a multi-turn setting.
+  This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the tester to elicit harmful responses in a multi-turn setting.
 </details>
 
 
@@ -104,8 +104,8 @@ Want a different rollout graph structure or a multi-agent setup? See the [Sample
 
 ## Step 5: Choose Your Algorithm and Optimizer
 
-The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update auditor model weights
-to minimize this loss, teaching the auditor to more effectively elicit target toxicity.
+The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update tester model weights
+to minimize this loss, teaching the tester to more effectively elicit target toxicity.
 
 We use DPO and Adam as the default for this quickstart.
 
@@ -118,14 +118,14 @@ To integrate your own RL algorithm, see the [Solver Customization](customizing_t
 
 ---
 
-## Step 6: Train the Auditor
+## Step 6: Train the Tester
 
 For the quick start approach, simply call our training configuration and trainer classes and start training!
 
 ```python
 # instantiate the pre-configured HF-compatible configuration and trainer class
 config = TrainingConfiguration() # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
-# this trainer will train the auditor
+# this trainer will train the tester
 trainer = Trainer(
     config,
     sampler,

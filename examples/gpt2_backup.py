@@ -69,7 +69,7 @@ def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our system and sampler
-    # instatiate our system with GPT-2 auditor, target, and baseline
+    # instatiate our system with GPT-2 tester, target, and baseline
 
     # bend can't handle this much memory
     # system = HFASTSystem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyScorer(), DEVICE)

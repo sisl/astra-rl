@@ -102,7 +102,7 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         Args:
             config (TrainingConfiguration): The configuration for the training process.
             sampler (Sampler): The sampler to run our algorithm in.
-            algorithm (Algorithm): The algorithm used for training the auditor agent.
+            algorithm (Algorithm): The algorithm used for training the tester agent.
         """
 
         self.config = config

@@ -1,6 +1,6 @@
 """
 ast_llama.py
-An example of using AST with LLaMA models as auditor and target where
+An example of using AST with LLaMA models as tester and target where
 the GPU allocations are explicitly specified.
 """
 
@@ -29,8 +29,8 @@ class GPUAllocationSystem(ASTSystem):
         # your choice of scorer
         super().__init__(DetoxifyScorer())
 
-        logger.debug("Loading auditor model: meta-llama/Llama-3.1-8B")
-        self.auditor = AutoModelForCausalLM.from_pretrained(
+        logger.debug("Loading tester model: meta-llama/Llama-3.1-8B")
+        self.tester = AutoModelForCausalLM.from_pretrained(
             "meta-llama/Llama-3.1-8B", torch_dtype=torch.bfloat16
         ).to("cuda:1")
 
@@ -54,20 +54,20 @@ class GPUAllocationSystem(ASTSystem):
         return self.get_target_logprobs(context, continuation)
 
     def get_auditor_logprobs(self, context, continuation):
-        return self.__get_logprobs(self.auditor, context, continuation)
+        return self.__get_logprobs(self.tester, context, continuation)
 
     def rollout_prompt_with_auditor(self, prompt):
-        return self.__rollout(self.auditor, prompt)
+        return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
         return self.__rollout(self.target, prompt)
 
     def parameters(self):
-        return self.auditor.parameters()
+        return self.tester.parameters()
 
     # two helper methods to make the implementatinos above easy
     # you don't have to implement these for the API, but you should probably
-    # do something like this unless your auditor and target is very different
+    # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
         tokenized_prompt = self.tokenizer(
             prompt, padding=True, return_tensors="pt", padding_side="left"

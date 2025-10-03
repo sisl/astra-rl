@@ -10,9 +10,9 @@ ASTRA-RL is a Python toolbox for **testing and evaluating** language models and 
 
 **Adversarial testing** is the process of stress-testing AI systems by trying to find inputs that cause them to behave in harmful or undesirable ways. Think of it like security testing for language models - you're trying to discover vulnerabilities before they're exploited in the real world.
 
-ASTRA-RL automates this process using **reinforcement learning**. Instead of manually crafting adversarial prompts, you train an "auditor" model to automatically generate prompts that elicit unsafe responses from your target model. This is:
+ASTRA-RL automates this process using **reinforcement learning**. Instead of manually crafting adversarial prompts, you train a "tester" model to automatically generate prompts that elicit unsafe responses from your target model. This is:
 
-- **Faster** than manual testing once the auditor is trained
+- **Faster** than manual testing once the tester is trained
 - **More systematic** at finding failure modes
 - **Scalable** to large-scale evaluation
 
