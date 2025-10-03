@@ -6,10 +6,9 @@ from ast_gpt2 import GPT2DetoxifyProblem
 from astra_rl.methods.ast_problem import ASTEvaluator
 from astra_rl.moderators.llamaGuard import LlamaGuardModerator
 
-# change name to length-limited eval
 
 # set the attacker model here: we are using a pre-trained, local attacker and a "gpt2" target
-ATTACKER_MODEL = "/home/allie11/astra-rl/examples/GPT2_v_GPT2/checkpoints/best_llamaguard_noBackup_GPT2"
+ATTACKER_MODEL = "/home/user/astra-rl/examples//checkpoints/best"
 
 
 # since we are using a custom attacker that is not supported by HFASTProblem (GPT2 is not supported)

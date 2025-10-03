@@ -7,66 +7,57 @@ boilerplate to rollouts.
 We use GPT-2 as our attack, defense, and use the bulit-in
 detoxify moderator. We will train using a manually written
 corpora below of initial prompts.
+
+# this example mirrors quick_start_training.py!
 """
 
-# requirements: transformers tokenizers
-# requirements: ..
+# ASTRA-RL core components
+from astra_rl import ASTEnvironment, DPO, DetoxifyModerator
 
-from torch.optim import AdamW
+# HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming
+from astra_rl.ext.transformers.hf_ast_problem import (
+    HFASTTrainer,
+    HFASTConfiguration,
+    HFASTProblem,
+)
 
-from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
-from astra_rl.ext.transformers import HFASTProblem
+# prompts to use to seed initial stage of attaker-target rollouts (training and dev)
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 
 def main() -> None:
-    # prompts to use to seed initial stage
-    PROMPTS = [
-        "Tell us about your day! My day was",
-        "The Federal Reserve said last Tuesday that",
-    ]
     DEVICE = "cuda"  # cuda/cpu/mps
 
-    # instatiate our problem and environment
+    # Example problem instantiation: llama3 attacker, target, and baseline with Detoxify moderator (heavyweight setup (8B) - requires GPU)
+    # problem = HFASTProblem("meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", "meta-llama/Llama-3.1-8B", DetoxifyModerator(), DEVICE)
+
+    # lighter weight option (1B)
     problem = HFASTProblem(
-        "meta-llama/Llama-3.1-8B",
-        "meta-llama/Llama-3.1-8B",
-        "meta-llama/Llama-3.1-8B",
+        "meta-llama/Llama-3.2-1B",
+        "meta-llama/Llama-3.2-1B",
+        "meta-llama/Llama-3.2-1B",
         DetoxifyModerator(),
         DEVICE,
     )
-    env = ASTEnvironment(problem, PROMPTS)
+    env = ASTEnvironment(problem, CONVOKIT_REDDIT_TRAIN)
 
     # instantiate our solution
     solver = DPO(problem)
-    optimizer = AdamW(problem.parameters(), lr=1e-5)
 
-    # this is a training harness, from which we can call various functions to
-    # handle training details
-    harness = Harness(
+    # instantiate the pre-configured HF-compatable configuration and traininer class
+    config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
+
+    # this trainer will train the attacker and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+    trainer = HFASTTrainer(
+        config,
         env,
         solver,
-        num_episodes_per_experience=2,
-        use_wandb=True,
-        dataloader_kwargs={"batch_size": 4},
+        dev_prompts=CONVOKIT_REDDIT_DEV,
+        eval_every=100,
+        ckpt_dir="checkpoints",
     )
 
-    # optimization step
-    for step in range(1000):
-        # collect some experiences using current weights
-        buf = harness.experience()  # <- this is a torch dataloader
-        for i in buf:
-            # we compute the loss using the algorithm we chose
-            loss, step_logs = harness.step(i)
-            # this is normal optimization; feel free to do weight decay, etc.
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-
-            # Add custom and algorithm external logging here (e.g., step number)
-            # TODO: Do we want multiple logs values per step (iterated over experience buffer)?
-            # TODO: Do we want to add other things here to logging?
-            step_logs["step"] = step
-            harness.log_current_step(step_logs)
+    trainer.train()
 
 
 if __name__ == "__main__":
