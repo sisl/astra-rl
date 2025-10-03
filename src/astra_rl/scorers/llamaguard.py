@@ -1,11 +1,11 @@
 """
 llamaGuard.py (TODO)
-Moderator to call into the Llama Guard 3 engine.
+Scorer to call into the Llama Guard 3 engine.
 Warning: this code directly downloads llamaguard 3 and requires a lot of memeory (roughly 112 MiB)
 """
 
 from typing import Sequence
-from astra_rl.core.moderator import Moderator
+from astra_rl.core.scorer import Scorer
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 ### Do we need the following two imports?
@@ -13,8 +13,8 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 # from accelerate import infer_auto_device_map
 
 
-class LlamaGuardModerator(Moderator[str, str]):
-    """Moderator that wraps LlamaGuard 3 (8b) for toxicity detection.
+class LlamaGuardScorer(Scorer[str, str]):
+    """Scorer that wraps LlamaGuard 3 (8b) for toxicity detection.
 
     https://huggingface.co/meta-llama/Llama-Guard-3-8B
 
@@ -63,7 +63,7 @@ class LlamaGuardModerator(Moderator[str, str]):
 
         self.model.eval()
 
-    def moderate(self, x: Sequence[str]) -> Sequence[float]:
+    def score(self, x: Sequence[str]) -> Sequence[float]:
         results = []
         with torch.no_grad():
             for s in x:

@@ -4,8 +4,8 @@ This is the same example as `ast.py`, but we will now use our
 Huggingface extensions to enable a dramatic reduction in
 boilerplate to rollouts.
 
-We use GPT-2 as our attack, defense, and use the bulit-in
-detoxify moderator. We will train using a manually written
+We use GPT-2 as our auditor, target, and use the bulit-in
+detoxify scorer. We will train using a manually written
 corpora below of initial prompts.
 """
 
@@ -14,8 +14,8 @@ corpora below of initial prompts.
 
 from torch.optim import AdamW
 
-from astra_rl import ASTEnvironment, DPO, DetoxifyModerator, Harness
-from astra_rl.ext.transformers import HFASTProblem
+from astra_rl import ASTSampler, DPO, DetoxifyScorer, Harness
+from astra_rl.ext.transformers import HFASTSystem
 
 
 def main() -> None:
@@ -26,24 +26,24 @@ def main() -> None:
     ]
     DEVICE = "cuda"  # cuda/cpu/mps
 
-    # instatiate our problem and environment
-    problem = HFASTProblem(
+    # instatiate our system and sampler
+    system = HFASTSystem(
         "meta-llama/Llama-3.1-8B",
         "meta-llama/Llama-3.1-8B",
         "meta-llama/Llama-3.1-8B",
-        DetoxifyModerator(),
+        DetoxifyScorer(),
         DEVICE,
     )
-    env = ASTEnvironment(problem, PROMPTS)
+    sampler = ASTSampler(system, PROMPTS)
 
     # instantiate our solution
-    solver = DPO(problem)
-    optimizer = AdamW(problem.parameters(), lr=1e-5)
+    solver = DPO(system)
+    optimizer = AdamW(system.parameters(), lr=1e-5)
 
     # this is a training harness, from which we can call various functions to
     # handle training details
     harness = Harness(
-        env,
+        sampler,
         solver,
         num_episodes_per_experience=2,
         use_wandb=True,

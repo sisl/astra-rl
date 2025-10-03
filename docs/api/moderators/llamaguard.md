@@ -1,1 +1,1 @@
-::: astra_rl.moderators.llamaGuard
+::: astra_rl.scorers.llamaGuard

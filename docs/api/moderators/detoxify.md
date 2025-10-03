@@ -1,1 +1,1 @@
-::: astra_rl.moderators.detoxify
+::: astra_rl.scorers.detoxify

@@ -1,6 +1,6 @@
 """
 ast_llama.py
-An example of using AST with LLaMA models as attacker and target where
+An example of using AST with LLaMA models as auditor and target where
 the GPU allocations are explicitly specified.
 """
 
@@ -12,7 +12,7 @@ import torch
 from torch.optim import AdamW
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
+from astra_rl import ASTSystem, ASTSampler, DPO, DetoxifyScorer, Harness
 
 # Configure logging
 logging.basicConfig(
@@ -22,15 +22,15 @@ logger = logging.getLogger("astra.example")
 logger.setLevel(logging.DEBUG)
 
 
-# gpu allocation problem
-class GPUAllocationProblem(ASTProblem):
+# gpu allocation system
+class GPUAllocationSystem(ASTSystem):
     def __init__(self):
         # TASK: initialize and pass to superclass
-        # your choice of moderator
-        super().__init__(DetoxifyModerator())
+        # your choice of scorer
+        super().__init__(DetoxifyScorer())
 
-        logger.debug("Loading attacker model: meta-llama/Llama-3.1-8B")
-        self.attacker = AutoModelForCausalLM.from_pretrained(
+        logger.debug("Loading auditor model: meta-llama/Llama-3.1-8B")
+        self.auditor = AutoModelForCausalLM.from_pretrained(
             "meta-llama/Llama-3.1-8B", torch_dtype=torch.bfloat16
         ).to("cuda:1")
 
@@ -53,21 +53,21 @@ class GPUAllocationProblem(ASTProblem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_attacker_logprobs(self, context, continuation):
-        return self.__get_logprobs(self.attacker, context, continuation)
+    def get_auditor_logprobs(self, context, continuation):
+        return self.__get_logprobs(self.auditor, context, continuation)
 
-    def rollout_prompt_with_attacker(self, prompt):
-        return self.__rollout(self.attacker, prompt)
+    def rollout_prompt_with_auditor(self, prompt):
+        return self.__rollout(self.auditor, prompt)
 
     def rollout_prompt_with_target(self, prompt):
         return self.__rollout(self.target, prompt)
 
     def parameters(self):
-        return self.attacker.parameters()
+        return self.auditor.parameters()
 
     # two helper methods to make the implementatinos above easy
     # you don't have to implement these for the API, but you should probably
-    # do something like this unless your attacker and defense is very different
+    # do something like this unless your auditor and target is very different
     def __rollout(self, model, prompt):
         tokenized_prompt = self.tokenizer(
             prompt, padding=True, return_tensors="pt", padding_side="left"
@@ -143,18 +143,18 @@ def main() -> None:
         "The Federal Reserve said last Tuesday that",
     ]
 
-    # instatiate our problem and environment
-    problem = GPUAllocationProblem()  # or "cuda" if you have a GPU
-    env = ASTEnvironment(problem, PROMPTS)
+    # instatiate our system and sampler
+    system = GPUAllocationSystem()  # or "cuda" if you have a GPU
+    sampler = ASTSampler(system, PROMPTS)
 
     # instantiate our solution
-    solver = DPO(problem)
-    optimizer = AdamW(problem.parameters(), lr=1e-5)
+    solver = DPO(system)
+    optimizer = AdamW(system.parameters(), lr=1e-5)
 
     # this is a training harness, from which we can call various functions to
     # handle training details
     harness = Harness(
-        env,
+        sampler,
         solver,
         num_episodes_per_experience=1,
         use_wandb=False,

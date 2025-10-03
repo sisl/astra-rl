@@ -1,1 +1,1 @@
-::: astra_rl.core.moderator
+::: astra_rl.core.scorer

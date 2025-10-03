@@ -1,3 +1,3 @@
-from .hf_ast_problem import HFASTProblem
+from .hf_ast_system import HFASTSystem
 
-__all__ = ("HFASTProblem",)
+__all__ = ("HFASTSystem",)

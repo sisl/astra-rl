@@ -1,6 +1,6 @@
 # Trainers
 
-**Trainers** run the optimization loop that updates your attacker. They wire together the **environment** (rollout collection), the **algorithm/solver** (computes a loss from rollouts), and the **optimizer** (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.
+**Trainers** run the optimization loop that updates your auditor. They wire together the **sampler** (rollout collection), the **algorithm/solver** (computes a loss from rollouts), and the **optimizer** (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.
 
 This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.
 
@@ -10,7 +10,7 @@ This guide explains what a trainer does, what ASTRA-RL ships with, and how to im
 
 The base trainer in `astra_rl/training/trainer.py` is responsible for:
 
-1. **Optimizer setup** — creates the optimizer that updates the attacker’s weights.
+1. **Optimizer setup** — creates the optimizer that updates the auditor's weights.
 2. **Harness orchestration** — uses the **Harness** to collect rollouts and feed batches to your **Algorithm** (solver).
 3. **Main training loop** — calls `train()` to iterate for `training_steps`.
 
@@ -103,14 +103,14 @@ from astra_rl import Trainer
 
 trainer = Trainer(
     config=config,
-    environment=env,
+    sampler=sampler,
     algorithm=solver,
 )
 trainer.train()
 
 # Optionally save the final HF model/tokenizer:
-problem.attacker.save_pretrained("final_ckpt")
-problem.tokenizer.save_pretrained("final_ckpt")
+system.auditor.save_pretrained("final_ckpt")
+system.tokenizer.save_pretrained("final_ckpt")
 ```
 
 ---
@@ -128,7 +128,7 @@ from astra_rl.ext.transformers.hf_ast_problem import (
 config  = HFASTConfiguration()  # or your own TrainingConfiguration
 trainer = HFASTTrainer(
     config=config,
-    environment=env,
+    sampler=sampler,
     algorithm=solver,
     dev_prompts=DEV_PROMPTS,   # iterable of prompts for evaluation
     eval_every=100,            # run dev eval every N steps
@@ -171,14 +171,14 @@ class MyTrainer(Trainer):
       - optional grad accumulation
     """
 
-    def __init__(self, config: MyConfig, environment, algorithm, dev_prompts=None):
-        super().__init__(config, environment, algorithm)
+    def __init__(self, config: MyConfig, sampler, algorithm, dev_prompts=None):
+        super().__init__(config, sampler, algorithm)
         self.dev_prompts = dev_prompts or []
         os.makedirs(self.config.ckpt_dir, exist_ok=True)
 
     # optional but encouraged
     def _save_hf(self, step: int) -> None:
-        """Save your attacker and its tokenizer"""
+        """Save your auditor and its tokenizer"""
 
     # optional method
     @torch.no_grad()
@@ -189,7 +189,7 @@ class MyTrainer(Trainer):
     # required method
     def train(self):
         """Implement your custom training loop!"""
-        # see astra_rl.ext.transformers.hf_ast_problem for an implemented custom class example
+        # see astra_rl.ext.transformers.hf_ast_system for an implemented custom class example
         pass       
 </code></pre>
 
@@ -206,7 +206,7 @@ Inside your custom `train()`:
 
 ## 7. Full Examples
 
-* **Custom AST problem **with** trainer:** `examples/GPT2_v_GPT2/ast_trainer.py`
-* **Source for HF-compatible trainer/config:** `astra_rl/ext/transformers/hf_ast_problem.py`
+* **Custom AST system **with** trainer:** `examples/GPT2_v_GPT2/ast_trainer.py`
+* **Source for HF-compatible trainer/config:** `astra_rl/ext/transformers/hf_ast_system.py`
 
 Use these as references when writing up your own training loop or extending the provided trainers.

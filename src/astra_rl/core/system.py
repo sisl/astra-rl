@@ -1,9 +1,9 @@
 """
-A "Problem" is one of the core abstractions in Astra RL, defining how to interact
-with the system under test. The interface is defined by the `Problem` class, which
-defines a set of abstract methods that users must implement to create a custom problem.
+A "System" is one of the core abstractions in Astra RL, defining how to interact
+with the system under test. The system is defined by the `System` class, which
+defines a set of abstract methods that users must implement to create a custom system.
 This provides flexibility in terms of how users can define their own applications
-while still adhering to a common interface that enables the Astra RL framework
+while still adhering to a common system interface that enables the Astra RL framework
 to function correctly.
 """
 
@@ -14,36 +14,36 @@ from typing import Sequence, Dict, Generic, Union, Iterator, Optional
 import torch
 
 from astra_rl.utils import logger
-from astra_rl.core.moderator import Moderator
+from astra_rl.core.scorer import Scorer
 from astra_rl.core.common import StateT, ActionT
 
 
-class Problem(ABC, Generic[StateT, ActionT]):
-    """Defines the core problem interface for Astra RL.
+class System(ABC, Generic[StateT, ActionT]):
+    """Defines the core system for Astra RL.
 
     This class is responsible for defining how exactly to interact
     with the system under test---with generics in terms of how to get
-    probabilities and rollouts from the attacker and target models.
+    probabilities and rollouts from the auditor and target models.
 
     This allows for us to be generic over the types of states, actions
-    as well as how to measure them. We ask for a moderator as a way to
+    as well as how to measure them. We ask for a scorer as a way to
     ensure that subclasses can all be generic over the exact metric, and
     instead can only be opinonated about how to achieve the metric.
 
     Attributes:
-        moderator (Moderator[StateT, ActionT]): The moderator used to evaluate sequences.
+        scorer (Scorer[StateT, ActionT]): The scorer used to evaluate sequences.
 
     Generics:
-        StateT (type): The type of the state in the environment.
-        ActionT (type): The type of the action in the environment.
+        StateT (type): The type of the state in the sampler.
+        ActionT (type): The type of the action in the sampler.
     """
 
-    def __init__(self, moderator: Moderator[StateT, ActionT]) -> None:
+    def __init__(self, scorer: Scorer[StateT, ActionT]) -> None:
         # we check all asserts once, and then disable them
         self._disable_asserts: Dict[str, bool] = defaultdict(bool)
         # track the device of the first logprobs tensor to ensure consistency
         self._expected_device: Optional[torch.device] = None
-        self.moderator = moderator
+        self.scorer = scorer
 
     @abstractmethod
     def get_target_logprobs(
@@ -72,7 +72,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
     def get_baseline_logprobs(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        """Evaluates P(continuation|context) on *attacker's baseline distribution* for KL
+        """Evaluates P(continuation|context) on *auditor's baseline distribution* for KL
            divergence measurements.
 
         Args:
@@ -85,7 +85,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
             This should be batched; i.e., len(context) == len(continuation) and each
             represents a batch element. Note that this is *not* the defender's model, but
             rather the baseline model used for measuring KL divergence to make sure that
-            the trained attacker stays an LM.
+            the trained auditor stays an LM.
 
         Returns:
             torch.Tensor: The per-token log probabilities of the continuations given their contexts.
@@ -95,10 +95,10 @@ class Problem(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def get_attacker_logprobs(
+    def get_auditor_logprobs(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        """Evaluates P(continuation|context) on *attacker*. This must return tensor w/ grads!
+        """Evaluates P(continuation|context) on *auditor*. This must return tensor w/ grads!
 
         Args:
             context (Sequence[str]): Sequence of strings, where each string is a context on which the
@@ -118,8 +118,8 @@ class Problem(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def rollout_prompt_with_attacker(self, x: Sequence[StateT]) -> Sequence[ActionT]:
-        """Rolls out the prompt with the attacker model. Do *not* return the prompt.
+    def rollout_prompt_with_auditor(self, x: Sequence[StateT]) -> Sequence[ActionT]:
+        """Rolls out the prompt with the auditor model. Do *not* return the prompt.
 
         a ~ \\pi(s)
 
@@ -146,13 +146,13 @@ class Problem(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def advance(self, context: StateT, attack: ActionT, response: StateT) -> StateT:
+    def advance(self, context: StateT, audit: ActionT, response: StateT) -> StateT:
         """Given a context and continuation, returns the next state.
 
         Args:
             context (str): Sequence of strings representing the context.
-            attack (str): Sequence of strings representing the attack given context.
-            response (str): Sequence of strings representing the defense against attack.
+            audit (str): Sequence of strings representing the audit given context.
+            response (str): Sequence of strings representing the defense against audit.
 
         Returns:
                 str: The next state after applying the continuation to the context.
@@ -161,7 +161,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
 
     @abstractmethod
     def parameters(self) -> Iterator[torch.nn.parameter.Parameter]:
-        """Return the trainable parameters in this problem.
+        """Return the trainable parameters in this system.
 
         Returns:
             Iterator[torch.nn.parameter.Parameter]: An iterator over the trainable parameters.
@@ -173,7 +173,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
     def reward(
         self,
         context: Sequence[StateT],
-        attack: Sequence[ActionT],
+        audit: Sequence[ActionT],
         response: Sequence[StateT],
     ) -> Sequence[float]:
         pass
@@ -203,7 +203,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
         assert isinstance(logprobs, torch.Tensor), "Logprobs must be a torch.Tensor."
         if requires_grad:
             assert logprobs.requires_grad, (
-                "Attacker logprobs must carry gradient information."
+                "Auditor logprobs must carry gradient information."
             )
         # check that the size of the tensor is B x T, where B is the batch size and T is max_continuation_length
         assert logprobs.dim() == 2, (
@@ -223,7 +223,7 @@ class Problem(ABC, Generic[StateT, ActionT]):
                 f"All logprobs must be on the same device. Expected {self._expected_device}, "
                 f"but {check_key} logprobs are on {logprobs.device}. "
                 f"This typically happens when models are on different devices. "
-                f"Please ensure all models (attacker, target, baseline) are on the same device."
+                f"Please ensure all models (auditor, target, baseline) are on the same device."
             )
         # warn if everything is between 0 and 1
         if ((logprobs >= 0.0) & (logprobs <= 1.0)).all():
@@ -233,11 +233,11 @@ class Problem(ABC, Generic[StateT, ActionT]):
             )
         self._disable_asserts[check_key] = True
 
-    def _get_attacker_logprobs_and_validate(
+    def _get_auditor_logprobs_and_validate(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        logprobs = self.get_attacker_logprobs(context, continuation)
-        self._check_logprobs("attacker_logprobs", logprobs, len(context), True)
+        logprobs = self.get_auditor_logprobs(context, continuation)
+        self._check_logprobs("auditor_logprobs", logprobs, len(context), True)
         return logprobs
 
     def _get_target_logprobs_and_validate(
@@ -254,11 +254,11 @@ class Problem(ABC, Generic[StateT, ActionT]):
         self._check_logprobs("baseline_logprobs", logprobs, len(context), False)
         return logprobs
 
-    def _rollout_prompt_with_attacker_and_validate(
+    def _rollout_prompt_with_auditor_and_validate(
         self, x: Sequence[StateT]
     ) -> Sequence[ActionT]:
-        rolled_out = self.rollout_prompt_with_attacker(x)
-        self._check_continuation("attacker_rollout", x, rolled_out)
+        rolled_out = self.rollout_prompt_with_auditor(x)
+        self._check_continuation("auditor_rollout", x, rolled_out)
         return rolled_out
 
     def _rollout_prompt_with_target_and_validate(
@@ -269,19 +269,19 @@ class Problem(ABC, Generic[StateT, ActionT]):
         return rolled_out
 
 
-class ValueFunctionProblem(Problem[StateT, ActionT], ABC):
-    """Extends `Problem` to be able to return sequence values with a value head.
+class ValueFunctionSystem(System[StateT, ActionT], ABC):
+    """Extends `System` to be able to return sequence values with a value head.
 
     Note:
         This is useful for value-laiden solution methods such as Actor
         Critic derivatives (i.e., PPO).
 
     Attributes:
-        moderator (Moderator[StateT, ActionT]): The moderator used to evaluate sequences.
+        scorer (Scorer[StateT, ActionT]): The scorer used to evaluate sequences.
 
     Generics:
-        StateT (type): The type of the state in the environment.
-        ActionT (type): The type of the action in the environment.
+        StateT (type): The type of the state in the sampler.
+        ActionT (type): The type of the action in the sampler.
     """
 
     @abstractmethod

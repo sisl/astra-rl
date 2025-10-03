@@ -1,1 +1,1 @@
-::: astra_rl.core.environment
+::: astra_rl.core.sampler

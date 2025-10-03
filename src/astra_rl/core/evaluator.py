@@ -10,7 +10,7 @@ from typing import Dict, Any, List, Union, TypedDict, Generic, TypeVar, Optional
 from tqdm import tqdm
 
 from astra_rl.core.common import StateT, ActionT
-from astra_rl.core.environment import Environment, Graph
+from astra_rl.core.sampler import Sampler, Graph
 
 # forward define a "JSON-like" type for metrics, which is
 # a nested dict/list structure with str keys and primitive
@@ -42,7 +42,7 @@ SeedT = TypeVar("SeedT")
 class Evaluator(ABC, Generic[StateT, ActionT, SeedT]):
     """An Evaluator used for rolling out a problem and computing metrics.
 
-    The class takes an `Environment' as input, and calls its `eval_rollout`
+    The class takes an `Sampler' as input, and calls its `eval_rollout`
     method subject to some seeds which you pass. The resulting graph is
     then analyzed to yield some metrics for printing.
 
@@ -64,7 +64,7 @@ class Evaluator(ABC, Generic[StateT, ActionT, SeedT]):
     """
 
     def __init__(
-        self, env: Environment[StateT, ActionT], seeds: Optional[List[SeedT]] = None
+        self, env: Sampler[StateT, ActionT], seeds: Optional[List[SeedT]] = None
     ):
         self.seeds = seeds
         self.env = env
