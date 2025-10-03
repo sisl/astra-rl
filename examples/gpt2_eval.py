@@ -1,7 +1,7 @@
 from typing import Optional
-import json
 from transformers import AutoModelForCausalLM, AutoTokenizer, GPT2LMHeadModel
 from astra_rl import ASTProblem, DetoxifyModerator, ASTEnvironment
+from astra_rl.datasets import CONVOKIT_REDDIT_TEST
 from ast_gpt2 import GPT2DetoxifyProblem
 from astra_rl.methods.ast_problem import ASTEvaluator
 from astra_rl.moderators.llamaGuard import LlamaGuardModerator
@@ -79,18 +79,14 @@ def main() -> None:
     # set device
     DEVICE = "cuda"
 
-    # load evaluator prompts
-    with open("prompts_reddit_test.json") as f:
-        PROMPTS = json.load(f)
-
     # instantiate your custom problem with your attacker and target models
     problem = GPT2EvaluationProblem(ATTACKER_MODEL, DEVICE, LlamaGuardModerator())
 
     # instantiate the AST environment - no adjustments needed because already has eval_rollout
-    env = ASTEnvironment(problem, PROMPTS, 1, 3)
+    env = ASTEnvironment(problem, CONVOKIT_REDDIT_TEST, 1, 3)
 
     # instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)
-    evaluator = ASTEvaluator(env, seeds=PROMPTS)
+    evaluator = ASTEvaluator(env, seeds=CONVOKIT_REDDIT_TEST)
 
     # collect metrics by running n_rollouts
     metrics = evaluator.evaluate(n_rollouts=20, progress=True)

@@ -13,7 +13,7 @@ from typing import Sequence, Dict, Generic, Union, Iterator, Optional
 
 import torch
 
-from astra_rl.logging import logger
+from astra_rl.utils import logger
 from astra_rl.core.moderator import Moderator
 from astra_rl.core.common import StateT, ActionT
 

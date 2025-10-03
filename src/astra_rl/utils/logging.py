@@ -29,7 +29,7 @@ class ASTRAWandbLogger:
     Checks if wandb is installed and needs WANDB_API_KEY set in the environment.
 
     Attributes:
-        run (wandb.Run): The Weights & Biases run object.
+        run (`wandb.Run`): The Weights & Biases run object.
     """
 
     def __init__(self, wandb_kwargs: Dict[str, Any]) -> None:
@@ -48,7 +48,9 @@ class ASTRAWandbLogger:
             raise EnvironmentError(
                 "WANDB_API_KEY environment variable is not set. Please set it to use Weights & Biases. e.g. run 'export WANDB_API_KEY=your_api_key_here' in your terminal."
             )
-        self.run = wandb.init(project="astra_rl", config=wandb_kwargs)
+
+        project = wandb_kwargs.pop("project", "astra_rl")
+        self.run = wandb.init(project=project, config=wandb_kwargs)
 
     def log(self, current_logs: Dict[Any, Any]) -> None:
         """Log the current step to Weights & Biases.

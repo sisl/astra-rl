@@ -32,9 +32,6 @@ repos:
         name: check toml files
       - id: check-json
         name: check json files
-      - id: pretty-format-json
-        name: pretty format json files
-        types: [json]
       
       # Python-specific checks
       - id: debug-statements

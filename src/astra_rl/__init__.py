@@ -3,6 +3,7 @@ from .methods import ASTEnvironment, ASTNode, ASTProblem
 from .algorithms import DPO, IPO, DPOBatch, DPOStep, PPO, PPOBatch, PPOStep
 from .moderators import DetoxifyModerator
 from .training import Harness, Trainer, TrainingConfiguration
+from .utils import logger
 
 __all__ = (
     "ASTEnvironment",
@@ -21,4 +22,5 @@ __all__ = (
     "TrainingConfiguration",
     "Problem",
     "ValueFunctionProblem",
+    "logger",
 )
