@@ -93,18 +93,18 @@ nav:
         - Core Module:
             - api/core/index.md
             - api/core/common.md
-            - api/core/problem.md
-            - api/core/environment.md
-            - api/core/moderator.md
+            - api/core/system.md
+            - api/core/sampler.md
+            - api/core/scorer.md
             - api/core/algorithm.md
         - Algorithms:
             - api/algorithms/index.md
             - api/algorithms/dpo.md
             - api/algorithms/ppo.md
-        - Moderators:
-            - api/moderators/index.md
-            - api/moderators/detoxify.md
-            - api/moderators/llamaguard.md
+        - Scorers:
+            - api/scorers/index.md
+            - api/scorers/detoxify.md
+            - api/scorers/llamaguard.md
         - Training:
             - api/training/index.md
             - api/training/harness.md
