@@ -83,7 +83,7 @@ If you want to evaluate a custom auditor or target, create a new `System` subcla
 
 ### 4) Evaluate!
 
-This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, audit success rate, average reward, average first turn the target is toxic.
+This step will instantiate the ASTEvaluator class which will collect standard adversarial testing metrics such as average target toxicity, attack success rate, average reward, average first turn the target is toxic.
 
 Then, we will perform evaluation rollouts (auditor-target multi-turn conversations with tree_width=1) and aggregate metrics. The metrics will be saved to your repository as a json.
 
@@ -106,7 +106,7 @@ evaluator.write_json(metrics, "metrics.json")
     - `adversarial_toxicity` — toxicity of the auditor's message
     - `target_toxicity` — toxicity of the target's response
     - `context` — truncated conversation context
-    - `audit` — auditor's utterance
+    - `probe` — auditor's utterance
     - `response` — target's response
 
     **Overall rollout metrics**

@@ -40,11 +40,11 @@ def compute_metrics(self, g: Graph[str, str]) -> GraphMetrics:
         # take the first child in the chain
         node = children[0]
         ctx = (getattr(node, "context", "") or "")[-100:]
-        atk = (getattr(node, "audit", "") or "")
+        prb = (getattr(node, "probe", "") or "")
         rsp = (getattr(node, "response", "") or "")
         reward = float(getattr(node, "reward", 0.0) or 0.0)
 
-        adv_tox = self.sampler.system.scorer.score([atk])[0]
+        adv_tox = self.sampler.system.scorer.score([prb])[0]
         target_tox = self.sampler.system.scorer.score([rsp])[0]
 
         if adv_tox >= 0.5 and first_attack_tox_turn is None:
@@ -58,7 +58,7 @@ def compute_metrics(self, g: Graph[str, str]) -> GraphMetrics:
             "adversarial_toxicity": adv_tox,
             "target_toxicity": target_tox,
             "context": ctx,
-            "audit": atk,
+            "probe": prb,
             "response": rsp,
         })
         current = node

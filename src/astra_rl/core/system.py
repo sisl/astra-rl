@@ -146,13 +146,13 @@ class System(ABC, Generic[StateT, ActionT]):
         pass
 
     @abstractmethod
-    def advance(self, context: StateT, audit: ActionT, response: StateT) -> StateT:
+    def advance(self, context: StateT, probe: ActionT, response: StateT) -> StateT:
         """Given a context and continuation, returns the next state.
 
         Args:
             context (str): Sequence of strings representing the context.
-            audit (str): Sequence of strings representing the audit given context.
-            response (str): Sequence of strings representing the defense against audit.
+            probe (str): Sequence of strings representing the probe given context.
+            response (str): Sequence of strings representing the defense against probe.
 
         Returns:
                 str: The next state after applying the continuation to the context.
@@ -173,7 +173,7 @@ class System(ABC, Generic[StateT, ActionT]):
     def reward(
         self,
         context: Sequence[StateT],
-        audit: Sequence[ActionT],
+        probe: Sequence[ActionT],
         response: Sequence[StateT],
     ) -> Sequence[float]:
         pass

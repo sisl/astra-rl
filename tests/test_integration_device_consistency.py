@@ -47,14 +47,14 @@ class MultiDeviceSystem(System[str, str]):
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
         return ["response"] * len(x)
 
-    def advance(self, context: str, audit: str, response: str) -> str:
-        return context + audit + response
+    def advance(self, context: str, probe: str, response: str) -> str:
+        return context + probe + response
 
     def parameters(self) -> Iterator[torch.nn.parameter.Parameter]:
         return iter([])
 
     def reward(
-        self, context: Sequence[str], audit: Sequence[str], response: Sequence[str]
+        self, context: Sequence[str], probe: Sequence[str], response: Sequence[str]
     ) -> Sequence[float]:
         return [0.5] * len(context)
 

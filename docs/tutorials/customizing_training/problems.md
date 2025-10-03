@@ -61,8 +61,8 @@ get_target_logprobs  (contexts: Sequence[str], continuations: Sequence[str]) -> 
 get_baseline_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -> torch.Tensor  # no grad
 
 parameters() -> Iterator[torch.nn.Parameter]   # usually auditor params
-advance(context: str, audit: str, response: str) -> str # return the next state (i.e. updated conversation context)
-reward(contexts, audits, responses) -> Sequence[float]
+advance(context: str, probe: str, response: str) -> str # return the next state (i.e. updated conversation context)
+reward(contexts, probes, responses) -> Sequence[float]
 ```
 
 **Gradients:** only `get_auditor_logprobs` must return a tensor with `requires_grad=True`. Target/baseline should be computed under `torch.no_grad()` (return tensors detached from graphs) to save memory.
@@ -135,14 +135,14 @@ class MySystem(System[str, str]):
         # 4) gather per-token logprobs, mask out context, sum over continuation
         ...
 
-    def advance(self, context, audit, response):
+    def advance(self, context, probe, response):
         # Conversation concatenation or your custom state transition
-        return context + audit + response
+        return context + probe + response
 
     def parameters(self):
         return self.auditor.parameters()
 
-    def reward(self, contexts, audits, responses):
+    def reward(self, contexts, probes, responses):
         # calculate your custom reward here!
         # return a scalar value. Note that binary signals are not as helpful for training. Try to make the reward continuous from 0-1.
         return r
@@ -161,8 +161,8 @@ Common patterns (return one float per sample):
 Default text setting is simple concatenation (below) but you can customize how the next state is created.
 
 ```python
-def advance(self, context, audit, response):
-    return context + audit + response
+def advance(self, context, probe, response):
+    return context + probe + response
 ```
 
 
