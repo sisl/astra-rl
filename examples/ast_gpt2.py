@@ -14,8 +14,7 @@ import json
 import os
 from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness
-from astra_rl.logging import logger
+from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator, Harness, logger
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"

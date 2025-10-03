@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 from astra_rl.core.environment import Environment
 from astra_rl.core.algorithm import Algorithm
 from astra_rl.core.common import ActionT, StateT, Batch, Step
-from astra_rl.logging import logger, ASTRAWandbLogger
+from astra_rl.utils import logger, ASTRAWandbLogger
 
 
 class ListDataset(Dataset[Step], Generic[Step]):
