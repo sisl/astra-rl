@@ -9,7 +9,7 @@ using the DPO algorithm with a Detoxify moderator for content moderation.
 We will train using the ConvoKit Reddit Small Corpus for initial prompts, filtered by the moderator to be non-toxic.
 """
 
-import json
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 from astra_rl.ext.transformers.hf_ast_problem import (
     HFASTTrainer,
     HFASTConfiguration,
@@ -66,14 +66,6 @@ class BackupEnv(ASTEnvironment):
 
 # main code body
 def main() -> None:
-    # read in training prompts
-    with open("prompts_reddit_train.json") as f:
-        PROMPTS = json.load(f)
-
-    # read in dev set of prompts
-    with open("prompts_reddit_dev.json") as f:
-        DEV_PROMPTS = json.load(f)
-
     DEVICE = "cuda"  # cuda/cpu/mps
 
     # instatiate our problem and environment
@@ -83,7 +75,7 @@ def main() -> None:
     # problem = HFASTProblem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyModerator(), DEVICE)
 
     problem = GPT2DetoxifyProblem(DEVICE)
-    env = BackupEnv(problem, PROMPTS, gamma=0.9)
+    env = BackupEnv(problem, CONVOKIT_REDDIT_TRAIN, gamma=0.9)
 
     # # print out rollouts - checked that backing up rewards works!
     # for i in range(1):
@@ -105,7 +97,7 @@ def main() -> None:
         config,
         env,
         solver,
-        dev_prompts=DEV_PROMPTS,
+        dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=100,
         ckpt_dir="checkpoints",
     )

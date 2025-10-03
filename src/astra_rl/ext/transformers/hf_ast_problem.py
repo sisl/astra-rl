@@ -25,7 +25,7 @@ from astra_rl.core.moderator import Moderator
 from astra_rl.methods.ast_problem import ASTProblem
 from astra_rl.training.trainer import Trainer, TrainingConfiguration
 import os
-from astra_rl.logging import logger
+from astra_rl.utils import logger
 
 
 class HFASTProblem(ASTProblem, ValueFunctionProblem):
