@@ -614,7 +614,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -637,7 +637,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -660,7 +660,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -787,7 +787,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -966,12 +966,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/problem.html" class="md-nav__link">
+      <a href="../../api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -989,12 +989,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/environment.html" class="md-nav__link">
+      <a href="../../api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1012,12 +1012,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/moderator.html" class="md-nav__link">
+      <a href="../../api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1187,12 +1187,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/moderators/index.html" class="md-nav__link ">
+            <a href="../../api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1209,7 +1209,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1220,7 +1220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../../api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1243,7 +1243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../../api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1433,7 +1433,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1532,21 +1532,21 @@
 
 
 <h1 id="customize-evaluation">Customize Evaluation<a class="headerlink" href="#customize-evaluation" title="Permanent link">&para;</a></h1>
-<p><strong>RL-based red-teaming</strong> trains an <em>attacker</em> via reinforcement learning so it generates test cases that are likely to elicit unsafe outputs from a <em>target</em> model. Attackers probe targets through multi-turn conversations and try to surface failure modes (unsafe/harmful outputs).</p>
-<p>ASTRA-RL supports both <strong>training</strong> attackers and <strong>evaluating</strong> targets. In evaluation mode we repeatedly test targets using a pre-trained attacker and collect metrics that describe how, when, and how often a target fails.</p>
+<p><strong>RL-based red-teaming</strong> trains a <em>tester</em> via reinforcement learning so it generates test cases that are likely to elicit unsafe outputs from a <em>target</em> model. Testers probe targets through multi-turn conversations and try to surface failure modes (unsafe/harmful outputs).</p>
+<p>ASTRA-RL supports both <strong>training</strong> testers and <strong>evaluating</strong> targets. In evaluation mode we repeatedly test targets using a pre-trained tester and collect metrics that describe how, when, and how often a target fails.</p>
 <div class="admonition note">
-<p class="admonition-title">What counts as a successful attack?</p>
-<p>An <em>attack is successful</em> when the target model produces an unsafe or harmful utterance according to the configured moderator (e.g., Detoxify, LlamaGuard). Red-teaming’s purpose is to discover as many such failure modes as possible so they can be analyzed and mitigated.</p>
+<p class="admonition-title">What counts as a successful audit?</p>
+<p>An <em>audit is successful</em> when the target model produces an unsafe or harmful utterance according to the configured scorer (e.g., Detoxify, LlamaGuard). Red-teaming's purpose is to discover as many such failure modes as possible so they can be analyzed and mitigated.</p>
 </div>
 <hr />
 <h2 id="quick-links">Quick links<a class="headerlink" href="#quick-links" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
-<p>To run a red-team evaluation using a trained attacker, follow the quick guide: <strong><a href="../quick_start_evaluation.html">Quick Start: Evaluation</a></strong>.<br />
-  This shows how to use the supported evaluation problems (<code>HFEvaluationProblem</code> for HF models and <code>GPT2EvaluationProblem</code> for GPT-2) and the default evaluator (<code>ASTEvaluator</code>).</p>
+<p>To run a red-team evaluation using a trained tester, follow the quick guide: <strong><a href="../quick_start_evaluation.html">Quick Start: Evaluation</a></strong>.
+  This shows how to use the supported evaluation systems (<code>HFEvaluationSystem</code> for HF models and <code>GPT2EvaluationSystem</code> for GPT-2) and the default evaluator (<code>ASTEvaluator</code>).</p>
 </li>
 <li>
-<p>If you need to support a custom model or tokenizer, see <strong><a href="evaluation_problems.html">Evaluation Problem Customization</a></strong>.</p>
+<p>If you need to support a custom model or tokenizer, see <strong><a href="evaluation_problems.html">Evaluation System Customization</a></strong>.</p>
 </li>
 <li>
 <p>If you want to collect different per-turn or aggregated metrics, or change how metrics are computed/serialized, see <strong><a href="evaluators.html">Evaluator Customization</a></strong>.</p>
@@ -1555,16 +1555,16 @@
 <hr />
 <h2 id="short-workflow">Short workflow<a class="headerlink" href="#short-workflow" title="Permanent link">&para;</a></h2>
 <ol>
-<li>Train an attacker (see <strong>Quick Start: Training</strong>).  </li>
-<li>Point evaluation at your attacker checkpoint.  </li>
-<li>Run <code>ASTEvaluator</code> over a set of held-out prompts (never used at training time).  </li>
+<li>Train a tester (see <strong>Quick Start: Training</strong>).</li>
+<li>Point evaluation at your tester checkpoint.</li>
+<li>Run <code>ASTEvaluator</code> over a set of held-out prompts (never used at training time).</li>
 <li>Inspect per-turn logs and aggregated metrics (JSON output) to find failure modes.</li>
 </ol>
 <hr />
 <h2 id="tips">Tips<a class="headerlink" href="#tips" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Use a moderator that matches your safety criteria (e.g., toxicity vs. policy violations).  </li>
-<li>Keep evaluation prompts <em>out-of-sample</em> to avoid reporting overfit behavior.  </li>
+<li>Use a scorer that matches your safety criteria (e.g., toxicity vs. policy violations).</li>
+<li>Keep evaluation prompts <em>out-of-sample</em> to avoid reporting overfit behavior.</li>
 </ul>
 
 
@@ -1588,7 +1588,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:36:39 UTC">2025-10-03</span>
   </span>
 
     

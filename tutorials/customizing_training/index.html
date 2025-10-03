@@ -614,7 +614,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -637,7 +637,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -660,7 +660,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -787,7 +787,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -966,12 +966,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/problem.html" class="md-nav__link">
+      <a href="../../api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -989,12 +989,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/environment.html" class="md-nav__link">
+      <a href="../../api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1012,12 +1012,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/moderator.html" class="md-nav__link">
+      <a href="../../api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1187,12 +1187,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/moderators/index.html" class="md-nav__link ">
+            <a href="../../api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1209,7 +1209,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1220,7 +1220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../../api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1243,7 +1243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../../api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1433,7 +1433,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1486,36 +1486,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-problem-how-models-runinteract" class="md-nav__link">
+  <a href="#1-system-how-models-runinteract" class="md-nav__link">
     <span class="md-ellipsis">
-      1) Problem — How models run/interact
+      1) System — How models run/interact
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-environment-how-data-is-collected" class="md-nav__link">
+  <a href="#2-sampler-how-data-is-collected" class="md-nav__link">
     <span class="md-ellipsis">
-      2) Environment — How data is collected
+      2) Sampler — How data is collected
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-moderators-how-we-definemeasure-harm" class="md-nav__link">
+  <a href="#3-scorers-how-we-definemeasure-harm" class="md-nav__link">
     <span class="md-ellipsis">
-      3) Moderators — How we define/measure harm
+      3) Scorers — How we define/measure harm
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-solvers-algorithms-how-the-attacker-learns" class="md-nav__link">
+  <a href="#4-solvers-algorithms-how-the-tester-learns" class="md-nav__link">
     <span class="md-ellipsis">
-      4) Solvers (Algorithms) — How the attacker learns
+      4) Solvers (Algorithms) — How the tester learns
     </span>
   </a>
   
@@ -1551,22 +1551,22 @@
 
 <h1 id="customize-training">Customize Training<a class="headerlink" href="#customize-training" title="Permanent link">&para;</a></h1>
 <p>To go beyond the supported training classes presented in the <a href="../quick_start_training.html">quick start training guide</a>, please see the following resources:</p>
-<h3 id="1-problem-how-models-runinteract">1) Problem — <em>How models run/interact</em><a class="headerlink" href="#1-problem-how-models-runinteract" title="Permanent link">&para;</a></h3>
-<p>Handles loading models/tokenizers, performing <strong>one rollout step</strong> (attacker/target generation), computing <strong>log-probs</strong> (for DPO/PPO, etc.), advancing the conversation state, and defining a <strong>reward</strong>.</p>
+<h3 id="1-system-how-models-runinteract">1) System — <em>How models run/interact</em><a class="headerlink" href="#1-system-how-models-runinteract" title="Permanent link">&para;</a></h3>
+<p>Handles loading models/tokenizers, performing <strong>one rollout step</strong> (tester/target generation), computing <strong>log-probs</strong> (for DPO/PPO, etc.), advancing the conversation state, and defining a <strong>reward</strong>.</p>
 <ul>
-<li>Guide: <a href="problems.html">Problem Customization</a></li>
+<li>Guide: <a href="problems.html">System Customization</a></li>
 </ul>
-<h3 id="2-environment-how-data-is-collected">2) Environment — <em>How data is collected</em><a class="headerlink" href="#2-environment-how-data-is-collected" title="Permanent link">&para;</a></h3>
-<p>Defines how attacker–target interactions are generated and structured for training/eval (e.g., <strong>single-path vs. tree</strong> rollouts), what per-step data is stored, and what the solver receives.</p>
+<h3 id="2-sampler-how-data-is-collected">2) Sampler — <em>How data is collected</em><a class="headerlink" href="#2-sampler-how-data-is-collected" title="Permanent link">&para;</a></h3>
+<p>Defines how tester–target interactions are generated and structured for training/eval (e.g., <strong>single-path vs. tree</strong> rollouts), what per-step data is stored, and what the solver receives.</p>
 <ul>
-<li>Guide: <a href="environments.html">Environment Customization</a></li>
+<li>Guide: <a href="environments.html">Sampler Customization</a></li>
 </ul>
-<h3 id="3-moderators-how-we-definemeasure-harm">3) Moderators — <em>How we define/measure harm</em><a class="headerlink" href="#3-moderators-how-we-definemeasure-harm" title="Permanent link">&para;</a></h3>
-<p>Scores target generations (scalar harm). Instantiate in your <strong>Problem</strong> for seamless use.</p>
+<h3 id="3-scorers-how-we-definemeasure-harm">3) Scorers — <em>How we define/measure harm</em><a class="headerlink" href="#3-scorers-how-we-definemeasure-harm" title="Permanent link">&para;</a></h3>
+<p>Scores target generations (scalar harm). Instantiate in your <strong>System</strong> for seamless use.</p>
 <ul>
-<li>Guide: <a href="moderators.html">Moderator Customization</a></li>
+<li>Guide: <a href="moderators.html">Scorer Customization</a></li>
 </ul>
-<h3 id="4-solvers-algorithms-how-the-attacker-learns">4) Solvers (Algorithms) — <em>How the attacker learns</em><a class="headerlink" href="#4-solvers-algorithms-how-the-attacker-learns" title="Permanent link">&para;</a></h3>
+<h3 id="4-solvers-algorithms-how-the-tester-learns">4) Solvers (Algorithms) — <em>How the tester learns</em><a class="headerlink" href="#4-solvers-algorithms-how-the-tester-learns" title="Permanent link">&para;</a></h3>
 <p>Consume rollout graphs, <strong>flatten</strong> them to per-sample steps, <strong>collate</strong> batches, and compute the <strong>training loss</strong> (plus logs).</p>
 <ul>
 <li>Guide: <a href="solvers.html">Solver Customization</a></li>
@@ -1598,7 +1598,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:36:39 UTC">2025-10-03</span>
   </span>
 
     

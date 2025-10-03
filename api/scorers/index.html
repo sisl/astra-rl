@@ -12,13 +12,13 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/core/moderator.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/scorers/index.html">
       
       
-        <link rel="prev" href="environment.html">
+        <link rel="prev" href="../algorithms/ppo.html">
       
       
-        <link rel="next" href="algorithm.html">
+        <link rel="next" href="detoxify.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Moderator - ASTRA-RL Toolbox Documentation</title>
+        <title>Scorers - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -81,11 +81,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#astra_rl.core.moderator" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -118,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Moderator
+              Scorers
             
           </span>
         </div>
@@ -611,7 +606,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -634,7 +629,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -657,7 +652,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -784,7 +779,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -890,8 +885,6 @@
                 
   
   
-    
-  
   
   
     
@@ -902,15 +895,17 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_1" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_1" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link ">
+            <a href="../core/index.html" class="md-nav__link ">
               
   
   
@@ -929,7 +924,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_1_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_1">
             <span class="md-nav__icon md-icon"></span>
             Core Module
@@ -943,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="common.html" class="md-nav__link">
+      <a href="../core/common.html" class="md-nav__link">
         
   
   
@@ -966,12 +961,12 @@
   
   
     <li class="md-nav__item">
-      <a href="problem.html" class="md-nav__link">
+      <a href="../core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -989,102 +984,17 @@
   
   
     <li class="md-nav__item">
-      <a href="environment.html" class="md-nav__link">
+      <a href="../core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
 
       </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Moderator
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="moderator.html" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    Moderator
-    
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#astra_rl.core.moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      moderator
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="moderator">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#astra_rl.core.moderator.Moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      Moderator
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1097,7 +1007,30 @@
   
   
     <li class="md-nav__item">
-      <a href="algorithm.html" class="md-nav__link">
+      <a href="../core/scorer.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Scorer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/algorithm.html" class="md-nav__link">
         
   
   
@@ -1229,8 +1162,10 @@
                 
   
   
+    
   
   
+  
     
     
     
@@ -1239,22 +1174,20 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../moderators/index.html" class="md-nav__link ">
+            <a href="index.html" class="md-nav__link md-nav__link--active">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1262,16 +1195,16 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+              <label class="md-nav__link md-nav__link--active" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1282,7 +1215,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../moderators/detoxify.html" class="md-nav__link">
+      <a href="detoxify.html" class="md-nav__link">
         
   
   
@@ -1305,7 +1238,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../moderators/llamaguard.html" class="md-nav__link">
+      <a href="llamaguard.html" class="md-nav__link">
         
   
   
@@ -1495,7 +1428,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1539,38 +1472,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#astra_rl.core.moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      moderator
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="moderator">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#astra_rl.core.moderator.Moderator" class="md-nav__link">
-    <span class="md-ellipsis">
-      Moderator
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -1588,107 +1489,9 @@
   
 
 
-  <h1>Moderator</h1>
-
-<div class="doc doc-object doc-module">
+  <h1>Scorers</h1>
 
 
-
-<h2 id="astra_rl.core.moderator" class="doc doc-heading">
-            <code>astra_rl.core.moderator</code>
-
-
-<a href="#astra_rl.core.moderator" class="headerlink" title="Permanent link">&para;</a></h2>
-
-    <div class="doc doc-contents first">
-
-        <p>moderator.py</p>
-
-
-
-
-
-
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-<div class="doc doc-object doc-class">
-
-
-
-<h3 id="astra_rl.core.moderator.Moderator" class="doc doc-heading">
-            <code>Moderator</code>
-
-
-<a href="#astra_rl.core.moderator.Moderator" class="headerlink" title="Permanent link">&para;</a></h3>
-
-
-    <div class="doc doc-contents ">
-            <p class="doc doc-class-bases">
-              Bases: <code><span title="abc.ABC">ABC</span></code>, <code><span title="typing.Generic">Generic</span>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code></p>
-
-
-        <p>Red-Teaming moderator for evaluating sequences.</p>
-
-
-
-
-
-
-
-              <details class="quote">
-                <summary>Source code in <code>src/astra_rl/core/moderator.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-11">11</a></span>
-<span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span>
-<span class="normal"><a href="#__codelineno-0-15">15</a></span>
-<span class="normal"><a href="#__codelineno-0-16">16</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">Moderator</span><span class="p">(</span><span class="n">ABC</span><span class="p">,</span> <span class="n">Generic</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Red-Teaming moderator for evaluating sequences.&quot;&quot;&quot;</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>    <span class="nd">@abstractmethod</span>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">moderate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>        <span class="k">pass</span>
-</span></code></pre></div></td></tr></table></div>
-              </details>
-
-
-
-  <div class="doc doc-children">
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
-
-
-
-
-  </div>
-
-    </div>
-
-</div>
 
 
 
@@ -1711,7 +1514,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 16:12:15 UTC">2025-10-03</span>
   </span>
 
     
@@ -1721,7 +1524,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 05:35:39 UTC">2025-07-02</span>
   </span>
 
     

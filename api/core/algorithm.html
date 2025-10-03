@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://github.com/sisl/astra-rl/api/core/algorithm.html">
       
       
-        <link rel="prev" href="moderator.html">
+        <link rel="prev" href="scorer.html">
       
       
         <link rel="next" href="../algorithms/index.html">
@@ -611,7 +611,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -634,7 +634,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -657,7 +657,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -784,7 +784,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -966,12 +966,12 @@
   
   
     <li class="md-nav__item">
-      <a href="problem.html" class="md-nav__link">
+      <a href="system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -989,12 +989,12 @@
   
   
     <li class="md-nav__item">
-      <a href="environment.html" class="md-nav__link">
+      <a href="sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1012,12 +1012,12 @@
   
   
     <li class="md-nav__item">
-      <a href="moderator.html" class="md-nav__link">
+      <a href="scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1249,12 +1249,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../moderators/index.html" class="md-nav__link ">
+            <a href="../scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1271,7 +1271,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1282,7 +1282,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../moderators/detoxify.html" class="md-nav__link">
+      <a href="../scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1305,7 +1305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../moderators/llamaguard.html" class="md-nav__link">
+      <a href="../scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1495,7 +1495,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1641,7 +1641,7 @@
 <p>Specifically, the Algorithm object is responsible for encoding
 how a particular rollout graph becomes processed into a loss
 which updates the weights of the model. To implement its children,
-you basically call self.problem's various methods to push values
+you basically call self.system's various methods to push values
 through the network.</p>
 
 
@@ -1656,13 +1656,13 @@ through the network.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-            <td><code><span title="astra_rl.core.algorithm.Algorithm.problem">problem</span></code></td>
+            <td><code><span title="astra_rl.core.algorithm.Algorithm.system">system</span></code></td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Problem (astra_rl.core.problem.Problem)" href="problem.html#astra_rl.core.problem.Problem">Problem</a></code>
+                  <code><a class="autorefs autorefs-internal" title="System (astra_rl.core.system.System)" href="system.html#astra_rl.core.system.System">System</a></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The problem instance that defines the environment and actions.</p>
+                <p>The system instance that defines the sampler and actions.</p>
               </div>
             </td>
           </tr>
@@ -1672,8 +1672,8 @@ through the network.</p>
 
 <details class="generics" open>
   <summary>Generics</summary>
-  <p>StateT (type): The type of the state in the environment.
-ActionT (type): The type of the action in the environment.
+  <p>StateT (type): The type of the state in the sampler.
+ActionT (type): The type of the action in the sampler.
 Step (type): The type of a single step in the environment.
 Batch (type): The type of a batch of steps, passed to the .step() function for gradient.</p>
 </details>
@@ -1754,22 +1754,22 @@ Batch (type): The type of a batch of steps, passed to the .step() function for g
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    Specifically, the Algorithm object is responsible for encoding</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    how a particular rollout graph becomes processed into a loss</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">    which updates the weights of the model. To implement its children,</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">    you basically call self.problem&#39;s various methods to push values</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">    you basically call self.system&#39;s various methods to push values</span>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    through the network.</span>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">    Attributes:</span>
-</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">        problem (Problem): The problem instance that defines the environment and actions.</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">        system (System): The system instance that defines the sampler and actions.</span>
 </span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a>
 </span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="sd">    Generics:</span>
-</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="sd">        StateT (type): The type of the state in the environment.</span>
-</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">        ActionT (type): The type of the action in the environment.</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="sd">        StateT (type): The type of the state in the sampler.</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a><span class="sd">        ActionT (type): The type of the action in the sampler.</span>
 </span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a><span class="sd">        Step (type): The type of a single step in the environment.</span>
 </span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a><span class="sd">        Batch (type): The type of a batch of steps, passed to the .step() function for gradient.</span>
 </span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>
-</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
-</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">problem</span> <span class="o">=</span> <span class="n">problem</span>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system</span><span class="p">:</span> <span class="n">System</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">]):</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">system</span>
 </span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>
 </span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>    <span class="nd">@abstractmethod</span>
 </span><span id="__span-0-39"><a id="__codelineno-0-39" name="__codelineno-0-39"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">flatten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">:</span> <span class="n">Graph</span><span class="p">[</span><span class="n">StateT</span><span class="p">,</span> <span class="n">ActionT</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Step</span><span class="p">]:</span>
@@ -1978,7 +1978,7 @@ it is responsible for emitting well-formed batches of data.</p>
 
   
       dataclass
-   (astra_rl.core.environment.Graph)" href="environment.html#astra_rl.core.environment.Graph">Graph</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code>
+   (astra_rl.core.sampler.Graph)" href="sampler.html#astra_rl.core.sampler.Graph">Graph</a>[<span title="astra_rl.core.common.StateT">StateT</span>, <span title="astra_rl.core.common.ActionT">ActionT</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">

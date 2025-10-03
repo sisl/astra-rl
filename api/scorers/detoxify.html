@@ -12,13 +12,13 @@
         <meta name="author" content="Duncan Eddy">
       
       
-        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/moderators/index.html">
+        <link rel="canonical" href="https://github.com/sisl/astra-rl/api/scorers/detoxify.html">
       
       
-        <link rel="prev" href="../algorithms/ppo.html">
+        <link rel="prev" href="index.html">
       
       
-        <link rel="next" href="detoxify.html">
+        <link rel="next" href="llamaguard.html">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Moderators - ASTRA-RL Toolbox Documentation</title>
+        <title>Detoxify - ASTRA-RL Toolbox Documentation</title>
       
     
     
@@ -81,6 +81,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#astra_rl.scorers.detoxify" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -113,7 +118,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Moderators
+              Detoxify
             
           </span>
         </div>
@@ -606,7 +611,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -629,7 +634,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -652,7 +657,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -779,7 +784,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -961,12 +966,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../core/problem.html" class="md-nav__link">
+      <a href="../core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -984,12 +989,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../core/environment.html" class="md-nav__link">
+      <a href="../core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1007,12 +1012,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../core/moderator.html" class="md-nav__link">
+      <a href="../core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1182,12 +1187,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="index.html" class="md-nav__link md-nav__link--active">
+            <a href="index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1195,7 +1200,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -1204,7 +1209,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1212,10 +1217,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="detoxify.html" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Detoxify
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="detoxify.html" class="md-nav__link md-nav__link--active">
         
   
   
@@ -1226,6 +1251,48 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#astra_rl.scorers.detoxify" class="md-nav__link">
+    <span class="md-ellipsis">
+      detoxify
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="detoxify">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astra_rl.scorers.detoxify.DetoxifyScorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      DetoxifyScorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1428,7 +1495,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1472,6 +1539,38 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#astra_rl.scorers.detoxify" class="md-nav__link">
+    <span class="md-ellipsis">
+      detoxify
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="detoxify">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#astra_rl.scorers.detoxify.DetoxifyScorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      DetoxifyScorer
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1489,9 +1588,194 @@
   
 
 
-  <h1>Moderators</h1>
+  <h1>Detoxify</h1>
+
+<div class="doc doc-object doc-module">
 
 
+
+<h2 id="astra_rl.scorers.detoxify" class="doc doc-heading">
+            <code>astra_rl.scorers.detoxify</code>
+
+
+<a href="#astra_rl.scorers.detoxify" class="headerlink" title="Permanent link">&para;</a></h2>
+
+    <div class="doc doc-contents first">
+
+        <p>detoxify.py
+Scorer to call into the Detoxify engine.</p>
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h3 id="astra_rl.scorers.detoxify.DetoxifyScorer" class="doc doc-heading">
+            <code>DetoxifyScorer</code>
+
+
+<a href="#astra_rl.scorers.detoxify.DetoxifyScorer" class="headerlink" title="Permanent link">&para;</a></h3>
+
+
+    <div class="doc doc-contents ">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="Scorer (astra_rl.core.scorer.Scorer)" href="../core/scorer.html#astra_rl.core.scorer.Scorer">Scorer</a>[<span title="str">str</span>, <span title="str">str</span>]</code></p>
+
+
+        <p>Scorer that wraps the Detoxify library for toxicity detection.</p>
+<p>https://github.com/unitaryai/detoxify</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><span title="astra_rl.scorers.detoxify.DetoxifyScorer.harm_category">harm_category</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The category of harm to detect (default is "toxicity"); see below.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><span title="astra_rl.scorers.detoxify.DetoxifyScorer.variant">variant</span></code></td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The variant of the Detoxify model to use (default is "original").</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="notes" open>
+  <summary>Notes</summary>
+  <p>Possible harm categories
+include "toxicity", "severe_toxicity", "obscene", "identity_attack",
+"insult", "threat", "sexual_explicit".</p>
+<p>Possible variants
+Include "original", "multilingual", "unbiased".</p>
+</details>
+
+
+
+
+
+
+              <details class="quote">
+                <summary>Source code in <code>src/astra_rl/scorers/detoxify.py</code></summary>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span>
+<span class="normal"><a href="#__codelineno-0-23">23</a></span>
+<span class="normal"><a href="#__codelineno-0-24">24</a></span>
+<span class="normal"><a href="#__codelineno-0-25">25</a></span>
+<span class="normal"><a href="#__codelineno-0-26">26</a></span>
+<span class="normal"><a href="#__codelineno-0-27">27</a></span>
+<span class="normal"><a href="#__codelineno-0-28">28</a></span>
+<span class="normal"><a href="#__codelineno-0-29">29</a></span>
+<span class="normal"><a href="#__codelineno-0-30">30</a></span>
+<span class="normal"><a href="#__codelineno-0-31">31</a></span>
+<span class="normal"><a href="#__codelineno-0-32">32</a></span>
+<span class="normal"><a href="#__codelineno-0-33">33</a></span>
+<span class="normal"><a href="#__codelineno-0-34">34</a></span>
+<span class="normal"><a href="#__codelineno-0-35">35</a></span>
+<span class="normal"><a href="#__codelineno-0-36">36</a></span>
+<span class="normal"><a href="#__codelineno-0-37">37</a></span>
+<span class="normal"><a href="#__codelineno-0-38">38</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">DetoxifyScorer</span><span class="p">(</span><span class="n">Scorer</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]):</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Scorer that wraps the Detoxify library for toxicity detection.</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    https://github.com/unitaryai/detoxify</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    Attributes:</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">        harm_category (str): The category of harm to detect (default is &quot;toxicity&quot;); see below.</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">        variant (str): The variant of the Detoxify model to use (default is &quot;original&quot;).</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    Notes:</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">        Possible harm categories</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="sd">        include &quot;toxicity&quot;, &quot;severe_toxicity&quot;, &quot;obscene&quot;, &quot;identity_attack&quot;,</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">        &quot;insult&quot;, &quot;threat&quot;, &quot;sexual_explicit&quot;.</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27"></a><span class="sd">        Possible variants</span>
+</span><span id="__span-0-28"><a id="__codelineno-0-28" name="__codelineno-0-28"></a><span class="sd">        Include &quot;original&quot;, &quot;multilingual&quot;, &quot;unbiased&quot;.</span>
+</span><span id="__span-0-29"><a id="__codelineno-0-29" name="__codelineno-0-29"></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="__span-0-30"><a id="__codelineno-0-30" name="__codelineno-0-30"></a>
+</span><span id="__span-0-31"><a id="__codelineno-0-31" name="__codelineno-0-31"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">harm_category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;toxicity&quot;</span><span class="p">,</span> <span class="n">variant</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;original&quot;</span><span class="p">):</span>
+</span><span id="__span-0-32"><a id="__codelineno-0-32" name="__codelineno-0-32"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">Detoxify</span><span class="p">(</span><span class="n">variant</span><span class="p">)</span>
+</span><span id="__span-0-33"><a id="__codelineno-0-33" name="__codelineno-0-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">harm_category</span> <span class="o">=</span> <span class="n">harm_category</span>
+</span><span id="__span-0-34"><a id="__codelineno-0-34" name="__codelineno-0-34"></a>
+</span><span id="__span-0-35"><a id="__codelineno-0-35" name="__codelineno-0-35"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+</span><span id="__span-0-36"><a id="__codelineno-0-36" name="__codelineno-0-36"></a>        <span class="c1"># we ignore typing here because we don&#39;t actually have the ability</span>
+</span><span id="__span-0-37"><a id="__codelineno-0-37" name="__codelineno-0-37"></a>        <span class="c1"># to get typing information from detoxify</span>
+</span><span id="__span-0-38"><a id="__codelineno-0-38" name="__codelineno-0-38"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">harm_category</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+</span></code></pre></div></td></tr></table></div>
+              </details>
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
 
 
 
@@ -1514,7 +1798,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 16:12:15 UTC">2025-10-03</span>
   </span>
 
     
@@ -1524,7 +1808,7 @@
     <span class="md-icon" title="Created">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.47 15.08 11 13V7h1.5v5.25l3.08 1.83c-.41.28-.79.62-1.11 1m-1.39 4.84c-.36.05-.71.08-1.08.08-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8c0 .37-.03.72-.08 1.08.69.1 1.33.32 1.92.64.1-.56.16-1.13.16-1.72 0-5.5-4.5-10-10-10S2 6.5 2 12s4.47 10 10 10c.59 0 1.16-.06 1.72-.16-.32-.59-.54-1.23-.64-1.92M18 15v3h-3v2h3v3h2v-3h3v-2h-3v-3z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="July 2, 2025 05:35:39 UTC">2025-07-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="August 3, 2025 19:50:20 UTC">2025-08-03</span>
   </span>
 
     

@@ -614,7 +614,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -637,7 +637,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -660,7 +660,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -991,7 +991,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -1170,12 +1170,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/problem.html" class="md-nav__link">
+      <a href="../../api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -1193,12 +1193,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/environment.html" class="md-nav__link">
+      <a href="../../api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1216,12 +1216,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/moderator.html" class="md-nav__link">
+      <a href="../../api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1391,12 +1391,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/moderators/index.html" class="md-nav__link ">
+            <a href="../../api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1413,7 +1413,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1424,7 +1424,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../../api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1447,7 +1447,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../../api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1637,7 +1637,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1871,13 +1871,13 @@
 
 
 <h1 id="trainers">Trainers<a class="headerlink" href="#trainers" title="Permanent link">&para;</a></h1>
-<p><strong>Trainers</strong> run the optimization loop that updates your attacker. They wire together the <strong>environment</strong> (rollout collection), the <strong>algorithm/solver</strong> (computes a loss from rollouts), and the <strong>optimizer</strong> (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.</p>
+<p><strong>Trainers</strong> run the optimization loop that updates your tester. They wire together the <strong>sampler</strong> (rollout collection), the <strong>algorithm/solver</strong> (computes a loss from rollouts), and the <strong>optimizer</strong> (updates model weights). In ASTRA-RL you can use a minimal, no-frills base trainer or a preconfigured, Hugging Face–friendly trainer that handles evaluation and checkpointing.</p>
 <p>This guide explains what a trainer does, what ASTRA-RL ships with, and how to implement or customize your own trainer and training configuration.</p>
 <hr />
 <h2 id="1-what-trainers-do">1. What Trainers Do<a class="headerlink" href="#1-what-trainers-do" title="Permanent link">&para;</a></h2>
 <p>The base trainer in <code>astra_rl/training/trainer.py</code> is responsible for:</p>
 <ol>
-<li><strong>Optimizer setup</strong> — creates the optimizer that updates the attacker’s weights.</li>
+<li><strong>Optimizer setup</strong> — creates the optimizer that updates the tester's weights.</li>
 <li><strong>Harness orchestration</strong> — uses the <strong>Harness</strong> to collect rollouts and feed batches to your <strong>Algorithm</strong> (solver).</li>
 <li><strong>Main training loop</strong> — calls <code>train()</code> to iterate for <code>training_steps</code>.</li>
 </ol>
@@ -1933,9 +1933,9 @@
 <hr />
 <h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Don’t hack the Harness</strong> unless you truly need different data-collection semantics; most customization belongs in the trainer/config/environment/algorithm.</li>
+<li><strong>Don't hack the Harness</strong> unless you truly need different data-collection semantics; most customization belongs in the trainer/config/environment/algorithm.</li>
 <li><strong>Detach when logging:</strong> <code>logs["loss"] = float(loss.detach().item())</code> to avoid holding computation graphs.</li>
-<li><strong>Checkpoint sensibly:</strong> attacker + tokenizer is usually enough; if your algorithm has extra state, save it too.</li>
+<li><strong>Checkpoint sensibly:</strong> tester + tokenizer is usually enough; if your algorithm has extra state, save it too.</li>
 <li><strong>Batching vs. accumulation:</strong> prefer reasonable batch sizes; use <code>gradient_accumulation_steps</code> when memory is tight.</li>
 <li><strong>Reproducibility:</strong> seed PyTorch/NumPy and pass a <code>seed</code> through your environment when possible.</li>
 <li><strong>Validation cadence:</strong> dev eval can be slow—choose <code>eval_every</code> that matches your budget.</li>
@@ -1948,14 +1948,14 @@
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">environment</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">,</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="n">algorithm</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">)</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Optionally save the final HF model/tokenizer:</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">problem</span><span class="o">.</span><span class="n">attacker</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">&quot;final_ckpt&quot;</span><span class="p">)</span>
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">problem</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">&quot;final_ckpt&quot;</span><span class="p">)</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="n">system</span><span class="o">.</span><span class="n">tester</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">&quot;final_ckpt&quot;</span><span class="p">)</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="n">system</span><span class="o">.</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s2">&quot;final_ckpt&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <hr />
 <h3 id="62-periodic-eval-hf-checkpoints-via-hfasttrainer">6.2 Periodic eval + HF checkpoints via <code>HFASTTrainer</code><a class="headerlink" href="#62-periodic-eval-hf-checkpoints-via-hfasttrainer" title="Permanent link">&para;</a></h3>
@@ -1968,7 +1968,7 @@
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">config</span>  <span class="o">=</span> <span class="n">HFASTConfiguration</span><span class="p">()</span>  <span class="c1"># or your own TrainingConfiguration</span>
 </span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">HFASTTrainer</span><span class="p">(</span>
 </span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">environment</span><span class="o">=</span><span class="n">env</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">,</span>
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="n">algorithm</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="n">dev_prompts</span><span class="o">=</span><span class="n">DEV_PROMPTS</span><span class="p">,</span>   <span class="c1"># iterable of prompts for evaluation</span>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">eval_every</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>            <span class="c1"># run dev eval every N steps</span>
@@ -2007,14 +2007,14 @@ class MyTrainer(Trainer):
       - optional grad accumulation
     """
 
-    def __init__(self, config: MyConfig, environment, algorithm, dev_prompts=None):
-        super().__init__(config, environment, algorithm)
+    def __init__(self, config: MyConfig, sampler, algorithm, dev_prompts=None):
+        super().__init__(config, sampler, algorithm)
         self.dev_prompts = dev_prompts or []
         os.makedirs(self.config.ckpt_dir, exist_ok=True)
 
     # optional but encouraged
     def _save_hf(self, step: int) -> None:
-        """Save your attacker and its tokenizer"""
+        """Save your tester and its tokenizer"""
 
     # optional method
     @torch.no_grad()
@@ -2025,7 +2025,7 @@ class MyTrainer(Trainer):
     # required method
     def train(self):
         """Implement your custom training loop!"""
-        # see astra_rl.ext.transformers.hf_ast_problem for an implemented custom class example
+        # see astra_rl.ext.transformers.hf_ast_system for an implemented custom class example
         pass       
 </code></pre>
 
@@ -2039,8 +2039,8 @@ class MyTrainer(Trainer):
 <hr />
 <h2 id="7-full-examples">7. Full Examples<a class="headerlink" href="#7-full-examples" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Custom AST problem </strong>with<strong> trainer:</strong> <code>examples/GPT2_v_GPT2/ast_trainer.py</code></li>
-<li><strong>Source for HF-compatible trainer/config:</strong> <code>astra_rl/ext/transformers/hf_ast_problem.py</code></li>
+<li><strong>Custom AST system with trainer:</strong> <code>examples/ast_gpt2_train.py</code></li>
+<li><strong>Source for HF-compatible trainer/config:</strong> <code>astra_rl/ext/transformers/hf_ast_system.py</code></li>
 </ul>
 <p>Use these as references when writing up your own training loop or extending the provided trainers.</p>
 
@@ -2065,7 +2065,7 @@ class MyTrainer(Trainer):
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:52:46 UTC">2025-10-03</span>
   </span>
 
     

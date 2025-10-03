@@ -612,7 +612,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -635,7 +635,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -658,7 +658,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -785,7 +785,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -964,12 +964,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/problem.html" class="md-nav__link">
+      <a href="api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -987,12 +987,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/environment.html" class="md-nav__link">
+      <a href="api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1010,12 +1010,12 @@
   
   
     <li class="md-nav__item">
-      <a href="api/core/moderator.html" class="md-nav__link">
+      <a href="api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1185,12 +1185,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="api/moderators/index.html" class="md-nav__link ">
+            <a href="api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1207,7 +1207,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1218,7 +1218,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/moderators/detoxify.html" class="md-nav__link">
+      <a href="api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1241,7 +1241,7 @@
   
   
     <li class="md-nav__item">
-      <a href="api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1431,7 +1431,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1583,9 +1583,9 @@
 <p>ASTRA-RL is a Python toolbox for <strong>testing and evaluating</strong> language models and generative AI systems. It provides a modular framework for using reinforcement learning to systematically discover how language models respond to adversarial or challenging inputs.</p>
 <h3 id="what-is-adversarial-testing-for-language-models">What is Adversarial Testing for Language Models?<a class="headerlink" href="#what-is-adversarial-testing-for-language-models" title="Permanent link">&para;</a></h3>
 <p><strong>Adversarial testing</strong> is the process of stress-testing AI systems by trying to find inputs that cause them to behave in harmful or undesirable ways. Think of it like security testing for language models - you're trying to discover vulnerabilities before they're exploited in the real world.</p>
-<p>ASTRA-RL automates this process using <strong>reinforcement learning</strong>. Instead of manually crafting adversarial prompts, you train an "attacker" model to automatically generate prompts that elicit unsafe responses from your target model. This is:</p>
+<p>ASTRA-RL automates this process using <strong>reinforcement learning</strong>. Instead of manually crafting adversarial prompts, you train a "tester" model to automatically generate prompts that elicit unsafe responses from your target model. This is:</p>
 <ul>
-<li><strong>Faster</strong> than manual testing once the attacker is trained</li>
+<li><strong>Faster</strong> than manual testing once the tester is trained</li>
 <li><strong>More systematic</strong> at finding failure modes</li>
 <li><strong>Scalable</strong> to large-scale evaluation</li>
 </ul>
@@ -1610,9 +1610,9 @@
 <ul>
 <li><strong>Modular Architecture</strong>: Easily swap components for your specific use case</li>
 <li><strong>Pre-built Algorithms</strong>: Support for PPO, DPO, IPO out of the box</li>
-<li><strong>Multiple Moderators</strong>: Integration with Llama-Guard 3, Detoxify, and custom moderators</li>
+<li><strong>Multiple Scorers</strong>: Integration with Llama-Guard 3, Detoxify, and custom scorers</li>
 <li><strong>HuggingFace Compatible</strong>: Seamless integration with HuggingFace models</li>
-<li><strong>Extensible Framework</strong>: Build custom problems, environments, and solvers</li>
+<li><strong>Extensible Framework</strong>: Build custom systems, samplers, and solvers</li>
 </ul>
 <h2 id="support">Support<a class="headerlink" href="#support" title="Permanent link">&para;</a></h2>
 <p>If you encounter any issues or have questions:</p>
@@ -1643,7 +1643,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:36:39 UTC">2025-10-03</span>
   </span>
 
     

@@ -581,18 +581,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-instantiate-your-problem" class="md-nav__link">
+  <a href="#step-3-instantiate-your-system" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 3: Instantiate Your Problem
+      Step 3: Instantiate Your System
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-instantiate-the-environment" class="md-nav__link">
+  <a href="#step-4-instantiate-the-sampler" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 4: Instantiate the Environment
+      Step 4: Instantiate the Sampler
     </span>
   </a>
   
@@ -608,9 +608,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-train-the-attacker" class="md-nav__link">
+  <a href="#step-6-train-the-tester" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6: Train the Attacker
+      Step 6: Train the Tester
     </span>
   </a>
   
@@ -719,7 +719,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -742,7 +742,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -765,7 +765,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -892,7 +892,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -1071,12 +1071,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/problem.html" class="md-nav__link">
+      <a href="../api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -1094,12 +1094,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/environment.html" class="md-nav__link">
+      <a href="../api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1117,12 +1117,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/moderator.html" class="md-nav__link">
+      <a href="../api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1292,12 +1292,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/moderators/index.html" class="md-nav__link ">
+            <a href="../api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1314,7 +1314,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1325,7 +1325,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1348,7 +1348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1538,7 +1538,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1609,18 +1609,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-instantiate-your-problem" class="md-nav__link">
+  <a href="#step-3-instantiate-your-system" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 3: Instantiate Your Problem
+      Step 3: Instantiate Your System
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-instantiate-the-environment" class="md-nav__link">
+  <a href="#step-4-instantiate-the-sampler" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 4: Instantiate the Environment
+      Step 4: Instantiate the Sampler
     </span>
   </a>
   
@@ -1636,9 +1636,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-train-the-attacker" class="md-nav__link">
+  <a href="#step-6-train-the-tester" class="md-nav__link">
     <span class="md-ellipsis">
-      Step 6: Train the Attacker
+      Step 6: Train the Tester
     </span>
   </a>
   
@@ -1673,8 +1673,8 @@
 
 
 <h1 id="quick-start-training">Quick Start: Training<a class="headerlink" href="#quick-start-training" title="Permanent link">&para;</a></h1>
-<p>Do you want to train a HuggingFace <strong>attacker</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and problem formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">Perez et al.</a>, MALIBU<em>, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)? </em>coming soon</p>
-<p>Then this guide is for you. We'll walk through every step required to train an adversarial testing attacker (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your attacker in 7 easy steps!</p>
+<p>Do you want to train a HuggingFace <strong>tester</strong> using an ASTRA-supported algorithm (e.g., DPO, IPO, PPO) and system formulation (<a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">Perez et al.</a>, MALIBU<em>, <a href="https://arxiv.org/abs/2402.19464">CRT*</a>)? </em>coming soon</p>
+<p>Then this guide is for you. We'll walk through every step required to train an adversarial testing tester (llama3) using our pre-configured classes and point you to customization guides when your use case goes beyond the defaults. By using our pre-configured classes, you'll be training your tester in 7 easy steps!</p>
 <hr />
 <h2 id="step-1-setup">Step 1: Setup<a class="headerlink" href="#step-1-setup" title="Permanent link">&para;</a></h2>
 <p>Please see the <a href="../index.html">main documentation</a> for full setup instructions. Here's a quick recap:</p>
@@ -1694,90 +1694,89 @@
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># ASTRA-RL core components</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTEnvironment</span><span class="p">,</span> <span class="n">DPO</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">,</span> <span class="n">Harness</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl</span><span class="w"> </span><span class="kn">import</span> <span class="n">ASTSampler</span><span class="p">,</span> <span class="n">DPO</span><span class="p">,</span> <span class="n">DetoxifyScorer</span><span class="p">,</span> <span class="n">Harness</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># HuggingFace-friendly problem wrapper for ASTPrompter-style red teaming</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.ext.transformers.hf_ast_problem</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFASTTrainer</span><span class="p">,</span> <span class="n">HFASTConfiguration</span><span class="p">,</span> <span class="n">HFASTProblem</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># HuggingFace-friendly system wrapper for ASTPrompter-style red teaming</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.ext.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">HFASTSystem</span>
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.training</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">TrainingConfiguration</span>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># training and dev data sets - serve as initial prompts in attacker-target rollouts</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="c1"># training and dev data sets - serve as initial prompts in auditor-target rollouts</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="kn">from</span><span class="w"> </span><span class="nn">astra_rl.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">CONVOKIT_REDDIT_TRAIN</span><span class="p">,</span> <span class="n">CONVOKIT_REDDIT_DEV</span>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="n">DEVICE</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span>  <span class="c1"># or &quot;cpu&quot; if GPU is not available</span>
 </span></code></pre></div>
-We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and moderator sizes that fit your compute!</p>
+We support both lightweight (e.g., GPT-2 + Detoxify) and heavyweight (e.g., LLaMA + LlamaGuard) setups. Pick model and scorer sizes that fit your compute!</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To train an attacker, you’ll need a list of comma-separated strings that act as initial prompts—these initiate attacker-target rollouts used for online training. </p>
+<p>To train a tester, you'll need a list of comma-separated strings that act as initial prompts—these initiate tester-target rollouts used for online training.</p>
 <p>Since ASTPrompter tests for harmful outputs in conversational settings, it uses the ConvoKit Reddit Small Corpus (filtered for proper formatting and for non-toxicity using Detoxify) as its default source of initial prompts. This data is imported from astra_rl.datasets as CONVOKIT_REDDIT_TRAIN and CONVOKIT_REDDIT_DEV</p>
 <p>The ASTRA-RL toolbox easily supports external prompt datasets or APIs—just ensure the final PROMPTS variable is formatted as a list of strings.</p>
 </div>
 <hr />
-<h2 id="step-3-instantiate-your-problem">Step 3: Instantiate Your Problem<a class="headerlink" href="#step-3-instantiate-your-problem" title="Permanent link">&para;</a></h2>
-<p>The <em>problem</em> is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the <code>HFASTProblem</code> class that handles the technical backend so you just need to provide the huggingface model IDs of the attacker, target and baseline models and a <code>Moderator</code> instance (DetexifyModerator(), LlamaGuardModerator() or your custom moderator).</p>
+<h2 id="step-3-instantiate-your-system">Step 3: Instantiate Your System<a class="headerlink" href="#step-3-instantiate-your-system" title="Permanent link">&para;</a></h2>
+<p>The <em>system</em> is an important component of training that handles rollout step generation, reward computation, and log-probability calculation. To speed you along, we have implemented the <code>HFASTSystem</code> class that handles the technical backend so you just need to provide the huggingface model IDs of the tester, target and baseline models and a <code>Scorer</code> instance (DetexifyScorer(), LlamaGuardScorer() or your custom scorer).</p>
 <blockquote>
-<p>Note: Your attacker and target can be different models but your baseline and attacker should typically be the same.</p>
-<p>Note: HFASTProblem can not handle huggingface models that have a fixed length (e.g. GPT2) as it will run into an out of context error. If you would like to train a GPT2-based attacker model, please see our GPT2_v_GPT2 examples which use a custom ExampleDetoxifyProblem() designed for GPT2 models.</p>
+<p>Note: Your tester and target can be different models but your baseline and tester should typically be the same.</p>
+<p>Note: HFASTSystem can not handle huggingface models that have a fixed length (e.g. GPT2) as it will run into an out of context error. If you would like to train a GPT2-based tester model, please see our GPT2_v_GPT2 examples which use a custom ExampleDetoxifySystem() designed for GPT2 models.</p>
 </blockquote>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Example problem instantiation: llama3 attacker, target, and baseline with Detoxify moderator (heavyweight setup - requires GPU)</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">problem</span> <span class="o">=</span> <span class="n">HFASTProblem</span><span class="p">(</span><span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span><span class="p">,</span> <span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span><span class="p">,</span> <span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span><span class="p">,</span> <span class="n">DetoxifyModerator</span><span class="p">(),</span> <span class="n">DEVICE</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Example system instantiation: llama3 tester, target, and baseline with Detoxify scorer (heavyweight setup - requires GPU)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">system</span> <span class="o">=</span> <span class="n">HFASTSystem</span><span class="p">(</span><span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span><span class="p">,</span> <span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span><span class="p">,</span> <span class="s2">&quot;meta-llama/Llama-3.1-8B&quot;</span><span class="p">,</span> <span class="n">DetoxifyScorer</span><span class="p">(),</span> <span class="n">DEVICE</span><span class="p">)</span>
 </span></code></pre></div>
-<p>Need a custom model or rollout step logic? See the <a href="customizing_training/problems.html">Problem Customization</a> guide. Want to use a custom moderator? See the <a href="customizing_training/moderators.html">Moderator Customization</a> guide.</p>
+<p>Need a custom model or rollout step logic? See the <a href="customizing_training/problems.html">System Customization</a> guide. Want to use a custom scorer? See the <a href="customizing_training/moderators.html">Scorer Customization</a> guide.</p>
 <hr />
-<h2 id="step-4-instantiate-the-environment">Step 4: Instantiate the Environment<a class="headerlink" href="#step-4-instantiate-the-environment" title="Permanent link">&para;</a></h2>
-<p>The environment defines how training rollouts are structured and collected. In ASTRA-RL, the default is the <code>ASTEnvironment</code>, which implements the conversation tree rollout used in the <a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a> paper.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">PROMPTS</span><span class="p">)</span>
+<h2 id="step-4-instantiate-the-sampler">Step 4: Instantiate the Sampler<a class="headerlink" href="#step-4-instantiate-the-sampler" title="Permanent link">&para;</a></h2>
+<p>The sampler defines how training rollouts are structured and collected. In ASTRA-RL, the default is the <code>ASTSampler</code>, which implements the conversation tree rollout used in the <a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a> paper.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">sampler</span> <span class="o">=</span> <span class="n">ASTSampler</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">CONVOKIT_REDDIT_TRAIN</span><span class="p">)</span>
 </span></code></pre></div>
 <details>
-  <summary><strong>Curious about how this environment structures rollouts?</strong></summary>
+  <summary><strong>Curious about how this sampler structures rollouts?</strong></summary>
 
-  This environment builds a tree-structured conversation graph, where:
-  - The root node starts from a random initial prompt (from `PROMPTS`)
-  - At each turn, the attacker generates multiple (`tree_width`, default 2) candidate utterances
+  This sampler builds a tree-structured conversation graph, where:
+  - The root node starts from a random initial prompt (from `CONVOKIT_REDDIT_TRAIN`)
+  - At each turn, the tester generates multiple (`tree_width`, default 2) candidate utterances
   - Each of those utterances is fed to the target model, which produces a response
-  - The resulting attacker–target tuples form child nodes
-  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn attacker–target dialogue tree.
+  - The resulting tester–target tuples form child nodes
+  - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn tester–target dialogue tree.
 
-  This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the attacker to elicit harmful responses in a multi-turn setting.
+  This structure enables preference-based learning algorithms like DPO and IPO to reason over multiple conversational branches at once, training the tester to elicit harmful responses in a multi-turn setting.
 </details>
 
 <p>By default, rollouts are configured with tree_width=2 and tree_depth=3, but you can customize both:
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">env</span> <span class="o">=</span> <span class="n">ASTEnvironment</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">CONVOKIT_REDDIT_TRAIN</span><span class="p">,</span> <span class="n">tree_width</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tree_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">sampler</span> <span class="o">=</span> <span class="n">ASTSampler</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">CONVOKIT_REDDIT_TRAIN</span><span class="p">,</span> <span class="n">tree_width</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">tree_depth</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </span></code></pre></div></p>
-<p>Want a different rollout graph structure or a multi-agent setup? See the <a href="customizing_training/environments.html">Environment Customization</a> guide.</p>
+<p>Want a different rollout graph structure or a multi-agent setup? See the <a href="customizing_training/environments.html">Sampler Customization</a> guide.</p>
 <hr />
 <h2 id="step-5-choose-your-algorithm-and-optimizer">Step 5: Choose Your Algorithm and Optimizer<a class="headerlink" href="#step-5-choose-your-algorithm-and-optimizer" title="Permanent link">&para;</a></h2>
-<p>The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update attacker model weights 
-to minimize this loss, teaching the attacker to more effectively ellicit target toxicity.</p>
+<p>The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update tester model weights
+to minimize this loss, teaching the tester to more effectively elicit target toxicity.</p>
 <p>We use DPO and Adam as the default for this quickstart.</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">solver</span> <span class="o">=</span> <span class="n">DPO</span><span class="p">(</span><span class="n">problem</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">solver</span> <span class="o">=</span> <span class="n">DPO</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">optimizer</span> <span class="o">=</span> <span class="n">AdamW</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">)</span>
 </span></code></pre></div>
 <p>To integrate your own RL algorithm, see the <a href="customizing_training/solvers.html">Solver Customization</a> guide.</p>
 <hr />
-<h2 id="step-6-train-the-attacker">Step 6: Train the Attacker<a class="headerlink" href="#step-6-train-the-attacker" title="Permanent link">&para;</a></h2>
+<h2 id="step-6-train-the-tester">Step 6: Train the Tester<a class="headerlink" href="#step-6-train-the-tester" title="Permanent link">&para;</a></h2>
 <p>For the quick start approach, simply call our training configuration and trainer classes and start training!</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># instantiate the pre-configured HF-compatable configuration and traininer class</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">config</span> <span class="o">=</span> <span class="n">HFASTConfiguration</span><span class="p">()</span> <span class="c1"># lr = 1e-5, batch size = 4, optimizer = &quot;adamw&quot;, no gradient accumulation, 1000 training steps, 2 episodes per experience</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># this trainer will train the attacker and evaluate it on a dev set every 100 steps, saving the best model to &quot;checkpoints&quot;</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">HFASTTrainer</span><span class="p">(</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># instantiate the pre-configured HF-compatible configuration and trainer class</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">config</span> <span class="o">=</span> <span class="n">TrainingConfiguration</span><span class="p">()</span> <span class="c1"># lr = 1e-5, batch size = 4, optimizer = &quot;adamw&quot;, no gradient accumulation, 1000 training steps, 2 episodes per experience</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># this trainer will train the tester</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">config</span><span class="p">,</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">env</span><span class="p">,</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">sampler</span><span class="p">,</span>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    <span class="n">solver</span><span class="p">,</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    <span class="n">dev_prompts</span><span class="o">=</span><span class="n">CONVOKIT_REDDIT_DEV</span><span class="p">,</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">eval_every</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">ckpt_dir</span><span class="o">=</span><span class="s2">&quot;checkpoints&quot;</span><span class="p">,</span>
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">)</span>
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="p">)</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 </span></code></pre></div>
 <blockquote>
-<p>The source code for the training configuration and trainer are at <a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/ext/transformers/hf_ast_problem.py">hf_ast_problem</a></p>
+<p>The source code for the training configuration and trainer are at <a href="https://github.com/sisl/astra-rl/blob/main/src/astra_rl/training/trainer.py">trainer.py</a></p>
 </blockquote>
 <p>Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? See the <a href="customizing_training/trainers.html">Trainer Customization</a> guide.</p>
 <hr />
 <h2 id="full-examples">Full Examples:<a class="headerlink" href="#full-examples" title="Permanent link">&para;</a></h2>
-<p>We provide 2 complete working examples that mirror this guide!</p>
-<p>Hugging face example for llama3 models: <a href="https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface.py">examples/ast_huggingface.py</a></p>
-<p>Custom AST problem for GPT2 models: <a href="https://github.com/sisl/astra-rl/blob/main/examples/GPT2_v_GPT2/ast_gpt2.py">examples/ast_gpt2</a></p>
+<p>We provide complete working examples that mirror this guide!</p>
+<p>Hugging face example for llama3 models: <a href="https://github.com/sisl/astra-rl/blob/main/examples/ast_huggingface_train.py">examples/ast_huggingface_train.py</a></p>
+<p>Custom AST system for GPT2 models with trainer: <a href="https://github.com/sisl/astra-rl/blob/main/examples/ast_gpt2_train.py">examples/ast_gpt2_train.py</a></p>
+<p>Custom AST system for PPO algorithm: <a href="https://github.com/sisl/astra-rl/blob/main/examples/ast_ppo.py">examples/ast_ppo.py</a></p>
 
 
 
@@ -1800,7 +1799,7 @@ to minimize this loss, teaching the attacker to more effectively ellicit target 
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 17:15:23 UTC">2025-10-03</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:52:46 UTC">2025-10-03</span>
   </span>
 
     

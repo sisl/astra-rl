@@ -614,7 +614,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -637,7 +637,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -660,7 +660,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -787,7 +787,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -966,12 +966,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/problem.html" class="md-nav__link">
+      <a href="../api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -989,12 +989,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/environment.html" class="md-nav__link">
+      <a href="../api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1012,12 +1012,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/core/moderator.html" class="md-nav__link">
+      <a href="../api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1187,12 +1187,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../api/moderators/index.html" class="md-nav__link ">
+            <a href="../api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1209,7 +1209,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1220,7 +1220,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1243,7 +1243,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1433,7 +1433,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1529,36 +1529,36 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-problem-how-models-runinteract" class="md-nav__link">
+  <a href="#1-system-how-models-runinteract" class="md-nav__link">
     <span class="md-ellipsis">
-      1) Problem — How models run/interact
+      1) System — How models run/interact
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-environment-how-data-is-collected" class="md-nav__link">
+  <a href="#2-sampler-how-data-is-collected" class="md-nav__link">
     <span class="md-ellipsis">
-      2) Environment — How data is collected
+      2) Sampler — How data is collected
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-moderators-how-we-definemeasure-harm" class="md-nav__link">
+  <a href="#3-scorers-how-we-definemeasure-harm" class="md-nav__link">
     <span class="md-ellipsis">
-      3) Moderators — How we define/measure harm
+      3) Scorers — How we define/measure harm
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-solvers-algorithms-how-the-attacker-learns" class="md-nav__link">
+  <a href="#4-solvers-algorithms-how-the-tester-learns" class="md-nav__link">
     <span class="md-ellipsis">
-      4) Solvers (Algorithms) — How the attacker learns
+      4) Solvers (Algorithms) — How the tester learns
     </span>
   </a>
   
@@ -1589,18 +1589,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#train-an-rl-based-attacker" class="md-nav__link">
+  <a href="#train-an-rl-based-tester" class="md-nav__link">
     <span class="md-ellipsis">
-      Train an RL-Based Attacker
+      Train an RL-Based Tester
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#evaluate-a-target-with-a-pre-trained-attacker" class="md-nav__link">
+  <a href="#evaluate-a-target-with-a-pre-trained-tester" class="md-nav__link">
     <span class="md-ellipsis">
-      Evaluate a Target with a Pre-Trained Attacker
+      Evaluate a Target with a Pre-Trained Tester
     </span>
   </a>
   
@@ -1641,51 +1641,51 @@
 <li><strong>Automated testing:</strong> generates adversarial prompts at scale. Examples include fuzzing existing prompts (<a href="https://arxiv.org/abs/2309.10253">Yu et al., 2023</a>) or using a combination of targeted search techniques to optimize an effective adversarial suffix (<a href="https://arxiv.org/abs/2307.15043">Zou et al., 2023</a>)</li>
 </ul>
 <h3 id="rl-based-adversarial-testing">RL-based Adversarial Testing<a class="headerlink" href="#rl-based-adversarial-testing" title="Permanent link">&para;</a></h3>
-<p>A promising direction in automated testing is <strong>reinforcement learning (RL)</strong>. We train a separate <strong>attacker</strong> policy (often an LLM) to maximize a <strong>non-differentiable reward</strong> (e.g., toxicity) computed on the target's response. In short, we <strong>automate</strong> adversarial testing by training an attacker to generate test cases that increase the chance of unsafe target outputs.</p>
+<p>A promising direction in automated testing is <strong>reinforcement learning (RL)</strong>. We train a separate <strong>tester</strong> policy (often an LLM) to maximize a <strong>non-differentiable reward</strong> (e.g., toxicity) computed on the target's response. In short, we <strong>automate</strong> adversarial testing by training a tester to generate test cases that increase the chance of unsafe target outputs.</p>
 <p><strong>Pros</strong></p>
 <ol>
 <li><strong>Fast at inference:</strong> once trained, generating new prompts is quick and inexpensive.</li>
-<li><strong>Effective:</strong> prior work (e.g., Perez; Huang; Hardy) shows RL-trained attackers reliably induce harmful behavior.</li>
+<li><strong>Effective:</strong> prior work (e.g., Perez; Huang; Hardy) shows RL-trained testers reliably induce harmful behavior.</li>
 </ol>
 <p><strong>Cons</strong></p>
 <ol>
 <li><strong>Mode collapse / low coverage:</strong> may find only a small set of effective patterns (<a href="https://arxiv.org/abs/2306.09442">Casper et al., 2023</a>).</li>
 <li><strong>Unrealistic prompts:</strong> can be disfluent or implausible (<a href="https://arxiv.org/abs/2306.09442">Casper et al., 2023</a>; <a href="https://arxiv.org/abs/2205.12548">Deng et al., 2022</a>), even with realism terms (<a href="https://arxiv.org/abs/2401.16656">Wichers et al., 2024</a>).</li>
 </ol>
-<p>ASTRA-RL makes <strong>training</strong> an RL-based attacker and <strong>evaluating</strong> a target with a pre-trained attacker both <strong>quick</strong> and <strong>customizable</strong>.</p>
+<p>ASTRA-RL makes <strong>training</strong> an RL-based tester and <strong>evaluating</strong> a target with a pre-trained tester both <strong>quick</strong> and <strong>customizable</strong>.</p>
 <hr />
 <h2 id="key-terminology">Key Terminology<a class="headerlink" href="#key-terminology" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
 <p><strong>Target</strong> (a.k.a. <em>defender</em>, <em>model under test</em>)
-  The model being evaluated. It converses with the attacker; the target's response is scored by a <strong>moderator</strong>, and that score contributes to the attacker's reward.</p>
+  The model being evaluated. It converses with the tester; the target's response is scored by a <strong>scorer</strong>, and that score contributes to the tester's reward.</p>
 </li>
 <li>
-<p><strong>Attacker</strong>
+<p><strong>Tester</strong>
   The policy (often an LLM) that generates utterances intended to elicit harmful responses from the target. Typically initialized from a general LM (e.g., Llama-2) and <strong>updated via RL</strong> to improve effectiveness.</p>
 </li>
 <li>
-<p><strong>Moderator</strong>
+<p><strong>Scorer</strong>
   The scoring component (like a reward model). At each step, it returns a <strong>scalar measure of harm</strong> (e.g., toxicity). "Harm" can be defined via existing classifiers (e.g., Llama-Guard 3) or a custom model you provide.</p>
 </li>
 </ul>
 <hr />
 <h2 id="package-overview">Package Overview<a class="headerlink" href="#package-overview" title="Permanent link">&para;</a></h2>
-<p>ASTRA-RL decomposes RL-based adversarial testing into five pieces. </p>
-<h3 id="1-problem-how-models-runinteract">1) Problem — <em>How models run/interact</em><a class="headerlink" href="#1-problem-how-models-runinteract" title="Permanent link">&para;</a></h3>
-<p>Handles loading models/tokenizers, performing <strong>one rollout step</strong> (attacker/target generation), computing <strong>log-probs</strong> (for DPO/PPO, etc.), advancing the conversation state, and defining a <strong>reward</strong>. See the <a href="customizing_training/problems.html">Problem Customization</a> guide to learn more.</p>
-<h3 id="2-environment-how-data-is-collected">2) Environment — <em>How data is collected</em><a class="headerlink" href="#2-environment-how-data-is-collected" title="Permanent link">&para;</a></h3>
-<p>Defines how attacker–target interactions are generated and structured for training/eval (e.g., <strong>single-path vs. tree</strong> rollouts), what per-step data is stored, and what the solver receives. See the <a href="customizing_training/environments.html">Environment Customization</a> guide to learn more.</p>
-<h3 id="3-moderators-how-we-definemeasure-harm">3) Moderators — <em>How we define/measure harm</em><a class="headerlink" href="#3-moderators-how-we-definemeasure-harm" title="Permanent link">&para;</a></h3>
-<p>Scores target generations (scalar harm). Instantiate in your <strong>Problem</strong> for seamless use. See the <a href="customizing_training/moderators.html">Moderator Customization</a> guide to learn more.</p>
-<h3 id="4-solvers-algorithms-how-the-attacker-learns">4) Solvers (Algorithms) — <em>How the attacker learns</em><a class="headerlink" href="#4-solvers-algorithms-how-the-attacker-learns" title="Permanent link">&para;</a></h3>
+<p>ASTRA-RL decomposes RL-based adversarial testing into five pieces.</p>
+<h3 id="1-system-how-models-runinteract">1) System — <em>How models run/interact</em><a class="headerlink" href="#1-system-how-models-runinteract" title="Permanent link">&para;</a></h3>
+<p>Handles loading models/tokenizers, performing <strong>one rollout step</strong> (tester/target generation), computing <strong>log-probs</strong> (for DPO/PPO, etc.), advancing the conversation state, and defining a <strong>reward</strong>. See the <a href="customizing_training/problems.html">System Customization</a> guide to learn more.</p>
+<h3 id="2-sampler-how-data-is-collected">2) Sampler — <em>How data is collected</em><a class="headerlink" href="#2-sampler-how-data-is-collected" title="Permanent link">&para;</a></h3>
+<p>Defines how tester–target interactions are generated and structured for training/eval (e.g., <strong>single-path vs. tree</strong> rollouts), what per-step data is stored, and what the solver receives. See the <a href="customizing_training/environments.html">Sampler Customization</a> guide to learn more.</p>
+<h3 id="3-scorers-how-we-definemeasure-harm">3) Scorers — <em>How we define/measure harm</em><a class="headerlink" href="#3-scorers-how-we-definemeasure-harm" title="Permanent link">&para;</a></h3>
+<p>Scores target generations (scalar harm). Instantiate in your <strong>System</strong> for seamless use. See the <a href="customizing_training/moderators.html">Scorer Customization</a> guide to learn more.</p>
+<h3 id="4-solvers-algorithms-how-the-tester-learns">4) Solvers (Algorithms) — <em>How the tester learns</em><a class="headerlink" href="#4-solvers-algorithms-how-the-tester-learns" title="Permanent link">&para;</a></h3>
 <p>Consume rollout graphs, <strong>flatten</strong> them to per-sample steps, <strong>collate</strong> batches, and compute the <strong>training loss</strong> (plus logs). See the <a href="customizing_training/solvers.html">Solver Customization</a> guide to learn more.</p>
 <h3 id="5-trainer-how-the-training-loop-runs">5) Trainer — <em>How the training loop runs</em><a class="headerlink" href="#5-trainer-how-the-training-loop-runs" title="Permanent link">&para;</a></h3>
 <p>Orchestrates the main loop, hyperparameters, optimizer, eval cadence, and checkpointing. See the <a href="customizing_training/trainers.html">Trainer Customization</a> guide to learn more.</p>
 <hr />
 <h2 id="quick-start">Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<h3 id="train-an-rl-based-attacker">Train an RL-Based Attacker<a class="headerlink" href="#train-an-rl-based-attacker" title="Permanent link">&para;</a></h3>
-<p>Start here to train with supported moderators, algorithms, and HF attackers/defenders:
+<h3 id="train-an-rl-based-tester">Train an RL-Based Tester<a class="headerlink" href="#train-an-rl-based-tester" title="Permanent link">&para;</a></h3>
+<p>Start here to train with supported scorers, algorithms, and HF testers/defenders:
 <strong><a href="quick_start_training.html">Quick Start Training</a></strong></p>
 <p><strong>Supported out-of-the-box</strong></p>
 <table>
@@ -1701,17 +1701,17 @@
 <td>PPO, DPO, IPO</td>
 </tr>
 <tr>
-<td>Moderators</td>
+<td>Scorers</td>
 <td><a href="https://huggingface.co/meta-llama/Llama-Guard-3-8B">Llama-Guard 3</a>, <a href="https://github.com/unitaryai/detoxify">Detoxify</a></td>
 </tr>
 <tr>
-<td>Problem Formulations (published)</td>
+<td>System Formulations (published)</td>
 <td><a href="https://arxiv.org/abs/2407.09447">ASTPrompter</a>, <a href="https://aclanthology.org/2022.emnlp-main.225/">Perez et al.</a></td>
 </tr>
 </tbody>
 </table>
 <p>Want to go beyond the defaults? ASTRA-RL is <strong>modular</strong>—swap what you need and reuse everything else. We recommend starting with the quick start to learn the overall flow; it links directly to the relevant <strong>customization guides</strong> when you diverge.</p>
-<h3 id="evaluate-a-target-with-a-pre-trained-attacker">Evaluate a Target with a Pre-Trained Attacker<a class="headerlink" href="#evaluate-a-target-with-a-pre-trained-attacker" title="Permanent link">&para;</a></h3>
+<h3 id="evaluate-a-target-with-a-pre-trained-tester">Evaluate a Target with a Pre-Trained Tester<a class="headerlink" href="#evaluate-a-target-with-a-pre-trained-tester" title="Permanent link">&para;</a></h3>
 <p>Jump straight to evaluation (single-path dev/test rollouts, metric aggregation):
 <strong><a href="quick_start_evaluation.html">Quick Start Evaluation</a></strong></p>
 
@@ -1736,7 +1736,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:36:39 UTC">2025-10-03</span>
   </span>
 
     

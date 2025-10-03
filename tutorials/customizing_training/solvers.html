@@ -614,7 +614,7 @@
   
   
   <span class="md-ellipsis">
-    Problems
+    Systems
     
   </span>
   
@@ -637,7 +637,7 @@
   
   
   <span class="md-ellipsis">
-    Environments
+    Samplers
     
   </span>
   
@@ -660,7 +660,7 @@
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -807,9 +807,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-interacting-with-problem" class="md-nav__link">
+  <a href="#43-interacting-with-system" class="md-nav__link">
     <span class="md-ellipsis">
-      4.3 Interacting with Problem
+      4.3 Interacting with System
     </span>
   </a>
   
@@ -949,7 +949,7 @@
   
   
   <span class="md-ellipsis">
-    Evaluation Problems
+    Evaluation Systems
     
   </span>
   
@@ -1128,12 +1128,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/problem.html" class="md-nav__link">
+      <a href="../../api/core/system.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Problem
+    System
     
   </span>
   
@@ -1151,12 +1151,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/environment.html" class="md-nav__link">
+      <a href="../../api/core/sampler.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Environment
+    Sampler
     
   </span>
   
@@ -1174,12 +1174,12 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/core/moderator.html" class="md-nav__link">
+      <a href="../../api/core/scorer.html" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    Moderator
+    Scorer
     
   </span>
   
@@ -1349,12 +1349,12 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../api/moderators/index.html" class="md-nav__link ">
+            <a href="../../api/scorers/index.html" class="md-nav__link ">
               
   
   
   <span class="md-ellipsis">
-    Moderators
+    Scorers
     
   </span>
   
@@ -1371,7 +1371,7 @@
         <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
-            Moderators
+            Scorers
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -1382,7 +1382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/detoxify.html" class="md-nav__link">
+      <a href="../../api/scorers/detoxify.html" class="md-nav__link">
         
   
   
@@ -1405,7 +1405,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../api/moderators/llamaguard.html" class="md-nav__link">
+      <a href="../../api/scorers/llamaguard.html" class="md-nav__link">
         
   
   
@@ -1595,7 +1595,7 @@
   
   
   <span class="md-ellipsis">
-    AST Problem
+    AST System
     
   </span>
   
@@ -1727,9 +1727,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#43-interacting-with-problem" class="md-nav__link">
+  <a href="#43-interacting-with-system" class="md-nav__link">
     <span class="md-ellipsis">
-      4.3 Interacting with Problem
+      4.3 Interacting with System
     </span>
   </a>
   
@@ -1787,7 +1787,7 @@
 
 
 <h1 id="solvers-rl-algorithm">Solvers (RL Algorithm)<a class="headerlink" href="#solvers-rl-algorithm" title="Permanent link">&para;</a></h1>
-<p><strong>Solvers</strong> (a.k.a. algorithms) define <em>how learning happens</em>. They consume rollout graphs from the <strong>Environment</strong>, ask the <strong>Problem</strong> for model log-probs/rewards, and return a scalar <strong>loss</strong> (plus optional logs) to the <strong>Trainer</strong>. In ASTRA-RL a solver subclasses <code>Algorithm[...]</code> and typically implements three things:</p>
+<p><strong>Solvers</strong> (a.k.a. algorithms) define <em>how learning happens</em>. They consume rollout graphs from the <strong>Sampler</strong>, ask the <strong>System</strong> for model log-probs/rewards, and return a scalar <strong>loss</strong> (plus optional logs) to the <strong>Trainer</strong>. In ASTRA-RL a solver subclasses <code>Algorithm[...]</code> and typically implements three things:</p>
 <ol>
 <li><code>flatten(graph)</code> → turn a rollout <code>Graph</code> into per-sample <strong>Steps</strong></li>
 <li><code>collate_fn(steps)</code> → batch those steps into a <strong>Batch</strong></li>
@@ -1795,10 +1795,10 @@
 </ol>
 <hr />
 <h2 id="1-what-solvers-do">1. What Solvers Do<a class="headerlink" href="#1-what-solvers-do" title="Permanent link">&para;</a></h2>
-<p>Given rollouts (graphs of attacker–target turns), a solver decides <strong>what examples to learn from</strong> (via <code>flatten</code>), <strong>how to batch them</strong> (<code>collate_fn</code>), and <strong>what objective to optimize</strong> (<code>step</code>). This keeps “<em>how we learn</em>” separate from:</p>
+<p>Given rollouts (graphs of auditor–target turns), a solver decides <strong>what examples to learn from</strong> (via <code>flatten</code>), <strong>how to batch them</strong> (<code>collate_fn</code>), and <strong>what objective to optimize</strong> (<code>step</code>). This keeps "<em>how we learn</em>" separate from:</p>
 <ul>
-<li><strong>Environment</strong>: <em>how data is collected/structured</em> (single path vs tree, etc.)</li>
-<li><strong>Problem</strong>: <em>how models are run</em> (log-probs, rewards, advance logic)</li>
+<li><strong>Sampler</strong>: <em>how data is collected/structured</em> (single path vs tree, etc.)</li>
+<li><strong>System</strong>: <em>how models are run</em> (log-probs, rewards, advance logic)</li>
 </ul>
 <hr />
 <h2 id="2-built-in-solversexamples">2. Built-in Solvers/Examples<a class="headerlink" href="#2-built-in-solversexamples" title="Permanent link">&para;</a></h2>
@@ -1847,14 +1847,14 @@
 <li><strong><code>step(batch: Batch) -&gt; tuple[torch.Tensor, dict]</code></strong>
   Compute a scalar <strong>loss</strong> (used for backprop) and a <strong>logs</strong> dict of floats (the base trainer may ignore them; custom trainers can log them).</li>
 </ul>
-<h3 id="43-interacting-with-problem">4.3 Interacting with <code>Problem</code><a class="headerlink" href="#43-interacting-with-problem" title="Permanent link">&para;</a></h3>
-<p>Your solver calls into the <code>Problem</code> for model computations:</p>
+<h3 id="43-interacting-with-system">4.3 Interacting with <code>System</code><a class="headerlink" href="#43-interacting-with-system" title="Permanent link">&para;</a></h3>
+<p>Your solver calls into the <code>System</code> for model computations:</p>
 <ul>
-<li><code>problem._get_attacker_logprobs_and_validate(contexts, actions)</code></li>
-<li><code>problem._get_baseline_logprobs_and_validate(contexts, actions)</code></li>
-<li>optionally: <code>problem.get_target_logprobs(...)</code>, <code>problem.reward(...)</code>, etc.</li>
+<li><code>system._get_tester_logprobs_and_validate(contexts, actions)</code></li>
+<li><code>system._get_baseline_logprobs_and_validate(contexts, actions)</code></li>
+<li>optionally: <code>system.get_target_logprobs(...)</code>, <code>system.reward(...)</code>, etc.</li>
 </ul>
-<p><strong>Tip:</strong> Target/baseline log-prob calls usually should be in <code>torch.no_grad()</code>; the attacker’s log-probs must require grad.</p>
+<p><strong>Tip:</strong> Target/baseline log-prob calls usually should be in <code>torch.no_grad()</code>; the tester's log-probs must require grad.</p>
 <hr />
 <h2 id="5-best-practices-sanity-checks">5. Best Practices &amp; Sanity Checks<a class="headerlink" href="#5-best-practices-sanity-checks" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1868,16 +1868,16 @@
 <hr />
 <h2 id="6-plug-into-the-trainer">6. Plug into the Trainer<a class="headerlink" href="#6-plug-into-the-trainer" title="Permanent link">&para;</a></h2>
 <p>Instantiate and pass your solver to the trainer:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">solver</span>  <span class="o">=</span> <span class="n">DPO</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># or IPO(...)</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">solver</span>  <span class="o">=</span> <span class="n">DPO</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># or IPO(...)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">sampler</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="n">solver</span><span class="p">)</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">trainer</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
 </span></code></pre></div>
 <p>Under the hood, the <strong>Trainer</strong> will:</p>
 <ol>
 <li>collect rollout graphs,</li>
-<li>call your solver’s <code>flatten</code> to produce <code>Steps</code>,</li>
-<li>use your solver’s <code>collate_fn</code> to form batches, and</li>
-<li>call your solver’s <code>step</code> to get <code>(loss, logs)</code>.</li>
+<li>call your solver's <code>flatten</code> to produce <code>Steps</code>,</li>
+<li>use your solver's <code>collate_fn</code> to form batches, and</li>
+<li>call your solver's <code>step</code> to get <code>(loss, logs)</code>.</li>
 </ol>
 <blockquote>
 <p>The base <code>Trainer</code> uses <code>loss</code> for optimization and may ignore <code>logs</code>. Use <code>HFASTTrainer</code> or a custom trainer to evaluate and checkpoint.</p>
@@ -1889,7 +1889,7 @@
 <li><strong>Gradients only through attacker:</strong> wrap baseline/target log-prob calls in <code>torch.no_grad()</code> if you surface them directly.</li>
 <li><strong>Finite values:</strong> check for <code>nan/inf</code> in losses and rewards (clip/normalize if necessary).</li>
 <li><strong>Tree width OK:</strong> preference solvers require <code>tree_width ≥ 2</code>.</li>
-<li><strong>KL anchor:</strong> if the attacker drifts, increase β or add an explicit KL penalty to the loss.</li>
+<li><strong>KL anchor:</strong> if the tester drifts, increase β or add an explicit KL penalty to the loss.</li>
 <li><strong>Determinism:</strong> set seeds and/or make selection in <code>flatten</code> deterministic to repro bugs.</li>
 </ul>
 <hr />
@@ -1915,7 +1915,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 2, 2025 16:12:09 UTC">2025-10-02</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_date" title="October 3, 2025 19:36:39 UTC">2025-10-03</span>
   </span>
 
     
