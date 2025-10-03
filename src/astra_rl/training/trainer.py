@@ -1,6 +1,6 @@
 """
 trainer.py
-The trainer is an opinionated interface designed for making training new models easy. To gain full customization over the model training pipeline, we recommend using the lower-level `Harness` interface in `harness.py`.
+The trainer is an opinionated system designed for making training new models easy. To gain full customization over the model training pipeline, we recommend using the lower-level `Harness` system in `harness.py`.
 """
 
 import torch
@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from torch.optim import Optimizer
 
 from astra_rl.training.harness import Harness
-from astra_rl.core.environment import Environment
+from astra_rl.core.sampler import Sampler
 from astra_rl.core.algorithm import Algorithm
 from astra_rl.core.common import ActionT, StateT, Batch, Step
 
@@ -44,7 +44,7 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
 
     Example:
         Here is an example of how to use the `Trainer` class with the DPO algorithm
-        and an AST problem environment
+        and an AST problem sampler
 
         >>> import torch
         >>> from astra_rl import (
@@ -56,14 +56,14 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         ... )
         >>> from astra_rl.methods.ast import (
         ...     ASTProblem,
-        ...     ASTEnvironment,
+        ...     ASTSampler,
         ... )
         >>>
         >>> problem = (
         ...     ASTProblem()
         ... )
-        >>> environment = (
-        ...     ASTEnvironment(
+        >>> sampler = (
+        ...     ASTSampler(
         ...         problem, ...
         ...     )
         ... )
@@ -78,14 +78,14 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         ... )
         >>> trainer = Trainer(
         ...     config,
-        ...     environment,
+        ...     sampler,
         ...     algorithm,
         ... )
         >>> trainer.train()
 
     Attributes:
         config (TrainingConfiguration): The configuration for the training process.
-        harness (Harness): The harness that manages the training loop and interactions with the environment. See `astra_rl.training.harness` for what it does.
+        harness (Harness): The harness that manages the training loop and interactions with the sampler. See `astra_rl.training.harness` for what it does.
         optimizer (Optimizer): The optimizer used for updating the model parameters.
         _global_step_counter (int): A counter for global steps, used for gradient accumulation.
     """
@@ -95,20 +95,18 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
     def __init__(
         self,
         config: TrainingConfiguration,
-        environment: Environment[StateT, ActionT],
+        sampler: Sampler[StateT, ActionT],
         algorithm: Algorithm[StateT, ActionT, Step, Batch],
     ):
         """
         Args:
             config (TrainingConfiguration): The configuration for the training process.
-            environment (Environment): The environment to run our algorithm in.
-            algorithm (Algorithm): The algorithm used for training the attacker agent.
+            sampler (Sampler): The sampler to run our algorithm in.
+            algorithm (Algorithm): The algorithm used for training the tester agent.
         """
 
         self.config = config
-        self.harness = Harness(
-            environment, algorithm, config.num_episodes_per_experience
-        )
+        self.harness = Harness(sampler, algorithm, config.num_episodes_per_experience)
 
         # TODO initialize LR scheduler?
         # ?????????????????????????????
@@ -117,23 +115,23 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         if config.optimizer == "adam":
             from torch.optim import Adam
 
-            self.optimizer = Adam(environment.problem.parameters(), config.lr)
+            self.optimizer = Adam(sampler.system.parameters(), config.lr)
         elif config.optimizer == "adamw":
             from torch.optim import AdamW
 
-            self.optimizer = AdamW(environment.problem.parameters(), config.lr)
+            self.optimizer = AdamW(sampler.system.parameters(), config.lr)
         elif config.optimizer == "sgd":
             from torch.optim import SGD
 
-            self.optimizer = SGD(environment.problem.parameters(), config.lr)
+            self.optimizer = SGD(sampler.system.parameters(), config.lr)
         elif config.optimizer == "rmsprop":
             from torch.optim import RMSprop
 
-            self.optimizer = RMSprop(environment.problem.parameters(), config.lr)
+            self.optimizer = RMSprop(sampler.system.parameters(), config.lr)
         elif config.optimizer == "adagrad":
             from torch.optim import Adagrad
 
-            self.optimizer = Adagrad(environment.problem.parameters(), config.lr)
+            self.optimizer = Adagrad(sampler.system.parameters(), config.lr)
         else:
             raise ValueError(f"Unknown optimizer configured: {config.optimizer}")
 

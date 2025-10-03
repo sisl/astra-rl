@@ -1,6 +1,6 @@
 # Solvers (RL Algorithm) 
 
-**Solvers** (a.k.a. algorithms) define *how learning happens*. They consume rollout graphs from the **Environment**, ask the **Problem** for model log-probs/rewards, and return a scalar **loss** (plus optional logs) to the **Trainer**. In ASTRA-RL a solver subclasses `Algorithm[...]` and typically implements three things:
+**Solvers** (a.k.a. algorithms) define *how learning happens*. They consume rollout graphs from the **Sampler**, ask the **System** for model log-probs/rewards, and return a scalar **loss** (plus optional logs) to the **Trainer**. In ASTRA-RL a solver subclasses `Algorithm[...]` and typically implements three things:
 
 1. `flatten(graph)` → turn a rollout `Graph` into per-sample **Steps**
 2. `collate_fn(steps)` → batch those steps into a **Batch**
@@ -10,10 +10,10 @@
 
 ## 1. What Solvers Do
 
-Given rollouts (graphs of attacker–target turns), a solver decides **what examples to learn from** (via `flatten`), **how to batch them** (`collate_fn`), and **what objective to optimize** (`step`). This keeps “*how we learn*” separate from:
+Given rollouts (graphs of auditor–target turns), a solver decides **what examples to learn from** (via `flatten`), **how to batch them** (`collate_fn`), and **what objective to optimize** (`step`). This keeps "*how we learn*" separate from:
 
-* **Environment**: *how data is collected/structured* (single path vs tree, etc.)
-* **Problem**: *how models are run* (log-probs, rewards, advance logic)
+* **Sampler**: *how data is collected/structured* (single path vs tree, etc.)
+* **System**: *how models are run* (log-probs, rewards, advance logic)
 
 ---
 
@@ -76,15 +76,15 @@ class MyBatch(Generic[StateT, ActionT]):
 * **`step(batch: Batch) -> tuple[torch.Tensor, dict]`**
   Compute a scalar **loss** (used for backprop) and a **logs** dict of floats (the base trainer may ignore them; custom trainers can log them).
 
-### 4.3 Interacting with `Problem`
+### 4.3 Interacting with `System`
 
-Your solver calls into the `Problem` for model computations:
+Your solver calls into the `System` for model computations:
 
-* `problem._get_attacker_logprobs_and_validate(contexts, actions)`
-* `problem._get_baseline_logprobs_and_validate(contexts, actions)`
-* optionally: `problem.get_target_logprobs(...)`, `problem.reward(...)`, etc.
+* `system._get_tester_logprobs_and_validate(contexts, actions)`
+* `system._get_baseline_logprobs_and_validate(contexts, actions)`
+* optionally: `system.get_target_logprobs(...)`, `system.reward(...)`, etc.
 
-**Tip:** Target/baseline log-prob calls usually should be in `torch.no_grad()`; the attacker’s log-probs must require grad.
+**Tip:** Target/baseline log-prob calls usually should be in `torch.no_grad()`; the tester's log-probs must require grad.
 
 ---
 
@@ -104,17 +104,17 @@ Your solver calls into the `Problem` for model computations:
 Instantiate and pass your solver to the trainer:
 
 ```python
-solver  = DPO(problem, beta=0.1)  # or IPO(...)
-trainer = Trainer(config=config, environment=env, algorithm=solver)
+solver  = DPO(system, beta=0.1)  # or IPO(...)
+trainer = Trainer(config=config, sampler=sampler, algorithm=solver)
 trainer.train()
 ```
 
 Under the hood, the **Trainer** will:
 
 1. collect rollout graphs,
-2. call your solver’s `flatten` to produce `Steps`,
-3. use your solver’s `collate_fn` to form batches, and
-4. call your solver’s `step` to get `(loss, logs)`.
+2. call your solver's `flatten` to produce `Steps`,
+3. use your solver's `collate_fn` to form batches, and
+4. call your solver's `step` to get `(loss, logs)`.
 
 > The base `Trainer` uses `loss` for optimization and may ignore `logs`. Use `HFASTTrainer` or a custom trainer to evaluate and checkpoint.
 
@@ -126,7 +126,7 @@ Under the hood, the **Trainer** will:
 * **Gradients only through attacker:** wrap baseline/target log-prob calls in `torch.no_grad()` if you surface them directly.
 * **Finite values:** check for `nan/inf` in losses and rewards (clip/normalize if necessary).
 * **Tree width OK:** preference solvers require `tree_width ≥ 2`.
-* **KL anchor:** if the attacker drifts, increase β or add an explicit KL penalty to the loss.
+* **KL anchor:** if the tester drifts, increase β or add an explicit KL penalty to the loss.
 * **Determinism:** set seeds and/or make selection in `flatten` deterministic to repro bugs.
 
 ---

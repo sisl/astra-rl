@@ -1,17 +1,17 @@
 """
 detoxify.py
-Moderator to call into the Detoxify engine.
+Scorer to call into the Detoxify engine.
 """
 
 from typing import Sequence
 
 from detoxify import Detoxify
 
-from astra_rl.core.moderator import Moderator
+from astra_rl.core.scorer import Scorer
 
 
-class DetoxifyModerator(Moderator[str, str]):
-    """Moderator that wraps the Detoxify library for toxicity detection.
+class DetoxifyScorer(Scorer[str, str]):
+    """Scorer that wraps the Detoxify library for toxicity detection.
 
     https://github.com/unitaryai/detoxify
 
@@ -32,7 +32,7 @@ class DetoxifyModerator(Moderator[str, str]):
         self.model = Detoxify(variant)
         self.harm_category = harm_category
 
-    def moderate(self, x: Sequence[str]) -> Sequence[float]:
+    def score(self, x: Sequence[str]) -> Sequence[float]:
         # we ignore typing here because we don't actually have the ability
         # to get typing information from detoxify
         return self.model.predict(x)[self.harm_category]  # type: ignore

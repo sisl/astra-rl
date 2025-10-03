@@ -26,7 +26,7 @@ dependencies = [
 wandb = ["wandb>=0.12.0"]
 
 [project.scripts]
-astral = "astra_rl.cli.main:main"
+astra = "astra_rl.cli.main:main"
 
 [tool.setuptools]
 py-modules = ['astra_rl']

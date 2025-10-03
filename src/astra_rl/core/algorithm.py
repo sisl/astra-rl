@@ -7,8 +7,8 @@ from typing import Sequence, Generic, Any, Dict
 
 import torch
 
-from astra_rl.core.problem import Problem
-from astra_rl.core.environment import Graph
+from astra_rl.core.system import System
+from astra_rl.core.sampler import Graph
 from astra_rl.core.common import Step, Batch, StateT, ActionT
 
 
@@ -18,22 +18,22 @@ class Algorithm(ABC, Generic[StateT, ActionT, Step, Batch]):
     Specifically, the Algorithm object is responsible for encoding
     how a particular rollout graph becomes processed into a loss
     which updates the weights of the model. To implement its children,
-    you basically call self.problem's various methods to push values
+    you basically call self.system's various methods to push values
     through the network.
 
 
     Attributes:
-        problem (Problem): The problem instance that defines the environment and actions.
+        system (System): The system instance that defines the sampler and actions.
 
     Generics:
-        StateT (type): The type of the state in the environment.
-        ActionT (type): The type of the action in the environment.
+        StateT (type): The type of the state in the sampler.
+        ActionT (type): The type of the action in the sampler.
         Step (type): The type of a single step in the environment.
         Batch (type): The type of a batch of steps, passed to the .step() function for gradient.
     """
 
-    def __init__(self, problem: Problem[StateT, ActionT]):
-        self.problem = problem
+    def __init__(self, system: System[StateT, ActionT]):
+        self.system = system
 
     @abstractmethod
     def flatten(self, graph: Graph[StateT, ActionT]) -> Sequence[Step]:

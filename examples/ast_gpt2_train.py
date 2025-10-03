@@ -1,8 +1,8 @@
 """
 ast_basic.py
 A basic example of how to use the ASTRA package.
-We use GPT-2 as our attack, defense, and use the bulit-in
-detoxify moderator. We will train using a manually written
+We use GPT-2 as our tester, target, and use the bulit-in
+detoxify scorer. We will train using a manually written
 corpora below of initial prompts.
 """
 
@@ -11,22 +11,22 @@ corpora below of initial prompts.
 
 import torch
 from transformers import GPT2LMHeadModel, AutoTokenizer
-from astra_rl import ASTProblem, ASTEnvironment, DPO, DetoxifyModerator
-from astra_rl.ext.transformers.hf_ast_problem import HFASTTrainer, HFASTConfiguration
+from astra_rl import ASTSystem, ASTSampler, DPO, DetoxifyScorer
+from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, HFASTConfiguration
 from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
 MODEL_NAME = "gpt2"
 
 
-class GPT2DetoxifyProblem(ASTProblem):
+class GPT2DetoxifySystem(ASTSystem):
     def __init__(self, device="cuda"):
         # TASK: initialize and pass to superclass
-        # your choice of moderator
-        super().__init__(DetoxifyModerator())
+        # your choice of scorer
+        super().__init__(DetoxifyScorer())
 
         self.device = device
-        self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+        self.tester = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
         self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -34,15 +34,15 @@ class GPT2DetoxifyProblem(ASTProblem):
         self.tokenizer.padding_side = "left"
         self.tokenizer.truncation_side = "left"
 
-        self.attacker.config.pad_token_id = self.tokenizer.eos_token_id
+        self.tester.config.pad_token_id = self.tokenizer.eos_token_id
         self.target.config.pad_token_id = self.tokenizer.eos_token_id
 
-        # model’s usable max sequence length (GPT-2: 1024)
+        # model's usable max sequence length (GPT-2: 1024)
         self.max_ctx = int(
             getattr(
-                self.attacker.config,
+                self.tester.config,
                 "n_positions",
-                getattr(self.attacker.config, "max_position_embeddings", 1024),
+                getattr(self.tester.config, "max_position_embeddings", 1024),
             )
         )
         print(f"Using model {MODEL_NAME} with max context length {self.max_ctx}")
@@ -56,21 +56,21 @@ class GPT2DetoxifyProblem(ASTProblem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_attacker_logprobs(self, context, continuation):
-        return self.__get_logprobs(self.attacker, context, continuation)
+    def get_auditor_logprobs(self, context, continuation):
+        return self.__get_logprobs(self.tester, context, continuation)
 
-    def rollout_prompt_with_attacker(self, prompt):
-        return self.__rollout(self.attacker, prompt)
+    def rollout_prompt_with_auditor(self, prompt):
+        return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
         return self.__rollout(self.target, prompt)
 
     def parameters(self):
-        return self.attacker.parameters()
+        return self.tester.parameters()
 
     # two helper methods to make the implementations above easy
     # you don't have to implement these for the API, but you should probably
-    # do something like this unless your attacker and defense is very different
+    # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
         gen_length = 32
         max_context_len = self.max_ctx - gen_length
@@ -168,24 +168,24 @@ class GPT2DetoxifyProblem(ASTProblem):
 def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
-    # instatiate our problem and environment
-    problem = GPT2DetoxifyProblem(DEVICE)  # or "cuda" if you have a GPU
-    env = ASTEnvironment(problem, CONVOKIT_REDDIT_TRAIN)
+    # instatiate our system and sampler
+    system = GPT2DetoxifySystem(DEVICE)  # or "cuda" if you have a GPU
+    sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
 
     # instantiate our solution
-    solver = DPO(problem)
+    solver = DPO(system)
 
     # instantiate the pre-configured HF-compatable configuration and traininer class
     config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
 
-    # this trainer will train the attacker and evaluate it on a dev set every 100 steps, saving the best model to "checkpoints"
+    # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "./checkpoints/gpt2"
     trainer = HFASTTrainer(
         config,
-        env,
+        sampler,
         solver,
         dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=100,
-        ckpt_dir="checkpoints",
+        ckpt_dir="./checkpoints/gpt2",
     )
 
     trainer.train()

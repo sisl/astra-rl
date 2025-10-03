@@ -1,6 +1,6 @@
 """
-environment.py
-Roll out a problem, and specify how its environment behaves.
+sampler.py
+Roll out a system, and specify how its sampler behaves.
 """
 
 from abc import abstractmethod, ABC
@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import Sequence, Generic, Self, Optional, Any
 
 from astra_rl.core.common import StateT, ActionT
-from astra_rl.core.problem import Problem
+from astra_rl.core.system import System
 
 
 @dataclass
@@ -21,18 +21,18 @@ class Node(Generic[StateT, ActionT]):
 
     Attributes:
         context (StateT): The initial state before the action.
-        attack (ActionT): The action taken in this node.
+        probe (ActionT): The action taken in this node.
         response (StateT): The resulting state after the action.
         reward (float): The reward received for taking the action.
         children (Sequence[Node[StateT, ActionT]]): Subsequent nodes that follow this action.
 
     Generics:
-        StateT (type): The type of the state in the environment.
-        ActionT (type): The type of the action in the environment.
+        StateT (type): The type of the state in the sampler.
+        ActionT (type): The type of the action in the sampler.
     """
 
     context: StateT
-    attack: ActionT
+    probe: ActionT
     response: StateT
     reward: float
 
@@ -41,10 +41,10 @@ class Node(Generic[StateT, ActionT]):
 
 @dataclass
 class Graph(Generic[StateT, ActionT]):
-    """A graph representing the rollout (history + actions) of a problem.
+    """A graph representing the rollout (history + actions) of a system.
 
     Attributes:
-        context (StateT): The initial state of the environment.
+        context (StateT): The initial state of the sampler.
         children (Sequence[Node[StateT, ActionT]]): The sequence of nodes representing actions and responses.
     """
 
@@ -52,34 +52,34 @@ class Graph(Generic[StateT, ActionT]):
     children: Sequence[Node[StateT, ActionT]]
 
 
-class Environment(ABC, Generic[StateT, ActionT]):
-    """An Environment used for rolling out a problem.
+class Sampler(ABC, Generic[StateT, ActionT]):
+    """A Sampler used for rolling out a system.
 
-    The primary point of this class is to make a `Graph` of the problem
-    by calling the `rollout` method. The environment can keep/sample
+    The primary point of this class is to make a `Graph` of the system
+    by calling the `rollout` method. The sampler can keep/sample
     initial state, but should not have global state that persists
     across rollouts.
 
     Attributes:
-        problem (Problem[StateT, ActionT]): The problem instance that defines the environment and actions.
+        system (System[StateT, ActionT]): The system instance that defines the sampler and actions.
 
     Generics:
-        StateT (type): The type of the state in the environment.
-        ActionT (type): The type of the action in the environment.
+        StateT (type): The type of the state in the sampler.
+        ActionT (type): The type of the action in the sampler.
     """
 
-    def __init__(self, problem: Problem[StateT, ActionT]):
-        self.problem = problem
+    def __init__(self, system: System[StateT, ActionT]):
+        self.system = system
 
     @abstractmethod
     def rollout(self, seed: Optional[int] = None) -> Graph[StateT, ActionT]:
-        """Roll out a problem and return a graph of the actions taken.
+        """Roll out a system and return a graph of the actions taken.
 
         Args:
             seed (Optional[int]): An optional seed; the same seed should produce the same graph.
 
         Returns:
-            Graph[StateT, ActionT]: A graph representing the rollout of the problem.
+            Graph[StateT, ActionT]: A graph representing the rollout of the system.
         """
 
         pass
@@ -100,7 +100,7 @@ class Environment(ABC, Generic[StateT, ActionT]):
             seed (Optional[Any]): An optional seed; the same seed should produce the same graph.
 
         Returns:
-            Graph[StateT, ActionT]: A graph representing the rollout of the problem.
+            Graph[StateT, ActionT]: A graph representing the rollout of the system.
         """
 
         if seed is None or isinstance(seed, int):

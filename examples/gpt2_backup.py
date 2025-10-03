@@ -1,32 +1,32 @@
 """
 backup.py
-This uses the ast environment and Huggingface extensions. However, with modifications to the environment,
+This uses the ast sampler and Huggingface extensions. However, with modifications to the sampler,
 we can enable the backup of discounted future rewards during multi-turn conversation rollouts used in PPO.
 
 This example shows how to use the Astra RL library to train a GPT-2 model
-using the DPO algorithm with a Detoxify moderator for content moderation.
+using the DPO algorithm with a Detoxify scorer for content moderation.
 
-We will train using the ConvoKit Reddit Small Corpus for initial prompts, filtered by the moderator to be non-toxic.
+We will train using the ConvoKit Reddit Small Corpus for initial prompts, filtered by the scorer to be non-toxic.
 """
 
 from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
-from astra_rl.ext.transformers.hf_ast_problem import (
+from astra_rl.ext.transformers.hf_ast_system import (
     HFASTTrainer,
     HFASTConfiguration,
 )
 
-from astra_rl import DPO, ASTNode, ASTEnvironment
+from astra_rl import DPO, ASTNode, ASTSampler
 
-# GPT2 v GPT2 with Detoxify Moderator
-from ast_gpt2_train import GPT2DetoxifyProblem
+# GPT2 v GPT2 with Detoxify Scorer
+from ast_gpt2 import GPT2DetoxifySystem
 
-# GPT2 v GPT2 with LlamaGuard Moderator
-from astra_rl.core.environment import Graph
+# GPT2 v GPT2 with LlamaGuard Scorer
+from astra_rl.core.sampler import Graph
 
 
-class BackupEnv(ASTEnvironment):
-    def __init__(self, problem, prompts, gamma=0.9, tree_width=2, tree_depth=3):
-        super().__init__(problem, prompts, tree_width, tree_depth)
+class BackupSampler(ASTSampler):
+    def __init__(self, system, prompts, gamma=0.9, tree_width=2, tree_depth=3):
+        super().__init__(system, prompts, tree_width, tree_depth)
         self.gamma = gamma
 
     # leave handle_prompt and rollout alone, after rollout we will backup rewards
@@ -68,34 +68,34 @@ class BackupEnv(ASTEnvironment):
 def main() -> None:
     DEVICE = "cuda"  # cuda/cpu/mps
 
-    # instatiate our problem and environment
-    # instatiate our problem with GPT-2 attacker, target, and baseline
+    # instatiate our system and sampler
+    # instatiate our system with GPT-2 tester, target, and baseline
 
     # bend can't handle this much memory
-    # problem = HFASTProblem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyModerator(), DEVICE)
+    # system = HFASTSystem("meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", "meta-llama/Meta-Llama-3-8B", DetoxifyScorer(), DEVICE)
 
-    problem = GPT2DetoxifyProblem(DEVICE)
-    env = BackupEnv(problem, CONVOKIT_REDDIT_TRAIN, gamma=0.9)
+    system = GPT2DetoxifySystem(DEVICE)
+    sampler = BackupSampler(system, CONVOKIT_REDDIT_TRAIN, gamma=0.9)
 
     # # print out rollouts - checked that backing up rewards works!
     # for i in range(1):
-    #     rollout = env.rollout()
+    #     rollout = sampler.rollout()
     #     print(f"ROLLOUT {i}")
     #     print(rollout)
     #     print("\n\n")
 
-    #     new_rollout = env.backup_rewards(rollout)
+    #     new_rollout = sampler.backup_rewards(rollout)
     #     print(f"ROLLOUT {i} after reward backup")
     #     print(new_rollout)
     #     print("\n\n")
 
     # no changes from here on out!
-    solver = DPO(problem)
+    solver = DPO(system)
     # instantiate the pre-configured HF-compatable traininer class
     config = HFASTConfiguration()
     trainer = HFASTTrainer(
         config,
-        env,
+        sampler,
         solver,
         dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=100,

@@ -1,8 +1,8 @@
 # type: ignore
 
 """
-hf_ast_problem.py
-Huggingface Transformer extensions to AST problem.
+hf_ast_system.py
+Huggingface Transformer extensions to AST system.
 Sadly, HF transformers don't play well with typing
 so we ignore types here.
 
@@ -20,58 +20,58 @@ from transformers import (
     PreTrainedTokenizer,
     BatchEncoding,
 )
-from astra_rl.core.problem import ValueFunctionProblem
-from astra_rl.core.moderator import Moderator
-from astra_rl.methods.ast_problem import ASTProblem
+from astra_rl.core.system import ValueFunctionSystem
+from astra_rl.core.scorer import Scorer
+from astra_rl.methods.ast_system import ASTSystem
 from astra_rl.training.trainer import Trainer, TrainingConfiguration
 import os
 from astra_rl.utils import logger
 
 
-class HFASTProblem(ASTProblem, ValueFunctionProblem):
-    """Huggingface Transformers adaptor for ASTProblem.
+class HFASTSystem(ASTSystem, ValueFunctionSystem):
+    """Huggingface Transformers adaptor for ASTSystem.
 
-    This class extends the ASTProblem to work with Huggingface Transformers models without
+    This class extends the ASTSystem to work with Huggingface Transformers models without
     the boilerplate needed to figure out logprobs and rollouts.
 
     Attributes:
         device (str): The device to run the models on (default is "cpu").
-        attacker (AutoModelForCausalLM): The attacker model used for generating sequences.
-        attacker_tokenizer (PreTrainedTokenizer): The tokenizer for the attacker model.
+        tester (AutoModelForCausalLM): The tester model used for generating sequences.
+        tester_tokenizer (PreTrainedTokenizer): The tokenizer for the tester model.
         target (AutoModelForCausalLM): The target model used for evaluating sequences.
         target_tokenizer (PreTrainedTokenizer): The tokenizer for the target model.
         baseline (AutoModelForCausalLM): The baseline model used for comparison.
         baseline_tokenizer (PreTrainedTokenizer): The tokenizer for the baseline model.
 
-    See astra_rl.methods.ast.ASTProblem for more details on usage.
+    See astra_rl.methods.ast_system.ASTSystem for more details on usage.
     """
 
     def __init__(
         self,
-        attacker_model_id: str,
+        tester_model_id: str,
         target_model_id: str,
         baseline_model_id: str,
-        moderator: Moderator[str, str],
+        scorer: Scorer[str, str],
         device: str = "cpu",
     ) -> None:
-        """Initialize an HFASTProblem instance from Huggingface model IDs.
+        """Initialize an HFASTSystem instance from Huggingface model IDs.
 
         Args:
-            attacker_model_id (str): The model ID for the attacker model, must be possible for AutoModelForCausalLM.
+            tester_model_id (str): The model ID for the tester model, must be possible for AutoModelForCausalLM.
             target_model_id (str): The model ID for the target model, must be possible for AutoModelForCausalLM.
             baseline_model_id (Optional[str]): The model ID for the baseline model, if any; otherwise defaults to target model.
-            moderator (Moderator): The moderator used to evaluate sequences.
+            scorer (Scorer): The scorer used to evaluate sequences.
             device (str): The device to run the models on (default is "cpu").
         """
-        super().__init__(moderator)
+        super().__init__(scorer)
 
         self.device = device
 
         # initialize models and tokenizer
-        self.attacker = AutoModelForCausalLM.from_pretrained(attacker_model_id).to(
+        self.tester = AutoModelForCausalLM.from_pretrained(tester_model_id).to(
             self.device
         )
-        self.attacker_tokenizer = AutoTokenizer.from_pretrained(attacker_model_id)
+        self.tester_tokenizer = AutoTokenizer.from_pretrained(tester_model_id)
 
         self.target = AutoModelForCausalLM.from_pretrained(target_model_id).to(
             self.device
@@ -89,18 +89,18 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
             self.baseline_tokenizer = self.target_tokenizer
 
         # a bunch of models doesn't have padding, so we set the pad token to the eos token
-        if self.attacker_tokenizer.pad_token_id is None:
-            self.attacker_tokenizer.pad_token_id = self.attacker_tokenizer.eos_token_id
+        if self.tester_tokenizer.pad_token_id is None:
+            self.tester_tokenizer.pad_token_id = self.tester_tokenizer.eos_token_id
         if self.target_tokenizer.pad_token_id is None:
             self.target_tokenizer.pad_token_id = self.target_tokenizer.eos_token_id
         if self.baseline_tokenizer.pad_token_id is None:
             self.baseline_tokenizer.pad_token_id = self.baseline_tokenizer.eos_token_id
 
         # set the tokenizer padding and truncation side
-        self.attacker_tokenizer.padding_side = self.target_tokenizer.padding_side = (
+        self.tester_tokenizer.padding_side = self.target_tokenizer.padding_side = (
             self.baseline_tokenizer.padding_side
         ) = "left"
-        self.attacker_tokenizer.truncation_side = (
+        self.tester_tokenizer.truncation_side = (
             self.target_tokenizer.truncation_side
         ) = self.baseline_tokenizer.truncation_side = "left"
 
@@ -118,21 +118,21 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
             self.baseline, self.baseline_tokenizer, context, continuation, self.device
         )
 
-    def get_attacker_logprobs(
+    def get_tester_logprobs(
         self, context: Sequence[str], continuation: Sequence[str]
     ) -> torch.Tensor:
         return self.__get_logprobs(
-            self.attacker, self.attacker_tokenizer, context, continuation, self.device
+            self.tester, self.tester_tokenizer, context, continuation, self.device
         )
 
-    def rollout_prompt_with_attacker(self, x: Sequence[str]) -> Sequence[str]:
-        return self.__rollout(self.attacker, self.attacker_tokenizer, x, self.device)
+    def rollout_prompt_with_tester(self, x: Sequence[str]) -> Sequence[str]:
+        return self.__rollout(self.tester, self.tester_tokenizer, x, self.device)
 
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
         return self.__rollout(self.target, self.target_tokenizer, x, self.device)
 
     def parameters(self) -> Iterator[torch.nn.parameter.Parameter]:
-        return self.attacker.parameters()
+        return self.tester.parameters()
 
     @staticmethod
     def __rollout(
@@ -193,7 +193,7 @@ class HFASTProblem(ASTProblem, ValueFunctionProblem):
         combined_mask = torch.tensor(combined_mask).to(self.device)
 
         # run inference
-        output = self.attacker(
+        output = self.tester(
             input_ids=combined, attention_mask=attention_mask, output_hidden_states=True
         )
         projected = self.vf(output.hidden_states[-1])
@@ -275,7 +275,7 @@ class HFASTTrainer(Trainer):
     """
     Subclass that reuses base init (harness, optimizer, counters) and adds:
       - periodic evaluation on a dev set
-      - checkpointing of the attacker/tokenizer
+      - checkpointing of the tester/tokenizer
     """
 
     def __init__(
@@ -294,20 +294,20 @@ class HFASTTrainer(Trainer):
         self.best_score = float("-inf")
         self.ckpt_dir = ckpt_dir
         os.makedirs(self.ckpt_dir, exist_ok=True)
-        self.environment = self.harness.environment
-        self.problem = self.environment.problem
+        self.sampler = self.harness.sampler
+        self.system = self.sampler.system
 
-    # helper function that saves the attacker model in HF format
+    # helper function that saves the tester model in HF format
     def save(self, step: int | None, tag: str = "step"):
         if tag == "best":
             out = os.path.join(self.ckpt_dir, "best")  # single fixed path
         else:
             out = os.path.join(self.ckpt_dir, f"{tag}-{step}")
 
-        # Save attacker/target in HF format
+        # Save tester/target in HF format
         os.makedirs(out, exist_ok=True)
-        self.problem.attacker.save_pretrained(out)
-        self.problem.tokenizer.save_pretrained(out)
+        self.system.tester.save_pretrained(out)
+        self.system.tokenizer.save_pretrained(out)
         logger.info(f"Saved checkpoint to {out}")
 
     @torch.no_grad()
@@ -324,8 +324,8 @@ class HFASTTrainer(Trainer):
             if indx % 30 == 0:
                 logger.info(f"EVAULATED {indx}/{num_dev_prompts} steps...")
             # perform a sigle eval rollout per dev prompt and collect a list of rewards
-            eval_rollout = self.environment.eval_rollout(i)
-            final_rollout_reward = self.environment.final_reward(eval_rollout)
+            eval_rollout = self.sampler.eval_rollout(i)
+            final_rollout_reward = self.sampler.final_reward(eval_rollout)
             rewards += [final_rollout_reward]
 
         logger.info(f"EVAULATED {indx}/{num_dev_prompts} steps...")
@@ -363,15 +363,15 @@ class HFASTTrainer(Trainer):
                     self.eval_epoch(step=step_num + 1, tag="dev")
 
 
-class HFEvaluationProblem(HFASTProblem):
+class HFEvaluationSystem(HFASTSystem):
     """
     Minimal evaluation wrapper for non-GPT2 HF models.
 
-    - Initializes the HFASTProblem using a sensible base id so HFASTProblem
+    - Initializes the HFASTSystem using a sensible base id so HFASTSystem
       sets up tokenizers/target/baseline exactly as it does for training.
-    - Replaces the attacker model weights from `attacker_checkpoint`.
+    - Replaces the tester model weights from `tester_checkpoint`.
     - If the checkpoint contains a tokenizer, prefers that tokenizer; otherwise
-      leaves the tokenizers configured by HFASTProblem intact.
+      leaves the tokenizers configured by HFASTSystem intact.
 
     Note: This class intentionally does NOT apply GPT-2 specific fixes
     (pad_token/eos_token mapping or max_ctx handling). Use a GPT2-specific
@@ -380,59 +380,57 @@ class HFEvaluationProblem(HFASTProblem):
 
     def __init__(
         self,
-        attacker_checkpoint: str,
-        attacker_base_model_id: Optional[str],
+        tester_checkpoint: str,
+        tester_base_model_id: Optional[str],
         target_model_id: str,
         device: str = "cpu",
-        moderator: Optional[Moderator] = None,
+        scorer: Optional[Scorer] = None,
         baseline_model_id: Optional[str] = None,
     ) -> None:
         # Choose a safe model id to give the parent: prefer an explicit base id if provided,
-        # otherwise pass the checkpoint itself. HFASTProblem will create tokenizers from that id.
-        base_id_for_super = attacker_base_model_id or attacker_checkpoint
+        # otherwise pass the checkpoint itself. HFASTSystem will create tokenizers from that id.
+        base_id_for_super = tester_base_model_id or tester_checkpoint
 
-        # Initialize HFASTProblem exactly as it would for training (so tokenizers are set up the same way)
+        # Initialize HFASTSystem exactly as it would for training (so tokenizers are set up the same way)
         super().__init__(
-            attacker_model_id=base_id_for_super,
+            tester_model_id=base_id_for_super,
             target_model_id=target_model_id,
             baseline_model_id=baseline_model_id,
-            moderator=moderator,
+            scorer=scorer,
             device=device,
         )
 
         self.device = device
 
-        # Replace attacker weights with the trained checkpoint (local HF dir or hub id).
+        # Replace tester weights with the trained checkpoint (local HF dir or hub id).
         try:
-            self.attacker = AutoModelForCausalLM.from_pretrained(
-                attacker_checkpoint
-            ).to(self.device)
-            logger.info(f"Loaded attacker model weights from: {attacker_checkpoint}")
+            self.tester = AutoModelForCausalLM.from_pretrained(tester_checkpoint).to(
+                self.device
+            )
+            logger.info(f"Loaded tester model weights from: {tester_checkpoint}")
         except Exception as e:
-            # fallback: keep attacker loaded by super().__init__ (from base_id_for_super)
+            # fallback: keep tester loaded by super().__init__ (from base_id_for_super)
             logger.warning(
-                f"Failed to load attacker checkpoint '{attacker_checkpoint}': {e}. "
-                "Using attacker model loaded by HFASTProblem (from base id)."
+                f"Failed to load tester checkpoint '{tester_checkpoint}': {e}. "
+                "Using tester model loaded by HFASTSystem (from base id)."
             )
 
-        # If the checkpoint contains tokenizer files, prefer them. Otherwise keep the tokenizers that HFASTProblem created.
+        # If the checkpoint contains tokenizer files, prefer them. Otherwise keep the tokenizers that HFASTSystem created.
         try:
             # This will succeed when the checkpoint folder contains tokenizer files (tokenizer.json, vocab.json, merges.txt, etc.)
-            ckpt_tokenizer = AutoTokenizer.from_pretrained(attacker_checkpoint)
-            self.attacker_tokenizer = ckpt_tokenizer
-            logger.info(
-                f"Loaded attacker tokenizer from checkpoint: {attacker_checkpoint}"
-            )
+            ckpt_tokenizer = AutoTokenizer.from_pretrained(tester_checkpoint)
+            self.tester_tokenizer = ckpt_tokenizer
+            logger.info(f"Loaded tester tokenizer from checkpoint: {tester_checkpoint}")
         except Exception:
-            # No tokenizer in checkpoint — leave the tokenizer created by HFASTProblem (from base_id_for_super)
+            # No tokenizer in checkpoint — leave the tokenizer created by HFASTSystem (from base_id_for_super)
             logger.debug(
-                "No tokenizer found in attacker_checkpoint; using tokenizer from HFASTProblem initialization."
+                "No tokenizer found in tester_checkpoint; using tokenizer from HFASTSystem initialization."
             )
 
-        # canonical alias expected by other code (trainer.save uses problem.tokenizer)
-        self.tokenizer = self.attacker_tokenizer
+        # canonical alias expected by other code (trainer.save uses system.tokenizer)
+        self.tokenizer = self.tester_tokenizer
 
-        logger.info("HFEvaluationProblem initialized (non-GPT2 path).")
+        logger.info("HFEvaluationSystem initialized (non-GPT2 path).")
 
 
-__all__ = ("HFASTProblem",)
+__all__ = ("HFASTSystem",)

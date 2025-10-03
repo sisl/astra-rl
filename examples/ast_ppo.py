@@ -1,8 +1,8 @@
 """
 ast_basic.py
 A basic example of how to use the ASTRA package with PPO
-We use GPT-2 as our attack, defense, and use the bulit-in
-detoxify moderator. We will train using a manually written
+We use GPT-2 as our tester, target, and use the bulit-in
+detoxify scorer. We will train using a manually written
 corpora below of initial prompts.
 """
 
@@ -15,31 +15,31 @@ from torch.optim import AdamW
 from transformers import GPT2LMHeadModel, AutoTokenizer
 
 from astra_rl import (
-    ASTProblem,
-    ASTEnvironment,
+    ASTSystem,
+    ASTSampler,
     PPO,
-    DetoxifyModerator,
+    DetoxifyScorer,
     Harness,
-    ValueFunctionProblem,
+    ValueFunctionSystem,
 )
 
 MODEL_NAME = "gpt2"
 
 
-class ExamplePPOProblem(ASTProblem, ValueFunctionProblem):
+class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
     def __init__(self, device="cpu"):
         # TASK: initialize and pass to superclass
-        # your choice of moderator
-        super().__init__(DetoxifyModerator())
+        # your choice of scorer
+        super().__init__(DetoxifyScorer())
 
         self.device = device
-        self.attacker = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
+        self.tester = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
         self.target = GPT2LMHeadModel.from_pretrained(MODEL_NAME).to(self.device)
 
         self.vf = nn.Sequential(
-            nn.Linear(self.attacker.config.n_embd, self.attacker.config.n_embd),
+            nn.Linear(self.tester.config.n_embd, self.tester.config.n_embd),
             nn.GELU(),
-            nn.Linear(self.attacker.config.n_embd, 1),
+            nn.Linear(self.tester.config.n_embd, 1),
         ).to(self.device)
 
         self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
@@ -54,17 +54,17 @@ class ExamplePPOProblem(ASTProblem, ValueFunctionProblem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_attacker_logprobs(self, context, continuation):
-        return self.__get_logprobs(self.attacker, context, continuation)
+    def get_auditor_logprobs(self, context, continuation):
+        return self.__get_logprobs(self.tester, context, continuation)
 
-    def rollout_prompt_with_attacker(self, prompt):
-        return self.__rollout(self.attacker, prompt)
+    def rollout_prompt_with_auditor(self, prompt):
+        return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
         return self.__rollout(self.target, prompt)
 
     def parameters(self):
-        return self.attacker.parameters()
+        return self.tester.parameters()
 
     def value(self, context, continuation):
         # tokenize both context and continuation
@@ -98,7 +98,7 @@ class ExamplePPOProblem(ASTProblem, ValueFunctionProblem):
         combined_mask = torch.tensor(combined_mask).to(self.device)
 
         # run inference
-        output = self.attacker(
+        output = self.tester(
             input_ids=combined, attention_mask=attention_mask, output_hidden_states=True
         )
         projected = self.vf(output.hidden_states[-1])
@@ -112,7 +112,7 @@ class ExamplePPOProblem(ASTProblem, ValueFunctionProblem):
 
     # two helper methods to make the implementatinos above easy
     # you don't have to implement these for the API, but you should probably
-    # do something like this unless your attacker and defense is very different
+    # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
         tokenized_prompt = self.tokenizer(
             prompt, padding=True, return_tensors="pt", padding_side="left"
@@ -188,18 +188,18 @@ def main() -> None:
     ]
     DEVICE = "cuda"  # cuda/cpu/mps
 
-    # instatiate our problem and environment
-    problem = ExamplePPOProblem(DEVICE)  # or "cuda" if you have a GPU
-    env = ASTEnvironment(problem, PROMPTS)
+    # instatiate our system and sampler
+    system = ExamplePPOSystem(DEVICE)  # or "cuda" if you have a GPU
+    sampler = ASTSampler(system, PROMPTS)
 
     # instantiate our solution
-    solver = PPO(problem)
-    optimizer = AdamW(problem.parameters(), lr=1e-5)
+    solver = PPO(system)
+    optimizer = AdamW(system.parameters(), lr=1e-5)
 
     # this is a training harness, from which we can call various functions to
     # handle training details
     harness = Harness(
-        env,
+        sampler,
         solver,
         num_episodes_per_experience=2,
         use_wandb=False,

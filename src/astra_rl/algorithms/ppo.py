@@ -3,9 +3,9 @@ from abc import ABC
 from typing import Generic, Sequence, List, Any, Dict
 
 from astra_rl.core.algorithm import Algorithm
-from astra_rl.core.problem import ValueFunctionProblem
+from astra_rl.core.system import ValueFunctionSystem
 from astra_rl.core.common import StateT, ActionT
-from astra_rl.core.environment import Graph
+from astra_rl.core.sampler import Graph
 
 import torch
 import torch.nn.functional as F
@@ -33,13 +33,13 @@ class PPO(
 
     def __init__(
         self,
-        problem: ValueFunctionProblem[StateT, ActionT],
+        system: ValueFunctionSystem[StateT, ActionT],
         clip_range: float = 0.1,
         vf_loss_coef: float = 1.0,
     ):
-        super().__init__(problem)
+        super().__init__(system)
 
-        self.problem: ValueFunctionProblem[StateT, ActionT] = problem
+        self.system: ValueFunctionSystem[StateT, ActionT] = system
         self.clip_range = clip_range
         self.vf_loss_coef = vf_loss_coef
 
@@ -59,7 +59,7 @@ class PPO(
                 continue
 
             for i in front:
-                res.append(PPOStep(prefix=i.context, suffix=i.attack, reward=i.reward))
+                res.append(PPOStep(prefix=i.context, suffix=i.probe, reward=i.reward))
                 bfs.append(i.children)
 
         return res
@@ -75,19 +75,19 @@ class PPO(
     def step(
         self, batch: PPOBatch[StateT, ActionT]
     ) -> tuple[torch.Tensor, Dict[Any, Any]]:
-        logprobs_attacker = self.problem._get_attacker_logprobs_and_validate(
+        logprobs_tester = self.system._get_tester_logprobs_and_validate(
             batch.prefix, batch.suffix
         )
-        logprobs_baseline = self.problem._get_baseline_logprobs_and_validate(
+        logprobs_baseline = self.system._get_baseline_logprobs_and_validate(
             batch.prefix, batch.suffix
         )
-        values = self.problem.value(batch.prefix, batch.suffix)
+        values = self.system.value(batch.prefix, batch.suffix)
 
         # Q(s,a) = R(s,a), which is jank but seems to be the standard
         # also its bootstrapped without discount throughout the stream
         Q = (
             torch.tensor(batch.reward)
-            .to(logprobs_attacker.device)
+            .to(logprobs_tester.device)
             .unsqueeze(-1)
             .unsqueeze(-1)
             .repeat(1, *values.shape[1:])
@@ -100,7 +100,7 @@ class PPO(
         else:
             A = (A - A.mean()) / (A.std() + 1e-8)
         # compute ratio, should be 1 at the first iteration
-        ratio = torch.exp((logprobs_attacker - logprobs_baseline.detach()))
+        ratio = torch.exp((logprobs_tester - logprobs_baseline.detach()))
 
         # compute clipped surrogate lolss
         policy_loss_1 = A * ratio
@@ -121,7 +121,7 @@ class PPO(
             "training/value_loss": value_loss.mean().cpu().item(),
             "reward/mean_reward": torch.tensor(batch.reward).mean().cpu().item(),
             "reward/std_reward": torch.tensor(batch.reward).std().cpu().item(),
-            "policy/logprobs": logprobs_attacker.mean().detach().cpu().item(),
+            "policy/logprobs": logprobs_tester.mean().detach().cpu().item(),
             "ref/logprobs": logprobs_baseline.mean().detach().cpu().item(),
         }
 

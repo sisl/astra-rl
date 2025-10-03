@@ -3,7 +3,7 @@ from typing import Generic, Sequence, Optional, Dict, Any, Iterator
 import torch
 from torch.utils.data import Dataset, DataLoader
 
-from astra_rl.core.environment import Environment
+from astra_rl.core.sampler import Sampler
 from astra_rl.core.algorithm import Algorithm
 from astra_rl.core.common import ActionT, StateT, Batch, Step
 from astra_rl.utils import logger, ASTRAWandbLogger
@@ -22,12 +22,12 @@ class ListDataset(Dataset[Step], Generic[Step]):
 
 
 class Harness(Generic[StateT, ActionT, Step, Batch]):
-    """Harness for running an algorithm in a given environment.
+    """Harness for running an algorithm in a given sampler.
 
     Example:
 
         Here is an example of how to use the `Harness` class with the DPO algorithm
-        and an AST problem environment for *one episode only*. You should add your
+        and an AST problem sampler for *one episode only*. You should add your
         own optimization things such as weight decay or scheduling and figure out
         early stopping, etc.
 
@@ -39,25 +39,23 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         ...     DPO,
         ... )
         >>> from astra_rl.methods.ast import (
-        ...     ASTProblem,
-        ...     ASTEnvironment,
+        ...     ASTSystem,
+        ...     ASTSampler,
         ... )
         >>>
-        >>> problem = (
-        ...     ASTProblem()
-        ... )
-        >>> environment = (
-        ...     ASTEnvironment(
-        ...         problem, ...
+        >>> system = ASTSystem()
+        >>> sampler = (
+        ...     ASTSampler(
+        ...         system, ...
         ...     )
         ... )
         >>> algorithm = DPO(...)
         >>> harness = Harness(
-        ...     environment,
+        ...     sampler,
         ...     algorithm,
         ... )
         >>> optimizer = torch.optim.Adam(
-        ...     problem.parameters(),
+        ...     system.parameters(),
         ...     lr=1e-4,
         ... )
         >>>
@@ -70,21 +68,21 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
 
 
     Attributes:
-        environment (Environment[StateT, ActionT]): The environment to run the algorithm in.
+        sampler (Sampler[StateT, ActionT]): The sampler to run the algorithm in.
         algorithm (Algorithm[StateT, ActionT, Step, Batch]): The algorithm to run.
         num_episodes_per_experience (int): Number of episodes per call to `.experience()`.
         dataloader_kwargs (Dict[str, Any]): Keyword arguments for the PyTorch data loader. Batch size, for instance, should be set.
 
     Generics:
-        StateT (type): The type of the state in the environment.
-        ActionT (type): The type of the action in the environment.
-        Step (type): The type of a single step in the environment.
+        StateT (type): The type of the state in the sampler.
+        ActionT (type): The type of the action in the sampler.
+        Step (type): The type of a single step in the sampler.
         Batch (type): The type of a batch of steps, passed to the `.step()` function for gradient.
     """
 
     def __init__(
         self,
-        environment: Environment[StateT, ActionT],
+        sampler: Sampler[StateT, ActionT],
         algorithm: Algorithm[StateT, ActionT, Step, Batch],
         num_episodes_per_experience: int = 32,
         use_wandb: bool = False,
@@ -93,14 +91,14 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
     ) -> None:
         """
         Args:
-            environment (Environment): The environment to run the algorithm in.
+            sampler (Sampler): The sampler to run the algorithm in.
             algorithm (Algorithm): The algorithm to run.
             num_episodes_per_experience (int, optional): Number of episodes per call to `.experience()`. Defaults to 32.
             wandb_kwargs (Optional[Dict[str, Any]], optional): Keyword arguments for configuring Weights & Biases. Defaults to None.
             dataloader_kwargs (Optional[Dict[str, Any]], optional): Keyword arguments for the PyTorch DataLoader, such as batch size and shuffle. Defaults to None.
         """
 
-        self.environment = environment
+        self.sampler = sampler
         self.algorithm = algorithm
         self.num_episodes_per_experience = num_episodes_per_experience
         self.use_wandb = use_wandb
@@ -150,11 +148,11 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
 
         graphs = []
         for _ in range(self.num_episodes_per_experience):
-            graph = self.environment.rollout(seed=seed)
+            graph = self.sampler.rollout(seed=seed)
             graphs.append(graph)
         # for _ in range(self.num_episodes_per_experience):
         #     try:
-        #         graph = self.environment.rollout(seed=seed)
+        #         graph = self.sampler.rollout(seed=seed)
         #         graphs.append(graph)
         #     except Exception as e:
         #         print(f"Skipping rollout due to error: {e}")

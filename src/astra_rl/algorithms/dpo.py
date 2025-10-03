@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from typing import Generic, Sequence, List, Any, Dict
 
 from astra_rl.core.algorithm import Algorithm
-from astra_rl.core.problem import Problem
+from astra_rl.core.system import System
 from astra_rl.core.common import StateT, ActionT
-from astra_rl.core.environment import Graph
+from astra_rl.core.sampler import Graph
 
 import torch
 import torch.nn.functional as F
@@ -32,8 +32,8 @@ class DPO(
 ):
     """Direct Preference Optimization (DPO) algorithm."""
 
-    def __init__(self, problem: Problem[StateT, ActionT], beta: float = 0.1):
-        super().__init__(problem)
+    def __init__(self, system: System[StateT, ActionT], beta: float = 0.1):
+        super().__init__(system)
 
         self.beta = beta
 
@@ -64,8 +64,8 @@ class DPO(
             pairs.append(
                 DPOStep(
                     prefix=pos_entry.context,
-                    suffix_pos=pos_entry.attack,
-                    suffix_neg=neg_entry.attack,
+                    suffix_pos=pos_entry.probe,
+                    suffix_neg=neg_entry.probe,
                 )
             )
 
@@ -85,22 +85,22 @@ class DPO(
     def step(
         self, batch: DPOBatch[StateT, ActionT]
     ) -> tuple[torch.Tensor, Dict[Any, Any]]:
-        attacker_logprobs_win = self.problem._get_attacker_logprobs_and_validate(
+        tester_logprobs_win = self.system._get_tester_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
-        attacker_logprobs_loss = self.problem._get_attacker_logprobs_and_validate(
+        tester_logprobs_loss = self.system._get_tester_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
-        baseline_logprobs_win = self.problem._get_baseline_logprobs_and_validate(
+        baseline_logprobs_win = self.system._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
-        baseline_logprobs_loss = self.problem._get_baseline_logprobs_and_validate(
+        baseline_logprobs_loss = self.system._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
 
         # https://github.com/eric-mitchell/direct-preference-optimization/blob/ \
         # f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87
-        pi_logratios = attacker_logprobs_win - attacker_logprobs_loss
+        pi_logratios = tester_logprobs_win - tester_logprobs_loss
         ref_logratios = baseline_logprobs_win - baseline_logprobs_loss
         logits = pi_logratios - ref_logratios
 
@@ -108,8 +108,8 @@ class DPO(
 
         # Calculate addition quantities
         # TODO: CHECK ME for correctness and completion!
-        chosen_rewards = self.beta * (attacker_logprobs_win - baseline_logprobs_win)
-        rejected_rewards = self.beta * (attacker_logprobs_loss - baseline_logprobs_loss)
+        chosen_rewards = self.beta * (tester_logprobs_win - baseline_logprobs_win)
+        rejected_rewards = self.beta * (tester_logprobs_loss - baseline_logprobs_loss)
         reward_accuracies = (chosen_rewards > rejected_rewards).float()
         reward_margin = chosen_rewards - rejected_rewards
 
@@ -119,11 +119,8 @@ class DPO(
             "reward/rejected_rewards": rejected_rewards.mean().cpu().item(),
             "reward/reward_accuracies": reward_accuracies.mean().cpu().item(),
             "reward/reward_margin": reward_margin.mean().cpu().item(),
-            "policy/logprobs_chosen": attacker_logprobs_win.mean()
-            .detach()
-            .cpu()
-            .item(),
-            "policy/logprobs_rejected": attacker_logprobs_loss.mean()
+            "policy/logprobs_chosen": tester_logprobs_win.mean().detach().cpu().item(),
+            "policy/logprobs_rejected": tester_logprobs_loss.mean()
             .detach()
             .cpu()
             .item(),
@@ -143,22 +140,22 @@ class IPO(DPO[StateT, ActionT]):
     def step(
         self, batch: DPOBatch[StateT, ActionT]
     ) -> tuple[torch.Tensor, Dict[Any, Any]]:
-        attacker_logprobs_win = self.problem._get_attacker_logprobs_and_validate(
+        tester_logprobs_win = self.system._get_tester_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
-        attacker_logprobs_loss = self.problem._get_attacker_logprobs_and_validate(
+        tester_logprobs_loss = self.system._get_tester_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
-        baseline_logprobs_win = self.problem._get_baseline_logprobs_and_validate(
+        baseline_logprobs_win = self.system._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_pos
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
-        baseline_logprobs_loss = self.problem._get_baseline_logprobs_and_validate(
+        baseline_logprobs_loss = self.system._get_baseline_logprobs_and_validate(
             batch.prefixes, batch.suffix_neg
         ).sum(dim=-1)  # Sum per-token logprobs to get sequence logprobs
 
         # https://github.com/eric-mitchell/direct-preference-optimization/blob/ \
         # f8b8c0f49dc92a430bae41585f9d467d3618fe2f/trainers.py#L70-L87
-        pi_logratios = attacker_logprobs_win - attacker_logprobs_loss
+        pi_logratios = tester_logprobs_win - tester_logprobs_loss
         ref_logratios = baseline_logprobs_win - baseline_logprobs_loss
         logits = pi_logratios - ref_logratios
 
@@ -166,8 +163,8 @@ class IPO(DPO[StateT, ActionT]):
 
         # Calculate addition quantities
         # TODO: CHECK ME for correctness and completion!
-        chosen_rewards = self.beta * (attacker_logprobs_win - baseline_logprobs_win)
-        rejected_rewards = self.beta * (attacker_logprobs_loss - baseline_logprobs_loss)
+        chosen_rewards = self.beta * (tester_logprobs_win - baseline_logprobs_win)
+        rejected_rewards = self.beta * (tester_logprobs_loss - baseline_logprobs_loss)
         reward_accuracies = (chosen_rewards > rejected_rewards).float()
         reward_margin = chosen_rewards - rejected_rewards
 
@@ -177,11 +174,8 @@ class IPO(DPO[StateT, ActionT]):
             "reward/rejected_rewards": rejected_rewards.mean().cpu().item(),
             "reward/reward_accuracies": reward_accuracies.mean().cpu().item(),
             "reward/reward_margin": reward_margin.mean().cpu().item(),
-            "policy/logprobs_chosen": attacker_logprobs_win.mean()
-            .detach()
-            .cpu()
-            .item(),
-            "policy/logprobs_rejected": attacker_logprobs_loss.mean()
+            "policy/logprobs_chosen": tester_logprobs_win.mean().detach().cpu().item(),
+            "policy/logprobs_rejected": tester_logprobs_loss.mean()
             .detach()
             .cpu()
             .item(),
