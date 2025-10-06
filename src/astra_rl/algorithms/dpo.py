@@ -64,8 +64,8 @@ class DPO(
             pairs.append(
                 DPOStep(
                     prefix=pos_entry.context,
-                    suffix_pos=pos_entry.probe,
-                    suffix_neg=neg_entry.probe,
+                    suffix_pos=pos_entry.utterance,
+                    suffix_neg=neg_entry.utterance,
                 )
             )
 

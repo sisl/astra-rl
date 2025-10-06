@@ -69,7 +69,7 @@ class MyCustomSampler(Sampler[str, str]):
 Your sampler's `rollout()` **must** return:
 
 * `Graph(context: str, children: list[Node])`
-* `Node(context: str, probe: str, response: str, reward: float, children: list[Node])`
+* `Node(context: str, utterance: str, response: str, reward: float, children: list[Node])`
 
 <details>
   <summary><strong>Click here for an example of an ASTSampler rollout graph with tree width = 2 and depth = 3</strong></summary>
@@ -80,9 +80,9 @@ Graph(context="I have to cancel our trade. Sorry  ok. That's fine. I just got ho
 
 The printed object above is a tree-structured rollout. Graph.context holds the initial prompt (the root). Graph.children is the first layer of Nodes created by expanding that prompt with tree_width = 2 tester continuations.
 
-Each Node records the conversation state so far in context, the tester's next probe, the defender's response, a per-turn scalar reward from your System, and its own children (the next layer of nodes). With tree_depth = 3, the rollout contains 3 tester–defender turns along any path from the root, branching 2 ways at each tester step; leaf nodes are those with children=[].
+Each Node records the conversation state so far in context, the tester's next utterance, the defender's response, a per-turn scalar reward from your System, and its own children (the next layer of nodes). With tree_depth = 3, the rollout contains 3 tester–defender turns along any path from the root, branching 2 ways at each tester step; leaf nodes are those with children=[].
 
-In short, it's a depth-3, width-2 conversation tree rooted at the initial prompt, where each node captures the probe, response, reward, and the updated context that feeds the next expansion.
+In short, it's a depth-3, width-2 conversation tree rooted at the initial prompt, where each node captures the utterance, response, reward, and the updated context that feeds the next expansion.
 ```
 </details>
 
@@ -90,7 +90,7 @@ In short, it's a depth-3, width-2 conversation tree rooted at the initial prompt
 At a minimum, each node should capture:
 
 * `context` — state so far (e.g., conversation text),
-* `probe` — auditor's utterance / action,
+* `utterance` — auditor's utterance / action,
 * `response` — target/defender's utterance / reply,
 * `reward` — scalar float for this turn,
 * `children` — next steps; empty for leaves.
@@ -105,8 +105,8 @@ If you are using the 'ASTSystem' note these batch-friendly methods you'll typica
 
 * `rollout_prompt_with_tester(prompts: Sequence[str]) -> Sequence[str]`
 * `rollout_prompt_with_target(prompts: Sequence[str]) -> Sequence[str]`
-* `reward(prompts, probes, responses) -> Sequence[float]`
-* `advance(prompt, probe, response) -> str` *(builds the next state)*
+* `reward(prompts, utterances, responses) -> Sequence[float]`
+* `advance(prompt, utterance, response) -> str` *(builds the next state)*
 
 > These APIs are **vectorized**—pass lists (even length-1) for simplicity and speed.
 
@@ -125,7 +125,7 @@ If you are using the 'ASTSystem' note these batch-friendly methods you'll typica
   g = sampler.rollout(seed=7)
   print("ROOT:", g.context)
   for i, n in enumerate(g.children):
-      print(f"[{i}] probe={n.probe!r} rsp={n.response!r} "
+      print(f"[{i}] utterance={n.utterance!r} rsp={n.response!r} "
             f"rew={n.reward:.3f} children={len(n.children)}")
   ```
 
@@ -150,21 +150,21 @@ class CustomNode(Node[str, str]):
     def __init__(
         self,
         context: str,
-        probe: str,
+        utterance: str,
         response: str,
         reward: float,
         children: Sequence["Node[str, str]"],
         *,
-        probe_tox: float = 0.0,
+        utterance_tox: float = 0.0,
         target_tox: float = 0.0,
-        probe_logprob: float = 0.0,
+        utterance_logprob: float = 0.0,
     ):
         # Initialize the base Node fields first
-        super().__init__(context, probe, response, reward, list(children))
+        super().__init__(context, utterance, response, reward, list(children))
         # Then attach your custom metrics
-        self.probe_tox: float = float(probe_tox)
+        self.utterance_tox: float = float(utterance_tox)
         self.target_tox: float = float(target_tox)
-        self.probe_logprob: float = float(probe_logprob)
+        self.utterance_logprob: float = float(utterance_logprob)
 ```
 
 > Keep the original fields intact so existing solvers remain compatible.
@@ -186,6 +186,6 @@ sampler = ASTSampler(system, PROMPTS, tree_width=4, tree_depth=2)
 
 To support multi-agent conversations, you will need to query all participating models when building the rollout. This will occur in your sampler (likely in modifications to __handle_rollout or rollout) but it is largely up to you on how you want to style it. For example, one approach would be to subclass `ASTSampler` and override the internal expansion to call **K** defenders, combine their responses, and reduce rewards. However, you can structure how you call the agents and how you want to model rewards to fit your needs.
 
-> If you maintain the same Node type (Node(context: str, probe: str, response: str, reward: float, children: List[Node])) and return a graph, you will be able to plug into available solvers. However, deviating from this structure may require you to create a custom solver to interpret the custom rollouts and calculate loss accordingly.
+> If you maintain the same Node type (Node(context: str, utterance: str, response: str, reward: float, children: List[Node])) and return a graph, you will be able to plug into available solvers. However, deviating from this structure may require you to create a custom solver to interpret the custom rollouts and calculate loss accordingly.
 
 > Training with multiple agents multiplies compute: each node now triggers more model calls and stores more data.

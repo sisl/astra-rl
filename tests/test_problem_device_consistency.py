@@ -48,14 +48,14 @@ class MockSystem(System[str, str]):
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
         return ["response"] * len(x)
 
-    def advance(self, context: str, probe: str, response: str) -> str:
-        return context + probe + response
+    def advance(self, context: str, utterance: str, response: str) -> str:
+        return context + utterance + response
 
     def parameters(self) -> Iterator[torch.nn.parameter.Parameter]:
         return iter([])
 
     def reward(
-        self, context: Sequence[str], probe: Sequence[str], response: Sequence[str]
+        self, context: Sequence[str], utterance: Sequence[str], response: Sequence[str]
     ) -> Sequence[float]:
         return [0.5] * len(context)
 

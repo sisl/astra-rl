@@ -21,7 +21,7 @@ class Node(Generic[StateT, ActionT]):
 
     Attributes:
         context (StateT): The initial state before the action.
-        probe (ActionT): The action taken in this node.
+        utterance (ActionT): The action taken in this node.
         response (StateT): The resulting state after the action.
         reward (float): The reward received for taking the action.
         children (Sequence[Node[StateT, ActionT]]): Subsequent nodes that follow this action.
@@ -32,7 +32,7 @@ class Node(Generic[StateT, ActionT]):
     """
 
     context: StateT
-    probe: ActionT
+    utterance: ActionT
     response: StateT
     reward: float
 
