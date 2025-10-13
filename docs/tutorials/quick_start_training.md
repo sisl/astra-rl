@@ -84,8 +84,8 @@ sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
 
   This sampler builds a tree-structured conversation graph, where:
   - The root node starts from a random initial prompt (from `CONVOKIT_REDDIT_TRAIN`)
-  - At each turn, the tester generates multiple (`tree_width`, default 2) candidate utterances
-  - Each of those utterances is fed to the target model, which produces a response
+  - At each turn, the tester generates multiple (`tree_width`, default 2) candidate challenges
+  - Each of those challenges is fed to the target model, which produces a response
   - The resulting tester–target tuples form child nodes
   - This process repeats for `tree_depth` levels (default 3), yielding a multi-turn tester–target dialogue tree.
 

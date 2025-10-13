@@ -1,6 +1,6 @@
 # Scorers
 
-**Scorers** provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender's reply), they return a scalar score that reflects harm/unsafety. Testers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce utterances that elicit high-harm (or otherwise "undesirable") target responses, revealing weaknesses in the target's safety alignment.
+**Scorers** provide the training signal in LM red-teaming. They act much like reward models in RL: given text (typically the target/defender's reply), they return a scalar score that reflects harm/unsafety. Testers are then trained—via your chosen solver (e.g., DPO/IPO/PPO)—to produce challenges that elicit high-harm (or otherwise "undesirable") target responses, revealing weaknesses in the target's safety alignment.
 
 ASTRA-RL ships with ready-to-use text scorers and a simple interface for writing your own. This guide explains what a scorer does, what's included, and how to implement/customize your own class.
 
@@ -57,7 +57,7 @@ class MyScorer(Scorer[StateT, ActionT]):
 ### 4.1 Type parameters
 
 * `StateT` — your sampler's state type (commonly `str` conversation context).
-* `ActionT` — your action type (commonly `str` utterance).
+* `ActionT` — your action type (commonly `str` challenge).
 
 For NLP use cases, both are typically `str`.
 

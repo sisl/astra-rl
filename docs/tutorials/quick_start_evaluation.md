@@ -106,7 +106,7 @@ evaluator.write_json(metrics, "metrics.json")
     - `adversarial_toxicity` — toxicity of the tester's message
     - `target_toxicity` — toxicity of the target's response
     - `context` — truncated conversation context
-    - `utterance` — tester's utterance
+    - `challenge` — tester's challenge
     - `response` — target's response
 
     **Overall rollout metrics**

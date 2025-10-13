@@ -21,7 +21,7 @@ class Node(Generic[StateT, ActionT]):
 
     Attributes:
         context (StateT): The initial state before the action.
-        challenge (ActionT): The action taken in this node (also accessible as 'utterance' for backward compatibility).
+        challenge (ActionT): The action taken in this node.
         response (StateT): The resulting state after the action.
         reward (float): The reward received for taking the action.
         scores (dict[str, Any]): Dictionary of scores from various scorers.
@@ -40,11 +40,6 @@ class Node(Generic[StateT, ActionT]):
     scores: dict[str, Any] = field(default_factory=dict)
     children: Sequence[Self] = field(default_factory=list)
     parent: Optional[Self] = field(default=None, repr=False)
-
-    @property
-    def utterance(self) -> ActionT:
-        """Backward compatibility property for accessing challenge as utterance."""
-        return self.challenge
 
     def get_path_from_root(self) -> list[Self]:
         """Get all nodes from root to this node.

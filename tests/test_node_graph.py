@@ -53,19 +53,6 @@ def test_node_creation():
     assert node.parent is None
 
 
-def test_node_backward_compatibility():
-    """Test that utterance property works for backward compatibility."""
-    node = Node(
-        context="Hello",
-        challenge="World",
-        response="!",
-        reward=1.0,
-    )
-    # utterance should return challenge
-    assert node.utterance == "World"
-    assert node.utterance == node.challenge
-
-
 def test_node_is_leaf():
     """Test is_leaf method."""
     leaf_node = Node(

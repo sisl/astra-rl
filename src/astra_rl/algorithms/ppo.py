@@ -60,7 +60,7 @@ class PPO(
 
             for i in front:
                 res.append(
-                    PPOStep(prefix=i.context, suffix=i.utterance, reward=i.reward)
+                    PPOStep(prefix=i.context, suffix=i.challenge, reward=i.reward)
                 )
                 bfs.append(i.children)
 
