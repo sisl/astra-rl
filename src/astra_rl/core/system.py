@@ -9,41 +9,102 @@ to function correctly.
 
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from typing import Sequence, Dict, Generic, Union, Iterator, Optional
+from typing import Sequence, Dict, Generic, Union, Iterator, Optional, Tuple, cast
 
 import torch
 
 from astra_rl.utils import logger
-from astra_rl.core.scorer import Scorer
 from astra_rl.core.common import StateT, ActionT
 
 
 class System(ABC, Generic[StateT, ActionT]):
-    """Defines the core system for Astra RL.
+    """Base system defining a problem setup with minimal interface.
 
-    This class is responsible for defining how exactly to interact
-    with the system under test---with generics in terms of how to get
-    probabilities and rollouts from the tester and target models.
+    This is the minimal interface that all systems must implement. For simple
+    evaluation-only systems, only these three methods are required:
+    - rollout: Generate one step of interaction
+    - advance: Transition to the next state
+    - reward: Compute rewards from interactions
 
-    This allows for us to be generic over the types of states, actions
-    as well as how to measure them. We ask for a scorer as a way to
-    ensure that subclasses can all be generic over the exact metric, and
-    instead can only be opinonated about how to achieve the metric.
-
-    Attributes:
-        scorer (Scorer[StateT, ActionT]): The scorer used to evaluate sequences.
+    For training systems (e.g., adversarial training), use specialized subclasses
+    like `TrainableSystem` or `AdversarialSystem` that add methods for computing
+    logprobs and accessing trainable parameters.
 
     Generics:
-        StateT (type): The type of the state in the sampler.
-        ActionT (type): The type of the action in the sampler.
+        StateT (type): The type of the state in the system.
+        ActionT (type): The type of the action in the system.
     """
 
-    def __init__(self, scorer: Scorer[StateT, ActionT]) -> None:
+    def __init__(self) -> None:
         # we check all asserts once, and then disable them
         self._disable_asserts: Dict[str, bool] = defaultdict(bool)
         # track the device of the first logprobs tensor to ensure consistency
         self._expected_device: Optional[torch.device] = None
-        self.scorer = scorer
+
+    @abstractmethod
+    def rollout(
+        self, states: Sequence[StateT]
+    ) -> Tuple[Sequence[Optional[ActionT]], Sequence[StateT]]:
+        """Generate one step: actions and responses (batched).
+
+        For simple systems: actions are None, responses are the generations
+        For adversarial: actions are challenges, responses are target's replies
+
+        Args:
+            states: Batch of states to roll out from
+
+        Returns:
+            Tuple of (challenges, responses), both sequences matching input batch size
+        """
+        pass
+
+    @abstractmethod
+    def advance(
+        self, state: StateT, action: Optional[ActionT], response: StateT
+    ) -> StateT:
+        """Transition to next state.
+
+        Args:
+            state: Current state
+            action: Action taken (challenge for adversarial, None for static eval)
+            response: Response from target model
+
+        Returns:
+            Next state after applying action and response
+        """
+        pass
+
+    @abstractmethod
+    def reward(
+        self,
+        context: Sequence[StateT],
+        challenge: Sequence[Optional[ActionT]],
+        response: Sequence[StateT],
+    ) -> Sequence[float]:
+        """Compute reward from interactions.
+
+        Args:
+            context: Batch of starting states
+            challenge: Batch of actions taken (may be None for static eval)
+            response: Batch of responses from target
+
+        Returns:
+            Sequence of reward values, one per batch element
+        """
+        pass
+
+
+class TrainableSystem(System[StateT, ActionT], ABC):
+    """System with trainable components and logprobs computation.
+
+    This extends the base System with methods needed for gradient-based training:
+    - get_tester_logprobs: For computing gradients
+    - get_baseline_logprobs: For KL divergence penalties
+    - get_target_logprobs: For certain algorithms
+    - parameters: For optimizer setup
+
+    This is the base class for adversarial training systems.
+    """
 
     @abstractmethod
     def get_target_logprobs(
@@ -52,10 +113,8 @@ class System(ABC, Generic[StateT, ActionT]):
         """Evaluates P(continuation|context) on *model under test*.
 
         Args:
-            context (Sequence[str]): Sequence of strings, where each string is a context on which the
-                                 continuation's probability is conditioned.
-            continuation (Sequence[str]): Sequence of strings, where each string is a continuation whose
-                                      probability is measured.
+            context: Sequence of contexts on which the continuation's probability is conditioned.
+            continuation: Sequence of continuations whose probability is measured.
 
         Note:
             This should be batched; i.e., len(context) == len(continuation) and each
@@ -65,7 +124,6 @@ class System(ABC, Generic[StateT, ActionT]):
             torch.Tensor: The per-token log probabilities of the continuations given their contexts.
                          Shape: (batch_size, max_continuation_length)
         """
-
         pass
 
     @abstractmethod
@@ -76,10 +134,8 @@ class System(ABC, Generic[StateT, ActionT]):
            divergence measurements.
 
         Args:
-            context (Sequence[str]): Sequence of strings, where each string is a context on which the
-                                 continuation's probability is conditioned.
-            continuation (Sequence[str]): Sequence of strings, where each string is a continuation whose
-                                      probability is measured.
+            context: Sequence of contexts on which the continuation's probability is conditioned.
+            continuation: Sequence of continuations whose probability is measured.
 
         Note:
             This should be batched; i.e., len(context) == len(continuation) and each
@@ -91,7 +147,6 @@ class System(ABC, Generic[StateT, ActionT]):
             torch.Tensor: The per-token log probabilities of the continuations given their contexts.
                          Shape: (batch_size, max_continuation_length)
         """
-
         pass
 
     @abstractmethod
@@ -101,10 +156,8 @@ class System(ABC, Generic[StateT, ActionT]):
         """Evaluates P(continuation|context) on *tester*. This must return tensor w/ grads!
 
         Args:
-            context (Sequence[str]): Sequence of strings, where each string is a context on which the
-                                 continuation's probability is conditioned.
-            continuation (Sequence[str]): Sequence of strings, where each string is a continuation whose
-                                      probability is measured.
+            context: Sequence of contexts on which the continuation's probability is conditioned.
+            continuation: Sequence of continuations whose probability is measured.
 
         Note:
             This should be batched; i.e., len(context) == len(continuation) and each
@@ -114,7 +167,6 @@ class System(ABC, Generic[StateT, ActionT]):
             torch.Tensor: The per-token log probabilities of the continuations given their contexts.
                          Shape: (batch_size, max_continuation_length)
         """
-
         pass
 
     @abstractmethod
@@ -124,10 +176,10 @@ class System(ABC, Generic[StateT, ActionT]):
         a ~ \\pi(s)
 
         Args:
-            x (Sequence[str]): Sequence of strings representing the prompt to be rolled out.
+            x: Sequence of strings representing the prompt to be rolled out.
 
         Returns:
-            Sequence[str]: The rolled out prompt with the adversary model.
+            The rolled out prompt with the adversary model.
         """
         pass
 
@@ -138,24 +190,10 @@ class System(ABC, Generic[StateT, ActionT]):
         s' ~ \\sum_a T(s, a)
 
         Args:
-            x (Sequence[str]): Sequence of strings representing the prompt to be rolled out.
+            x: Sequence of strings representing the prompt to be rolled out.
 
         Returns:
-            Sequence[str]: The rolled out prompt with the adversary model.
-        """
-        pass
-
-    @abstractmethod
-    def advance(self, context: StateT, utterance: ActionT, response: StateT) -> StateT:
-        """Given a context and continuation, returns the next state.
-
-        Args:
-            context (str): Sequence of strings representing the context.
-            utterance (str): Sequence of strings representing the utterance given context.
-            response (str): Sequence of strings representing the defense against utterance.
-
-        Returns:
-                str: The next state after applying the continuation to the context.
+            The rolled out prompt with the adversary model.
         """
         pass
 
@@ -164,19 +202,23 @@ class System(ABC, Generic[StateT, ActionT]):
         """Return the trainable parameters in this system.
 
         Returns:
-            Iterator[torch.nn.parameter.Parameter]: An iterator over the trainable parameters.
-            usually just by calling model.parameters()
+            Iterator over the trainable parameters, usually from calling model.parameters()
         """
         pass
 
-    @abstractmethod
-    def reward(
-        self,
-        context: Sequence[StateT],
-        utterance: Sequence[ActionT],
-        response: Sequence[StateT],
-    ) -> Sequence[float]:
-        pass
+    def rollout(
+        self, states: Sequence[StateT]
+    ) -> Tuple[Sequence[Optional[ActionT]], Sequence[StateT]]:
+        """Default implementation for adversarial systems.
+
+        Generates challenges from tester, then responses from target.
+        """
+        challenges = self.rollout_prompt_with_tester(states)
+        full_prompts = [
+            self.advance(s, c, cast(StateT, "")) for s, c in zip(states, challenges)
+        ]
+        responses = self.rollout_prompt_with_target(full_prompts)
+        return challenges, responses
 
     ##### Utility methods for validation and checks #####
 
@@ -269,15 +311,12 @@ class System(ABC, Generic[StateT, ActionT]):
         return rolled_out
 
 
-class ValueFunctionSystem(System[StateT, ActionT], ABC):
-    """Extends `System` to be able to return sequence values with a value head.
+class ValueFunctionSystem(TrainableSystem[StateT, ActionT], ABC):
+    """Extends `TrainableSystem` to be able to return sequence values with a value head.
 
     Note:
-        This is useful for value-laiden solution methods such as Actor
+        This is useful for value-laden solution methods such as Actor
         Critic derivatives (i.e., PPO).
-
-    Attributes:
-        scorer (Scorer[StateT, ActionT]): The scorer used to evaluate sequences.
 
     Generics:
         StateT (type): The type of the state in the sampler.
@@ -288,7 +327,7 @@ class ValueFunctionSystem(System[StateT, ActionT], ABC):
     def value(
         self, context: Sequence[StateT], continuation: Sequence[ActionT]
     ) -> torch.Tensor:
-        """Given a squence, evaluate its token-wise value using a value function.
+        """Given a sequence, evaluate its token-wise value using a value function.
 
         Notes:
            This is typically done by the same neural network you use for rollouts
@@ -300,10 +339,9 @@ class ValueFunctionSystem(System[StateT, ActionT], ABC):
 
         Returns:
             torch.Tensor[batch_size, max_continuation_length]: The per-token values of
-            the given squence by the sequence predictor. Do not include the value of the input
+            the given sequence by the sequence predictor. Do not include the value of the input
             prefixes. If you are predicting on the whole input, you should be slicing on
             `[:, :-1]`, meaning you should *not* return the value of the last token, whose
             input is eos/context length limit.
         """
-
         pass

@@ -4,7 +4,7 @@ import torch
 import pytest
 from typing import Sequence, Iterator
 
-from astra_rl.core.system import System
+from astra_rl.core.system import TrainableSystem
 from astra_rl.core.scorer import Scorer
 from tests.utils import mark_gpu
 
@@ -16,11 +16,11 @@ class MockScorer(Scorer[str, str]):
         return [0.5] * len(x)
 
 
-class MultiDeviceSystem(System[str, str]):
+class MultiDeviceSystem(TrainableSystem[str, str]):
     """System that simulates models on different devices."""
 
     def __init__(self, tester_device: str, baseline_device: str):
-        super().__init__(MockScorer())
+        super().__init__()
         self.tester_device = torch.device(tester_device)
         self.baseline_device = torch.device(baseline_device)
 
@@ -47,14 +47,19 @@ class MultiDeviceSystem(System[str, str]):
     def rollout_prompt_with_target(self, x: Sequence[str]) -> Sequence[str]:
         return ["response"] * len(x)
 
-    def advance(self, context: str, utterance: str, response: str) -> str:
-        return context + utterance + response
+    def advance(self, context: str, action: str | None, response: str) -> str:
+        if action is None:
+            return context + response
+        return context + action + response
 
     def parameters(self) -> Iterator[torch.nn.parameter.Parameter]:
         return iter([])
 
     def reward(
-        self, context: Sequence[str], utterance: Sequence[str], response: Sequence[str]
+        self,
+        context: Sequence[str],
+        challenge: Sequence[str | None],
+        response: Sequence[str],
     ) -> Sequence[float]:
         return [0.5] * len(context)
 

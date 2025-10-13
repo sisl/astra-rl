@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Generic, Sequence, List, Any, Dict
 
 from astra_rl.core.algorithm import Algorithm
-from astra_rl.core.system import System
+from astra_rl.core.system import TrainableSystem
 from astra_rl.core.common import StateT, ActionT
 from astra_rl.core.sampler import Graph
 
@@ -32,7 +32,9 @@ class DPO(
 ):
     """Direct Preference Optimization (DPO) algorithm."""
 
-    def __init__(self, system: System[StateT, ActionT], beta: float = 0.1):
+    system: TrainableSystem[StateT, ActionT]
+
+    def __init__(self, system: TrainableSystem[StateT, ActionT], beta: float = 0.1):
         super().__init__(system)
 
         self.beta = beta
