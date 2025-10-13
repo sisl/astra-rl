@@ -16,7 +16,7 @@ Most users can subclass `ASTSystem` (text) or use the HF convenience `HFASTSyste
 
 A `System` is the bridge between abstract rollouts and concrete model calls. It must:
 
-* **Generate** next utterances for tester/target,
+* **Generate** next challenges for tester/target,
 * **Score** continuations via log-probs,
 * **Compute** rewards used by solvers,
 * **Advance** the conversation state,
@@ -61,8 +61,8 @@ get_target_logprobs  (contexts: Sequence[str], continuations: Sequence[str]) -> 
 get_baseline_logprobs(contexts: Sequence[str], continuations: Sequence[str]) -> torch.Tensor  # no grad
 
 parameters() -> Iterator[torch.nn.Parameter]   # usually tester params
-advance(context: str, probe: str, response: str) -> str # return the next state (i.e. updated conversation context)
-reward(contexts, probes, responses) -> Sequence[float]
+advance(context: str, challenge: str, response: str) -> str # return the next state (i.e. updated conversation context)
+reward(contexts, challenges, responses) -> Sequence[float]
 ```
 
 **Gradients:** only `get_tester_logprobs` must return a tensor with `requires_grad=True`. Target/baseline should be computed under `torch.no_grad()` (return tensors detached from graphs) to save memory.
@@ -135,14 +135,14 @@ class MySystem(System[str, str]):
         # 4) gather per-token logprobs, mask out context, sum over continuation
         ...
 
-    def advance(self, context, probe, response):
+    def advance(self, context, challenge, response):
         # Conversation concatenation or your custom state transition
-        return context + probe + response
+        return context + challenge + response
 
     def parameters(self):
         return self.tester.parameters()
 
-    def reward(self, contexts, probes, responses):
+    def reward(self, contexts, utterances, responses):
         # calculate your custom reward here!
         # return a scalar value. Note that binary signals are not as helpful for training. Try to make the reward continuous from 0-1.
         return r
@@ -161,8 +161,8 @@ Common patterns (return one float per sample):
 Default text setting is simple concatenation (below) but you can customize how the next state is created.
 
 ```python
-def advance(self, context, probe, response):
-    return context + probe + response
+def advance(self, context, challenge, response):
+    return context + challenge + response
 ```
 
 

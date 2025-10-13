@@ -5,7 +5,7 @@
 ASTRA-RL supports both **training** testers and **evaluating** targets. In evaluation mode we repeatedly test targets using a pre-trained tester and collect metrics that describe how, when, and how often a target fails.
 
 !!! note "What counts as a successful audit?"
-    An *audit is successful* when the target model produces an unsafe or harmful utterance according to the configured scorer (e.g., Detoxify, LlamaGuard). Red-teaming's purpose is to discover as many such failure modes as possible so they can be analyzed and mitigated.
+    An *audit is successful* when the target model produces an unsafe or harmful response according to the configured scorer (e.g., Detoxify, LlamaGuard). Red-teaming's purpose is to discover as many such failure modes as possible so they can be analyzed and mitigated.
 
 ---
 

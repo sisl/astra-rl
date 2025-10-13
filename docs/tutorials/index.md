@@ -37,7 +37,7 @@ ASTRA-RL makes **training** an RL-based tester and **evaluating** a target with 
   The model being evaluated. It converses with the tester; the target's response is scored by a **scorer**, and that score contributes to the tester's reward.
 
 * **Tester**
-  The policy (often an LLM) that generates utterances intended to elicit harmful responses from the target. Typically initialized from a general LM (e.g., Llama-2) and **updated via RL** to improve effectiveness.
+  The policy (often an LLM) that generates challenges intended to elicit harmful responses from the target. Typically initialized from a general LM (e.g., Llama-2) and **updated via RL** to improve effectiveness.
 
 * **Scorer**
   The scoring component (like a reward model). At each step, it returns a **scalar measure of harm** (e.g., toxicity). "Harm" can be defined via existing classifiers (e.g., Llama-Guard 3) or a custom model you provide.
