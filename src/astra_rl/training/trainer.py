@@ -97,6 +97,7 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         config: TrainingConfiguration,
         sampler: Sampler[StateT, ActionT],
         algorithm: Algorithm[StateT, ActionT, Step, Batch],
+        use_wandb: bool = False,
     ):
         """
         Args:
@@ -106,7 +107,9 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         """
 
         self.config = config
-        self.harness = Harness(sampler, algorithm, config.num_episodes_per_experience)
+        self.harness = Harness(
+            sampler, algorithm, config.num_episodes_per_experience, use_wandb
+        )
 
         # TODO initialize LR scheduler?
         # ?????????????????????????????

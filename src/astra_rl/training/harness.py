@@ -85,7 +85,7 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         sampler: Sampler[StateT, ActionT],
         algorithm: Algorithm[StateT, ActionT, Step, Batch],
         num_episodes_per_experience: int = 32,
-        use_wandb: bool = False,
+        use_wandb: Optional[bool] = False,
         wandb_kwargs: Optional[Dict[str, Any]] = None,
         dataloader_kwargs: Optional[Dict[str, Any]] = None,
     ) -> None:
@@ -157,6 +157,7 @@ class Harness(Generic[StateT, ActionT, Step, Batch]):
         #     except Exception as e:
         #         print(f"Skipping rollout due to error: {e}")
 
+        # total number of steps collected across all rollout
         steps = sum([list(self.algorithm.flatten(i)) for i in graphs], [])
 
         logger.debug(

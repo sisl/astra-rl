@@ -287,8 +287,17 @@ class HFASTTrainer(Trainer):
         dev_prompts=None,
         eval_every=200,
         ckpt_dir="checkpoints",
+        use_wandb: Optional[bool] = False,
     ):
-        super().__init__(config, environment, algorithm)
+        super().__init__(config, environment, algorithm, use_wandb)
+
+        # should no longer need, harness takes care of wandb stuff
+        # self.use_wandb = use_wandb
+        # self.wandb_run = None
+        # if self.use_wandb:
+        #     self.wandb_run = wandb.init(**(wandb_kwargs))
+
+        self.global_step = 0
         self.dev_prompts = dev_prompts or []
         self.eval_every = max(1, int(eval_every))
         self.best_score = float("-inf")
@@ -344,7 +353,10 @@ class HFASTTrainer(Trainer):
     def train(self):
         for step_num in range(self.config.training_steps):
             # collect some experiences using current weights
+            # experience will perform "num_episodes_per_experience" rollouts, returns an iterator of minibatches
             buf = self.harness.experience()  # <- this is a torch dataloader
+
+            # self.total_examples_generated += sum(len(i) for i in buf)
             for i in buf:
                 # we compute the loss using the algorithm we chose
                 loss, step_logs = self.harness.step(i)
@@ -354,13 +366,29 @@ class HFASTTrainer(Trainer):
                 self.optimizer.step()
                 self.optimizer.zero_grad()
 
+                self.global_step += 1
+
+                # enrich logs
+                step_logs.update(
+                    {
+                        "step": step_num,
+                        "global_step/num_updates": self.global_step,
+                        "loss": float(loss.detach().cpu().item()),
+                    }
+                )
+
+                # should no longer need, harness takes care of wandb stuff
+                # if self.wandb_run is not None:
+                #     wandb.log(step_logs, step=self.global_step)
+                # logger.info(step_logs)
+
                 # Add custom and algorithm external logging here (e.g., step number)
-                step_logs["step"] = step_num
+                # step_logs["step"] = step_num
                 self.harness.log_current_step(step_logs)
 
-                # every x number of training steps, run a dev set eval and save the best model so far
-                if (step_num + 1) % self.eval_every == 0:
-                    self.eval_epoch(step=step_num + 1, tag="dev")
+            # every x number of training steps, run a dev set eval and save the best model so far
+            if (step_num + 1) % self.eval_every == 0:
+                self.eval_epoch(step=step_num + 1, tag="dev")
 
 
 class HFEvaluationSystem(HFASTSystem):
