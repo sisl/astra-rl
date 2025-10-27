@@ -4,13 +4,14 @@ The trainer is an opinionated system designed for making training new models eas
 """
 
 import torch
-from typing import Generic
+from typing import Generic, cast
 from pydantic import BaseModel
 from torch.optim import Optimizer
 
 from astra_rl.training.harness import Harness
 from astra_rl.core.sampler import Sampler
 from astra_rl.core.algorithm import Algorithm
+from astra_rl.core.system import TrainableSystem
 from astra_rl.core.common import ActionT, StateT, Batch, Step
 
 
@@ -111,27 +112,30 @@ class Trainer(Generic[StateT, ActionT, Step, Batch]):
         # TODO initialize LR scheduler?
         # ?????????????????????????????
 
+        # Cast system to TrainableSystem since Trainer requires trainable parameters
+        trainable_system = cast(TrainableSystem[StateT, ActionT], sampler.system)
+
         # initialize optimizer
         if config.optimizer == "adam":
             from torch.optim import Adam
 
-            self.optimizer = Adam(sampler.system.parameters(), config.lr)
+            self.optimizer = Adam(trainable_system.parameters(), config.lr)
         elif config.optimizer == "adamw":
             from torch.optim import AdamW
 
-            self.optimizer = AdamW(sampler.system.parameters(), config.lr)
+            self.optimizer = AdamW(trainable_system.parameters(), config.lr)
         elif config.optimizer == "sgd":
             from torch.optim import SGD
 
-            self.optimizer = SGD(sampler.system.parameters(), config.lr)
+            self.optimizer = SGD(trainable_system.parameters(), config.lr)
         elif config.optimizer == "rmsprop":
             from torch.optim import RMSprop
 
-            self.optimizer = RMSprop(sampler.system.parameters(), config.lr)
+            self.optimizer = RMSprop(trainable_system.parameters(), config.lr)
         elif config.optimizer == "adagrad":
             from torch.optim import Adagrad
 
-            self.optimizer = Adagrad(sampler.system.parameters(), config.lr)
+            self.optimizer = Adagrad(trainable_system.parameters(), config.lr)
         else:
             raise ValueError(f"Unknown optimizer configured: {config.optimizer}")
 
