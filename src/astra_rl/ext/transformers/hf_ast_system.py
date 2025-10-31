@@ -26,6 +26,7 @@ from astra_rl.methods.ast_system import ASTSystem
 from astra_rl.training.trainer import Trainer, TrainingConfiguration
 import os
 from astra_rl.utils import logger
+import wandb
 
 
 class HFASTSystem(ASTSystem, ValueFunctionSystem):
@@ -342,7 +343,10 @@ class HFASTTrainer(Trainer):
 
         if dev_score > self.best_score:
             logger.info(f"NEW BEST! {round(dev_score, 3)}")
-            logger.info({"training/dev_score": dev_score}, step=step)
+            if getattr(self, "wandb_run", None) is not None:
+                wandb.log({"training/dev_score": dev_score}, step=step)
+            else:
+                logger.info(f"training/dev_score: {dev_score:.3f}")
             self.save(step, tag="best")
         else:
             logger.info(
