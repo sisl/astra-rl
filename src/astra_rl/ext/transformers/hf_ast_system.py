@@ -26,6 +26,7 @@ from astra_rl.methods.ast_system import ASTSystem
 from astra_rl.training.trainer import Trainer, TrainingConfiguration
 import os
 from astra_rl.utils import logger
+from tqdm.auto import tqdm
 
 
 class HFASTSystem(ASTSystem, ValueFunctionSystem):
@@ -287,8 +288,10 @@ class HFASTTrainer(Trainer):
         dev_prompts=None,
         eval_every=200,
         ckpt_dir="checkpoints",
+        use_wandb=False,
+        show_progress=False,
     ):
-        super().__init__(config, environment, algorithm)
+        super().__init__(config, environment, algorithm, use_wandb)
         self.dev_prompts = dev_prompts or []
         self.eval_every = max(1, int(eval_every))
         self.best_score = float("-inf")
@@ -296,11 +299,18 @@ class HFASTTrainer(Trainer):
         os.makedirs(self.ckpt_dir, exist_ok=True)
         self.sampler = self.harness.sampler
         self.system = self.sampler.system
+        self.show_progress = show_progress
+        self.num_optimization_steps = 0
+        self.num_samples = 0
 
     # helper function that saves the tester model in HF format
     def save(self, step: int | None, tag: str = "step"):
         if tag == "best":
             out = os.path.join(self.ckpt_dir, "best")  # single fixed path
+
+        elif tag == "last":
+            out = os.path.join(self.ckpt_dir, "last")  # single fixed path
+
         else:
             out = os.path.join(self.ckpt_dir, f"{tag}-{step}")
 
@@ -309,6 +319,20 @@ class HFASTTrainer(Trainer):
         self.system.tester.save_pretrained(out)
         self.system.tokenizer.save_pretrained(out)
         logger.info(f"Saved checkpoint to {out}")
+
+    def _maybe_tqdm(self, iterable, **kwargs):
+        """Wrap iterable in tqdm if progress is enabled."""
+        if self.show_progress:
+            return tqdm(iterable, **kwargs)
+        return iterable
+
+    def _len_if_available(self, obj):
+        """Return len(obj) if defined, else None (lets tqdm show a spinner)."""
+        try:
+            return len(obj)  # type: ignore[arg-type]
+        except Exception:
+            print("len of buf.experience not available")
+            return None
 
     @torch.no_grad()
     def eval_epoch(self, step: int, tag: str = "dev"):
@@ -333,7 +357,8 @@ class HFASTTrainer(Trainer):
 
         if dev_score > self.best_score:
             logger.info(f"NEW BEST! {round(dev_score, 3)}")
-            logger.info({"training/dev_score": dev_score}, step=step)
+            # logger.info({"training/dev_score": dev_score}, step=step)
+            logger.info(f'{{"training/dev_score": {dev_score:.6f}, "step": {step}}}')
             self.save(step, tag="best")
         else:
             logger.info(
@@ -342,25 +367,66 @@ class HFASTTrainer(Trainer):
 
     # over-write the base Train class's train method to include eval and save
     def train(self):
-        for step_num in range(self.config.training_steps):
-            # collect some experiences using current weights
-            buf = self.harness.experience()  # <- this is a torch dataloader
-            for i in buf:
-                # we compute the loss using the algorithm we chose
-                loss, step_logs = self.harness.step(i)
+        outer_iter = range(self.config.training_steps)
+        outer = self._maybe_tqdm(
+            outer_iter,
+            desc="Training steps",
+            dynamic_ncols=True,
+        )
 
-                # this is normal optimization; feel free to do weight decay, etc.
-                loss.backward()
-                self.optimizer.step()
-                self.optimizer.zero_grad()
+        for step_idx in outer:
+            # collect some experiences using current weights
+            buf = self.harness.experience()  # a DataLoader/Iterable of minibatches
+
+            inner_total = self._len_if_available(buf)
+            inner = self._maybe_tqdm(
+                buf,
+                total=inner_total,
+                desc=f"Experience {step_idx + 1}",
+                leave=False,
+                dynamic_ncols=True,
+            )
+
+            for batch in inner:
+                # loss: torch.Tensor = (
+                #     self.harness.step(batch)[0]
+                #     / self.config.gradient_accumulation_steps
+                # )
+
+                loss, step_logs = self.harness.step(batch)  # unpack first
+                loss: torch.Tensor = loss / self.config.gradient_accumulation_steps
+                # typing disabled here b/c mypy can't statically verify
+                # that the loss has gradients
+                loss.backward()  # type: ignore[no-untyped-call]
+
+                # if gradient accumulation happens, step!
+                if (
+                    self._global_step_counter % self.config.gradient_accumulation_steps
+                ) == 0:
+                    total_norm = torch.nn.utils.clip_grad_norm_(
+                        self.system.tester.parameters(), max_norm=float("inf")
+                    ).item()
+                    self.optimizer.step()
+                    self.optimizer.zero_grad()
+                    step_logs["grad_norm"] = total_norm
 
                 # Add custom and algorithm external logging here (e.g., step number)
-                step_logs["step"] = step_num
+                step_logs["step"] = step_idx + 2267
+                step_logs["loss"] = (
+                    loss.item() * self.config.gradient_accumulation_steps
+                )
                 self.harness.log_current_step(step_logs)
 
-                # every x number of training steps, run a dev set eval and save the best model so far
-                if (step_num + 1) % self.eval_every == 0:
-                    self.eval_epoch(step=step_num + 1, tag="dev")
+            # every x number of training steps, run a dev set eval and save the best model so far
+            if (step_idx + 1) % self.eval_every == 0:
+                self.eval_epoch(step=step_idx + 1, tag="dev")
+
+            # save checkpoint after every step, call it "last"
+            self.save(step=step_idx + 1, tag="last")
+
+            # optional: show something on the outer bar too
+            if self.show_progress and hasattr(outer, "set_postfix"):
+                outer.set_postfix({"step": step_idx + 1})
 
 
 class HFEvaluationSystem(HFASTSystem):

@@ -12,7 +12,7 @@ import torch
 from torch.optim import AdamW
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from astra_rl import ASTSystem, ASTSampler, DPO, DetoxifyScorer, Harness
+from astra_rl import ASTSystem, ASTSampler, DPO, Harness, LlamaGuardScorer
 
 # Configure logging
 logging.basicConfig(
@@ -27,7 +27,7 @@ class GPUAllocationSystem(ASTSystem):
     def __init__(self):
         # TASK: initialize and pass to superclass
         # your choice of scorer
-        super().__init__(DetoxifyScorer())
+        super().__init__(LlamaGuardScorer())
 
         logger.debug("Loading tester model: meta-llama/Llama-3.1-8B")
         self.tester = AutoModelForCausalLM.from_pretrained(

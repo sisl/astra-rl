@@ -56,10 +56,10 @@ class GPT2DetoxifySystem(ASTSystem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_auditor_logprobs(self, context, continuation):
+    def get_tester_logprobs(self, context, continuation):
         return self.__get_logprobs(self.tester, context, continuation)
 
-    def rollout_prompt_with_auditor(self, prompt):
+    def rollout_prompt_with_tester(self, prompt):
         return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
@@ -186,6 +186,8 @@ def main() -> None:
         dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=100,
         ckpt_dir="./checkpoints/gpt2",
+        use_wandb=True,
+        show_progress=True,
     )
 
     trainer.train()

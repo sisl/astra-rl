@@ -204,5 +204,6 @@ evals/
 checkpoints/
 results/
 
-# ignore my really rough eval code for now
-examples/GPT2_v_GPT2/ast_basic_eval.py
+
+# ignore my malibu and classification code
+examples/malibu/
