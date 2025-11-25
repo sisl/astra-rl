@@ -105,6 +105,7 @@ nav:
             - api/scorers/index.md
             - api/scorers/detoxify.md
             - api/scorers/llamaguard.md
+            - api/scorers/wildguard.md
         - Training:
             - api/training/index.md
             - api/training/harness.md

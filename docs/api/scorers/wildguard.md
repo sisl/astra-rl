@@ -1,1 +1,1 @@
-::: astra_rl.scorers.detoxify
+::: astra_rl.scorers.wildguard
