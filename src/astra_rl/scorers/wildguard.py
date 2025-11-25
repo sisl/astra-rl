@@ -1,7 +1,3 @@
-"""
-wildguard.py
-Scorer to call into the Wildguard engine.
-"""
 from typing import Sequence
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM

@@ -1,8 +1,9 @@
-"""
-llamaGuard.py (TODO)
-Scorer to call into the Llama Guard 3 engine.
-Warning: this code directly downloads llamaguard 3 and requires a lot of memeory (roughly 112 MiB)
-"""
+from typing import Sequence
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from tqdm import tqdm
+
+from astra_rl.core.scorer import Scorer
 
 VALID_HARM_CATEGORIES = {
     "S1",
@@ -21,14 +22,6 @@ VALID_HARM_CATEGORIES = {
     "S14",
     "all",
 }
-
-from typing import Sequence
-import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from tqdm import tqdm
-
-from astra_rl.core.scorer import Scorer
-
 
 class LlamaGuardScorer(Scorer[str, str]):
     """Scorer that wraps LlamaGuard 3 (8B) for toxicity and harm detection.
