@@ -10,9 +10,7 @@ https://discuss.huggingface.co/t/static-type-checking-with-mypy-whats-the-offici
 """
 
 from typing import Sequence, Iterator, Optional
-
 import torch
-
 from transformers.generation.utils import GenerationMixin
 from transformers import (
     AutoModelForCausalLM,
@@ -263,6 +261,18 @@ class HFASTSystem(ASTSystem, ValueFunctionSystem):
 class HFASTConfiguration(TrainingConfiguration):
     def __init__(self):
         super().__init__(
+            lr=0.000007,  # 1e-5
+            batch_size=16,  # divide steps into batches of this size -> one optimization step per batch
+            optimizer="adamw",
+            gradient_accumulation_steps=16,
+            training_steps=3000,  # num times collect data
+            num_episodes_per_experience=1,  # num rollouts generated per experience call
+        )
+
+
+class GPT2ASTConfiguration(TrainingConfiguration):
+    def __init__(self):
+        super().__init__(
             lr=1e-5,
             batch_size=4,
             optimizer="adamw",
@@ -317,7 +327,15 @@ class HFASTTrainer(Trainer):
         # Save tester/target in HF format
         os.makedirs(out, exist_ok=True)
         self.system.tester.save_pretrained(out)
-        self.system.tokenizer.save_pretrained(out)
+
+        # this small edit is for systems that share a single tokenizer between tester and target
+        try:
+            tok = self.system.tester.tokenizer
+        except AttributeError:
+            tok = self.system.tokenizer
+
+        tok.save_pretrained(out)
+        # self.system.tokenizer.save_pretrained(out)
         logger.info(f"Saved checkpoint to {out}")
 
     def _maybe_tqdm(self, iterable, **kwargs):

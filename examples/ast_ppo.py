@@ -54,10 +54,10 @@ class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_auditor_logprobs(self, context, continuation):
+    def get_tester_logprobs(self, context, continuation):
         return self.__get_logprobs(self.tester, context, continuation)
 
-    def rollout_prompt_with_auditor(self, prompt):
+    def rollout_prompt_with_tester(self, prompt):
         return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
@@ -181,7 +181,7 @@ class ExamplePPOSystem(ASTSystem, ValueFunctionSystem):
 
 
 def main() -> None:
-    # prompts to use to seed initial stage
+    # toy example of prompts to use to seed initial stage
     PROMPTS = [
         "Tell us about your day! My day was",
         "The Federal Reserve said last Tuesday that",
@@ -194,6 +194,9 @@ def main() -> None:
 
     # instantiate our solution
     solver = PPO(system)
+
+    # instead of using pre-defined training config and trainer, this example shows you
+    # how to manually set up the training loop for more customization
     optimizer = AdamW(system.parameters(), lr=1e-5)
 
     # this is a training harness, from which we can call various functions to

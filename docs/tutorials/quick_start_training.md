@@ -17,6 +17,8 @@ pip install astra-rl
 
 # Import ASTRA-RL in your python code
 import astra_rl
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
+from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, HFASTConfiguration
 ```
 
 !!! note
@@ -76,7 +78,12 @@ Need a custom model or rollout step logic? See the [System Customization](custom
 The sampler defines how training rollouts are structured and collected. In ASTRA-RL, the default is the `ASTSampler`, which implements the conversation tree rollout used in the [ASTPrompter](https://arxiv.org/abs/2407.09447) paper.
 
 ```python
-sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
+# define the dataset of seed prompts that will initiate tester-target training rollouts
+# Depending on your space constraints, adjust how long you allow seed prompts to be (here we clip to a maximum of 500 characters )
+PROMPTS = [p[:500] for p in CONVOKIT_REDDIT_TRAIN]
+
+# instantiate the sampler 
+sampler = ASTSampler(system, PROMPTS)
 ```
 
 <details>
@@ -102,16 +109,15 @@ Want a different rollout graph structure or a multi-agent setup? See the [Sample
 
 ---
 
-## Step 5: Choose Your Algorithm and Optimizer
+## Step 5: Choose Your Learning Algorithm
 
-The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. The optimizer will update tester model weights
-to minimize this loss, teaching the tester to more effectively elicit target toxicity.
+The solver is the RL learning algorithm that will take in a graph of training rollouts and compute the loss. This loss will drive the optimization of tester model weights, teaching the tester to more effectively elicit target toxicity.
 
-We use DPO and Adam as the default for this quickstart.
+We use DPO as the default for this quickstart.
 
 ```python
-solver = DPO(system)
-optimizer = AdamW(system.parameters(), lr=1e-5)
+# pass the DPO algorithm your system and the beta hyperparamater you would like to train with
+solver = DPO(system, beta=0.1)
 ```
 
 To integrate your own RL algorithm, see the [Solver Customization](customizing_training/solvers.md) guide.
@@ -124,16 +130,25 @@ For the quick start approach, simply call our training configuration and trainer
 
 ```python
 # instantiate the pre-configured HF-compatible configuration and trainer class
-config = TrainingConfiguration() # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
-# this trainer will train the tester
-trainer = Trainer(
-    config,
-    sampler,
-    solver,
-)
+config = HFASTConfiguration() # lr = 7e-6, batch size = 16, optimizer = "adamw", 16 gradient accumulation steps, 3000 training steps, 1 episode per experience
+
+# this trainer will train the tester and save the best tester to the checkpoint directory
+trainer = HFASTTrainer(
+        config,
+        sampler,
+        solver,
+        dev_prompts=CONVOKIT_REDDIT_DEV,
+        eval_every=25, # this determines how often the model is evaluated on the dev set, we save   the best performing model
+        ckpt_dir="./checkpoints/custom_name", # add your model name here!
+        use_wandb=True,
+        show_progress=True,
+    )
+
 trainer.train()
 ```
 > The source code for the training configuration and trainer are at [trainer.py](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/training/trainer.py)
+
+> The source code for HFASTConfiguration and HFASTTrainer are at [hf_ast_system.py](https://github.com/sisl/astra-rl/blob/main/src/astra_rl/ext/transformers/hf_ast_system.py)
 
 Want to customize the training configuration/hyperparams, the training loop, or model saving/eval? See the [Trainer Customization](customizing_training/trainers.md) guide.
 

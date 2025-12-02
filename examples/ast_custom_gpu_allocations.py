@@ -9,10 +9,13 @@ the GPU allocations are explicitly specified.
 
 import logging
 import torch
-from torch.optim import AdamW
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, HFASTConfiguration
+from astra_rl import ASTSystem, ASTSampler, DPO, LlamaGuardScorer
 
-from astra_rl import ASTSystem, ASTSampler, DPO, Harness, LlamaGuardScorer
+# training and dev data sets - serve as initial prompts in tester-target rollouts
+from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
+
 
 # Configure logging
 logging.basicConfig(
@@ -31,9 +34,10 @@ class GPUAllocationSystem(ASTSystem):
 
         logger.debug("Loading tester model: meta-llama/Llama-3.1-8B")
         self.tester = AutoModelForCausalLM.from_pretrained(
-            "meta-llama/Llama-3.1-8B", torch_dtype=torch.bfloat16
+            "meta-llama/Llama-3.1-8B",
+            torch_dtype=torch.bfloat16,
         ).to("cuda:1")
-
+        # "meta-llama/Llama-3.1-8B"
         logger.debug("Loading target model: meta-llama/Llama-3.1-8B")
         self.target = AutoModelForCausalLM.from_pretrained(
             "meta-llama/Llama-3.1-8B", torch_dtype=torch.bfloat16
@@ -42,6 +46,7 @@ class GPUAllocationSystem(ASTSystem):
         logger.debug("Loading tokenizer")
         self.tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B")
         self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
+        self.tokenizer.padding_side = "left"
         logger.debug("Model initialization complete")
 
     # TASK: you have to implement these for our API
@@ -53,10 +58,10 @@ class GPUAllocationSystem(ASTSystem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_auditor_logprobs(self, context, continuation):
+    def get_tester_logprobs(self, context, continuation):
         return self.__get_logprobs(self.tester, context, continuation)
 
-    def rollout_prompt_with_auditor(self, prompt):
+    def rollout_prompt_with_tester(self, prompt):
         return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
@@ -69,13 +74,14 @@ class GPUAllocationSystem(ASTSystem):
     # you don't have to implement these for the API, but you should probably
     # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
-        tokenized_prompt = self.tokenizer(
-            prompt, padding=True, return_tensors="pt", padding_side="left"
-        ).to(next(model.parameters()).device)
+        tokenized_prompt = self.tokenizer(prompt, padding=True, return_tensors="pt").to(
+            next(model.parameters()).device
+        )
+
         output = model.generate(
             **tokenized_prompt,
             pad_token_id=self.tokenizer.eos_token_id,
-            max_new_tokens=32,
+            max_new_tokens=24,
             do_sample=True,
             top_p=0.9,
             top_k=50,
@@ -137,49 +143,37 @@ class GPUAllocationSystem(ASTSystem):
 
 
 def main() -> None:
-    # prompts to use to seed initial stage
-    PROMPTS = [
-        "Tell us about your day! My day was",
-        "The Federal Reserve said last Tuesday that",
-    ]
+    # prompts to use to seed initial stage - this is a tiny example of two prompts
+    # PROMPTS = [
+    #     "Tell us about your day! My day was",
+    #     "The Federal Reserve said last Tuesday that",
+    # ]
+    # full training dataset - convokit reddit small
+    PROMPTS = CONVOKIT_REDDIT_TRAIN
+    # make sure all prompts are at most 500 characters (we don't want huge paragraphs, will oom)
+    PROMPTS = [p[:500] for p in PROMPTS]
 
     # instatiate our system and sampler
-    system = GPUAllocationSystem()  # or "cuda" if you have a GPU
+    system = GPUAllocationSystem()
     sampler = ASTSampler(system, PROMPTS)
 
     # instantiate our solution
     solver = DPO(system)
-    optimizer = AdamW(system.parameters(), lr=1e-5)
 
-    # this is a training harness, from which we can call various functions to
-    # handle training details
-    harness = Harness(
+    config = HFASTConfiguration()
+
+    trainer = HFASTTrainer(
+        config,
         sampler,
         solver,
-        num_episodes_per_experience=1,
-        use_wandb=False,
-        dataloader_kwargs={"batch_size": 1},
+        dev_prompts=CONVOKIT_REDDIT_DEV,
+        eval_every=25,
+        ckpt_dir="./checkpoints/custom_name",
+        use_wandb=True,
+        show_progress=True,
     )
 
-    # optimization step
-    for step in range(1000):
-        # collect some experiences using current weights
-        buf = harness.experience()  # <- this is a torch dataloader
-        logger.info(f"Step {step}: Got {len(buf)} batches of episodes")
-        for indx, i in enumerate(buf):
-            # we compute the loss using the algorithm we chose
-            loss, step_logs = harness.step(i)
-            # this is normal optimization; feel free to do weight decay, etc.
-            loss.backward()
-            optimizer.step()
-            optimizer.zero_grad()
-            logger.info(f"Step {step}, batch {indx}: loss={loss.item():.4f}")
-
-            # Add custom and algorithm external logging here (e.g., step number)
-            # TODO: Do we want multiple logs values per step (iterated over experience buffer)?
-            # TODO: Do we want to add other things here to logging?
-            step_logs["step"] = step
-            harness.log_current_step(step_logs)
+    trainer.train()
 
 
 if __name__ == "__main__":

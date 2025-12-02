@@ -39,6 +39,7 @@ If you just want a lean optimization loop (no eval/checkpointing/logging), use `
 
 If you want periodic dev evaluation and automatic Hugging Face checkpointing, use `HFASTTrainer` with `HFASTConfiguration`. See [6.2](#62-periodic-eval-hf-checkpoints-via-hfasttrainer).
 
+
 ### 3.3 Full control: subclass `Trainer`
 
 Need custom evaluation cadence, model-saving policy, learning-rate schedules, gradient accumulation, early stopping, or logging destinations (e.g., Weights & Biases)? Subclass `Trainer` and override `train()` (and optional helpers). See [6.3](#63-write-a-custom-trainer-with-eval-saving-and-grad-accumulation) and [6.4](#64-early-stopping-or-custom-lr-schedules).
