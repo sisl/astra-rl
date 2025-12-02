@@ -8,9 +8,9 @@ from astra_rl.scorers.llamaguard import LlamaGuardScorer
 
 
 # set the tester model here: we are using a pre-trained, local tester and a "gpt2" target
-# this will be the path to your saved tester model from training ie: "./checkpoints/gpt2"
-# TESTER_MODEL = "gpt2"
-TESTER_MODEL = "/home/allie11/astra-rl/examples/checkpoints/gpt2/last"
+TESTER_MODEL = (
+    "gpt2"  # replace with your tester model path from training ie: "./checkpoints/gpt2"
+)
 
 
 # since we are using a custom tester that is not supported by HFASTSystem (GPT2 is not supported)
