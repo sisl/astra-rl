@@ -429,7 +429,7 @@ class HFASTTrainer(Trainer):
                     step_logs["grad_norm"] = total_norm
 
                 # Add custom and algorithm external logging here (e.g., step number)
-                step_logs["step"] = step_idx + 2267
+                step_logs["step"] = step_idx
                 step_logs["loss"] = (
                     loss.item() * self.config.gradient_accumulation_steps
                 )
