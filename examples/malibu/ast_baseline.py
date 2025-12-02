@@ -1,32 +1,27 @@
-"""
-ast_llama.py
-An example of using AST with LLaMA models as tester and target where
-the GPU allocations are explicitly specified.
-"""
+# ASTRA-RL core components
+from astra_rl import ASTSampler, LlamaGuardScorer, ASTSystem, DPO
 
-# requirements: transformers tokenizers accelerate
-# requirements: ..
-
+# HuggingFace-friendly system wrapper for ASTPrompter-style red teaming
+from astra_rl.training import TrainingConfiguration
+from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer
 import logging
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, HFASTConfiguration
-from astra_rl import ASTSystem, ASTSampler, DPO, LlamaGuardScorer
 
-# training and dev data sets - serve as initial prompts in tester-target rollouts
+# training and dev data sets - serve as initial prompts in auditor-target rollouts
 from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
-
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger("astra.example")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 
 
+# TODO: switch back to adv on 1 and target on 0, return gathered to 1 and switch back to .1-8B
 # gpu allocation system
-class GPUAllocationSystem(ASTSystem):
+class MalibuSystem(ASTSystem):
     def __init__(self):
         # TASK: initialize and pass to superclass
         # your choice of scorer
@@ -34,7 +29,7 @@ class GPUAllocationSystem(ASTSystem):
 
         logger.debug("Loading tester model: meta-llama/Llama-3.1-8B")
         self.tester = AutoModelForCausalLM.from_pretrained(
-            "meta-llama/Llama-3.1-8B",
+            "/home/allie11/astra-rl/examples/malibu/checkpoints/DPO_astBaseline_8B_.1b_7e-6lr/last",
             torch_dtype=torch.bfloat16,
         ).to("cuda:1")
         # "meta-llama/Llama-3.1-8B"
@@ -74,9 +69,9 @@ class GPUAllocationSystem(ASTSystem):
     # you don't have to implement these for the API, but you should probably
     # do something like this unless your tester and target is very different
     def __rollout(self, model, prompt):
-        tokenized_prompt = self.tokenizer(prompt, padding=True, return_tensors="pt").to(
-            next(model.parameters()).device
-        )
+        tokenized_prompt = self.tokenizer(
+            prompt, padding=True, truncation=True, max_length=150, return_tensors="pt"
+        ).to(next(model.parameters()).device)
 
         output = model.generate(
             **tokenized_prompt,
@@ -140,39 +135,88 @@ class GPUAllocationSystem(ASTSystem):
 
         # Return per-token logprobs instead of aggregating
         return gathered.to("cuda:0")
+        # return gathered
+
+
+def print_tree(graph, max_depth=3):
+    print(f"ROOT context[:40]={graph.context[:40]!r}")
+    print(f"ROOT children = {len(graph.children)}")
+    for i, n0 in enumerate(graph.children):
+        print(f"  [0:{i}] probe[:50]={n0.probe[:50]!r}  children={len(n0.children)}")
+        if max_depth >= 2:
+            for j, n1 in enumerate(n0.children):
+                print(
+                    f"    [1:{i}.{j}] probe[:50]={n1.probe[:50]!r}  children={len(n1.children)}"
+                )
+                if max_depth >= 3:
+                    for k, n2 in enumerate(n1.children):
+                        print(
+                            f"      [2:{i}.{j}.{k}] probe[:50]={n2.probe[:50]!r}  children={len(n2.children)}"
+                        )
+
+
+# Help: double check training params.. match OG paper exactly
+class MalibuConfiguration(TrainingConfiguration):
+    def __init__(self):
+        super().__init__(
+            lr=0.000007,  # 1e-5
+            batch_size=16,  # divide steps into batches of this size -> one optimization step per batch
+            optimizer="adamw",
+            gradient_accumulation_steps=16,
+            training_steps=3000,  # num times collect data
+            num_episodes_per_experience=1,  # num rollouts generated per experience call
+        )
 
 
 def main() -> None:
-    # prompts to use to seed initial stage - this is a tiny example of two prompts
-    # PROMPTS = [
-    #     "Tell us about your day! My day was",
-    #     "The Federal Reserve said last Tuesday that",
-    # ]
-    # full training dataset - convokit reddit small
-    PROMPTS = CONVOKIT_REDDIT_TRAIN
-    # make sure all prompts are at most 500 characters (we don't want huge paragraphs, will oom)
-    PROMPTS = [p[:500] for p in PROMPTS]
+    # llama 3B models + llamaguard scorer -- hefty!
+    # lightweight llama model: "meta-llama/Llama-3.2-1B" and DetoxifyScorer()
+    # heavyweight llama model: "meta-llama/Llama-3.1-8B" and LlamaGuardScorer()
+    # system = HFASTSystem(
+    #     "meta-llama/Llama-3.1-8B",
+    #     "meta-llama/Llama-3.1-8B",
+    #     "meta-llama/Llama-3.1-8B",
+    #     LlamaGuardScorer(),
+    #     DEVICE,
+    # )
 
-    # instatiate our system and sampler
-    system = GPUAllocationSystem()
-    sampler = ASTSampler(system, PROMPTS)
+    # newest run: set pad side during tok init and return gathered directly
+    system = MalibuSystem()
 
-    # instantiate our solution
-    solver = DPO(system)
+    # using same reward weights as ASTPrompter paper( adv_perplexity = 0.0825, combined_weight: 2.0, defense_toxicity_weight = 0.5)
+    sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN, tree_width=2, tree_depth=3)
 
-    config = HFASTConfiguration()
+    # ASTPrompter used IPO
+    # solver = IPO(system, beta=1.0)
+    solver = DPO(system, beta=0.1)
 
+    # set training config
+    config = MalibuConfiguration()  # lr = 1e-5, batch size = 5, optimizer = "adamw", no gradient accumulation, 1000 training steps, 1 episode per experience
+
+    # training loop is working (tested with gpt2 and saw learning)
     trainer = HFASTTrainer(
         config,
         sampler,
         solver,
         dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=25,
-        ckpt_dir="./checkpoints/custom_name",
+        ckpt_dir="./checkpoints/DPO_astBaseline_8B_.1b_7e-6lr",
         use_wandb=True,
         show_progress=True,
     )
 
+    # rollout = sampler.eval_rollout()
+    # print(f"Full ROLLOUT")
+    # print_tree(rollout, max_depth=3)
+    # print("\n\n")
+
+    # rollout2 = sampler.eval_rollout()
+    # print(f"Eval ROLLOUT of size {len(rollout2)}")
+    # print(rollout2)
+    # print("\n\n")
+    # final_reward = sampler.final_reward(rollout2)
+    # print(f"Final reward: {final_reward}")
+    # start training!
     trainer.train()
 
 

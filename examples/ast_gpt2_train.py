@@ -12,7 +12,7 @@ corpora below of initial prompts.
 import torch
 from transformers import GPT2LMHeadModel, AutoTokenizer
 from astra_rl import ASTSystem, ASTSampler, DPO, DetoxifyScorer
-from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, HFASTConfiguration
+from astra_rl.ext.transformers.hf_ast_system import HFASTTrainer, GPT2ASTConfiguration
 from astra_rl.datasets import CONVOKIT_REDDIT_TRAIN, CONVOKIT_REDDIT_DEV
 
 # MODEL_NAME = "sshleifer/tiny-gpt2" # Runs fast on cpu only
@@ -56,10 +56,10 @@ class GPT2DetoxifySystem(ASTSystem):
         # and target models can be the same
         return self.get_target_logprobs(context, continuation)
 
-    def get_auditor_logprobs(self, context, continuation):
+    def get_tester_logprobs(self, context, continuation):
         return self.__get_logprobs(self.tester, context, continuation)
 
-    def rollout_prompt_with_auditor(self, prompt):
+    def rollout_prompt_with_tester(self, prompt):
         return self.__rollout(self.tester, prompt)
 
     def rollout_prompt_with_target(self, prompt):
@@ -170,13 +170,15 @@ def main() -> None:
 
     # instatiate our system and sampler
     system = GPT2DetoxifySystem(DEVICE)  # or "cuda" if you have a GPU
-    sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
+    # make sure all prompts are at most 500 characters (we don't want huge paragraphs, will oom)
+    PROMPTS = [p[:500] for p in CONVOKIT_REDDIT_TRAIN]
+    sampler = ASTSampler(system, PROMPTS)
 
     # instantiate our solution
     solver = DPO(system)
 
-    # instantiate the pre-configured HF-compatable configuration and traininer class
-    config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
+    # instantiate the pre-configured configuration and traininer class
+    config = GPT2ASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
 
     # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "./checkpoints/gpt2"
     trainer = HFASTTrainer(
@@ -186,6 +188,8 @@ def main() -> None:
         dev_prompts=CONVOKIT_REDDIT_DEV,
         eval_every=100,
         ckpt_dir="./checkpoints/gpt2",
+        use_wandb=True,
+        show_progress=True,
     )
 
     trainer.train()

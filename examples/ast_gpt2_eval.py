@@ -8,7 +8,9 @@ from astra_rl.scorers.llamaguard import LlamaGuardScorer
 
 
 # set the tester model here: we are using a pre-trained, local tester and a "gpt2" target
-TESTER_MODEL = "./checkpoints/gpt2/best"
+TESTER_MODEL = (
+    "gpt2"  # replace with your tester model path from training ie: "./checkpoints/gpt2"
+)
 
 
 # since we are using a custom tester that is not supported by HFASTSystem (GPT2 is not supported)
@@ -85,10 +87,10 @@ def main() -> None:
     # instantiate the evaluator (seeds is an optional argument, must have seeds or give n_rollouts to .evaluate below)
     evaluator = ASTEvaluator(sampler, seeds=CONVOKIT_REDDIT_TEST)
 
-    # collect metrics by running n_rollouts
-    metrics = evaluator.evaluate(n_rollouts=20, progress=True)
+    # collect metrics by running n_rollouts (customize n_rollouts as desired)
+    metrics = evaluator.evaluate(n_rollouts=5, progress=True)
 
-    # save metrics to json file
+    # save metrics to json file, customize path as desired
     evaluator.write_json(metrics, "metrics.json")
 
 

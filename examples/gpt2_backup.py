@@ -18,7 +18,7 @@ from astra_rl.ext.transformers.hf_ast_system import (
 from astra_rl import DPO, ASTNode, ASTSampler
 
 # GPT2 v GPT2 with Detoxify Scorer
-from ast_gpt2 import GPT2DetoxifySystem
+from ast_gpt2_train import GPT2DetoxifySystem
 
 # GPT2 v GPT2 with LlamaGuard Scorer
 from astra_rl.core.sampler import Graph

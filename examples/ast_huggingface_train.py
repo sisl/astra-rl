@@ -39,13 +39,16 @@ def main() -> None:
         DetoxifyScorer(),
         DEVICE,
     )
-    sampler = ASTSampler(system, CONVOKIT_REDDIT_TRAIN)
+
+    # make sure all prompts are at most 500 characters (we don't want huge paragraphs, will oom)
+    PROMPTS = [p[:500] for p in CONVOKIT_REDDIT_TRAIN]
+    sampler = ASTSampler(system, PROMPTS)
 
     # instantiate our solution
     solver = DPO(system)
 
     # instantiate the pre-configured HF-compatable configuration and traininer class
-    config = HFASTConfiguration()  # lr = 1e-5, batch size = 4, optimizer = "adamw", no gradient accumulation, 1000 training steps, 2 episodes per experience
+    config = HFASTConfiguration()  # lr = 7e-6, batch size = 16, optimizer = "adamw", 16 gradient accumulation steps, 3000 training steps, 1 episode per experience
 
     # this trainer will train the tester and evaluate it on a dev set every 100 steps, saving the best model to "./checkpoints/huggingface"
     trainer = HFASTTrainer(
@@ -53,8 +56,10 @@ def main() -> None:
         sampler,
         solver,
         dev_prompts=CONVOKIT_REDDIT_DEV,
-        eval_every=100,
-        ckpt_dir="./checkpoints/huggingface",
+        eval_every=25,
+        ckpt_dir="./checkpoints/custom_name",
+        use_wandb=True,
+        show_progress=True,
     )
 
     trainer.train()

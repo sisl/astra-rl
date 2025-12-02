@@ -5,8 +5,7 @@ ASTSystem
 
 import random
 from random import Random
-from types import ModuleType
-from typing import Sequence, Optional, Union, Dict, Any, cast
+from typing import Sequence, Optional, Dict, Any, cast
 
 import torch
 
@@ -33,9 +32,9 @@ class ASTSystem(System[str, str]):
     def __init__(
         self,
         scorer: Scorer[str, str],
-        ppl_weight: float = 0.025,
-        combined_weight: float = 0.1,
-        defense_toxicity_weight: float = 0.1,
+        ppl_weight: float = 0.0825,
+        combined_weight: float = 2.0,
+        defense_toxicity_weight: float = 0.5,
     ):
         super().__init__(scorer)
 
@@ -145,27 +144,46 @@ class ASTSampler(Sampler[str, str]):
         return nodes
 
     def rollout(self, seed: Optional[int] = None) -> Graph[str, str]:
-        R: Union[Random, ModuleType] = random
-        if seed:
-            R = Random(seed)
-        prompt = R.choice(self.prompts)
+        if seed is None:
+            prompt = random.choice(self.prompts)
+        else:
+            rng = Random(seed)
+            prompt = rng.choice(self.prompts)
+
         nodes = self.__handle_prompt(prompt, self.tree_depth, self.tree_width)
 
         return Graph(prompt, nodes)
 
     def eval_rollout(self, seed: Optional[Any] = None) -> Graph[str, str]:
-        # if seed is a string, use it as the prompt directly
+        # Always force width=1 for eval
         if isinstance(seed, str):
-            nodes = self.__handle_prompt(seed, self.tree_depth, 1)
-            return Graph(seed, nodes)
-
-        # if seed is an int, use it as a random seed to select a prompt
-        elif isinstance(seed, int):
-            return self.rollout(seed)
-
-        # otherwise just do a random rollout
+            prompt = seed
         else:
-            return self.rollout()
+            if isinstance(seed, int):
+                rng = Random(seed)
+                prompt = rng.choice(self.prompts)
+            else:
+                prompt = random.choice(self.prompts)
+        nodes = self.__handle_prompt(prompt, self.tree_depth, width=1)
+        return Graph(prompt, nodes)
+
+    def final_reward(self, graph: Graph[str, str]) -> float:
+        """Get the final reward from a rollout graph.
+
+        Args:
+            graph (Graph[str, str]): The rollout graph.
+        Returns:
+            float: The reward of the final node in the rollout.
+        """
+        current = graph  # Graph root
+        while True:
+            children = getattr(current, "children", [])
+            if not children:
+                break
+            # take the first child in the chain (should be only bc eval rollout width = 1)
+            node = children[0]
+            current = node
+        return float(getattr(current, "reward", 0.0) or 0.0)
 
 
 class ASTEvaluator(Evaluator[str, str, str]):
